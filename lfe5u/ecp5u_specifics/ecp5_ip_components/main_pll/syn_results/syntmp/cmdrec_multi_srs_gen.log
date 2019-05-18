@@ -1,7 +1,0 @@
-C:\Programs\diamond\diamond\3.10_x64\synpbase\bin64\syn_nfilter.exe  -link  -top  main_pll  -multisrs  C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\syn_results\synwork\main_pll_comp.srs  -osyn  C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\syn_results\synwork\main_pll_mult.srs  -log  C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\syn_results\synlog\main_pll_multi_srs_gen.srr 
-relcom:..\..\..\..\..\..\..\..\..\..\Programs\diamond\diamond\3.10_x64\synpbase\bin64\syn_nfilter.exe -link -top main_pll -multisrs ..\synwork\main_pll_comp.srs -osyn ..\synwork\main_pll_mult.srs -log ..\synlog\main_pll_multi_srs_gen.srr
-rc:0 success:1 runtime:0
-file:..\synwork\main_pll_comp.srs|io:i|time:1558159056|size:5127|exec:0|csum:A239C8C40E221AD35B13283C36808AB6
-file:..\synwork\main_pll_mult.srs|io:o|time:1558159058|size:4852|exec:0|csum:
-file:..\synlog\main_pll_multi_srs_gen.srr|io:o|time:1558159058|size:409|exec:0|csum:
-file:..\..\..\..\..\..\..\..\..\..\Programs\diamond\diamond\3.10_x64\synpbase\bin64\syn_nfilter.exe|io:i|time:1501881390|size:8865280|exec:1|csum:B37FCE9CF34F30C81898D8440E6E88C7

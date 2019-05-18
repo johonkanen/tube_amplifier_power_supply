@@ -5,8 +5,9 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
-
     use work.onboard_ad_ctrl_pkg.all;
+
+    use work.vendor_specifics_pkg.all;
 
 entity data_control is
     port(
@@ -68,6 +69,11 @@ end data_control;
 architecture rtl of data_control is
 
 component uart_event_ctrl is
+	generic (
+				g_CLKS_PER_BIT : integer; 
+				g_RX_bytes_in_word : integer;
+				g_TX_bytes_in_word : integer 
+			);
 	--- uart interface
 	port(
 		uart_Clk : in std_logic;
@@ -199,6 +205,12 @@ signal dhb_adc_control : rec_ext_ad_ctrl;
 begin
 
 uart : uart_event_ctrl
+	generic map(
+				g_CLKS_PER_BIT => g_vendor_specific_uart_clks_per_bit,
+				g_RX_bytes_in_word => g_vendor_specific_RX_bytes_in_word,
+				g_TX_bytes_in_word => g_vendor_specific_TX_bytes_in_word 
+			)
+				
     port map(
 		uart_Clk => core_clk,
 		

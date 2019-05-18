@@ -54,4 +54,13 @@ unused.hex
 /lfe5u/rtl/*.*
 /lfe5u/rtl
 *.dir/
-
+*.log
+*.sr*
+*.log*
+*.cst
+*.fd*
+*.htm*
+*.edn
+*.szr
+*.xml
+*.lpc*

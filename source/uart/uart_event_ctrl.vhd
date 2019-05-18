@@ -4,6 +4,11 @@ library IEEE;
 	use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity uart_event_ctrl is
+	generic (
+				g_CLKS_PER_BIT : integer; 
+				g_RX_bytes_in_word : integer;
+				g_TX_bytes_in_word : integer 
+			);
 --- uart interface
 	port(
 				uart_Clk   : in std_logic;
@@ -82,9 +87,9 @@ begin
 
 	uart1 : uart
 	generic map(
-				g_CLKS_PER_BIT => 25,
-				g_RX_bytes_in_word => 2,
-				g_TX_bytes_in_word => 2
+				g_CLKS_PER_BIT => g_CLKS_PER_BIT,
+				g_RX_bytes_in_word => g_RX_bytes_in_word,
+				g_TX_bytes_in_word => g_TX_bytes_in_word
 			)
 				
 	port map(

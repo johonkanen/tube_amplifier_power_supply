@@ -85,7 +85,7 @@
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
             <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2019-05-18.08:54:51</lattice:date>
-            <lattice:modified>2019-05-18.15:28:01</lattice:modified>
+            <lattice:modified>2019-05-18.17:14:47</lattice:modified>
             <lattice:diamond>3.10.3.144</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
@@ -199,12 +199,12 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-05-18.15:28:01</lattice:modified>
+                        <lattice:modified>2019-05-18.17:14:47</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
                             <lattice:attribute lattice:name="Change4to5">false</lattice:attribute>
-                            <lattice:attribute lattice:name="ChangeConfig">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConfig">true</lattice:attribute>
                             <lattice:attribute lattice:name="ChangeConnect">false</lattice:attribute>
                             <lattice:attribute lattice:name="ChangeDevice">false</lattice:attribute>
                             <lattice:attribute lattice:name="ChangeLocate">false</lattice:attribute>
@@ -283,7 +283,7 @@
                             </lattice:lpcentry>
                             <lattice:lpcentry>
                                 <lattice:lpckey>Time</lattice:lpckey>
-                                <lattice:lpcvalue lattice:resolve="constant">08:57:34</lattice:lpcvalue>
+                                <lattice:lpcvalue lattice:resolve="constant">17:14:39</lattice:lpcvalue>
                             </lattice:lpcentry>
                             <lattice:lpcentry>
                                 <lattice:lpckey>VendorName</lattice:lpckey>
