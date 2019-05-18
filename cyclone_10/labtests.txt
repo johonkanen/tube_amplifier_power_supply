@@ -1,0 +1,63 @@
+20.1.2019:
+
+managed to make aux voltage control somewhat work. Tested up to 150V dc link voltage with boost switching at 30 count pulse width.
+
+
+24.1.2019
+
+Aux control tests ok. aux stays in regulation up to 220VAC input voltage. Succesful tests for input voltage measurement. Todo, test dc link voltage.
+
+test 30k/3k aux gains up to 220vin/310VDC link
+
+25.1.2019
+
+no more labtests, remember to record dclink measurement
+
+
+31.1.2019
+
+successfully test burst mode with 90 clk pulsewidth
+
+3.2.2019
+
+successfully test llc with synchronous rectifiers with no load
+
+4.2.2019
+
+succesful test with llc and 4x3r9 ohm load. Auxiliary supply fets and charge resistor burned.
+
+5.2
+
+
+changed aux fets and charge resistor. everything seems fine after test with 32vdc input
+
+
+======== V5 hardware =========
+
+24.4
+tested aux supply, 5v pri voltage has ~100mV ripple. add more capacitance
+
+System burned after consequent starts, charge resistor and aux
+IC all burned
+	- happened after system was started without control card with 230VAC
+	- the problem was most likely PFC SiC fet, which does not have pulldown
+	  resistors on the gate.
+
+25.4(master)
+	everything works again after fet, charge resistor and iw1818 change
+		- issue with missing pulldown resistors from pfc fet gates
+		- fet confirmed burned. measurements have significant noise from
+		  supply, two stage rc filter was added after aux 5v, seems to have
+		  fixed issues
+
+mean of mains voltage measurement is 2059
+
+
+
+14.5 master
+
+tested dhb with 2500ohm load.
+High power triggered when phase shift was > 25, but not every time.
+approximately 350W was drawn from supply. DHB secondary caps heated
+significantly. possibly reversal of phase ?? triggered when new phase shift
+was loaded from uart

@@ -1,0 +1,6 @@
+#Start recording tcl command: 5/18/2019 08:27:47
+#Project Location: C:/Users/Jari/mycodeprojects/ECP5_tubepsu; Project name: ECP5_tubepsu
+prj_project new -name "ECP5_tubepsu" -impl "rtl" -dev LFE5U-12F-8BG381C -synthesis "synplify"
+prj_project save
+prj_project close
+#Stop recording: 5/18/2019 08:32:02

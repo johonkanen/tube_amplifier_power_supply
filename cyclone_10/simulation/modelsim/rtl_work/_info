@@ -1,0 +1,622 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/Jari/mycodeprojects/tube_power/simulation/modelsim
+Ead_bus_driver
+Z1 w1555089387
+Z2 DPx4 work 10 ad_bus_pkg 0 22 JiOfTKl;nkf?bAUgM3K0O0
+Z3 DPx4 ieee 15 std_logic_arith 0 22 [G314=:2zXJ`VORJe1J@Z1
+Z4 DPx4 ieee 18 std_logic_unsigned 0 22 ;eZjO2D4ZDz<]0>8AL<ne1
+Z5 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z6 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z7 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+R0
+Z8 8C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd
+Z9 FC:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd
+l0
+L9
+V3I>NO0d^554m<h6FdOG9g0
+!s100 7WZDKfXaR7T1]4k9XJj=d0
+Z10 OV;C;10.5b;63
+33
+Z11 !s110 1556366792
+!i10b 1
+Z12 !s108 1556366792.000000
+Z13 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd|
+Z14 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd|
+!i113 1
+Z15 o-2008 -work work
+Z16 tExplicit 1 CvgOpt 0
+Artl
+R2
+R3
+R4
+R5
+R6
+R7
+DEx4 work 13 ad_bus_driver 0 22 3I>NO0d^554m<h6FdOG9g0
+l61
+L29
+Vhn?bQH=36hKifm1f9jRD<1
+!s100 nhU9>lOKTnK?>bQbKji;91
+R10
+33
+R11
+!i10b 1
+R12
+R13
+R14
+!i113 1
+R15
+R16
+Pad_bus_pkg
+R5
+R6
+R7
+Z17 w1554538097
+R0
+8C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd
+FC:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd
+l0
+L5
+VJiOfTKl;nkf?bAUgM3K0O0
+!s100 XOT`NoRinL3KI_IBeoTMP2
+R10
+33
+Z18 !s110 1556366791
+!i10b 1
+Z19 !s108 1556366791.000000
+!s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd|
+!s107 C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd|
+!i113 1
+R15
+R16
+Pdhb_pkg
+R5
+R6
+R7
+w1556352069
+R0
+8C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd
+FC:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd
+l0
+L5
+VPg>`=O=TlKkJ8UE]^[AO?3
+!s100 nIR3VDIkbK8VUi^^0SRVe3
+R10
+33
+!s110 1556367073
+!i10b 1
+!s108 1556367073.000000
+!s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd|
+!s107 C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd|
+!i113 1
+R15
+R16
+Eext_ad_control
+Z20 w1555249645
+R2
+Z21 DPx4 work 12 sys_ctrl_pkg 0 22 z;CQ8gPdieA<^h]P1BTB92
+R3
+R4
+R5
+R6
+R7
+R0
+Z22 8C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd
+Z23 FC:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd
+l0
+L10
+VM;<m4mQ]DWBXoPzN1<e2P3
+!s100 Zb<PI5eIO3MZLhPQ`3A0J2
+R10
+33
+R11
+!i10b 1
+R19
+Z24 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd|
+Z25 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd|
+!i113 1
+R15
+R16
+Artl
+R2
+R21
+R3
+R4
+R5
+R6
+R7
+DEx4 work 14 ext_ad_control 0 22 M;<m4mQ]DWBXoPzN1<e2P3
+l96
+L39
+V>:@8n]aaQc2=4S3iHdBWF2
+!s100 BzQ2D1`iaD9M3MFZ7nd_]3
+R10
+33
+R11
+!i10b 1
+R19
+R24
+R25
+!i113 1
+R15
+R16
+Eext_ad_spi3w
+R1
+R3
+R4
+R5
+R6
+R7
+R0
+Z26 8C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd
+Z27 FC:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd
+l0
+L6
+Vz1Z?3NTmA?W0CcXAjIemQ1
+!s100 VES[V^WVgkhNnV]iQJ_NV3
+R10
+33
+R18
+!i10b 1
+R19
+Z28 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd|
+Z29 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd|
+!i113 1
+R15
+R16
+Asynth
+R3
+R4
+R5
+R6
+R7
+DEx4 work 12 ext_ad_spi3w 0 22 z1Z?3NTmA?W0CcXAjIemQ1
+l47
+L30
+Ve?1mFA6fYTaae5^h0lPgf1
+!s100 00jfN25;UCFmVL9a2;OX20
+R10
+33
+R18
+!i10b 1
+R19
+R28
+R29
+!i113 1
+R15
+R16
+Eled_driver
+Z30 w1517334694
+R5
+R3
+R4
+R6
+R7
+R0
+Z31 8C:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd
+Z32 FC:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd
+l0
+L6
+V:kZSP62g>GzXK8:3<4@AS2
+!s100 nL6E7_9R6hLSMgA8K[:SV0
+R10
+33
+R18
+!i10b 1
+R19
+Z33 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd|
+Z34 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd|
+!i113 1
+R15
+R16
+Artl
+R5
+R3
+R4
+R6
+R7
+DEx4 work 10 led_driver 0 22 :kZSP62g>GzXK8:3<4@AS2
+l43
+L27
+V__^WnN1nQ4P]bED^oV1VR1
+!s100 S_64SM7jj`o;MLRO8h`FD3
+R10
+33
+R18
+!i10b 1
+R19
+R33
+R34
+!i113 1
+R15
+R16
+Emain_pll
+Z35 w1549222281
+R6
+R7
+R0
+Z36 8C:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd
+Z37 FC:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd
+l0
+L42
+VMM]kEaMjOmWz^=TX<m:H[2
+!s100 J:DW^fAfHj>hF1lOG3Xj[3
+R10
+33
+R18
+!i10b 1
+R19
+Z38 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd|
+Z39 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd|
+!i113 1
+R15
+R16
+Asyn
+R6
+R7
+DEx4 work 8 main_pll 0 22 MM]kEaMjOmWz^=TX<m:H[2
+l141
+L54
+V6O[9f;I1>4iDT^6LNgQoU1
+!s100 J9CTJfJTzE1MXYoBP1TcZ2
+R10
+33
+R18
+!i10b 1
+R19
+R38
+R39
+!i113 1
+R15
+R16
+vmain_pll_altpll
+R18
+!i10b 1
+!s100 05kRBP`gke4Kc^5Rh9MkY3
+ITBkE=Ya_]RYPPZPV13TYz2
+VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1555089506
+8C:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v
+FC:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v
+L0 29
+OV;L;10.5b;63
+r1
+!s85 0
+31
+!s108 1556366790.000000
+!s107 C:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/Jari/mycodeprojects/tube_power/db|C:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v|
+!i113 1
+o-vlog01compat -work work
+!s92 -vlog01compat -work work +incdir+C:/Users/Jari/mycodeprojects/tube_power/db
+tCvgOpt 0
+Epfc_control
+R17
+R2
+R21
+R5
+R6
+R7
+R0
+Z40 8C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd
+Z41 FC:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd
+l0
+L9
+VncCHOF7@?TEkTXIAcLc>70
+!s100 0mOeGZ>CQ<bNOzBii^[7g3
+R10
+33
+R18
+!i10b 1
+R19
+Z42 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd|
+Z43 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd|
+!i113 1
+R15
+R16
+Abehavioral
+R2
+R21
+R5
+R6
+R7
+DEx4 work 11 pfc_control 0 22 ncCHOF7@?TEkTXIAcLc>70
+l55
+L32
+V74ZSkaCPUV@^g1Ihh5EMg2
+!s100 CU0AzRiE:ZG]:T_zTkGGG1
+R10
+33
+R18
+!i10b 1
+R19
+R42
+R43
+!i113 1
+R15
+R16
+Epfc_modulator
+Z44 w1548402427
+R2
+R21
+R5
+R6
+R7
+R0
+Z45 8C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd
+Z46 FC:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd
+l0
+L9
+VRd8;]h]Z?J3zZ81IX>[Pk2
+!s100 CIl@V:2GD_<n4h=H@f>7Z2
+R10
+33
+R11
+!i10b 1
+R12
+Z47 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd|
+Z48 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd|
+!i113 1
+R15
+R16
+Artl
+R2
+R21
+R5
+R6
+R7
+DEx4 work 13 pfc_modulator 0 22 Rd8;]h]Z?J3zZ81IX>[Pk2
+l26
+L23
+V4z34Ek;ERlLBHlKceHP`h2
+!s100 78;eiS=PEGQmioRf16aVd2
+R10
+33
+R11
+!i10b 1
+R12
+R47
+R48
+!i113 1
+R15
+R16
+Psys_ctrl_pkg
+R5
+R6
+R7
+w1556218603
+R0
+8C:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd
+FC:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd
+l0
+L5
+Vz;CQ8gPdieA<^h]P1BTB92
+!s100 UD9<gjCgBd`kbg>Yh3JIM3
+R10
+33
+R18
+!i10b 1
+R19
+!s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd|
+!s107 C:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd|
+!i113 1
+R15
+R16
+Etop
+R1
+R5
+R6
+R7
+R0
+Z49 8C:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd
+Z50 FC:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd
+l0
+L5
+VhIzIM>M<>n@Y>B24`Oaz_0
+!s100 d;ZFH]k6D5aAEFBomVf?72
+R10
+33
+R18
+!i10b 1
+R19
+Z51 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd|
+Z52 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd|
+!i113 1
+R15
+R16
+Abehavioral
+R5
+R6
+R7
+DEx4 work 3 top 0 22 hIzIM>M<>n@Y>B24`Oaz_0
+l149
+L64
+VmeKZ>EYgLJ@P;G3m_;22e3
+!s100 mQ5]M[AH==1PcFEL[`>i60
+R10
+33
+R18
+!i10b 1
+R19
+R51
+R52
+!i113 1
+R15
+R16
+Euart
+Z53 w1516814615
+R5
+R6
+R7
+R0
+Z54 8C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd
+Z55 FC:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd
+l0
+L6
+VLeo>^gl`lOAPnSXLEXWgD0
+!s100 K4[=^17MRU329[`2hHzz<1
+R10
+33
+R18
+!i10b 1
+R19
+Z56 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd|
+Z57 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd|
+!i113 1
+R15
+R16
+Abehavioral
+R5
+R6
+R7
+DEx4 work 4 uart 0 22 Leo>^gl`lOAPnSXLEXWgD0
+l96
+L30
+VjQaLlz;8;K_?9=@R^ETIY2
+!s100 aCZ8;z2LGD4C5;BzbY1@n1
+R10
+33
+R18
+!i10b 1
+R19
+R56
+R57
+!i113 1
+R15
+R16
+Euart_event_ctrl
+Z58 w1554322208
+R3
+R4
+R5
+R6
+R7
+R0
+Z59 8C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd
+Z60 FC:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd
+l0
+L6
+Vo7]W4]Vb<EbjeRAH`g0`K2
+!s100 YFlbQdfVc4TDiEmG9afDS2
+R10
+33
+R18
+!i10b 1
+R19
+Z61 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd|
+Z62 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd|
+!i113 1
+R15
+R16
+Artl
+R3
+R4
+R5
+R6
+R7
+DEx4 work 15 uart_event_ctrl 0 22 o7]W4]Vb<EbjeRAH`g0`K2
+l81
+L22
+VYcbgX64_CN]M0<l3MY9FX1
+!s100 21]k5QIG:[MSbnDAk6XAc3
+R10
+33
+R18
+!i10b 1
+R19
+R61
+R62
+!i113 1
+R15
+R16
+Euart_rx
+Z63 w1514925155
+R5
+R6
+R7
+R0
+Z64 8C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd
+Z65 FC:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd
+l0
+L18
+VFXR_FKLehE6^BEZ]f]h_n2
+!s100 Yz^=XHf;mHQz9fdIAFWS=3
+R10
+33
+R18
+!i10b 1
+R19
+Z66 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd|
+Z67 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd|
+!i113 1
+R15
+R16
+Artl
+R5
+R6
+R7
+DEx4 work 7 uart_rx 0 22 FXR_FKLehE6^BEZ]f]h_n2
+l49
+L31
+VcT6Pea<[T=7i6PU53N8FP3
+!s100 <_fbmKo2?]=h7<Q1I0nl>1
+R10
+33
+R18
+!i10b 1
+R19
+R66
+R67
+!i113 1
+R15
+R16
+Euart_tx
+R63
+R5
+R6
+R7
+R0
+Z68 8C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd
+Z69 FC:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd
+l0
+L18
+VV`IDeh1E^[[NVIP@>@4[Z3
+!s100 XDlI:POh9j_EkUYeSdmQ01
+R10
+33
+R18
+!i10b 1
+R19
+Z70 !s90 -reportprogress|300|-2008|-work|work|C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd|
+Z71 !s107 C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd|
+!i113 1
+R15
+R16
+Artl
+R5
+R6
+R7
+DEx4 work 7 uart_tx 0 22 V`IDeh1E^[[NVIP@>@4[Z3
+l51
+L33
+VNA9o:21l5c_B_Y6<cz<PY3
+!s100 PikPTS7HP@06PGRJd0T[21
+R10
+33
+R18
+!i10b 1
+R19
+R70
+R71
+!i113 1
+R15
+R16

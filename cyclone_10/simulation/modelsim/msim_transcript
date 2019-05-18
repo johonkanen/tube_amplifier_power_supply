@@ -1,0 +1,283 @@
+# Reading C:/Programs/intelFPGA_lite/18.1/modelsim_ase/tcl/vsim/pref.tcl
+# do cl10_tubepsu_run_msim_rtl_vhdl.do
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Model Technology ModelSim - Intel FPGA Edition vmap 10.5b Lib Mapping Utility 2016.10 Oct  5 2016
+# vmap work rtl_work 
+# Copying C:/Programs/intelFPGA_lite/18.1/modelsim_ase/win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# 
+# vlog -vlog01compat -work work +incdir+C:/Users/Jari/mycodeprojects/tube_power/db {C:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v}
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:30 on Apr 27,2019
+# vlog -reportprogress 300 -vlog01compat -work work "+incdir+C:/Users/Jari/mycodeprojects/tube_power/db" C:/Users/Jari/mycodeprojects/tube_power/db/main_pll_altpll.v 
+# -- Compiling module main_pll_altpll
+# 
+# Top level modules:
+# 	main_pll_altpll
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package dhb_pkg
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_spi3w_orig.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity ext_ad_spi3w
+# -- Compiling architecture synth of ext_ad_spi3w
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_pkg.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package ad_bus_pkg
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/led_driver/led_driver.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Loading package NUMERIC_STD
+# -- Compiling entity led_driver
+# -- Compiling architecture rtl of led_driver
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/system_control/sys_ctrl_pkg.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package sys_ctrl_pkg
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_tx.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity UART_TX
+# -- Compiling architecture RTL of UART_TX
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_rx.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity UART_RX
+# -- Compiling architecture rtl of UART_RX
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart_event_ctrl.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Compiling entity uart_event_ctrl
+# -- Compiling architecture rtl of uart_event_ctrl
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/uart/uart.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity uart
+# -- Compiling architecture behavioral of uart
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/top/top.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling entity top
+# -- Compiling architecture behavioral of top
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/intel_specifics/main_pll.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Compiling entity main_pll
+# -- Compiling architecture SYN of main_pll
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_control.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package sys_ctrl_pkg
+# -- Loading package ad_bus_pkg
+# -- Compiling entity pfc_control
+# -- Compiling architecture behavioral of pfc_control
+# End time: 15:06:31 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:31 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ext_ad_control.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Loading package sys_ctrl_pkg
+# -- Loading package ad_bus_pkg
+# -- Compiling entity ext_ad_control
+# -- Compiling architecture rtl of ext_ad_control
+# End time: 15:06:32 on Apr 27,2019, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:32 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/ext_ad/ad_bus_driver.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package std_logic_arith
+# -- Loading package STD_LOGIC_UNSIGNED
+# -- Loading package ad_bus_pkg
+# -- Compiling entity ad_bus_driver
+# -- Compiling architecture rtl of ad_bus_driver
+# End time: 15:06:32 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:32 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/pfc_ctrl/pfc_modulator.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Loading package sys_ctrl_pkg
+# -- Loading package ad_bus_pkg
+# -- Compiling entity pfc_modulator
+# -- Compiling architecture rtl of pfc_modulator
+# End time: 15:06:32 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd}
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:06:32 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# ** Error: C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd(6): (vcom-1598) Library "dhb_lib" not found.
+# ** Error: C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd(7): (vcom-1136) Unknown identifier "dhb_lib".
+# ** Error: C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd(9): VHDL Compiler exiting
+# End time: 15:06:32 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 3, Warnings: 0
+# ** Error: C:/Programs/intelFPGA_lite/18.1/modelsim_ase/win32aloem/vcom failed.
+# Error in macro ./cl10_tubepsu_run_msim_rtl_vhdl.do line 24
+# C:/Programs/intelFPGA_lite/18.1/modelsim_ase/win32aloem/vcom failed.
+#     while executing
+# "vcom -2008 -work work {C:/Users/Jari/mycodeprojects/tube_power/source/dhb/phase_modulator.vhd}"
+vcom -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 15:11:13 on Apr 27,2019
+# vcom -reportprogress 300 -2008 -work work C:/Users/Jari/mycodeprojects/tube_power/source/dhb/dhb_pkg.vhd 
+# -- Loading package STANDARD
+# -- Loading package TEXTIO
+# -- Loading package std_logic_1164
+# -- Loading package NUMERIC_STD
+# -- Compiling package dhb_pkg
+# End time: 15:11:13 on Apr 27,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+vsim work.pfc_control
+# vsim work.pfc_control 
+# Start time: 15:13:40 on Apr 27,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.sys_ctrl_pkg
+# Loading work.ad_bus_pkg
+# Loading work.pfc_control(behavioral)
+# Loading work.pfc_modulator(rtl)
+# Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+wave create -pattern none -portmode in -language vhdl /pfc_control/core_clk
+# Editable Wave items are not compatible with the wave window's standard undo-redo.  Standard undo-redo has been disabled.
+# pfc_control
+wave create -pattern none -portmode in -language vhdl /pfc_control/modulator_clk
+# pfc_control
+wave create -pattern none -portmode out -language vhdl -range 1 0 /pfc_control/po2_pfc_pwm
+# pfc_control
+wave create -pattern none -portmode in -language vhdl -range 16 0 /pfc_control/si_std17_ada_bus
+# pfc_control
+wave create -pattern none -portmode in -language vhdl -range 16 0 /pfc_control/si_std17_adb_bus
+# pfc_control
+wave create -pattern none -portmode out -language vhdl -range 17 0 /pfc_control/so_std18_test_data
+# pfc_control
+wave create -pattern none -portmode in -language vhdl -range 11 0 /pfc_control/ui12_carrier
+# pfc_control
+wave create -pattern none -portmode in -language vhdl /pfc_control/si_uart_ready_event
+# pfc_control
+wave create -pattern none -portmode in -language vhdl -range 15 0 /pfc_control/si16_uart_rx_data
+# pfc_control
+wave create -pattern none -portmode in -language vhdl /pfc_control/si_tcmd_system_cmd
+# Waveform for signal "Edit:/pfc_control/si_tcmd_system_cmd "cannot be created.
+# Wave creation for user defined types not supported.
+# Usage: wave create -pattern <clock|constant|random|repeater|counter|none> <args>
+# See Command Reference manual for pattern specific <args>
+# Load canceled
+# End time: 15:15:06 on Apr 27,2019, Elapsed time: 0:01:26
+# Errors: 2, Warnings: 0
