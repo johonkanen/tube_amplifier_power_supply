@@ -13,9 +13,6 @@ entity top is
 -- relay bypass
 	    po_bypass_relay : out std_logic;	
 
--- aux pwm
-	    po_aux_pwm : out std_logic;
-
 -- PFC pwm
 	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
 
@@ -52,10 +49,6 @@ entity top is
 	    po_ext_ad2_cs : out std_logic;
 	    po_ext_ad2_clk : out std_logic;
 	    pi_ext_ad2_sdata : in std_logic;
-
--- test IO
-	    po_testio_1 : out std_logic;    
-	    po_testio_2 : out std_logic;    
 
 -- rgb status leds driver signals, active low
 	    po3_led1 : out std_logic_vector(2 downto 0);
@@ -183,7 +176,7 @@ main_system_control : system_control
 		po_bypass_relay => po_bypass_relay, 
 
 -- aux pwm
-		po_aux_pwm => po_aux_pwm,
+		po_aux_pwm => open,
 
 -- PFC pwm
 		po2_pfc_pwm => po2_pfc_pwm,
