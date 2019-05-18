@@ -14,7 +14,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
   SIGNAL s_spi_busy   :  STD_LOGIC  ; 
   SIGNAL si_spi_start   :  STD_LOGIC  ; 
   SIGNAL si_spi_clk   :  STD_LOGIC  ; 
-  SIGNAL b_spi_rx   :  STD_LOGIC_VECTOR (17 downto 0)  ; 
+  SIGNAL b_spi_rx   :  STD_LOGIC_VECTOR (15 downto 0)  ; 
   SIGNAL so_sh_rdy   :  STD_LOGIC  ; 
   SIGNAL po_spi_clk_out   :  STD_LOGIC  ; 
   SIGNAL pi_spi_serial   :  STD_LOGIC  ; 
@@ -30,7 +30,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
       s_spi_busy  : out STD_LOGIC ; 
       si_spi_start  : in STD_LOGIC ; 
       si_spi_clk  : in STD_LOGIC ; 
-      b_spi_rx  : out STD_LOGIC_VECTOR (17 downto 0) ; 
+      b_spi_rx  : out STD_LOGIC_VECTOR (15 downto 0) ; 
       so_sh_rdy  : out STD_LOGIC ; 
       po_spi_clk_out  : out STD_LOGIC ; 
       pi_spi_serial  : in STD_LOGIC ; 
@@ -38,7 +38,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
   END COMPONENT ; 
 BEGIN
   DUT  : spi3w_ads7056_driver
-  generic map(8d"4",8d"18",8d"18")
+  generic map(8d"2",8d"18",8d"18")
     PORT MAP ( 
       so_spi_rdy   => so_spi_rdy  ,
       s_spi_busy   => s_spi_busy  ,

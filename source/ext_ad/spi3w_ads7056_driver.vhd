@@ -51,7 +51,7 @@ architecture synth of spi3w_ads7056_driver is
     end record;
 
 begin
-b_spi_rx <= spi_rx_buffer(15 downto 0);
+b_spi_rx <= spi_rx_buffer(17 downto 2);
     spi_control : process(si_spi_clk)
         variable spi_process_count : unsigned(11 downto 0);
         variable spi_clk_div : unsigned(7 downto 0);
