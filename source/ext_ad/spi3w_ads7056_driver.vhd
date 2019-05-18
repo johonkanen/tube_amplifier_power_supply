@@ -26,7 +26,7 @@ entity spi3w_ads7056_driver is
 			-- output signal indicating sampling is done
 			so_sh_rdy	 : out std_logic; 
 			-- output buffer
-			b_spi_rx : out std_logic_vector(17 downto 0)  
+			b_spi_rx : out std_logic_vector(15 downto 0)  
 		);	
 end spi3w_ads7056_driver; 
  
@@ -51,7 +51,7 @@ architecture synth of spi3w_ads7056_driver is
     end record;
 
 begin
-
+b_spi_rx <= spi_rx_buffer(15 downto 0);
     spi_control : process(si_spi_clk)
         variable spi_process_count : unsigned(11 downto 0);
         variable spi_clk_div : unsigned(7 downto 0);
@@ -63,7 +63,7 @@ begin
                     spi_process_count := (others => '0');
                     spi_clk_div := (others => '0');
                     i <= to_integer(g_u8_clks_per_conversion)+1;
-                    b_spi_rx <= (others => '0');  
+                    spi_rx_buffer <= (others => '0');  
 
                     if si_spi_start = '1' then
                         po_spi_cs <= c_convert;
@@ -91,7 +91,7 @@ begin
 
                     if spi_clk_div = g_u8_clk_cnt/2 then
                         po_spi_clk_out <= not po_spi_clk_out;
-                        b_spi_rx(i-2) <= pi_spi_serial;
+                        spi_rx_buffer(i-2) <= pi_spi_serial;
                         i <= i - 1;
                     end if;
 

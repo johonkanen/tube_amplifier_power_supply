@@ -1,7 +1,7 @@
 #--  Synopsys, Inc.
 #--  Version M-2017.03L-SP1-1
 #--  Project file C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\syn_results\run_options.txt
-#--  Written on Sat May 18 17:14:41 2019
+#--  Written on Sat May 18 23:59:07 2019
 
 
 #project files

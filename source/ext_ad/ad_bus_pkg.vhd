@@ -31,6 +31,33 @@ component ext_ad_spi3w is
 	    );	
 end component; 
 
+component spi3w_ads7056_driver is
+	generic(
+				g_u8_clk_cnt : unsigned(7 downto 0);
+				g_u8_clks_per_conversion : unsigned(7 downto 0);
+				g_sh_counter_latch : unsigned(7 downto 0)
+			);
+	port( 
+			si_spi_clk 	 : in std_logic; 
+			 
+			-- physical signals to ext ad converter
+			po_spi_cs 	 : out std_logic;
+			po_spi_clk_out : out std_logic;
+			pi_spi_serial : in std_logic; 
+ 
+			si_spi_start	 : in std_logic; 
+			 
+			-- ext spi control signals
+			s_spi_busy	 : out std_logic; 
+			-- output signal indicating word is ready to be read 
+			so_spi_rdy	 : out std_logic; 
+			-- output signal indicating sampling is done
+			so_sh_rdy	 : out std_logic; 
+			-- output buffer
+			b_spi_rx : out std_logic_vector(15 downto 0)  
+		);	
+end component; 
+
 component cdc_bus_driver is
     port (
 		ad_clock : in std_logic;
