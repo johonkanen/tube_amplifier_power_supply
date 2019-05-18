@@ -2,6 +2,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
+library work;
+    use work.vendor_specifics_pkg.all;
+
 entity top is
     port(
 -- main clock input
@@ -85,14 +88,14 @@ architecture behavioral of top is
 --	);
 --	END component;
 
-    component main_pll is
-    port (
-        CLKI: in  std_logic; 
-        CLKOP: out  std_logic; 
-        CLKOS: out  std_logic; 
-        CLKOS2: out  std_logic; 
-        LOCK: out  std_logic);
-    end component;
+--   component main_pll is
+--   port (
+--       CLKI: in  std_logic; 
+--       CLKOP: out  std_logic; 
+--       CLKOS: out  std_logic; 
+--       CLKOS2: out  std_logic; 
+--       LOCK: out  std_logic);
+--   end component;
 
 
 	

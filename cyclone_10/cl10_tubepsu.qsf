@@ -298,6 +298,14 @@ set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION AUTOMATICALLY
 set_global_assignment -name REMOVE_DUPLICATE_REGISTERS ON
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
+
+
+
+
+
+
+set_global_assignment -name VHDL_FILE intel_specifics/vendor_specifics_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/system_control/system_control.vhd
 set_global_assignment -name VHDL_FILE ../source/sw_supply_control/sw_supply_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/ext_ad/cdc_onboard_ad_bus_driver.vhd
@@ -317,7 +325,6 @@ set_global_assignment -name VHDL_FILE ../source/dsp/dc_link_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/ext_ad/ad_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/ext_ad/ad_bus_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/system_control/data_control.vhd
-set_global_assignment -name VHDL_FILE ../source/system_control/main_state.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/seq_pi_control.vhd
 set_global_assignment -name VHDL_FILE ../source/led_driver/led_indicator.vhd
 set_global_assignment -name VHDL_FILE ../source/led_driver/led_driver.vhd
@@ -331,13 +338,7 @@ set_global_assignment -name VHDL_FILE ../source/uart/uart.vhd
 set_global_assignment -name VHDL_FILE ../source/top/top.vhd
 set_global_assignment -name MIF_FILE intel_specifics/memory_files/sine_u16x512_halfpi.mif
 set_global_assignment -name QIP_FILE intel_specifics/memory_files/rom1port_16x512.qip
-
 set_global_assignment -name QIP_FILE intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 set_global_assignment -name QIP_FILE intel_specifics/main_pll.qip
 set_global_assignment -name SDC_FILE cl10_tubepsu.out.sdc
-
-
-
-
-
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
