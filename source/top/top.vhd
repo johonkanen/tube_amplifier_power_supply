@@ -74,16 +74,25 @@ architecture behavioral of top is
 
     signal route_test_pwm : std_logic;
 
-	component main_pll IS
-	PORT
-	(
-		inclk0		: IN STD_LOGIC  := '0';
-		c0		: OUT STD_LOGIC ;
-		c1		: OUT STD_LOGIC ;
-		c2		: OUT STD_LOGIC ;
-		locked		: OUT STD_LOGIC 
-	);
-	END component;
+--	component main_pll IS
+--	PORT
+--	(
+--		inclk0		: IN STD_LOGIC  := '0';
+--		c0		: OUT STD_LOGIC ;
+--		c1		: OUT STD_LOGIC ;
+--		c2		: OUT STD_LOGIC ;
+--		locked		: OUT STD_LOGIC 
+--	);
+--	END component;
+
+    component main_pll is
+    port (
+        CLKI: in  std_logic; 
+        CLKOP: out  std_logic; 
+        CLKOS: out  std_logic; 
+        CLKOS2: out  std_logic; 
+        LOCK: out  std_logic);
+    end component;
 
 
 	
@@ -150,11 +159,11 @@ begin
 core_clocks : main_pll 
 	port map
 	(
-		inclk0 => xclk32mhz,
-		c0 => clk_256mhz,
-		c1 => clk_128mhz,
-		c2 => clk2_256mhz,
-		locked => std_pll_lock
+		xclk32mhz,
+		clk_256mhz,
+		clk_128mhz,
+		clk2_256mhz,
+		std_pll_lock
 	);
 
 
