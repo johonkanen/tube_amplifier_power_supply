@@ -49,3 +49,9 @@ unused.hex
 *.do*
 *.smart*
 /db/
+*.rec*
+*untit*.*
+/lfe5u/rtl/*.*
+/lfe5u/rtl
+*.dir/
+

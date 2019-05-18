@@ -1,0 +1,9 @@
+@N: CD630 :"C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\main_pll.vhd":12:7:12:14|Synthesizing work.main_pll.structure.
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":2083:10:2083:16|Synthesizing ecp5u.ehxplll.syn_black_box.
+Post processing for ecp5u.ehxplll.syn_black_box
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":832:10:832:12|Synthesizing ecp5u.vlo.syn_black_box.
+Post processing for ecp5u.vlo.syn_black_box
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":825:10:825:12|Synthesizing ecp5u.vhi.syn_black_box.
+Post processing for ecp5u.vhi.syn_black_box
+Post processing for work.main_pll.structure
+@W: CL168 :"C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\main_pll.vhd":49:4:49:17|Removing instance scuba_vhi_inst because it does not drive other instances. To preserve this instance, use the syn_noprune synthesis directive.

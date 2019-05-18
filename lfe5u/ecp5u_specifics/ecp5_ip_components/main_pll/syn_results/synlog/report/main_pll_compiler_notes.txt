@@ -1,0 +1,10 @@
+@N|Running in 64-bit mode
+@N|Running in 64-bit mode
+@N: CD720 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ps
+@N:"C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\main_pll.vhd":12:7:12:14|Top entity is set to main_pll.
+@N: CD630 :"C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\main_pll.vhd":12:7:12:14|Synthesizing work.main_pll.structure.
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":2083:10:2083:16|Synthesizing ecp5u.ehxplll.syn_black_box.
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":832:10:832:12|Synthesizing ecp5u.vlo.syn_black_box.
+@N: CD630 :"C:\Programs\diamond\diamond\3.10_x64\synpbase\lib\lucent\ecp5u.vhd":825:10:825:12|Synthesizing ecp5u.vhi.syn_black_box.
+@N|Running in 64-bit mode
+

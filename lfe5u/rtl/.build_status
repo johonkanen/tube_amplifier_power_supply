@@ -5,34 +5,44 @@
             <Task name="IBIS" build_result="0" update_result="3" update_time="0"/>
             <Task name="TimingSimFileVlg" build_result="0" update_result="3" update_time="0"/>
             <Task name="TimingSimFileVHD" build_result="0" update_result="3" update_time="0"/>
-            <Task name="Bitgen" build_result="0" update_result="3" update_time="0"/>
-            <Task name="Promgen" build_result="0" update_result="3" update_time="0"/>
+            <Task name="Bitgen" build_result="2" update_result="0" update_time="1558178605"/>
+            <Task name="Promgen" build_result="2" update_result="0" update_time="1558178607"/>
         </Milestone>
-        <Milestone name="Map" build_result="0" build_time="0">
-            <Task name="Map" build_result="0" update_result="2" update_time="0"/>
-            <Task name="MapTrace" build_result="0" update_result="3" update_time="0"/>
+        <Milestone name="Map" build_result="2" build_time="1558178579">
+            <Task name="Map" build_result="2" update_result="0" update_time="1558178579"/>
+            <Task name="MapTrace" build_result="2" update_result="0" update_time="1558178581"/>
             <Task name="MapVerilogSimFile" build_result="0" update_result="3" update_time="0"/>
             <Task name="MapVHDLSimFile" build_result="0" update_result="3" update_time="0"/>
         </Milestone>
-        <Milestone name="PAR" build_result="0" build_time="0">
-            <Task name="PAR" build_result="0" update_result="3" update_time="0"/>
-            <Task name="PARTrace" build_result="0" update_result="3" update_time="0"/>
-            <Task name="IOTiming" build_result="0" update_result="3" update_time="0"/>
+        <Milestone name="PAR" build_result="2" build_time="1558178597">
+            <Task name="PAR" build_result="2" update_result="0" update_time="1558178597"/>
+            <Task name="PARTrace" build_result="2" update_result="0" update_time="1558178598"/>
+            <Task name="IOTiming" build_result="2" update_result="0" update_time="1558178601"/>
         </Milestone>
-        <Milestone name="Synthesis" build_result="2" build_time="1558161440">
-            <Task name="Synplify_Synthesis" build_result="2" update_result="0" update_time="1558161440"/>
+        <Milestone name="Synthesis" build_result="2" build_time="1558178576">
+            <Task name="Synplify_Synthesis" build_result="2" update_result="0" update_time="1558178576"/>
         </Milestone>
         <Milestone name="TOOL_Report" build_result="0" build_time="0">
-            <Task name="HDLE" build_result="0" update_result="2" update_time="1558159694"/>
+            <Task name="HDLE" build_result="0" update_result="2" update_time="1558178321"/>
             <Task name="BKM" build_result="0" update_result="2" update_time="0"/>
             <Task name="SSO" build_result="0" update_result="2" update_time="0"/>
             <Task name="PIODRC" build_result="0" update_result="2" update_time="0"/>
             <Task name="DEC" build_result="0" update_result="2" update_time="0"/>
         </Milestone>
-        <Milestone name="Translate" build_result="1" build_time="1558161440">
-            <Task name="Translate" build_result="1" update_result="2" update_time="1558161440"/>
+        <Milestone name="Translate" build_result="2" build_time="1558178579">
+            <Task name="Translate" build_result="2" update_result="0" update_time="1558178579"/>
         </Milestone>
-        <Report name="tube_psu_rtl.edi" last_build_time="1558161439" last_build_size="57035"/>
-        <Report name="tube_psu_rtl.ngd" last_build_time="1558161440" last_build_size="45866"/>
+        <Report name=".vdbs/tube_psu_rtl_map.vdb" last_build_time="1558178224" last_build_size="419311"/>
+        <Report name="tube_psu_rtl.bgn" last_build_time="1558178605" last_build_size="4375"/>
+        <Report name="tube_psu_rtl.bit" last_build_time="1558178605" last_build_size="582671"/>
+        <Report name="tube_psu_rtl.edi" last_build_time="1558178575" last_build_size="720231"/>
+        <Report name="tube_psu_rtl.ior" last_build_time="1558178601" last_build_size="3708"/>
+        <Report name="tube_psu_rtl.lsedata" last_build_time="1558178214" last_build_size="1743016"/>
+        <Report name="tube_psu_rtl.mcs" last_build_time="1558178607" last_build_size="1638910"/>
+        <Report name="tube_psu_rtl.ncd" last_build_time="1558178597" last_build_size="847192"/>
+        <Report name="tube_psu_rtl.ngd" last_build_time="1558178579" last_build_size="619425"/>
+        <Report name="tube_psu_rtl.tw1" last_build_time="1558178581" last_build_size="19729"/>
+        <Report name="tube_psu_rtl.twr" last_build_time="1558178598" last_build_size="135656"/>
+        <Report name="tube_psu_rtl_map.ncd" last_build_time="1558178579" last_build_size="641723"/>
     </Strategy>
 </BuildStatus>

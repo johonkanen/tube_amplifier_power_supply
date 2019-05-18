@@ -1,0 +1,2 @@
+@W: CL168 :"C:\Users\Jari\mycodeprojects\tube_psu\lfe5u\ecp5u_specifics\ecp5_ip_components\main_pll\main_pll.vhd":49:4:49:17|Removing instance scuba_vhi_inst because it does not drive other instances. To preserve this instance, use the syn_noprune synthesis directive.
+

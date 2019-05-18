@@ -5,12 +5,8 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
-
-library dhb_lib;
-	use dhb_lib.dhb_pkg.all;
-
-library onboard_ad_ctrl_lib;
-    use onboard_ad_ctrl_lib.onboard_ad_ctrl_pkg.all;
+	use work.dhb_pkg.all;
+    use work.onboard_ad_ctrl_pkg.all;
 
 entity sw_supply_ctrl is
     port(

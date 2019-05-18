@@ -6,15 +6,13 @@ library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
 
-library onboard_ad_ctrl_lib;
-    use onboard_ad_ctrl_lib.onboard_ad_ctrl_pkg.all;
+    use work.onboard_ad_ctrl_pkg.all;
 
 entity data_control is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
-	    ext_ad_clk : in std_logic;
 
 -- aux pwm
 	    po_aux_pwm : out std_logic;
