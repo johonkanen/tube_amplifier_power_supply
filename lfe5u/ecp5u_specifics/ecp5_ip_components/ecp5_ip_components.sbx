@@ -83,9 +83,9 @@
         </spirit:model>
         <spirit:vendorExtensions>
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
-            <lattice:synthesis>lse</lattice:synthesis>
+            <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2019-05-18.08:54:51</lattice:date>
-            <lattice:modified>2019-05-18.15:22:09</lattice:modified>
+            <lattice:modified>2019-05-18.15:28:01</lattice:modified>
             <lattice:diamond>3.10.3.144</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
@@ -198,8 +198,8 @@
                         </spirit:ports>
                     </spirit:model>
                     <spirit:vendorExtensions>
-                        <lattice:synthesis>lse</lattice:synthesis>
-                        <lattice:modified>2019-05-18.15:22:09</lattice:modified>
+                        <lattice:synthesis>synplify</lattice:synthesis>
+                        <lattice:modified>2019-05-18.15:28:01</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
