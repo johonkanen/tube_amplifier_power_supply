@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BaliProject version="3.2" title="tube_psu" device="LFE5U-12F-8BG381C" default_implementation="rtl">
-    <Options/>
-    <Implementation title="rtl" dir="rtl" description="rtl" synthesis="lse" default_strategy="Strategy1">
-        <Options top="top"/>
+    <Options>
+        <Option name="HDL type" value="VHDL"/>
+    </Options>
+    <Implementation title="rtl" dir="rtl" description="rtl" synthesis="synplify" default_strategy="Strategy1">
+        <Options def_top="command_shell" top="top"/>
         <Source name="../source/top/top.vhd" type="VHDL" type_short="VHDL">
             <Options top_module="top"/>
+        </Source>
+        <Source name="../source/system_control/system_control.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/system_control/data_control.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
         </Source>
         <Source name="ecp5u_specifics/ecp5_ip_components/ecp5_ip_components.sbx" type="sbx" type_short="SBX">
             <Options/>
@@ -21,9 +29,6 @@
         <Source name="../source/dhb/dhb_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="../source/system_control/system_control.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/ext_ad/ext_ad_spi3w.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -36,11 +41,8 @@
         <Source name="../source/sw_supply_control/sw_supply_ctrl.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="../source/system_control/data_control.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/sw_supply_control/sw_supply_ctrl_pkg.vhd" type="VHDL" type_short="VHDL">
-            <Options lib="sw_supply_ctrl_pkg"/>
+            <Options lib="work"/>
         </Source>
         <Source name="../source/pfc_ctrl/pfc_control.vhd" type="VHDL" type_short="VHDL">
             <Options/>
@@ -85,6 +87,18 @@
             <Options/>
         </Source>
         <Source name="../source/uart/uart_rx.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/ext_ad/spi3w_ads7056_driver.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="ecp5u_specifics/vendor_specifics_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming" excluded="TRUE">
+            <Options/>
+        </Source>
+        <Source name="rtl/rtl.xcf" type="Programming Project File" type_short="Programming" excluded="TRUE">
             <Options/>
         </Source>
         <Source name="tube_psu.lpf" type="Logic Preference" type_short="LPF">
