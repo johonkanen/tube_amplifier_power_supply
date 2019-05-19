@@ -255,21 +255,20 @@ system_data_control : data_control
 	    CASE st_main_states is
 			WHEN init =>
 				u10_dly_cnt <= 10d"0";
-                led1_color <= led_color_grn;
-                led2_color <= led_color_red;
-                led3_color <= led_color_blu;
+
 
 				po_bypass_relay <= '0';
 				start_dly <= '0';
 				r_si_tcmd_system_cmd <= init;
 
-				if si_pll_lock = '1' OR r_so_uart_ready_event = '1' then
+				if si_pll_lock = '1' then
 				    st_main_states := charge_dc_link;
 				else
 				    st_main_states := init;
 				end if;
 
 			WHEN charge_dc_link=> 
+
 
 				u10_dly_cnt <= 10d"0";
 				po_bypass_relay <= '0';
@@ -280,14 +279,16 @@ system_data_control : data_control
                 if r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     if r_so_adb_ctrl.std3_ad_address= 3d"5" then
                         if r_so_adb_ctrl.std16_ad_bus > 16d"600" then
-                        st_main_states := bypass_relay;
+                            st_main_states := bypass_relay;
                         else
-                        st_main_states := charge_dc_link; 
+                            st_main_states := charge_dc_link; 
                         end if;
                     end if;
                 end if;
 
 			WHEN bypass_relay=> 
+
+
 				r_si_tcmd_system_cmd <= bypass_relay;
 				u10_dly_cnt <= 10d"3";
 				po_bypass_relay <= '0';
@@ -326,6 +327,11 @@ system_data_control : data_control
 
 
 			WHEN system_running =>
+
+                led1_color <= led_color_off; 
+                led2_color <= led_color_blu;
+                led3_color <= led_color_off;
+
 				start_dly <= '0';
 				po_bypass_relay <= '1';
 				u10_dly_cnt <= 10d"0";
