@@ -24,8 +24,10 @@ component led_driver is
 end component;
 
 
-constant led_color_red : led_counters := (9d"0", 9d"0", 9d"80");
+constant led_color_red : led_counters := (9d"80", 9d"0", 9d"0");
 constant led_color_grn : led_counters := (9d"0", 9d"50", 9d"0");
-constant led_color_blu : led_counters := (9d"80", 9d"0", 9d"0");
+constant led_color_blu : led_counters := (9d"0", 9d"0", 9d"80");
+constant led_color_pink : led_counters := (9d"0", 9d"0", 9d"80");
+constant led_color_off : led_counters := (9d"0", 9d"0", 9d"0");
 
 end led_driver_pkg;
