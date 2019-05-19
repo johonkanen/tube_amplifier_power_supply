@@ -51,10 +51,11 @@ architecture synth of spi3w_ads7056_driver is
     end record;
 
 begin
-b_spi_rx <= spi_rx_buffer(17 downto 2);
     spi_control : process(si_spi_clk)
         variable spi_process_count : unsigned(11 downto 0);
         variable spi_clk_div : unsigned(7 downto 0);
+        type t_ad_states is (calibrate, idle, convert);
+        variable st_ad_states : t_ad_states;
     begin
         if rising_edge(si_spi_clk) then
             CASE po_spi_cs is
@@ -109,5 +110,6 @@ b_spi_rx <= spi_rx_buffer(17 downto 2);
         end if; --rising_edge
     end process spi_control;	
 
+b_spi_rx <= spi_rx_buffer(17 downto 2);
 s_spi_busy <= not po_spi_cs;
 end synth; --architecture

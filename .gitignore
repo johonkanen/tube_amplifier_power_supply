@@ -62,6 +62,5 @@ unused.hex
 *.htm*
 *.edn
 *.szr
-*.xml
 *.lpc*
 *.dmp
