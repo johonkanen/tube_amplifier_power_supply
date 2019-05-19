@@ -5,6 +5,7 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
+    use work.led_driver_pkg.all;
 
 
 entity system_control is
@@ -126,19 +127,6 @@ component data_control is
 );
 end component;
 
-    
-
-    component led_indicator is
-	port(
-			led_clk : in std_logic;
-			si_tcmd_system_cmd : in tcmd_system_commands;
-			po3_led1 : out std_logic_vector(2 downto 0);
-			po3_led2 : out std_logic_vector(2 downto 0);
-			po3_led3 : out std_logic_vector(2 downto 0)
-		    );
-    end component;
-
-
 signal start_dly : std_logic;
 signal dly_complete : std_logic;
 							
@@ -149,16 +137,18 @@ signal zero_cross_event : std_logic;
 
 signal u10_dly_cnt : unsigned(9 downto 0);
 
-type led_counters is record
-    u9_blu_duty : unsigned(8 downto 0);
-    u9_grn_duty : unsigned(8 downto 0);
-    u9_red_duty : unsigned(8 downto 0);
-end record;
+signal led1_color : led_counters;
+signal led2_color : led_counters;
+signal led3_color : led_counters;
+
 
 signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
 begin
+
+burn_leds : led_driver
+port map(core_clk, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
 
 system_data_control : data_control
     port map(
@@ -265,6 +255,7 @@ system_data_control : data_control
 	    CASE st_main_states is
 			WHEN init =>
 				u10_dly_cnt <= 10d"0";
+                led1_color <= led_color_grn;
 
 				po_bypass_relay <= '0';
 				start_dly <= '0';
@@ -346,16 +337,6 @@ system_data_control : data_control
 
 	end if;
     end process system_main;
-
-    burn_leds : led_indicator
-	port map(
-			led_clk => core_clk,
-			si_tcmd_system_cmd => r_si_tcmd_system_cmd,
-			po3_led1 => po3_led1,
-			po3_led2 => po3_led2,
-			po3_led3 => po3_led3
-		    );
-
 
 
 end rtl;

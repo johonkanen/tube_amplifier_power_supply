@@ -3,6 +3,9 @@ library ieee;
     use ieee.std_logic_unsigned.all;
     use ieee.numeric_std.all;
 
+library work;
+    use work.led_driver_pkg.all;
+
 entity led_driver is
     port(
 			led_clk : in std_logic;
@@ -10,17 +13,10 @@ entity led_driver is
 			po3_led2 : out std_logic_vector(2 downto 0);
 			po3_led3 : out std_logic_vector(2 downto 0);
 
-			u9_led1_blu : in unsigned(8 downto 0);	
-			u9_led1_grn : in unsigned(8 downto 0);	
-			u9_led1_red : in unsigned(8 downto 0);	
-	
-			u9_led2_blu : in unsigned(8 downto 0);	
-			u9_led2_grn : in unsigned(8 downto 0);	
-			u9_led2_red : in unsigned(8 downto 0);	
-	
-			u9_led3_blu : in unsigned(8 downto 0);	
-			u9_led3_grn : in unsigned(8 downto 0);	
-			u9_led3_red : in unsigned(8 downto 0)
+            led1_ctrl : in led_counters;
+            led2_ctrl : in led_counters;
+            led3_ctrl : in led_counters
+
         );
 end led_driver;
 
@@ -57,17 +53,17 @@ begin
 	begin
 		if rising_edge(led_clk) then
 
-			if carrier < u9_led1_blu then
+			if carrier < led1_ctrl.u9_blu_duty then
 				aka_po_led1_blu <= '0';
 			else
 				aka_po_led1_blu <= '1';
 			end if;
-			if carrier < u9_led1_grn then
+			if carrier < led1_ctrl.u9_grn_duty then
 				aka_po_led1_grn <= '0';
 			else
 				aka_po_led1_grn <= '1';
 			end if;
-			if carrier < u9_led1_red then
+			if carrier < led1_ctrl.u9_red_duty then
 				aka_po_led1_red <= '0';
 			else
 				aka_po_led1_red <= '1';
@@ -76,17 +72,17 @@ begin
 
 		if rising_edge(led_clk) then
 
-			if carrier < u9_led2_blu then
+			if carrier < led2_ctrl.u9_blu_duty then
 				aka_po_led2_blu <= '0';
 			else
 				aka_po_led2_blu <= '1';
 			end if;
-			if carrier < u9_led2_grn then
+			if carrier < led2_ctrl.u9_grn_duty then
 				aka_po_led2_grn <= '0';
 			else
 				aka_po_led2_grn <= '1';
 			end if;
-			if carrier < u9_led2_red then
+			if carrier < led2_ctrl.u9_red_duty then
 				aka_po_led2_red <= '0';
 			else
 				aka_po_led2_red <= '1';
@@ -95,17 +91,17 @@ begin
 		
 		if rising_edge(led_clk) then
 
-			if carrier < u9_led3_blu then
+			if carrier < led3_ctrl.u9_blu_duty then
 				aka_po_led3_blu <= '0';
 			else
 				aka_po_led3_blu <= '1';
 			end if;
-			if carrier < u9_led3_grn then
+			if carrier < led3_ctrl.u9_grn_duty then
 				aka_po_led3_grn <= '0';
 			else
 				aka_po_led3_grn <= '1';
 			end if;
-			if carrier < u9_led3_red then
+			if carrier < led3_ctrl.u9_red_duty then
 				aka_po_led3_red <= '0';
 			else
 				aka_po_led3_red <= '1';
