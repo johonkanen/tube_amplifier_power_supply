@@ -23,6 +23,9 @@
         <Source name="../source/ext_ad/ad_ctrl.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
+        <Source name="../source/ext_ad/spi3w_ads7056_driver.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
         <Source name="../source/ext_ad/ad_bus_driver.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -84,9 +87,6 @@
             <Options/>
         </Source>
         <Source name="../source/uart/uart_rx.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/ext_ad/spi3w_ads7056_driver.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="ecp5u_specifics/vendor_specifics_pkg.vhd" type="VHDL" type_short="VHDL">
