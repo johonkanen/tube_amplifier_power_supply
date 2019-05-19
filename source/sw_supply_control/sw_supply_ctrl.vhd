@@ -94,11 +94,8 @@ component heater_ctrl is
 end component;
 
     signal u12_carrier : unsigned(11 downto 0);
-    signal r_pfc_rstn : std_logic;
 
     signal r_si_u12_pfc_duty : unsigned(11 downto 0); 
-    signal r_heater_rstn : std_logic;
-    signal r_heater_pwm_cycles : unsigned(11 downto 0);
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
 
     signal r_si16_ext_ad1_data : std_logic_vector(15 downto 0);
@@ -225,7 +222,7 @@ test_dhb : process(core_clk)
     heater_ad_trigger : process(core_clk)
 	variable heater_cntr : unsigned(11 downto 0);
     begin
-	if rising_edge(modulator_clk2) then
+	if rising_edge(core_clk) then
 	    if heater_cntr > 948 then
 			heater_cntr := 12d"0";
 			so_ext_ad1_start <= '1';

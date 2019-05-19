@@ -139,14 +139,11 @@ end component;
     end component;
 
 
-signal r_mult_a, r_mult_b : std_logic_vector(17 downto 0);
-signal r_mult_res : std_logic_vector(35 downto 0);
 signal start_dly : std_logic;
 signal dly_complete : std_logic;
 							
 signal r_so_uart_ready_event : std_logic;
 signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
-signal r1_so16_uart_rx_data : std_logic_vector(15 downto 0);
 
 signal zero_cross_event : std_logic;
 
@@ -267,7 +264,7 @@ system_data_control : data_control
 				start_dly <= '0';
 				r_si_tcmd_system_cmd <= init;
 
-				if si_pll_lock = '1' then
+				if si_pll_lock = '1' OR r_so_uart_ready_event = '1' then
 				    st_main_states := charge_dc_link;
 				else
 				    st_main_states := init;

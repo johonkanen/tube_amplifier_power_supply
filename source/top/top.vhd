@@ -62,36 +62,10 @@ architecture behavioral of top is
     signal clk_256mhz : std_logic;
     signal clk2_256mhz : std_logic;
     signal clk_128mhz :std_logic;
-    signal clk_32mhz : std_logic;
     signal std_pll_lock : std_logic;
-    signal r_ada_cs : std_logic;
     signal r_po_ada_cs : std_logic;
     signal r_po_adb_cs: std_logic;
 
-    signal route_test_pwm : std_logic;
-
---	component main_pll IS
---	PORT
---	(
---		inclk0		: IN STD_LOGIC  := '0';
---		c0		: OUT STD_LOGIC ;
---		c1		: OUT STD_LOGIC ;
---		c2		: OUT STD_LOGIC ;
---		locked		: OUT STD_LOGIC 
---	);
---	END component;
-
---   component main_pll is
---   port (
---       CLKI: in  std_logic; 
---       CLKOP: out  std_logic; 
---       CLKOS: out  std_logic; 
---       CLKOS2: out  std_logic; 
---       LOCK: out  std_logic);
---   end component;
-
-
-	
 component system_control is
    port(
 		core_clk : in std_logic;
