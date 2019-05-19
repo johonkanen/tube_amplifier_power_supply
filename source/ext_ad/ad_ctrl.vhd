@@ -13,6 +13,7 @@ entity ad_control is
 	port( 
 		ad_clock : in std_logic;
 		ad_bus_clock : in std_logic;
+        si_pll_lock : in std_logic;
 
 -- ad converter A signals
 		po_ada_cs : out std_logic;

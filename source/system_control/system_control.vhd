@@ -74,6 +74,7 @@ component data_control is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
+	    si_pll_lock : in std_logic;
 
 -- aux pwm
 	    po_aux_pwm : out std_logic;
@@ -155,6 +156,7 @@ system_data_control : data_control
 	    core_clk =>  core_clk,
 	    modulator_clk => modulator_clk,
 	    modulator_clk2 => modulator_clk2,
+	    si_pll_lock =>si_pll_lock,
 -- aux pwm
 	    po_aux_pwm => po_aux_pwm,
 

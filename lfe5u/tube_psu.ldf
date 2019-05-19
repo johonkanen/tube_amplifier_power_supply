@@ -74,9 +74,6 @@
         <Source name="../source/uart/command_shell.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="../source/led_driver/led_indicator.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/led_driver/led_driver.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -101,7 +98,7 @@
         <Source name="../source/led_driver/led_driver_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming" excluded="TRUE">
+        <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming">
             <Options/>
         </Source>
         <Source name="rtl/rtl.xcf" type="Programming Project File" type_short="Programming" excluded="TRUE">
