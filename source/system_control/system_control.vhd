@@ -254,6 +254,11 @@ system_data_control : data_control
 	if rising_edge(core_clk) then
 	    CASE st_main_states is
 			WHEN init =>
+
+                led1_color <= led_color_red; 
+                led2_color <= led_color_red;
+                led3_color <= led_color_red;
+
 				u10_dly_cnt <= 10d"0";
 
 
@@ -268,6 +273,10 @@ system_data_control : data_control
 				end if;
 
 			WHEN charge_dc_link=> 
+
+                led1_color <= led_color_yellow; 
+                led2_color <= led_color_yellow;
+                led3_color <= led_color_yellow;
 
 
 				u10_dly_cnt <= 10d"0";
@@ -288,6 +297,10 @@ system_data_control : data_control
 
 			WHEN bypass_relay=> 
 
+                led1_color <= led_color_pink; 
+                led2_color <= led_color_pink;
+                led3_color <= led_color_pink;
+
 
 				r_si_tcmd_system_cmd <= bypass_relay;
 				u10_dly_cnt <= 10d"3";
@@ -302,6 +315,10 @@ system_data_control : data_control
 				end if;
 
 			WHEN start_aux =>
+
+                led1_color <= led_color_purple; 
+                led2_color <= led_color_purple;
+                led3_color <= led_color_purple;
 
 				u10_dly_cnt <= 10d"50";
 				po_bypass_relay <= '0';
@@ -328,9 +345,9 @@ system_data_control : data_control
 
 			WHEN system_running =>
 
-                led1_color <= led_color_off; 
+                led1_color <= led_color_blu; 
                 led2_color <= led_color_blu;
-                led3_color <= led_color_off;
+                led3_color <= led_color_blu;
 
 				start_dly <= '0';
 				po_bypass_relay <= '1';
