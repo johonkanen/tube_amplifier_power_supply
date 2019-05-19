@@ -256,6 +256,8 @@ system_data_control : data_control
 			WHEN init =>
 				u10_dly_cnt <= 10d"0";
                 led1_color <= led_color_grn;
+                led2_color <= led_color_red;
+                led3_color <= led_color_blu;
 
 				po_bypass_relay <= '0';
 				start_dly <= '0';

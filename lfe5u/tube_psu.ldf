@@ -4,7 +4,7 @@
         <Option name="HDL type" value="VHDL"/>
     </Options>
     <Implementation title="rtl" dir="rtl" description="rtl" synthesis="synplify" default_strategy="Strategy1">
-        <Options def_top="command_shell" top="top"/>
+        <Options top="top"/>
         <Source name="../source/top/top.vhd" type="VHDL" type_short="VHDL">
             <Options top_module="top"/>
         </Source>
@@ -17,6 +17,33 @@
         <Source name="ecp5u_specifics/ecp5_ip_components/ecp5_ip_components.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
+        <Source name="../source/uart/uart_event_ctrl.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/ext_ad/ad_ctrl.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/ext_ad/ad_bus_driver.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/sw_supply_control/sw_supply_ctrl.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/pfc_ctrl/pfc_control.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/pfc_ctrl/pfc_modulator.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dhb/dhb_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dhb/phase_modulator.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/heater_ctrl/heater_ctrl.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
         <Source name="../source/system_control/sys_ctrl_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -26,49 +53,22 @@
         <Source name="../source/onboard_ad_control/onboard_ad_ctrl_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="../source/dhb/dhb_pkg.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/ext_ad/ext_ad_spi3w.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/dhb/phase_modulator.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="../source/heater_ctrl/freq_modulator.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="../source/sw_supply_control/sw_supply_ctrl.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/sw_supply_control/sw_supply_ctrl_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options lib="work"/>
         </Source>
-        <Source name="../source/pfc_ctrl/pfc_control.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/heater_ctrl/heater_ctrl.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
         <Source name="../source/ext_ad/ext_ad_control.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/ext_ad/ad_ctrl.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/uart/uart_event_ctrl.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="../source/ext_ad/cdc_bus_driver.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="../source/ext_ad/cdc_onboard_ad_bus_driver.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/ext_ad/ad_bus_driver.vhd" type="VHDL" type_short="VHDL">
-            <Options/>
-        </Source>
-        <Source name="../source/pfc_ctrl/pfc_modulator.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="../source/uart/command_shell.vhd" type="VHDL" type_short="VHDL">
@@ -93,6 +93,12 @@
             <Options/>
         </Source>
         <Source name="ecp5u_specifics/vendor_specifics_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="ecp5u_specifics/ecp5_ip_components/main_pll/main_pll.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/led_driver/led_driver_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming" excluded="TRUE">
