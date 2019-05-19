@@ -149,6 +149,12 @@ signal zero_cross_event : std_logic;
 
 signal u10_dly_cnt : unsigned(9 downto 0);
 
+type led_counters is record
+    u9_blu_duty : unsigned(8 downto 0);
+    u9_grn_duty : unsigned(8 downto 0);
+    u9_red_duty : unsigned(8 downto 0);
+end record;
+
 signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
