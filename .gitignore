@@ -64,3 +64,4 @@ unused.hex
 *.szr
 *.lpc*
 *.dmp
+*.o
