@@ -53,11 +53,11 @@ begin
 
 ada : spi3w_ads7056_driver 
     generic map(8d"2",8d"18",8d"12")
-    port map(ad_bus_clock, po_ada_cs, po_ada_clk, pi_ada_sdata, si_ada_start, open, so_ada_ctrl.ad_rdy_trigger, so_ada_sh_rdy, so_ada_ctrl.std16_ad_bus);
+    port map(ad_bus_clock, si_pll_lock, po_ada_cs, po_ada_clk, pi_ada_sdata, si_ada_start, open, so_ada_ctrl.ad_rdy_trigger, so_ada_sh_rdy, so_ada_ctrl.std16_ad_bus);
 
 adb : spi3w_ads7056_driver
     generic map(8d"2",8d"18",8d"12")
-    port map(ad_bus_clock, po_adb_cs, po_adb_clk, pi_adb_sdata, si_adb_start, open, so_adb_ctrl.ad_rdy_trigger, so_adb_sh_rdy, so_adb_ctrl.std16_ad_bus);
+    port map(ad_bus_clock, si_pll_lock, po_adb_cs, po_adb_clk, pi_adb_sdata, si_adb_start, open, so_adb_ctrl.ad_rdy_trigger, so_adb_sh_rdy, so_adb_ctrl.std16_ad_bus);
 
 ada_mux_sequencer : process(ad_clock)
     variable st_ada_seq : t3_mux_pos;

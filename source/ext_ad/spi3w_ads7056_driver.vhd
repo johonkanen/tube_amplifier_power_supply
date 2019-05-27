@@ -11,6 +11,7 @@ entity spi3w_ads7056_driver is
 			);
 	port( 
 			si_spi_clk 	 : in std_logic; 
+            si_pll_lock : in std_logic;
 			 
 			-- physical signals to ext ad converter
 			po_spi_cs 	 : out std_logic;
@@ -58,55 +59,59 @@ begin
         variable st_ad_states : t_ad_states;
     begin
         if rising_edge(si_spi_clk) then
-            CASE po_spi_cs is
-                WHEN c_idle =>
-                    so_spi_rdy <= '0';
-                    spi_process_count := (others => '0');
-                    spi_clk_div := (others => '0');
-                    i <= to_integer(g_u8_clks_per_conversion)+1;
-                    spi_rx_buffer <= (others => '0');  
-
-                    if si_spi_start = '1' then
-                        po_spi_cs <= c_convert;
-                        po_spi_clk_out <= '0';
-                    else
-                        po_spi_cs <= c_idle;
-                        po_spi_clk_out <= '1';
-                    end if;
-                WHEN c_convert =>
-                    spi_process_count := spi_process_count + 1;
-                    
-                    --indicate sample and hold being ready
-                    if spi_process_count = g_sh_counter_latch then
-                        so_sh_rdy <= '1';
-                    else
-                        so_sh_rdy <= '0';
-                    end if;
-
-                    if spi_clk_div = g_u8_clk_cnt-1 then
-                        spi_clk_div := (others => '0');
-                        po_spi_clk_out <= not po_spi_clk_out;
-                    else
-                        spi_clk_div := spi_clk_div + 1;
-                    end if;
-
-                    if spi_clk_div = g_u8_clk_cnt/2 then
-                        po_spi_clk_out <= not po_spi_clk_out;
-                        spi_rx_buffer(i-2) <= pi_spi_serial;
-                        i <= i - 1;
-                    end if;
-
-                    if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 then
-                        po_spi_cs <= c_idle;
-                        so_spi_rdy <= '1';
-                    else
-                        po_spi_cs <= c_convert;
+            if si_pll_lock = '1' then
+                CASE po_spi_cs is
+                    WHEN c_idle =>
                         so_spi_rdy <= '0';
-                    end if;
+                        spi_process_count := (others => '0');
+                        spi_clk_div := (others => '0');
+                        i <= to_integer(g_u8_clks_per_conversion)+1;
+                        spi_rx_buffer <= (others => '0');  
 
-                WHEN others =>
-                    po_spi_cs <= c_idle;
-            end CASE;
+                        if si_spi_start = '1' then
+                            po_spi_cs <= c_convert;
+                            po_spi_clk_out <= '0';
+                        else
+                            po_spi_cs <= c_idle;
+                            po_spi_clk_out <= '1';
+                        end if;
+                    WHEN c_convert =>
+                        spi_process_count := spi_process_count + 1;
+                        
+                        --indicate sample and hold being ready
+                        if spi_process_count = g_sh_counter_latch then
+                            so_sh_rdy <= '1';
+                        else
+                            so_sh_rdy <= '0';
+                        end if;
+
+                        if spi_clk_div = g_u8_clk_cnt-1 then
+                            spi_clk_div := (others => '0');
+                            po_spi_clk_out <= not po_spi_clk_out;
+                        else
+                            spi_clk_div := spi_clk_div + 1;
+                        end if;
+
+                        if spi_clk_div = g_u8_clk_cnt/2 then
+                            po_spi_clk_out <= not po_spi_clk_out;
+                            spi_rx_buffer(i-2) <= pi_spi_serial;
+                            i <= i - 1;
+                        end if;
+
+                        if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 then
+                            po_spi_cs <= c_idle;
+                            so_spi_rdy <= '1';
+                        else
+                            po_spi_cs <= c_convert;
+                            so_spi_rdy <= '0';
+                        end if;
+
+                    WHEN others =>
+                        po_spi_cs <= c_idle;
+                end CASE;
+            else
+                po_spi_cs <= c_idle;
+            end if;
         end if; --rising_edge
     end process spi_control;	
 
