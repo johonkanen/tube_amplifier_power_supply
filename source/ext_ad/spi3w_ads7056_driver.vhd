@@ -60,13 +60,14 @@ begin
     begin
         if rising_edge(si_spi_clk) then
             if si_pll_lock = '1' then
-                CASE st_ad_states is
-                    WHEN idle =>
+                CASE po_spi_cs is
+                    WHEN c_idle =>
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
                         i <= to_integer(g_u8_clks_per_conversion)+1;
                         spi_rx_buffer <= (others => '0');  
+                        so_sh_rdy <= '0';
 
                         if si_spi_start = '1' then
                             st_ad_states <= convert;
@@ -77,7 +78,7 @@ begin
                             po_spi_cs <= c_idle;
                             po_spi_clk_out <= '1';
                         end if;
-                    WHEN convert =>
+                    WHEN c_convert =>
                         spi_process_count := spi_process_count + 1;
                         
                         --indicate sample and hold being ready
@@ -111,10 +112,16 @@ begin
                         end if;
 
                     WHEN others =>
+                        po_spi_clk_out <= '1';
+                        so_sh_rdy <= '0';
+                        so_spi_rdy <= '0';
                         st_ad_states <= idle;
                         po_spi_cs <= c_idle;
                 end CASE;
             else
+                po_spi_clk_out <= '1';
+                so_sh_rdy <= '0';
+                so_spi_rdy <= '0';
                 st_ad_states <= idle;
                 po_spi_cs <= c_idle;
             end if;

@@ -26,6 +26,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
 				g_sh_counter_latch : unsigned(7 downto 0)
 			);
     PORT ( 
+        si_pll_lock : in std_logic;
       so_spi_rdy  : out STD_LOGIC ; 
       s_spi_busy  : out STD_LOGIC ; 
       si_spi_start  : in STD_LOGIC ; 
@@ -40,6 +41,7 @@ BEGIN
   DUT  : spi3w_ads7056_driver
   generic map(8d"2",8d"18",8d"18")
     PORT MAP ( 
+        si_pll_lock => '1',
       so_spi_rdy   => so_spi_rdy  ,
       s_spi_busy   => s_spi_busy  ,
       si_spi_start   => si_spi_start  ,
@@ -57,18 +59,18 @@ BEGIN
   Process
 	Begin
 	 si_spi_clk  <= '0'  ;
-	wait for 2 ns ;
+	wait for 7.8125 ns ;
 -- 2 ns, single loop till start period.
 	for Z in 1 to 250
 	loop
 	    si_spi_clk  <= '1'  ;
-	   wait for 2 ns ;
+	   wait for 7.8125 ns ;
 	    si_spi_clk  <= '0'  ;
-	   wait for 2 ns ;
+	   wait for 7.8125 ns ;
 -- 98 ns, repeat pattern in loop.
 	end  loop;
 	 si_spi_clk  <= '1'  ;
-	wait for 2 ns ;
+	wait for 7.8125 ns ;
 -- dumped values till 100 ns
 	wait;
  End Process;
@@ -90,7 +92,7 @@ BEGIN
   Process
 	Begin
 	 si_spi_start  <= '0'  ;
-	wait for 10 ns ;
+	wait for 50 ns ;
 	 si_spi_start  <= '1'  ;
 	wait for 10 ns ;
 	 si_spi_start  <= '0'  ;
