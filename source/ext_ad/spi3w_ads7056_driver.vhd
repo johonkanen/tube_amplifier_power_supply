@@ -39,8 +39,11 @@ architecture synth of spi3w_ads7056_driver is
     constant c_convert : std_logic := '0';
     constant c_idle : std_logic := '1';
     signal i : integer range 0 to 31;
-        type t_ad_states is (idle, convert);
-        signal st_ad_states : t_ad_states;
+    subtype t_ad_states is std_logic_vector(1 downto 0);
+    constant t_idle : t_ad_states := "00";
+    constant t_calibrate : t_ad_states := "11";
+    constant t_convert : t_ad_states := "10";
+    signal st_ad_states : t_ad_states;
 
     type ctrl_ad_spi3w is record
 			-- ext spi control signals
@@ -60,8 +63,36 @@ begin
     begin
         if rising_edge(si_spi_clk) then
             if si_pll_lock = '1' then
-                CASE po_spi_cs is
-                    WHEN c_idle =>
+                CASE st_ad_states is
+                    WHEN t_calibrate =>
+                        so_sh_rdy <= '0';
+                        so_spi_rdy <= '0';
+                        spi_rx_buffer <= (others => '0');  
+
+                        spi_process_count := spi_process_count + 1;
+
+                        if spi_clk_div = g_u8_clk_cnt-1 then
+                            spi_clk_div := (others => '0');
+                            po_spi_clk_out <= not po_spi_clk_out;
+                        else
+                            spi_clk_div := spi_clk_div + 1;
+                        end if;
+
+                        if spi_clk_div = g_u8_clk_cnt/2 then
+                            po_spi_clk_out <= not po_spi_clk_out;
+                            spi_rx_buffer(i-2) <= pi_spi_serial;
+                            i <= i - 1;
+                        end if;
+
+                        if spi_process_count = g_u8_clk_cnt*to_unsigned(24,8)-g_u8_clk_cnt/2 then
+                            st_ad_states <= t_idle;
+                            --po_spi_cs <= c_idle;
+                        else
+                            st_ad_states <= t_calibrate;
+                            --po_spi_cs <= c_convert;
+                        end if;
+
+                    WHEN t_idle =>
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
@@ -70,15 +101,15 @@ begin
                         so_sh_rdy <= '0';
 
                         if si_spi_start = '1' then
-                            st_ad_states <= convert;
-                            po_spi_cs <= c_convert;
+                            st_ad_states <= t_convert;
+                            --po_spi_cs <= c_convert;
                             po_spi_clk_out <= '0';
                         else
-                            st_ad_states <= idle;
-                            po_spi_cs <= c_idle;
+                            st_ad_states <= t_idle;
+                            --po_spi_cs <= c_idle;
                             po_spi_clk_out <= '1';
                         end if;
-                    WHEN c_convert =>
+                    WHEN t_convert =>
                         spi_process_count := spi_process_count + 1;
                         
                         --indicate sample and hold being ready
@@ -102,32 +133,41 @@ begin
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 then
-                            st_ad_states <= idle;
-                            po_spi_cs <= c_idle;
+                            st_ad_states <= t_idle;
+                            --po_spi_cs <= c_idle;
                             so_spi_rdy <= '1';
                         else
-                            st_ad_states <= convert;
-                            po_spi_cs <= c_convert;
+                            st_ad_states <= t_convert;
+                            --po_spi_cs <= c_convert;
                             so_spi_rdy <= '0';
                         end if;
 
                     WHEN others =>
+                        spi_clk_div := (others => '0');
+                        spi_process_count := (others => '0');
+                        i <= to_integer(g_u8_clks_per_conversion)+1;
+                        spi_rx_buffer <= (others => '0');  
                         po_spi_clk_out <= '1';
                         so_sh_rdy <= '0';
                         so_spi_rdy <= '0';
-                        st_ad_states <= idle;
-                        po_spi_cs <= c_idle;
+                        st_ad_states <= t_calibrate;
+                        --po_spi_cs <= c_idle;
                 end CASE;
             else
+                spi_clk_div := (others => '0');
+                spi_process_count := (others => '0');
+                i <= to_integer(g_u8_clks_per_conversion)+1;
+                spi_rx_buffer <= (others => '0');  
                 po_spi_clk_out <= '1';
                 so_sh_rdy <= '0';
                 so_spi_rdy <= '0';
-                st_ad_states <= idle;
-                po_spi_cs <= c_idle;
+                st_ad_states <= t_calibrate;
+                --po_spi_cs <= c_idle;
             end if;
         end if; --rising_edge
     end process spi_control;	
 
 b_spi_rx <= spi_rx_buffer(17 downto 2);
 s_spi_busy <= not po_spi_cs;
+po_spi_cs <= NOT st_ad_states(1);
 end synth; --architecture

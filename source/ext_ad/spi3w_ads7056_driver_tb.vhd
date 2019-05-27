@@ -19,6 +19,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
   SIGNAL po_spi_clk_out   :  STD_LOGIC  ; 
   SIGNAL pi_spi_serial   :  STD_LOGIC  ; 
   SIGNAL po_spi_cs   :  STD_LOGIC  ; 
+  signal si_pll_lock : std_logic;
   COMPONENT spi3w_ads7056_driver
 	generic(
 				g_u8_clk_cnt : unsigned(7 downto 0);
@@ -26,7 +27,7 @@ ARCHITECTURE testi   OF spi3w_ads7056_driver_tb IS
 				g_sh_counter_latch : unsigned(7 downto 0)
 			);
     PORT ( 
-        si_pll_lock : in std_logic;
+      si_pll_lock : in std_logic;
       so_spi_rdy  : out STD_LOGIC ; 
       s_spi_busy  : out STD_LOGIC ; 
       si_spi_start  : in STD_LOGIC ; 
