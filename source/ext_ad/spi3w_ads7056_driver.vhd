@@ -39,6 +39,8 @@ architecture synth of spi3w_ads7056_driver is
     constant c_convert : std_logic := '0';
     constant c_idle : std_logic := '1';
     signal i : integer range 0 to 31;
+        type t_ad_states is (idle, convert);
+        signal st_ad_states : t_ad_states;
 
     type ctrl_ad_spi3w is record
 			-- ext spi control signals
@@ -55,13 +57,11 @@ begin
     spi_control : process(si_spi_clk)
         variable spi_process_count : unsigned(11 downto 0);
         variable spi_clk_div : unsigned(7 downto 0);
-        type t_ad_states is (calibrate, idle, convert);
-        variable st_ad_states : t_ad_states;
     begin
         if rising_edge(si_spi_clk) then
             if si_pll_lock = '1' then
-                CASE po_spi_cs is
-                    WHEN c_idle =>
+                CASE st_ad_states is
+                    WHEN idle =>
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
@@ -69,13 +69,15 @@ begin
                         spi_rx_buffer <= (others => '0');  
 
                         if si_spi_start = '1' then
+                            st_ad_states <= convert;
                             po_spi_cs <= c_convert;
                             po_spi_clk_out <= '0';
                         else
+                            st_ad_states <= idle;
                             po_spi_cs <= c_idle;
                             po_spi_clk_out <= '1';
                         end if;
-                    WHEN c_convert =>
+                    WHEN convert =>
                         spi_process_count := spi_process_count + 1;
                         
                         --indicate sample and hold being ready
@@ -99,17 +101,21 @@ begin
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 then
+                            st_ad_states <= idle;
                             po_spi_cs <= c_idle;
                             so_spi_rdy <= '1';
                         else
+                            st_ad_states <= convert;
                             po_spi_cs <= c_convert;
                             so_spi_rdy <= '0';
                         end if;
 
                     WHEN others =>
+                        st_ad_states <= idle;
                         po_spi_cs <= c_idle;
                 end CASE;
             else
+                st_ad_states <= idle;
                 po_spi_cs <= c_idle;
             end if;
         end if; --rising_edge
