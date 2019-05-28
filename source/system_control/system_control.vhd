@@ -363,6 +363,9 @@ system_data_control : data_control
 				st_main_states := init;
 	    end CASE;
     else
+            led1_color <= led_color_red; 
+            led2_color <= led_color_red;
+            led3_color <= led_color_red;
             r_si_tcmd_system_cmd <= init;
             start_dly <= '0';
             u10_dly_cnt <= 10d"0";
