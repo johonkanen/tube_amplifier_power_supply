@@ -254,6 +254,7 @@ system_data_control : data_control
     begin
 
 	if rising_edge(core_clk) then
+        if si_pll_lock = '1' then
 	    CASE st_main_states is
 			WHEN init =>
 
@@ -289,7 +290,7 @@ system_data_control : data_control
 
                 if r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     if r_so_adb_ctrl.std3_ad_address= 3d"5" then
-                        if r_so_adb_ctrl.std16_ad_bus > 16d"600" then
+                        if r_so_adb_ctrl.std16_ad_bus > 16d"2400" then
                             st_main_states := bypass_relay;
                         else
                             st_main_states := charge_dc_link; 
@@ -361,6 +362,12 @@ system_data_control : data_control
 				u10_dly_cnt <= 10d"0";
 				st_main_states := init;
 	    end CASE;
+    else
+            r_si_tcmd_system_cmd <= init;
+            start_dly <= '0';
+            u10_dly_cnt <= 10d"0";
+            st_main_states := init;
+    end if;
 
 	end if;
     end process system_main;
