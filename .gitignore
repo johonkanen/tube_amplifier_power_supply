@@ -65,3 +65,5 @@ unused.hex
 *.lpc*
 *.dmp
 *.o
+*.backup*
+*.jou
