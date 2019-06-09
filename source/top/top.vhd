@@ -129,20 +129,18 @@ begin
 core_clocks : main_pll 
 	port map
 	(
-		xclk32mhz,
 		clk_256mhz,
-		clk_128mhz,
-		clk2_256mhz,
-		std_pll_lock
+		std_pll_lock,
+		xclk32mhz
 	);
 
 
 
 main_system_control : system_control 
     port map(
-			core_clk => clk_128mhz, 
+			core_clk => clk_256mhz, 
 			modulator_clk => clk_256mhz,
-			modulator_clk2 => clk2_256mhz,
+			modulator_clk2 => clk_256mhz,
 
 			si_pll_lock => std_pll_lock,
 			

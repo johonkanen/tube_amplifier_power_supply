@@ -12,7 +12,14 @@ if {[llength $files] != 0} {
 }
 
 # read vhdl files
-read_vhdl -vhdl2008 [ glob ../source/top/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/top/top.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/heater_ctrl/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/led_driver/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/onboard_ad_control/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/pfc_ctrl/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/sw_supply_control/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/system_control/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/uart/*.vhd ]
 # read_ip .srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
 # read_xdc vivado_specifics/constraints.xdc
 
