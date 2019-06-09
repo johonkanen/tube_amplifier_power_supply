@@ -1,4 +1,5 @@
 /output_files/greybox_tmp/
+/spartan_7/.Xil/
 *.html
 *.swn
 *.xrf
@@ -67,3 +68,4 @@ unused.hex
 *.o
 *.backup*
 *.jou
+*.str

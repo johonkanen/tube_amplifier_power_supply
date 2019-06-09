@@ -12,18 +12,21 @@ if {[llength $files] != 0} {
 }
 
 # read vhdl files
+read_vhdl -vhdl2008 [ glob s7_specifics.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/top/top.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/dhb/dhb_pkg.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/heater_ctrl/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/led_driver/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/ext_ad/ad_bus_pkg.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/onboard_ad_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/pfc_ctrl/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/sw_supply_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/system_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/uart/*.vhd ]
-# read_ip .srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci
+read_ip .srcs/sources_1/ip/main_pll/main_pll.xci
 # read_xdc vivado_specifics/constraints.xdc
 
-# synth_design -top top -part $partNum
+ synth_design -top top -part $partNum
 # write_checkpoint -force $outputDir/post_synth.dcp
 # report_timing_summary -file $outputDir/post_synth_timing_summary.rpt
 # report_utilization -file $outputDir/post_synth_util.rpt
