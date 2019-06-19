@@ -35,7 +35,7 @@ read_vhdl -vhdl2008 [ glob ../source/sw_supply_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/system_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/uart/*.vhd ]
 read_ip .srcs/sources_1/ip/main_pll/main_pll.xci
-read_xdc constraints/pinouts.xdc
+read_xdc constraints/constraints.xdc
 
 synth_design -top top -part $partNum
 write_checkpoint -force $outputDir/post_synth.dcp
@@ -46,7 +46,7 @@ report_utilization -file $outputDir/post_synth_util.rpt
  place_design
  report_clock_utilization -file $outputDir/clock_util.rpt
 
-get timing violations and run optimizations if needed
+#get timing violations and run optimizations if needed
  if {[get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]] < 0} {
   puts "Found setup timing violations => running physical optimization"
   phys_opt_design
