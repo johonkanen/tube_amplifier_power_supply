@@ -38,6 +38,34 @@ end ad_control;
 
 architecture rtl of ad_control is
 
+    component adc_wrapper is
+	generic(
+				g_u8_clk_cnt : unsigned(7 downto 0);
+				g_u8_clks_per_conversion : unsigned(7 downto 0);
+				g_sh_counter_latch : unsigned(7 downto 0)
+			);
+	port( 
+			si_spi_clk 	 : in std_logic; 
+            si_pll_lock : in std_logic;
+			 
+			-- physical signals to ext ad converter
+			po_spi_cs 	 : out std_logic;
+			po_spi_clk_out : out std_logic;
+			pi_spi_serial : in std_logic; 
+ 
+			si_spi_start : in std_logic; 
+			 
+			-- ext spi control signals
+			s_spi_busy	 : out std_logic; 
+			-- output signal indicating word is ready to be read 
+			so_spi_rdy	 : out std_logic; 
+			-- output signal indicating sampling is done
+			so_sh_rdy	 : out std_logic; 
+			-- output buffer
+			b_spi_rx : out std_logic_vector(15 downto 0)  
+		);	
+    end component; 
+
 signal si_ada_start : std_logic;
 signal so_ada_sh_rdy : std_logic;
 signal ada_data : std_logic_vector(15 downto 0);
@@ -51,11 +79,11 @@ signal trig_cnt : unsigned(9 downto 0);
 
 begin
 
-ada : spi3w_ads7056_driver 
+ada : adc_wrapper 
     generic map(8d"2",8d"18",8d"12")
     port map(ad_bus_clock, si_pll_lock, po_ada_cs, po_ada_clk, pi_ada_sdata, si_ada_start, open, so_ada_ctrl.ad_rdy_trigger, so_ada_sh_rdy, so_ada_ctrl.std16_ad_bus);
 
-adb : spi3w_ads7056_driver
+adb : adc_wrapper
     generic map(8d"2",8d"18",8d"12")
     port map(ad_bus_clock, si_pll_lock, po_adb_cs, po_adb_clk, pi_adb_sdata, si_adb_start, open, so_adb_ctrl.ad_rdy_trigger, so_adb_sh_rdy, so_adb_ctrl.std16_ad_bus);
 

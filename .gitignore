@@ -69,3 +69,4 @@ unused.hex
 *.backup*
 *.jou
 *.str
+*webtalk.*

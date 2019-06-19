@@ -12,7 +12,8 @@ if {[llength $files] != 0} {
 }
 
 # read vhdl files
-read_vhdl -vhdl2008 [ glob s7_specifics.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_adc_wrapper.vhd]
+read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_specifics.vhd]
 read_vhdl -vhdl2008 [ glob ../source/top/top.vhd ]
 
 # dhb sources
@@ -56,11 +57,11 @@ report_utilization -file $outputDir/post_place_util.rpt
 report_timing_summary -file $outputDir/post_place_timing_summary.rpt
 
 #Route design and generate bitstream
-# route_design -directive Explore
-# write_checkpoint -force $outputDir/post_route.dcp
-# report_route_status -file $outputDir/post_route_status.rpt
-# report_timing_summary -file $outputDir/post_route_timing_summary.rpt
-# report_power -file $outputDir/post_route_power.rpt
-# report_drc -file $outputDir/post_imp_drc.rpt
-# write_verilog -force $outputDir/cpu_impl_netlist.v -mode timesim -sdf_anno true
-# write_bitstream -force $outputDir/testibitstream.bit
+route_design -directive Explore
+write_checkpoint -force $outputDir/post_route.dcp
+report_route_status -file $outputDir/post_route_status.rpt
+report_timing_summary -file $outputDir/post_route_timing_summary.rpt
+report_power -file $outputDir/post_route_power.rpt
+report_drc -file $outputDir/post_imp_drc.rpt
+write_verilog -force $outputDir/cpu_impl_netlist.v -mode timesim -sdf_anno true
+write_bitstream -force $outputDir/testibitstream.bit
