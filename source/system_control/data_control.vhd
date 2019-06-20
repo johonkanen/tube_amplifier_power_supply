@@ -288,7 +288,7 @@ port map(core_clk, modulator_clk, modulator_clk2, open, po2_pfc_pwm, po2_ht_pri_
             WHEN 3d"0" => 
                 if r_so_ada_ctrl.std3_ad_address = 3d"0"  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= 16d"4661";
                 else
                     r_si_uart_start_event <= '0';
                 end if;

@@ -97,7 +97,7 @@ begin
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
                         i <= to_integer(g_u8_clks_per_conversion)+1;
-                        spi_rx_buffer <= (others => '0');  
+                        --spi_rx_buffer <= (others => '0');  
                         so_sh_rdy <= '0';
 
                         if si_spi_start = '1' then
