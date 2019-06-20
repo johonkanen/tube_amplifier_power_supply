@@ -11,6 +11,7 @@ if {[llength $files] != 0} {
     puts "$outputDir is empty"
 }
 
+create_project -in_memory -part $partNum
 # read vhdl files
 read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_adc_wrapper.vhd]
 read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_specifics.vhd]
