@@ -75,7 +75,7 @@ signal so_adb_sh_rdy : std_logic;
 signal adb_data : std_logic_vector(15 downto 0);
 
 signal test_ad : t_ad_triggers;
-signal trig_cnt : unsigned(9 downto 0);
+signal trig_cnt : unsigned(10 downto 0);
 
 begin
 
@@ -140,31 +140,31 @@ begin
     if rising_edge(ad_bus_clock) then
         trig_cnt <= trig_cnt + 1;
         CASE trig_cnt is
-            WHEN 10d"0" => 
+            WHEN 11d"0" => 
                 test_ad <= ch0;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"146" =>
+            WHEN 11d"292" =>
                 test_ad <= ch1;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"292" =>
+            WHEN 11d"584" =>
                 test_ad <= ch2;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"438" =>
+            WHEN 11d"876" =>
                 test_ad <= ch3;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"584" =>
+            WHEN 11d"1168" =>
                 test_ad <= ch4;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"730" =>
+            WHEN 11d"1460" =>
                 test_ad <= ch5;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
-            WHEN 10d"876" =>
+            WHEN 11d"1752" =>
                 test_ad <= ch6;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
