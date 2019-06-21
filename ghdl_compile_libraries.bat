@@ -6,3 +6,5 @@ ghdl -a --std=08 --ieee=synopsys source/led_driver/led_driver_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/spartan_7/s7_specifics.vhd
 ghdl -a --std=08 --ieee=synopsys source/spartan_7/s7_adc_wrapper.vhd
 ghdl -a --std=08 --ieee=synopsys source/top/top_pkg.vhd
+ghdl -a --std=08 --ieee=synopsys source/heater_ctrl/llc_pkg.vhd
+ghdl -a --std=08 --ieee=synopsys source/pfc_ctrl/pfc_pkg.vhd

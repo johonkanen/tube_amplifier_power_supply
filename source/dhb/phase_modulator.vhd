@@ -4,6 +4,7 @@ library ieee;
 
 library work;
 	use work.dhb_pkg.all;
+	use work.top_pkg.all;
 
 entity phase_modulator is
 	generic(
@@ -14,9 +15,9 @@ entity phase_modulator is
 	    modulator_clk : in std_logic;
 
 		ri_dhb_ctrl : in rec_dhb_input;
+        
+        po4_dhb_pwm : out dhb_pwm
 
-	    po2_dhb_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_dhb_sec_pwm : out std_logic_vector(1 downto 0)
 	);
 end phase_modulator;
 
@@ -118,19 +119,22 @@ begin
 	if rising_edge(modulator_clk) then
 		if ri_dhb_ctrl.rstn = '0' then
 			st_dt_states := pos;
-			po2_dhb_pri_pwm <= zero_pulse;
+            po4_dhb_pwm.pri_high <= '0';
+            po4_dhb_pwm.pri_low <= '0';
 		else
 			CASE st_dt_states is 
 				WHEN pos=> 
 					dt_counter := (others => '0');
-					po2_dhb_pri_pwm <= pos_pulse;
+                    po4_dhb_pwm.pri_high <= '1';
+                    po4_dhb_pwm.pri_low <= '0';
 					if s_pri_pulse = '0' then
 						st_dt_states := dt1;
 					else
 						st_dt_states := pos;
 					end if;
 				WHEN dt1 =>
-					po2_dhb_pri_pwm <= zero_pulse;
+                    po4_dhb_pwm.pri_high <= '0';
+                    po4_dhb_pwm.pri_low <= '0';
 					if dt_counter = g_u8_deadtime then
 						st_dt_states := neg;
 					else 
@@ -138,7 +142,8 @@ begin
 						dt_counter := dt_counter + 1;
 					end if;
 				WHEN neg=>
-					po2_dhb_pri_pwm <= neg_pulse;
+                    po4_dhb_pwm.pri_high <= '0';
+                    po4_dhb_pwm.pri_low <= '1';
 					dt_counter := (others => '0');
 					if s_pri_pulse = '1' then
 						st_dt_states := dt2;
@@ -146,7 +151,8 @@ begin
 						st_dt_states := neg;
 					end if;
 				WHEN dt2 =>
-					po2_dhb_pri_pwm <= zero_pulse;
+                    po4_dhb_pwm.pri_high <= '0';
+                    po4_dhb_pwm.pri_low <= '0';
 					dt_counter := dt_counter + 1;
 					if dt_counter = g_u8_deadtime then
 						st_dt_states := pos;
@@ -166,19 +172,22 @@ begin
 	if rising_edge(modulator_clk) then
 		if ri_dhb_ctrl.rstn = '0' then
 			st_dt_states := pos;
-			po2_dhb_sec_pwm <= zero_pulse;
+            po4_dhb_pwm.sec_high <= '0';
+            po4_dhb_pwm.sec_low <= '0';
 		else
 			CASE st_dt_states is 
 				WHEN pos=> 
 					dt_counter := (others => '0');
-					po2_dhb_sec_pwm <= pos_pulse;
+					po4_dhb_pwm.sec_high <= '1';
+					po4_dhb_pwm.sec_low <= '0';
 					if s_sec_pulse = '0' then
 						st_dt_states := dt1;
 					else
 						st_dt_states := pos;
 					end if;
 				WHEN dt1 =>
-					po2_dhb_sec_pwm <= zero_pulse;
+					po4_dhb_pwm.sec_high <= '0';
+					po4_dhb_pwm.sec_low <= '0';
 					if dt_counter = g_u8_deadtime then
 						st_dt_states := neg;
 					else 
@@ -186,7 +195,8 @@ begin
 						dt_counter := dt_counter + 1;
 					end if;
 				WHEN neg=>
-					po2_dhb_sec_pwm <= neg_pulse;
+					po4_dhb_pwm.sec_high <= '0';
+					po4_dhb_pwm.sec_low <= '1';
 					dt_counter := (others => '0');
 					if s_sec_pulse = '1' then
 						st_dt_states := dt2;
@@ -194,7 +204,8 @@ begin
 						st_dt_states := neg;
 					end if;
 				WHEN dt2 =>
-					po2_dhb_sec_pwm <= zero_pulse;
+					po4_dhb_pwm.sec_high <= '0';
+					po4_dhb_pwm.sec_low <= '0';
 					dt_counter := dt_counter + 1;
 					if dt_counter = g_u8_deadtime then
 						st_dt_states := pos;

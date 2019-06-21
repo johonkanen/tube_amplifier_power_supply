@@ -5,6 +5,7 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
+	use work.pfc_pkg.all;
 
     use work.onboard_ad_ctrl_pkg.all;
 
@@ -14,7 +15,7 @@ entity pfc_control is
 	    modulator_clk : in std_logic;
 
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
@@ -42,7 +43,7 @@ architecture behavioral of pfc_control is
 	    si_u12_pfc_duty : in unsigned(11 downto 0);
 	    si_u12_sym_carrier : in unsigned(11 downto 0);
 
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0)
+	    po2_pfc_pwm : out bridgeless_pfc_pwm
 	);
     end component; 
     signal r_si_u12_pfc_duty : unsigned(11 downto 0); 

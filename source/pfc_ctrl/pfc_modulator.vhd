@@ -5,6 +5,7 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
+	use work.pfc_pkg.all;
 
 entity pfc_modulator is
     port(
@@ -15,7 +16,7 @@ entity pfc_modulator is
 	    si_u12_pfc_duty : in unsigned(11 downto 0);
 	    si_u12_sym_carrier : in unsigned(11 downto 0);
 
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0)
+	    po2_pfc_pwm : out bridgeless_pfc_pwm
 	);
 end pfc_modulator;
 
@@ -37,12 +38,15 @@ begin
 		end if;
 
 		if si_u12_sym_carrier < safe_si_u12_pfc_duty then
-		    po2_pfc_pwm <= "11";
+		    po2_pfc_pwm.ac1 <= '1';
+		    po2_pfc_pwm.ac2 <= '1';
 		else 
-		    po2_pfc_pwm <= "00";
+		    po2_pfc_pwm.ac1 <= '0';
+		    po2_pfc_pwm.ac2 <= '0';
 		end if;
 	    else
-		po2_pfc_pwm <= "00";
+		    po2_pfc_pwm.ac1 <= '0';
+		    po2_pfc_pwm.ac2 <= '0';
 	    end if;
 	end if;
     end process pfc_pwm;

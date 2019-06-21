@@ -5,9 +5,10 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
-	use work.dhb_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
-    use work.top_pkg.all;
+	use work.dhb_pkg.all;
+    use work.llc_pkg.all;
+    use work.pfc_pkg.all;
 
 entity sw_supply_ctrl is
     port(
@@ -55,7 +56,7 @@ component pfc_control is
 	    modulator_clk : in std_logic;
 
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out 
 
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;

@@ -6,7 +6,7 @@ library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
-    use work.top_pkg.all;
+    use work.llc_pkg.all;
 
 entity heater_ctrl is
     port(

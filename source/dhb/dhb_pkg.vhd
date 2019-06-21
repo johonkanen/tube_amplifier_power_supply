@@ -4,6 +4,13 @@ library ieee;
 	
 package dhb_pkg is
 
+    type dhb_pwm is record
+        pri_high : std_logic;
+        pri_low : std_logic;
+        sec_high : std_logic;
+        sec_low : std_logic;
+    end record;
+
 	type rec_dhb_input is record
 		s16_phase : unsigned(15 downto 0);
 		u12_dhb_half_period : unsigned(11 downto 0);
@@ -18,12 +25,8 @@ package dhb_pkg is
 		port(
 			modulator_clk : in std_logic;
 			ri_dhb_ctrl : in rec_dhb_input;
-			po2_dhb_pri_pwm : out std_logic_vector(1 downto 0);
-			po2_dhb_sec_pwm : out std_logic_vector(1 downto 0)
+            po4_dhb_pwm : out dhb_pwm
 		);
 	end component;
 
-	constant pos_pulse : std_logic_vector(1 downto 0) := "10";
-	constant neg_pulse : std_logic_vector(1 downto 0) := "01";
-	constant zero_pulse : std_logic_vector(1 downto 0) := "00";
 end dhb_pkg;
