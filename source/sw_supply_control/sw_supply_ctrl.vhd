@@ -56,7 +56,7 @@ component pfc_control is
 	    modulator_clk : in std_logic;
 
 -- PFC pwm
-	    po2_pfc_pwm : out 
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
@@ -79,8 +79,7 @@ component heater_ctrl is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_dhb_pwm : out hb_llc_pwm;
 -- onboard ad buses
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
@@ -109,10 +108,10 @@ jihuu.u12_dhb_half_period <= 12d"236";
 
 dhb_modulator : phase_modulator
 generic map(8d"28")
-port map(core_clk, jihuu, po2_dhb_pri_pwm, po2_dhb_sec_pwm);
+port map(core_clk, jihuu, po4_dhb_pwm);
 
 heater_control : heater_ctrl 
-    port map( core_clk, core_clk, po2_ht_pri_pwm, po2_ht_sec_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map( core_clk, core_clk, po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
  pfc_control_ins : pfc_control
     port map(
@@ -238,7 +237,6 @@ test_dhb : process(core_clk)
 	end if;
     end process heater_ad_trigger;
 -- aux pwm
-    po_aux_pwm <= '0';
 
 -- pfc pwm
     --po2_pfc_pwm <= "00";

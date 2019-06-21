@@ -16,6 +16,9 @@ create_project -in_memory -part $partNum
 read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_adc_wrapper.vhd]
 read_vhdl -vhdl2008 [ glob ../source/spartan_7/s7_specifics.vhd]
 read_vhdl -vhdl2008 [ glob ../source/top/top.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/pfc_ctrl/pfc_pkg.vhd]
+read_vhdl -vhdl2008 [ glob ../source/dhb/dhb_pkg.vhd]
+read_vhdl -vhdl2008 [ glob ../source/heater_ctrl/llc_pkg.vhd]
 
 # dhb sources
 read_vhdl -vhdl2008 [ glob ../source/dhb/dhb_pkg.vhd ]
