@@ -79,6 +79,9 @@ set_input_jitter [get_clocks -of_objects [get_ports xclk32mhz]] 0.313
 current_instance core_clocks/inst
 set_property PHASESHIFT_MODE WAVEFORM [get_cells -hierarchical *adv*]
 
+set_property CFGBVS VCC0
+set_property CONFIG_VOLTAGE 3.3V
+
 
 ####################################################################################
 # Constraints from file : 'constraints.xdc'
