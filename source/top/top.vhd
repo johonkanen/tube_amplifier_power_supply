@@ -4,6 +4,8 @@ library ieee;
 
 library work;
     use work.vendor_specifics_pkg.all;
+    use work.top_pkg.all;
+    use work.led_driver_pkg.all;
 
 entity top is
     port(
@@ -14,16 +16,14 @@ entity top is
 	    po_bypass_relay : out std_logic;	
 
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
 
 -- DBH pwm
-	    po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
-			
+        po4_dhb_pwm : out dhb_pwm;
+
 -- uart rx and tx
 	    pi_uart_rx : in std_logic;
 	    po_uart_tx : out std_logic;
@@ -51,9 +51,9 @@ entity top is
 	    pi_ext_ad2_sdata : in std_logic;
 
 -- rgb status leds driver signals, active low
-	    po3_led1 : out std_logic_vector(2 downto 0);
-	    po3_led2 : out std_logic_vector(2 downto 0);
-	    po3_led3 : out std_logic_vector(2 downto 0)
+	    po3_led1 : out rgb_led;
+	    po3_led2 : out rgb_led;
+	    po3_led3 : out rgb_led
         );
 end top;
 
@@ -67,30 +67,25 @@ architecture behavioral of top is
     signal r_po_adb_cs: std_logic;
 
 component system_control is
-   port(
-		core_clk : in std_logic;
-		modulator_clk : in std_logic;
-		modulator_clk2 : in std_logic;
+    port(
+	    core_clk : in std_logic;
+	    modulator_clk : in std_logic;
+	    modulator_clk2 : in std_logic;
 
-		si_pll_lock : in std_logic;
-		
+	    si_pll_lock : in std_logic;
+	    
 -- relay bypass
-		po_bypass_relay : out std_logic;	
-
--- aux pwm
-		po_aux_pwm : out std_logic;
+	    po_bypass_relay : out std_logic;	
 
 -- PFC pwm
-		po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 -- heater pwm
-		po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-		po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
 
 -- DBH pwm
-		po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-		po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
-			
+        po4_dhb_pwm : out dhb_pwm;
+
 -- uart rx and tx
 	    pi_uart_rx : in std_logic;
 	    po_uart_tx : out std_logic;
@@ -113,14 +108,15 @@ component system_control is
 	    pi_ext_ad1_sdata : in std_logic;
 
 -- ext ad converter 2 signals
-	    po_ext_ad2_cs : out std_logic;
-	    po_ext_ad2_clk : out std_logic;
-	    pi_ext_ad2_sdata : in std_logic;
+        po_ext_ad2_cs : out std_logic;
+        po_ext_ad2_clk : out std_logic;
+        pi_ext_ad2_sdata : in std_logic;
+
 
 -- rgb status leds driver signals, active low
-	    po3_led1 : out std_logic_vector(2 downto 0);
-	    po3_led2 : out std_logic_vector(2 downto 0);
-	    po3_led3 : out std_logic_vector(2 downto 0)
+	    po3_led1 : out rgb_led;
+	    po3_led2 : out rgb_led;
+	    po3_led3 : out rgb_led
          );
 end component;
 
@@ -138,60 +134,55 @@ core_clocks : main_pll
 
 main_system_control : system_control 
     port map(
-			core_clk => clk_256mhz, 
-			modulator_clk => clk_256mhz,
-			modulator_clk2 => clk_256mhz,
+        clk_256mhz, 
+        clk_256mhz,
+        clk_256mhz,
 
-			si_pll_lock => std_pll_lock,
+        std_pll_lock,
 			
 -- relay bypass
-		po_bypass_relay => po_bypass_relay, 
-
--- aux pwm
-		po_aux_pwm => open,
+		po_bypass_relay, 
 
 -- PFC pwm
-		po2_pfc_pwm => po2_pfc_pwm,
+	    po2_pfc_pwm,
 
 -- heater pwm
-		po2_ht_pri_pwm => po2_ht_pri_pwm,
-		po2_ht_sec_pwm => po2_ht_sec_pwm,
+        po4_ht_pwm,
 
 -- DBH pwm
-		po2_DHB_pri_pwm => po2_DHB_pri_pwm,
-		po2_DHB_sec_pwm => po2_DHB_sec_pwm,
+        po4_dhb_pwm,
 			
 -- uart rx and tx
-	    pi_uart_rx => pi_uart_rx,
-	    po_uart_tx => po_uart_tx,
+	    pi_uart_rx,
+	    po_uart_tx,
 
 -- ad converter A signals
-	    po_ada_cs => r_po_ada_cs,
-	    po_ada_clk => po_ada_clk,
-	    pi_ada_sdata => pi_ada_sdata,
-	    po3_ada_muxsel => po3_ada_muxsel,
+	    r_po_ada_cs,
+	    po_ada_clk,
+	    pi_ada_sdata,
+	    po3_ada_muxsel,
 
 -- ad converter B signals
-	    po_adb_cs => r_po_adb_cs,
-	    po_adb_clk => po_adb_clk, 
-	    pi_adb_sdata => pi_adb_sdata,
-	    po3_adb_muxsel => po3_adb_muxsel,
+	    r_po_adb_cs,
+	    po_adb_clk, 
+	    pi_adb_sdata,
+	    po3_adb_muxsel,
 
 -- ext ad converter 1 signals
-	    po_ext_ad1_cs => po_ext_ad1_cs, 
-	    po_ext_ad1_clk => po_ext_ad1_clk, 
-	    pi_ext_ad1_sdata => pi_ext_ad1_sdata, 
+	    po_ext_ad1_cs, 
+        po_ext_ad1_clk, 
+	    pi_ext_ad1_sdata, 
 
 -- ext ad converter 2 signals
-	    po_ext_ad2_cs => po_ext_ad2_cs, 
-	    po_ext_ad2_clk => po_ext_ad2_clk, 
-	    pi_ext_ad2_sdata => pi_ext_ad2_sdata, 
+	    po_ext_ad2_cs, 
+	    po_ext_ad2_clk, 
+	    pi_ext_ad2_sdata, 
 	    
 
 -- rgb status leds driver signals, active low
-	    po3_led1 => po3_led1,
-	    po3_led2 => po3_led2, 
-	    po3_led3 => po3_led3 
+	    po3_led1,
+	    po3_led2, 
+	    po3_led3 
          );
 
 

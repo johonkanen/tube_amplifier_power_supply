@@ -7,22 +7,23 @@ library work;
 	use work.ad_bus_pkg.all;
 	use work.dhb_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
+    use work.top_pkg.all;
 
 entity sw_supply_ctrl is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
--- aux pwm
-	    po_aux_pwm : out std_logic;
+
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
+
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
+
 -- DBH pwm
-	    po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_dhb_pwm : out dhb_pwm;
+
 -- onboard ad data in
         si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
         si_adb_ctrl : in rec_onboard_ad_ctrl_signals;

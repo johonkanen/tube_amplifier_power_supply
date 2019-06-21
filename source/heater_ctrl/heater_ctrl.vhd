@@ -5,22 +5,24 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
-
     use work.onboard_ad_ctrl_pkg.all;
+    use work.top_pkg.all;
 
 entity heater_ctrl is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
+
 -- onboard ad buses
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
+
 -- ext ad converter data, in ad bus clock domain
 	    si16_ext_ad1_data : in std_logic_vector(15 downto 0);
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
 	    si16_uart_rx_data	: in std_logic_vector(15 downto 0);
@@ -38,9 +40,8 @@ component freq_modulator is
 	    rstn : in std_logic;
 
 	    piu12_per_ctrl : in unsigned(11 downto 0);
-
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0)
+-- heater pwm
+        po4_ht_pwm : out hb_llc_pwm
 	);
 end component;
  
@@ -50,7 +51,7 @@ signal r_piu12_per_ctrl  : unsigned(11 downto 0);
 begin
 
 llc_modulator : freq_modulator
-    port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po2_ht_pri_pwm, po2_ht_sec_pwm);
+    port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
 
 
 test_heater_pwm : process(core_clk)

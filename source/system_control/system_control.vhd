@@ -6,6 +6,7 @@ library work;
 	use work.sys_ctrl_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
     use work.led_driver_pkg.all;
+    use work.top_pkg.all;
 
 
 entity system_control is
@@ -13,27 +14,21 @@ entity system_control is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
-    
 
 	    si_pll_lock : in std_logic;
 	    
 -- relay bypass
 	    po_bypass_relay : out std_logic;	
 
--- aux pwm
-	    po_aux_pwm : out std_logic;
-
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
 
 -- DBH pwm
-	    po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
-			
+        po4_dhb_pwm : out dhb_pwm;
+
 -- uart rx and tx
 	    pi_uart_rx : in std_logic;
 	    po_uart_tx : out std_logic;
@@ -55,15 +50,10 @@ entity system_control is
 	    po_ext_ad1_clk : out std_logic;
 	    pi_ext_ad1_sdata : in std_logic;
 
--- ext ad converter 2 signals
-	    po_ext_ad2_cs : out std_logic;
-	    po_ext_ad2_clk : out std_logic;
-	    pi_ext_ad2_sdata : in std_logic;
-
 -- rgb status leds driver signals, active low
-	    po3_led1 : out std_logic_vector(2 downto 0);
-	    po3_led2 : out std_logic_vector(2 downto 0);
-	    po3_led3 : out std_logic_vector(2 downto 0)
+	    po3_led1 : out rgb_led;
+	    po3_led2 : out rgb_led;
+	    po3_led3 : out rgb_led
          );
 end system_control;
 
@@ -112,9 +102,9 @@ component data_control is
 	    pi_ext_ad1_sdata : in std_logic;
 
 -- ext ad converter 2 signals
-	    po_ext_ad2_cs : out std_logic;
-	    po_ext_ad2_clk : out std_logic;
-	    pi_ext_ad2_sdata : in std_logic;
+	    po3_led1 : out rgb_led;
+	    po3_led2 : out rgb_led;
+	    po3_led3 : out rgb_led;
 	    
 
         so_ada_ctrl : out rec_onboard_ad_ctrl_signals;

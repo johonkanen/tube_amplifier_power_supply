@@ -5,6 +5,7 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
+	use work.top_pkg.all;
 
 -- pi out function in matlab simulation 853+1422+y*1422; y = [-1, 1]
 
@@ -21,9 +22,8 @@ entity freq_modulator is
 	    rstn : in std_logic;
 
 	    piu12_per_ctrl : in unsigned(11 downto 0);
+        po4_ht_pwm : out hb_llc_pwm
 
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0)
 	);
 end freq_modulator;
 
@@ -183,12 +183,12 @@ begin
 			dt_states <= pos;
 	    end CASE;
 	if rstn = '1' then
-	    po2_ht_pri_pwm <= r_po2_ht_pri_pwm;
-	    po2_ht_sec_pwm(0) <= r_po2_ht_pri_pwm(0);
-	    po2_ht_sec_pwm(1) <= r_po2_ht_pri_pwm(1);
+	    po4_ht_pwm.pri_high <= r_po2_ht_pri_pwm(0);
+	    po4_ht_pwm.pri_low <= r_po2_ht_pri_pwm(1);
+	    po4_ht_pwm.sync1 <= r_po2_ht_pri_pwm(0);
+	    po4_ht_pwm.sync2 <= r_po2_ht_pri_pwm(1);
 	else
-	    po2_ht_pri_pwm <= "00";
-	    po2_ht_sec_pwm <= "00";
+        po4_ht_pwm <= (others => '0');
 	end if;
 
 	end if;
