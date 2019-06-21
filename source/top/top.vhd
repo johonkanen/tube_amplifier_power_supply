@@ -124,7 +124,7 @@ end component;
 
 
 begin
-core_clocks : main_pll 
+core_clocks : pll_256mhz 
 	port map
 	(
 		clk_256mhz,
