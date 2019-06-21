@@ -5,7 +5,7 @@ library ieee;
 library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
-	use work.top_pkg.all;
+	use work.llc_pkg.all;
 
 -- pi out function in matlab simulation 853+1422+y*1422; y = [-1, 1]
 

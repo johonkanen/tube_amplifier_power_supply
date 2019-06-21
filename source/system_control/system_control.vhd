@@ -108,11 +108,6 @@ component data_control is
 	    po_ext_ad2_clk : out std_logic;
 	    pi_ext_ad2_sdata : in std_logic;
 
-	    po3_led1 : out rgb_led;
-	    po3_led2 : out rgb_led;
-	    po3_led3 : out rgb_led;
-	    
-
         so_ada_ctrl : out rec_onboard_ad_ctrl_signals;
         so_adb_ctrl : out rec_onboard_ad_ctrl_signals;
 	    

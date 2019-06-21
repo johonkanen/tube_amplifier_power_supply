@@ -4,7 +4,6 @@ library ieee;
 
 library work;
 	use work.dhb_pkg.all;
-	use work.top_pkg.all;
 
 entity phase_modulator is
 	generic(

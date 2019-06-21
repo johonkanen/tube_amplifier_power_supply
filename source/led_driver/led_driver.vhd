@@ -5,7 +5,6 @@ library ieee;
 
 library work;
     use work.led_driver_pkg.all;
-    use work.top_pkg.all;
 
 entity led_driver is
     port(

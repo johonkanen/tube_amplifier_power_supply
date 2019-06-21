@@ -4,8 +4,10 @@ library ieee;
 
 library work;
     use work.vendor_specifics_pkg.all;
-    use work.top_pkg.all;
     use work.led_driver_pkg.all;
+	use work.dhb_pkg.all;
+    use work.llc_pkg.all;
+    use work.pfc_pkg.all;
 
 entity top is
     port(

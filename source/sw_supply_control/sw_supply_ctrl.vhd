@@ -79,7 +79,7 @@ component heater_ctrl is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 -- heater pwm
-        po4_dhb_pwm : out hb_llc_pwm;
+        po4_ht_pwm : out hb_llc_pwm;
 -- onboard ad buses
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;

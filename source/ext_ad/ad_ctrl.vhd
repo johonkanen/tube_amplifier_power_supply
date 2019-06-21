@@ -39,11 +39,6 @@ end ad_control;
 architecture rtl of ad_control is
 
     component adc_wrapper is
-	generic(
-				g_u8_clk_cnt : unsigned(7 downto 0);
-				g_u8_clks_per_conversion : unsigned(7 downto 0);
-				g_sh_counter_latch : unsigned(7 downto 0)
-			);
 	port( 
 			si_spi_clk 	 : in std_logic; 
             si_pll_lock : in std_logic;

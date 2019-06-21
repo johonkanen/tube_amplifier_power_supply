@@ -6,6 +6,9 @@ library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
+    use work.dhb_pkg.all;
+    use work.llc_pkg.all;
+    use work.pfc_pkg.all;
 
     use work.vendor_specifics_pkg.all;
 
@@ -16,19 +19,14 @@ entity data_control is
 	    modulator_clk2 : in std_logic;
         si_pll_lock : in std_logic;
 
--- aux pwm
-	    po_aux_pwm : out std_logic;
-
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
 
 -- DBH pwm
-	    po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_dhb_pwm : out dhb_pwm;
 			
 -- uart rx and tx
 	    pi_uart_rx : in std_logic;
@@ -147,16 +145,15 @@ component sw_supply_ctrl is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
--- aux pwm
-	    po_aux_pwm : out std_logic;
 -- PFC pwm
-	    po2_pfc_pwm : out std_logic_vector(1 downto 0);
+	    po2_pfc_pwm : out bridgeless_pfc_pwm;
+
 -- heater pwm
-	    po2_ht_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_ht_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_ht_pwm : out hb_llc_pwm;
+
 -- DBH pwm
-	    po2_DHB_pri_pwm : out std_logic_vector(1 downto 0);
-	    po2_DHB_sec_pwm : out std_logic_vector(1 downto 0);
+        po4_dhb_pwm : out dhb_pwm;
+
 -- onboard ad data in
         si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
         si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
@@ -276,7 +273,7 @@ ext_adc : ext_ad_control
 	);
 
 supply_ctrl_layer : sw_supply_ctrl
-port map(core_clk, modulator_clk, modulator_clk2, open, po2_pfc_pwm, po2_ht_pri_pwm, po2_ht_sec_pwm, po2_dhb_pri_pwm, po2_dhb_sec_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, open, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
+port map(core_clk, modulator_clk, modulator_clk2, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, open, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
     test_data_streaming : process(core_clk)
 	variable jeemux : unsigned(2 downto 0);
