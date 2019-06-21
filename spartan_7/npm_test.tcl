@@ -68,4 +68,5 @@ report_timing_summary -file $outputDir/post_route_timing_summary.rpt
 report_power -file $outputDir/post_route_power.rpt
 report_drc -file $outputDir/post_imp_drc.rpt
 write_verilog -force $outputDir/cpu_impl_netlist.v -mode timesim -sdf_anno true
+set_property BITSTREAM.Config.SPI_BUSWIDTH 4 [current_design]
 write_bitstream -force $outputDir/testibitstream.bit
