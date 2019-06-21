@@ -29,5 +29,4 @@ startgroup
     program_hw_cfgmem -hw_cfgmem [ get_property PROGRAM.HW_CFGMEM [lindex [get_hw_devices xc7s15_0] 0]]
 endgroup
 boot_hw_device  [lindex [get_hw_devices xc7s15_0] 0]
-refresh_hw_device [lindex [get_hw_devices xc7s15_0] 0]
 disconnect_hw_server
