@@ -1,5 +1,7 @@
 /output_files/greybox_tmp/
 /spartan_7/.Xil/
+*.mcs
+*.prm
 *.html
 *.swn
 *.xrf
