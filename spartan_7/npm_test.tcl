@@ -38,7 +38,11 @@ read_vhdl -vhdl2008 [ glob ../source/onboard_ad_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/pfc_ctrl/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/sw_supply_control/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/system_control/*.vhd ]
-read_vhdl -vhdl2008 [ glob ../source/uart/*.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/uart/uart.vhd ]
+read_vhdl -vhdl2008 [ glob ../source/uart/uart_event_ctrl.vhd]
+read_vhdl -vhdl2008 [ glob ../source/uart/uart_rx.vhd]
+read_vhdl -vhdl2008 [ glob ../source/uart/uart_tx.vhd]
+read_vhdl -vhdl2008 [ glob ../source/uart/command_shell.vhd]
 read_ip .srcs/sources_1/ip/pll_256mhz/pll_256mhz.xci
 read_xdc constraints/constraints.xdc
 

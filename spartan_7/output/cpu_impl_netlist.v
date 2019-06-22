@@ -1,7 +1,7 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Sat Jun 22 12:04:08 2019
+// Date        : Sat Jun 22 21:35:56 2019
 // Host        : Jari-Pelikone running 64-bit Service Pack 1  (build 7601)
 // Command     : write_verilog -force ./output/cpu_impl_netlist.v -mode timesim -sdf_anno true
 // Design      : top

@@ -1,0 +1,1 @@
+vivado -mode tcl
