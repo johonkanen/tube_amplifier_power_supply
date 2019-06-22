@@ -68,6 +68,10 @@ report_timing_summary -file $outputDir/post_route_timing_summary.rpt
 report_power -file $outputDir/post_route_power.rpt
 report_drc -file $outputDir/post_imp_drc.rpt
 write_verilog -force $outputDir/cpu_impl_netlist.v -mode timesim -sdf_anno true
+
+#VCCO(zero) = IO = 2.5V || 3.3V, GND IO bank0 = 1.8v
+set_property CFGBVS VCCO [current_design]
+set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property BITSTREAM.Config.SPI_BUSWIDTH 4 [current_design]
 set_property BITSTREAM.CONFIG.CONFIGRATE 33 [current_design]
 write_bitstream -force $outputDir/testibitstream.bit
