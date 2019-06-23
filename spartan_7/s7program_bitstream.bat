@@ -1,1 +1,1 @@
-vivado -mode tcl -source program_bitstream_file.tcl
+vivado -mode tcl -source ./tcl_scripts/program_bitstream_file.tcl
