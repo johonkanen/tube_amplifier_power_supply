@@ -46,6 +46,7 @@ read_vhdl -vhdl2008 [ glob ../source/uart/command_shell.vhd]
 
 source ./tcl_scripts/ipgen_main_pll.tcl
 source ./tcl_scripts/ipgen_mult_18x18.tcl
+source ./tcl_scripts/ipgen_ab_sum_c.tcl
 
 read_xdc constraints/constraints.xdc
 
