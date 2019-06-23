@@ -7,6 +7,7 @@ library work;
 	use work.ad_bus_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
     use work.llc_pkg.all;
+    use work.tubepsu_commands_pkg.all;
 
 entity heater_ctrl is
     port(
@@ -61,15 +62,15 @@ test_heater_pwm : process(core_clk)
 		CASE si16_uart_rx_data(15 downto 12) is
 		    WHEN x"0" =>
 			CASE si16_uart_rx_data(11 downto 0) is
-			    WHEN 12d"20" =>
+			    WHEN c_llc_start =>
 				r_si_rstn <= '1';
-			    WHEN 12d"21" =>
+			    WHEN c_llc_stop =>
 				r_si_rstn <= '0';
 			    WHEN others =>
 				-- do nothing
 			end CASE;
 
-		    WHEN x"2" =>
+		    WHEN c_llc_freq =>
 			r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); 
 		    WHEN others =>
 			-- do nothing

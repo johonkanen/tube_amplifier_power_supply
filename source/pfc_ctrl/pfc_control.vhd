@@ -6,6 +6,7 @@ library work;
 	use work.sys_ctrl_pkg.all;
 	use work.ad_bus_pkg.all;
 	use work.pfc_pkg.all;
+	use work.tubepsu_commands_pkg.all;
 
     use work.onboard_ad_ctrl_pkg.all;
 
@@ -88,17 +89,17 @@ begin
 	if rising_edge(core_clk) then
 	    if r_si_uart_ready_event = '1' then
 		CASE r_si16_uart_rx_data(15 downto 12) is
-		    WHEN x"0" =>
+		    WHEN c_uart_command =>
 			CASE r_si16_uart_rx_data(11 downto 0) is
-			    WHEN 12d"10" =>
+			    WHEN c_pfc_start =>
 				r_si_rstn <= '1';
-			    WHEN 12d"11" =>
+			    WHEN c_pfc_stop =>
 				r_si_rstn <= '0';
 			    WHEN others =>
 				-- do nothing
 			end CASE;
 
-		    WHEN x"1" =>
+		    WHEN c_pfc_duty =>
 			r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
 		    WHEN others =>
 			-- do nothing
