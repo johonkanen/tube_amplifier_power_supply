@@ -80,7 +80,7 @@ begin
 		    if rstn = '0' then
 			st_startup <= init;
 		    else
-			if u12_deadtime = 32 then
+			if u12_deadtime = 64 then
 				st_startup <= ready;
 			else
 				st_startup <= rampup;

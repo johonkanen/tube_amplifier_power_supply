@@ -104,10 +104,10 @@ end component;
 	signal jihuu : rec_dhb_input;
 begin
 
-jihuu.u12_dhb_half_period <= 12d"236";
+jihuu.u12_dhb_half_period <= 12d"472";
 
 dhb_modulator : phase_modulator
-generic map(8d"28")
+generic map(8d"56")
 port map(core_clk, jihuu, po4_dhb_pwm);
 
 heater_control : heater_ctrl 
