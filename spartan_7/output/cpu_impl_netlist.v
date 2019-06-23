@@ -1,7 +1,7 @@
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
-// Date        : Sun Jun 23 11:10:54 2019
+// Date        : Sun Jun 23 11:22:35 2019
 // Host        : Jari-Pelikone running 64-bit Service Pack 1  (build 7601)
 // Command     : write_verilog -force ./output/cpu_impl_netlist.v -mode timesim -sdf_anno true
 // Design      : top
@@ -9040,7 +9040,7 @@ module phase_modulator
         .R(\u12_phase_delay[0]_i_1_n_0 ));
 endmodule
 
-module pll_256mhz
+module pll_1x256mhz
    (clk_out1,
     locked,
     clk_in1);
@@ -9052,13 +9052,13 @@ module pll_256mhz
   wire clk_out1;
   wire locked;
 
-  pll_256mhz_clk_wiz inst
+  pll_1x256mhz_clk_wiz inst
        (.clk_in1(clk_in1),
         .clk_out1(clk_out1),
         .locked(locked));
 endmodule
 
-module pll_256mhz_clk_wiz
+module pll_1x256mhz_clk_wiz
    (clk_out1,
     locked,
     clk_in1);
@@ -9067,11 +9067,11 @@ module pll_256mhz_clk_wiz
   input clk_in1;
 
   wire clk_in1;
-  wire clk_in1_pll_256mhz;
+  wire clk_in1_pll_1x256mhz;
   wire clk_out1;
-  wire clk_out1_pll_256mhz;
-  wire clkfbout_buf_pll_256mhz;
-  wire clkfbout_pll_256mhz;
+  wire clk_out1_pll_1x256mhz;
+  wire clkfbout_buf_pll_1x256mhz;
+  wire clkfbout_pll_1x256mhz;
   wire locked;
   wire NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED;
@@ -9092,8 +9092,8 @@ module pll_256mhz_clk_wiz
 
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkf_buf
-       (.I(clkfbout_pll_256mhz),
-        .O(clkfbout_buf_pll_256mhz));
+       (.I(clkfbout_pll_1x256mhz),
+        .O(clkfbout_buf_pll_1x256mhz));
   (* BOX_TYPE = "PRIMITIVE" *) 
   (* CAPACITANCE = "DONT_CARE" *) 
   (* IBUF_DELAY_VALUE = "0" *) 
@@ -9102,10 +9102,10 @@ module pll_256mhz_clk_wiz
     .IOSTANDARD("DEFAULT")) 
     clkin1_ibufg
        (.I(clk_in1),
-        .O(clk_in1_pll_256mhz));
+        .O(clk_in1_pll_1x256mhz));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
-       (.I(clk_out1_pll_256mhz),
+       (.I(clk_out1_pll_1x256mhz),
         .O(clk_out1));
   (* BOX_TYPE = "PRIMITIVE" *) 
   MMCME2_ADV #(
@@ -9158,15 +9158,15 @@ module pll_256mhz_clk_wiz
     .SS_MOD_PERIOD(10000),
     .STARTUP_WAIT("FALSE")) 
     mmcm_adv_inst
-       (.CLKFBIN(clkfbout_buf_pll_256mhz),
-        .CLKFBOUT(clkfbout_pll_256mhz),
+       (.CLKFBIN(clkfbout_buf_pll_1x256mhz),
+        .CLKFBOUT(clkfbout_pll_1x256mhz),
         .CLKFBOUTB(NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED),
         .CLKFBSTOPPED(NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED),
-        .CLKIN1(clk_in1_pll_256mhz),
+        .CLKIN1(clk_in1_pll_1x256mhz),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
         .CLKINSTOPPED(NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED),
-        .CLKOUT0(clk_out1_pll_256mhz),
+        .CLKOUT0(clk_out1_pll_1x256mhz),
         .CLKOUT0B(NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED),
         .CLKOUT1(NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED),
         .CLKOUT1B(NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED),
@@ -11013,7 +11013,7 @@ module system_control
         .R(1'b0));
 endmodule
 
-(* ECO_CHECKSUM = "f22c1ac" *) 
+(* ECO_CHECKSUM = "d3ba1485" *) 
 (* NotValidForBitStream *)
 module top
    (xclk32mhz,
@@ -11174,7 +11174,7 @@ module top
 initial begin
  $sdf_annotate("cpu_impl_netlist.sdf",,,,"tool_control");
 end
-  pll_256mhz core_clocks
+  pll_1x256mhz core_clocks
        (.clk_in1(xclk32mhz),
         .clk_out1(clk_256mhz),
         .locked(std_pll_lock));

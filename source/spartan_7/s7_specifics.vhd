@@ -4,7 +4,7 @@ use IEEE.numeric_std.ALL;
 
 package vendor_specifics_pkg is
 
-   component pll_256mhz is
+   component pll_1x256mhz is
    port (
        clk_out1: out  std_logic; 
        locked: out  std_logic; 

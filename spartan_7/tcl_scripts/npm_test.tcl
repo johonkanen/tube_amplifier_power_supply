@@ -44,7 +44,7 @@ read_vhdl -vhdl2008 [ glob ../source/uart/uart_rx.vhd]
 read_vhdl -vhdl2008 [ glob ../source/uart/uart_tx.vhd]
 read_vhdl -vhdl2008 [ glob ../source/uart/command_shell.vhd]
 
-source ./tcl_scripts/gen_ip.tcl
+source ./tcl_scripts/ipgen_main_pll.tcl
 
 read_xdc constraints/constraints.xdc
 
