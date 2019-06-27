@@ -1,5 +1,15 @@
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
 |       Launch Clock       |      Capture Clock       |                                                 Pin                                                      |
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |               main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/clk_buffer_reg/D|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |               main_system_control/system_data_control/onboard_ad_control/adb/onboard_adc/clk_buffer_reg/D|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |              main_system_control/system_data_control/onboard_ad_control/adb/onboard_adc/b_spi_rx_reg[8]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |             main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_reg[13]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |             main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_reg[15]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |             main_system_control/system_data_control/onboard_ad_control/adb/onboard_adc/b_spi_rx_reg[10]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |             main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_reg[11]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |             main_system_control/system_data_control/onboard_ad_control/adb/onboard_adc/b_spi_rx_reg[13]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |              main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_reg[6]/R|
+|    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |              main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_reg[0]/R|
 |    clk_out1_pll_1x256mhz |    clk_out1_pll_1x256mhz |                                                                    main_system_control/dly_complete_reg/D|
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+

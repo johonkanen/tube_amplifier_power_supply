@@ -35,6 +35,7 @@ component ext_ad_spi3w is
 			);
 	port( 
 		si_spi_clk 	 : in std_logic; 
+        si_rstn : in std_logic;
 		 
 		-- physical signals to ext ad converter
 		po_spi_cs 	 : out std_logic;
@@ -90,6 +91,7 @@ onboard_adc : ext_ad_spi3w
     generic map(8d"10",8d"14",8d"18")
     port map(
 			si_spi_clk,
+            si_spi_clk,
 			po_spi_cs,
 			po_spi_clk_out,
 			pi_spi_serial, 
