@@ -145,7 +145,6 @@ begin
             po4_ht_pwm.pri_low <= r_po2_ht_pri_pwm(1);
             po4_ht_pwm.sync1 <= r_po2_ht_sec_pwm(0);
             po4_ht_pwm.sync2 <= r_po2_ht_sec_pwm(1);
-            sec_pwm_cntr := (others => '0');
             CASE dt_states is
                 WHEN pos =>
                     -- high gate on
@@ -207,6 +206,7 @@ begin
             end CASE;
         else
             po4_ht_pwm <= (others => '0');
+            sec_pwm_cntr := (others => '0');
         end if;
 
 	end if;

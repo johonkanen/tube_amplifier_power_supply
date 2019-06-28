@@ -55,6 +55,7 @@ component pfc_control is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
+        si_rstn : in std_logic;
 
 -- PFC pwm
 	    po2_pfc_pwm : out bridgeless_pfc_pwm;
@@ -119,6 +120,7 @@ heater_control : heater_ctrl
     port map(
 	    core_clk => core_clk,
 	    modulator_clk => core_clk,
+        si_rstn => si_rstn,
 
 -- PFC pwm
 	    po2_pfc_pwm => po2_pfc_pwm,
@@ -153,7 +155,7 @@ test_dhb : process(core_clk)
 			end CASE;
 
 		    WHEN x"3" =>
-			jihuu.s16_phase(11 downto 0)  <= unsigned(si16_uart_rx_data(11 downto 0)); 
+                jihuu.s16_phase(11 downto 0)  <= unsigned(si16_uart_rx_data(11 downto 0)); 
 		    WHEN others =>
 			-- do nothing
 		end CASE;
@@ -168,57 +170,56 @@ test_dhb : process(core_clk)
     begin
 	if rising_edge(core_clk) then
 	    -- carrier generation, 948*2 @ 256mhz = 135kHz
-	    --if rstn = '1' then
+	    if si_rstn = '1' then
 
-		CASE dir is
-			WHEN up =>
-			    u12_carrier <= u12_carrier + 1;
-			    if u12_carrier >= 424 then
-				    dir := down;
-			    else
-				    dir := up;
-			    end if;
+            CASE dir is
+                WHEN up =>
+                    u12_carrier <= u12_carrier + 1;
+                    if u12_carrier >= 424 then
+                        dir := down;
+                    else
+                        dir := up;
+                    end if;
 
-			    CASE u12_carrier  is
+                    CASE u12_carrier  is
 
-				WHEN 12d"163" => 
-				    to_ada_triggers <= aka_trig_aux;
-				    to_adb_triggers <= aka_trig_vac;
+                    WHEN 12d"163" => 
+                        to_ada_triggers <= aka_trig_aux;
+                        to_adb_triggers <= aka_trig_vac;
 
-				WHEN 12d"6" => -- tested with oscilloscope, note old ad driver
-				    to_ada_triggers <= aka_trig_PFC_i2;
-				    to_adb_triggers <= aka_trig_PFC_i1;
+                    WHEN 12d"6" => -- tested with oscilloscope, note old ad driver
+                        to_ada_triggers <= aka_trig_PFC_i2;
+                        to_adb_triggers <= aka_trig_PFC_i1;
 
-				WHEN others => 
-				    to_ada_triggers <= (others => '0');
-				    to_adb_triggers <= (others => '0');
-			    end CASE;
+                    WHEN others => 
+                        to_ada_triggers <= (others => '0');
+                        to_adb_triggers <= (others => '0');
+                    end CASE;
 
-			WHEN down =>
-			    u12_carrier <= u12_carrier - 1;
-			    if u12_carrier = 1 then
-				    dir := up;
-			    else
-				    dir := down;
-			    end if;
+                WHEN down =>
+                    u12_carrier <= u12_carrier - 1;
+                    if u12_carrier = 1 then
+                        dir := up;
+                    else
+                        dir := down;
+                    end if;
 
-			CASE u12_carrier  is
+                CASE u12_carrier  is
 
-			    WHEN 12d"163" => 
-				to_adb_triggers <= aka_trig_DC_link;
+                    WHEN 12d"163" => 
+                    to_adb_triggers <= aka_trig_DC_link;
 
-			    WHEN others => 
-				to_ada_triggers <= (others => '0');
-				to_adb_triggers <= (others => '0');
-			end CASE;
-
-
+                    WHEN others => 
+                    to_ada_triggers <= (others => '0');
+                    to_adb_triggers <= (others => '0');
+                end CASE;
 			WHEN others =>
 			    dir := up;
 		    end CASE;
-		--else -- rstn = '0'
-		    --carrier <= (others=>'0');
-	  --  end if;
+		else -- rstn = '0'
+		    u12_carrier <= (others=>'0');
+            dir := up;
+	    end if;
 	end if;
     end process sym_carrier;
 

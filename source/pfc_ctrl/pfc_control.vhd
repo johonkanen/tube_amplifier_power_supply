@@ -14,6 +14,7 @@ entity pfc_control is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
+        si_rstn : in std_logic;
 
 -- PFC pwm
 	    po2_pfc_pwm : out bridgeless_pfc_pwm;
@@ -62,52 +63,43 @@ begin
     port map(
 	    modulator_clk => modulator_clk,
 	    dsp_clk => core_clk,
-	    si_rstn => stable_si_rstn,
+	    si_rstn => r_si_rstn,
 
-	    si_u12_pfc_duty =>  stable_si_u12_pfc_duty,
+	    si_u12_pfc_duty =>  r_si_u12_pfc_duty,
 	    si_u12_sym_carrier => ui12_carrier,
 
 	    po2_pfc_pwm => po2_pfc_pwm
 	);
 
-    duty_clock_transfer : process(modulator_clk)
-
-    begin
-	if rising_edge(modulator_clk) then
-	 unstable_si_u12_pfc_duty <= r_si_u12_pfc_duty;
-	 stable_si_u12_pfc_duty <= unstable_si_u12_pfc_duty;
-	 unstable_si_rstn <= r_si_rstn;
-	 stable_si_rstn <= unstable_si_rstn;
-
-	end if;
-
-
-    end process duty_clock_transfer;
-
     test_pfc_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
-	    if r_si_uart_ready_event = '1' then
-		CASE r_si16_uart_rx_data(15 downto 12) is
-		    WHEN c_uart_command =>
-			CASE r_si16_uart_rx_data(11 downto 0) is
-			    WHEN c_pfc_start =>
-				r_si_rstn <= '1';
-			    WHEN c_pfc_stop =>
-				r_si_rstn <= '0';
-			    WHEN others =>
-				-- do nothing
-			end CASE;
+        if si_rstn = '1' then
+            if r_si_uart_ready_event = '1' then
+                CASE r_si16_uart_rx_data(15 downto 12) is
+                    WHEN c_uart_command =>
+                    CASE r_si16_uart_rx_data(11 downto 0) is
+                        WHEN c_pfc_start =>
+                        r_si_rstn <= '1';
+                        WHEN c_pfc_stop =>
+                        r_si_rstn <= '0';
+                        WHEN others =>
+                        -- do nothing
+                    end CASE;
 
-		    WHEN c_pfc_duty =>
-			r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
-		    WHEN others =>
-			-- do nothing
-		end CASE;
+                    WHEN c_pfc_duty =>
+                        r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
+                    WHEN others =>
+                    -- do nothing
+                end CASE;
 
-	    end if;
-	    r_si_uart_ready_event <= si_uart_ready_event;
-	    r_si16_uart_rx_data <= si16_uart_rx_data;
+            end if;
+        else
+            r_si_u12_pfc_duty <= (others => '0');
+            r_si_rstn <= '0';
+        end if;
+            r_si_uart_ready_event <= si_uart_ready_event;
+            r_si16_uart_rx_data <= si16_uart_rx_data;
 	end if;
     end process test_pfc_pwm;
 end behavioral;

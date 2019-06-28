@@ -87,7 +87,7 @@ begin
 				else
 					u12_phase_delay <= (others => '0');
 				end if;
-				if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) AND u12_phase_delay < 12d"32" then
+				if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) then
 					s_sec_pulse <= '0';
 				else
 					s_sec_pulse <= '1';
@@ -99,7 +99,7 @@ begin
 					u12_phase_delay <= (others => '0');
 				end if;
 
-                if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) AND u12_phase_delay < 12d"32" then
+                if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) then
 					s_sec_pulse <= '1';
 				else
 					s_sec_pulse <= '0';
