@@ -1,1 +1,1 @@
-vivado -mode tcl -source ./tcl_scripts/npm_test.tcl
+vivado -mode tcl -source ./tcl_scripts/full_run.tcl
