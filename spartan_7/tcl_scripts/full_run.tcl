@@ -1,5 +1,4 @@
 #Define target part and create output directory
-set partNum xc7s15ftgb196-2
 set outputDir ./output
 file mkdir $outputDir
 set files [glob -nocomplain "$outputDir/*"]

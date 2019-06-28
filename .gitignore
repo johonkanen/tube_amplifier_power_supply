@@ -1,7 +1,6 @@
 /output_files/greybox_tmp/
 /spartan_7/.Xil/
 *.ip_user_files
-spartan_7/IP/
 spartan_7/output/
 *.Xil
 *.mcs

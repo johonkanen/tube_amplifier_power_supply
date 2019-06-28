@@ -141,10 +141,6 @@ begin
     begin
 	if rising_edge(modulator_clk) then
         if rstn = '1' then
-            po4_ht_pwm.pri_high <= r_po2_ht_pri_pwm(0);
-            po4_ht_pwm.pri_low <= r_po2_ht_pri_pwm(1);
-            po4_ht_pwm.sync1 <= r_po2_ht_sec_pwm(0);
-            po4_ht_pwm.sync2 <= r_po2_ht_sec_pwm(1);
             CASE dt_states is
                 WHEN pos =>
                     -- high gate on
@@ -155,24 +151,28 @@ begin
                     else
                         dt_states <= pos;
                     end if;
-                    r_po2_ht_pri_pwm <= "10";
+                    po4_ht_pwm.pri_high <= '1';
+                    po4_ht_pwm.pri_low <= '0';
                     if sec_pwm_cntr > 12d"711" then
-                        r_po2_ht_sec_pwm <= "00";
+                        po4_ht_pwm.sync1 <= '0';
+                        po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        r_po2_ht_sec_pwm <= "10";
+                        po4_ht_pwm.sync1 <= '0';
+                        po4_ht_pwm.sync2 <= '1';
                     end if;
                 WHEN dt1 => 
+
+                    po4_ht_pwm <= (others => '0');
+
                     sec_pwm_cntr := (others => '0');
                     if u12_dt_dly < u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
                         dt_states <= dt1;
                     else
-                         u12_dt_dly <= 12d"0";
+                        u12_dt_dly <= 12d"0";
                         dt_states <= neg;
                     end if;
-                    r_po2_ht_pri_pwm <= "00";
-                    r_po2_ht_sec_pwm <= "00";
                 WHEN neg =>
                      u12_dt_dly <= 12d"0";
 
@@ -181,17 +181,21 @@ begin
                     else
                         dt_states <= neg;
                     end if;
-                    r_po2_ht_pri_pwm <= "01";
+
+                    po4_ht_pwm.pri_high <= '0';
+                    po4_ht_pwm.pri_low <= '1';
+
                     if sec_pwm_cntr > 12d"711" then
-                        r_po2_ht_sec_pwm <= "00";
+                        po4_ht_pwm.sync1 <= '0';
+                        po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        r_po2_ht_sec_pwm <= "01";
+                        po4_ht_pwm.sync1 <= '1';
+                        po4_ht_pwm.sync2 <= '0';
                     end if;
                 WHEN dt2 =>
+                    po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
-                    r_po2_ht_pri_pwm <= "00";
-                    r_po2_ht_sec_pwm <= "00";
                     if u12_dt_dly < u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
                         dt_states <= dt2;
@@ -200,6 +204,7 @@ begin
                         dt_states <= pos;
                     end if;
                 WHEN others => 
+                    po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
                     u12_dt_dly <= 12d"0";
                     dt_states <= pos;
