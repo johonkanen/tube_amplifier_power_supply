@@ -238,16 +238,5 @@ test_dhb : process(core_clk)
 
 	end if;
     end process heater_ad_trigger;
--- aux pwm
-
--- pfc pwm
-    --po2_pfc_pwm <= "00";
-
--- heater pwm
---	    po2_ht_pri_pwm <= "00";
---	    po2_ht_sec_pwm  <= "00";
--- DBH pwm
---    po2_DHB_sec_pwm <= "00";
---    po2_DHB_pri_pwm <= "00";
 
 end behavioral;

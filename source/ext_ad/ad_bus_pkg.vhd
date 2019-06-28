@@ -12,6 +12,7 @@ component ext_ad_spi3w is
 			);
 	port( 
 		si_spi_clk 	 : in std_logic; 
+        si_rstn : in std_logic;
 		 
 		-- physical signals to ext ad converter
 		po_spi_cs 	 : out std_logic;

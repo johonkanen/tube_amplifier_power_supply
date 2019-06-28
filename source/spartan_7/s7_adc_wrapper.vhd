@@ -88,7 +88,7 @@ end component;
 begin
 
 onboard_adc : ext_ad_spi3w
-    generic map(8d"10",8d"14",8d"18")
+    generic map(8d"8",8d"14",8d"18")
     port map(
 			si_spi_clk,
             si_pll_lock,

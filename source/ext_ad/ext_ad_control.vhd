@@ -11,6 +11,7 @@ entity ext_ad_control is
 	port( 
 		ad_clock : in std_logic;
 		ad_bus_clock : in std_logic;
+        si_rstn : in std_logic;
 
 -- ext ad converter 1 signals
 	    po_ext_ad1_cs : out std_logic;
@@ -46,6 +47,7 @@ heater_ad_driver : ext_ad_spi3w
     generic map(8d"16",8d"15",8d"17")
     port map( 
 	    si_spi_clk => ad_clock,
+        si_rstn => si_rstn,
 	    -- physical signals to ext ad converter
 	    po_spi_cs => po_ext_ad1_cs, 
 	    po_spi_clk_out => po_ext_ad1_clk,
@@ -65,6 +67,7 @@ dhb_ad_driver : ext_ad_spi3w
     generic map(8d"16",8d"15",8d"17")
     port map( 
 	    si_spi_clk => ad_clock,
+        si_rstn => si_rstn,
 	    -- physical signals to ext ad converter
 	    po_spi_cs => po_ext_ad2_cs, 
 	    po_spi_clk_out => po_ext_ad2_clk,

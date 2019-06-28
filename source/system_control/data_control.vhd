@@ -119,6 +119,7 @@ component ext_ad_control is
 	port( 
 		ad_clock : in std_logic;
 		ad_bus_clock : in std_logic;
+        si_rstn : in std_logic;
 
 -- ext ad converter 1 signals
 	    po_ext_ad1_cs : out std_logic;
@@ -252,6 +253,7 @@ ext_adc : ext_ad_control
 	port map( 
 		ad_clock => modulator_clk2,
 		ad_bus_clock => core_clk,
+        si_rstn => si_pll_lock,
 
 -- ext ad converter 1 signals
 	    po_ext_ad1_cs => po_ext_ad1_cs,
@@ -281,57 +283,66 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
 
     begin
 	if rising_edge(core_clk) then
-        if r_so_adb_ctrl.ad_rdy_trigger = '1' then
             CASE jeemux is
             WHEN 3d"0" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"0"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"0" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= 16d"4661";
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"1" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"1"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"1"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"2" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"2"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"2"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"3" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"3"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"3"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"4" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"4"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"4"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"5" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"5"  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"5"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"6" => 
+                if ht_adc_control.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data(2 downto 0) <= r_so_ada_ctrl.std3_ad_address;
+                    r_si16_uart_tx_data <= ht_adc_control.std16_ad_bus;
+                else
+                    r_si_uart_start_event <= '0';
+                end if;
+            WHEN 3d"7" => 
+                if dhb_adc_control.ad_rdy_trigger = '1'  then
+                    r_si_uart_start_event <= '1';
+                    r_si16_uart_tx_data <= dhb_adc_control.std16_ad_bus;
+                else
+                    r_si_uart_start_event <= '0';
+                end if;
             WHEN others => 
                 --do nothing
             end CASE;
-        end if;
 
 	    if r_so_uart_rx_rdy = '1' then
 			CASE r_so16_uart_rx_data is

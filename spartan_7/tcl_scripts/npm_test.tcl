@@ -28,7 +28,6 @@ read_vhdl -vhdl2008 [ glob ../source/dhb/phase_modulator.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/ext_ad/ad_ctrl.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/ext_ad/ext_ad_control.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/ext_ad/spi3w_ads7056_driver.vhd ]
-read_vhdl -vhdl2008 [ glob ../source/ext_ad/ad_bus_driver.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/ext_ad/ad_bus_pkg.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/ext_ad/ext_ad_spi3w.vhd ]
 
@@ -84,3 +83,6 @@ set_property CONFIG_VOLTAGE 3.3 [current_design]
 set_property BITSTREAM.Config.SPI_BUSWIDTH 4 [current_design]
 set_property BITSTREAM.CONFIG.CONFIGRATE 33 [current_design]
 write_bitstream -force $outputDir/testibitstream.bit
+set ajoitus [get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]];
+
+puts "worst slack $ajoitus"
