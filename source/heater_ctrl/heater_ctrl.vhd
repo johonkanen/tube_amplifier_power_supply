@@ -13,6 +13,7 @@ entity heater_ctrl is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
+        si_rstn : in std_logic;
 -- heater pwm
         po4_ht_pwm : out hb_llc_pwm;
 
@@ -58,23 +59,29 @@ llc_modulator : freq_modulator
 test_heater_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
-	    if si_uart_ready_event = '1' then
-		CASE si16_uart_rx_data(15 downto 12) is
-		    WHEN x"0" =>
-			CASE si16_uart_rx_data(11 downto 0) is
-			    WHEN c_llc_start =>
-				r_si_rstn <= '1';
-			    WHEN c_llc_stop =>
-				r_si_rstn <= '0';
-			    WHEN others =>
-				-- do nothing
-			end CASE;
+        if si_rstn = '0' then
+            r_si_rstn <= '0';
+            -- start frequency is 270kHz
+            r_piu12_per_ctrl <= 12d"948";
+        else
+            if si_uart_ready_event = '1' then
+            CASE si16_uart_rx_data(15 downto 12) is
+                WHEN x"0" =>
+                CASE si16_uart_rx_data(11 downto 0) is
+                    WHEN c_llc_start =>
+                    r_si_rstn <= '1';
+                    WHEN c_llc_stop =>
+                    r_si_rstn <= '0';
+                    WHEN others =>
+                    -- do nothing
+                end CASE;
 
-		    WHEN c_llc_freq =>
-			r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); 
-		    WHEN others =>
-			-- do nothing
-		end CASE;
+                WHEN c_llc_freq =>
+                r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); 
+                WHEN others =>
+                -- do nothing
+            end CASE;
+        end if;
 
 	    end if;
 	end if;

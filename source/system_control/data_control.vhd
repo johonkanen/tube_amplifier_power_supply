@@ -145,6 +145,7 @@ component sw_supply_ctrl is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
+        si_rstn : in std_logic;
 -- PFC pwm
 	    po2_pfc_pwm : out bridgeless_pfc_pwm;
 
@@ -273,7 +274,7 @@ ext_adc : ext_ad_control
 	);
 
 supply_ctrl_layer : sw_supply_ctrl
-port map(core_clk, modulator_clk, modulator_clk2, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, open, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
+port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, open, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
     test_data_streaming : process(core_clk)
 	variable jeemux : unsigned(2 downto 0);

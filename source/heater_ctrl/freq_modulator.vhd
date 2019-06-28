@@ -36,6 +36,7 @@ architecture rtl of freq_modulator is
     signal u12_period : unsigned(11 downto 0);
 
     signal r_po2_ht_pri_pwm : std_logic_vector(1 downto 0);
+    signal r_po2_ht_sec_pwm : std_logic_vector(1 downto 0);
     signal dly_cntr : unsigned(13 downto 0);
     signal reg_u12_carrier : unsigned(11 downto 0);
     signal u12_car_per_2 : unsigned(11 downto 0);
@@ -58,13 +59,13 @@ begin
 	    CASE st_startup is
 		WHEN init =>
 		    dly_cntr <= 14d"0";
-		    u12_period <= 12d"442"; -- 290kHz initial frequency
-		    u12_deadtime <= 12d"204"; -- 883/2-13 cycle initial pulse width
+		    u12_period <= 12d"948"; -- 290kHz initial frequency
+		    u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
 
 		    if rstn = '0' then
-			st_startup <= init;
+                st_startup <= init;
 		    else
-			st_startup <= rampup;
+                st_startup <= rampup;
 		    end if;
 
 		WHEN rampup => 
@@ -78,13 +79,13 @@ begin
 
 
 		    if rstn = '0' then
-			st_startup <= init;
+                st_startup <= init;
 		    else
-			if u12_deadtime = 64 then
-				st_startup <= ready;
-			else
-				st_startup <= rampup;
-			end if;
+                if u12_deadtime = 64 then
+                    st_startup <= ready;
+                else
+                    st_startup <= rampup;
+                end if;
 		    end if;
 
 
@@ -93,9 +94,9 @@ begin
 		    u12_period <= piu12_per_ctrl;
 
 		    if rstn = '0' then
-			st_startup <= init;
+                st_startup <= init;
 		    else
-			st_startup <= ready;
+                st_startup <= ready;
 		    end if;
 
 		WHEN others =>
@@ -123,76 +124,93 @@ begin
 
     pulse_ctrl : process(modulator_clk)
     begin
-	if rising_edge(modulator_clk) then
+        if rising_edge(modulator_clk) then
 
-	    if reg_u12_carrier > u12_car_per_2 then
-		s_pulse <= '1';
-	    else
-		s_pulse <= '0';	
-	    end if;
-	    reg_u12_carrier <= u12_carrier;
-	    u12_car_per_2 <= shift_right(u12_period,1);
-	end if;
+            if reg_u12_carrier > u12_car_per_2 then
+                s_pulse <= '1';
+            else
+                s_pulse <= '0';	
+            end if;
+                reg_u12_carrier <= u12_carrier;
+                u12_car_per_2 <= shift_right(u12_period,1);
+        end if;
     end process pulse_ctrl;
 
-    gate_ctrl : process(modulator_clk)
-
-
+    pri_gate_ctrl : process(modulator_clk)
+        variable sec_pwm_cntr : unsigned(11 downto 0);
     begin
 	if rising_edge(modulator_clk) then
-	    CASE dt_states is
-		WHEN pos =>
-		    -- high gate on
-		     u12_dt_dly <= 12d"0";
+        if rstn = '1' then
+            po4_ht_pwm.pri_high <= r_po2_ht_pri_pwm(0);
+            po4_ht_pwm.pri_low <= r_po2_ht_pri_pwm(1);
+            po4_ht_pwm.sync1 <= r_po2_ht_sec_pwm(0);
+            po4_ht_pwm.sync2 <= r_po2_ht_sec_pwm(1);
+            sec_pwm_cntr := (others => '0');
+            CASE dt_states is
+                WHEN pos =>
+                    -- high gate on
+                     u12_dt_dly <= 12d"0";
 
-		    if s_pulse = '0' then
-			dt_states <= dt1;
-		    else
-			dt_states <= pos;
-		    end if;
-			r_po2_ht_pri_pwm <= "10";
-		WHEN dt1 => 
-		    if u12_dt_dly < u12_deadtime then
-				u12_dt_dly <= u12_dt_dly + 1;
-				dt_states <= dt1;
-		    else
-				 u12_dt_dly <= 12d"0";
-				dt_states <= neg;
-		    end if;
-			r_po2_ht_pri_pwm <= "00";
-		WHEN neg =>
-		     u12_dt_dly <= 12d"0";
+                    if s_pulse = '0' then
+                        dt_states <= dt1;
+                    else
+                        dt_states <= pos;
+                    end if;
+                    r_po2_ht_pri_pwm <= "10";
+                    if sec_pwm_cntr > 12d"711" then
+                        r_po2_ht_sec_pwm <= "00";
+                    else
+                        sec_pwm_cntr := sec_pwm_cntr + 1;
+                        r_po2_ht_sec_pwm <= "10";
+                    end if;
+                WHEN dt1 => 
+                    sec_pwm_cntr := (others => '0');
+                    if u12_dt_dly < u12_deadtime then
+                        u12_dt_dly <= u12_dt_dly + 1;
+                        dt_states <= dt1;
+                    else
+                         u12_dt_dly <= 12d"0";
+                        dt_states <= neg;
+                    end if;
+                    r_po2_ht_pri_pwm <= "00";
+                    r_po2_ht_sec_pwm <= "00";
+                WHEN neg =>
+                     u12_dt_dly <= 12d"0";
 
-		    if s_pulse = '1' then
-				dt_states <= dt2;
-		    else
-				dt_states <= neg;
-		    end if;
-			r_po2_ht_pri_pwm <= "01";
-		WHEN dt2 =>
-		    if u12_dt_dly < u12_deadtime then
-				u12_dt_dly <= u12_dt_dly + 1;
-				dt_states <= dt2;
-		    else
-				 u12_dt_dly <= 12d"0";
-				dt_states <= pos;
-		    end if;
-			r_po2_ht_pri_pwm <= "00";
-		WHEN others => 
-			 u12_dt_dly <= 12d"0";
-			dt_states <= pos;
-	    end CASE;
-	if rstn = '1' then
-	    po4_ht_pwm.pri_high <= r_po2_ht_pri_pwm(0);
-	    po4_ht_pwm.pri_low <= r_po2_ht_pri_pwm(1);
-	    po4_ht_pwm.sync1 <= r_po2_ht_pri_pwm(0);
-	    po4_ht_pwm.sync2 <= r_po2_ht_pri_pwm(1);
-	else
-        po4_ht_pwm <= (others => '0');
+                    if s_pulse = '1' then
+                        dt_states <= dt2;
+                    else
+                        dt_states <= neg;
+                    end if;
+                    r_po2_ht_pri_pwm <= "01";
+                    if sec_pwm_cntr > 12d"711" then
+                        r_po2_ht_sec_pwm <= "00";
+                    else
+                        sec_pwm_cntr := sec_pwm_cntr + 1;
+                        r_po2_ht_sec_pwm <= "01";
+                    end if;
+                WHEN dt2 =>
+                    sec_pwm_cntr := (others => '0');
+                    r_po2_ht_pri_pwm <= "00";
+                    r_po2_ht_sec_pwm <= "00";
+                    if u12_dt_dly < u12_deadtime then
+                        u12_dt_dly <= u12_dt_dly + 1;
+                        dt_states <= dt2;
+                    else
+                         u12_dt_dly <= 12d"0";
+                        dt_states <= pos;
+                    end if;
+                WHEN others => 
+                    sec_pwm_cntr := (others => '0');
+                    u12_dt_dly <= 12d"0";
+                    dt_states <= pos;
+            end CASE;
+        else
+            po4_ht_pwm <= (others => '0');
+        end if;
+
 	end if;
-
-	end if;
-    end process gate_ctrl;
+    end process pri_gate_ctrl;
     
 
 end rtl;

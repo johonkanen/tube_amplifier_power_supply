@@ -15,6 +15,7 @@ entity sw_supply_ctrl is
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
 	    modulator_clk2 : in std_logic;
+        si_rstn : in std_logic;
 
 -- PFC pwm
 	    po2_pfc_pwm : out bridgeless_pfc_pwm;
@@ -78,6 +79,7 @@ component heater_ctrl is
     port(
 	    core_clk : in std_logic;
 	    modulator_clk : in std_logic;
+        si_rstn : in std_logic;
 -- heater pwm
         po4_ht_pwm : out hb_llc_pwm;
 -- onboard ad buses
@@ -111,7 +113,7 @@ generic map(8d"56")
 port map(core_clk, jihuu, po4_dhb_pwm);
 
 heater_control : heater_ctrl 
-    port map( core_clk, core_clk, po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map( core_clk, core_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
  pfc_control_ins : pfc_control
     port map(

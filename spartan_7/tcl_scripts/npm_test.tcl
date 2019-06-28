@@ -61,7 +61,7 @@ report_utilization -file $outputDir/post_synth_util.rpt
  report_clock_utilization -file $outputDir/clock_util.rpt
 
 #get timing violations and run optimizations if needed
- if {[get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]] < 0} {
+ if {[get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]] < 0.1} {
   puts "Found setup timing violations => running physical optimization"
   phys_opt_design
  }
