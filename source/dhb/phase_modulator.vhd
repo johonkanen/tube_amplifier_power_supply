@@ -22,93 +22,71 @@ end phase_modulator;
 
 architecture rtl of phase_modulator is
 
-	signal s13_dhb_counter : signed(11 downto 0);
+	signal s13_dhb_counter : signed(15 downto 0);
     signal s_pri_pulse : std_logic;
     signal s_sec_pulse : std_logic;
-	signal u12_phase_delay : unsigned(11 downto 0) := (others => '0');
+	signal u12_phase_delay : unsigned(15 downto 0) := (others => '0');
+    signal u12_pri_carrier : unsigned(15 downto 0);
+    signal u12_sec_carrier : unsigned(15 downto 0);
+    signal u16_master_carrier : unsigned(15 downto 0);
+    signal u12_phase : unsigned(15 downto 0);
+    signal s16_pri_phase : unsigned(15 downto 0);
+    signal s16_sec_phase : unsigned(15 downto 0);
 
 begin
 
-freq_generation : process(modulator_clk)
-	type t_freq_counter_states is (up, down);
-	variable st_freq_counter_states : t_freq_counter_states;
-	type t_count_dir is (up,down);
-	variable st_count_dir : t_count_dir;
-	
+carrier_gen : process(modulator_clk)
+    
 begin
-	if rising_edge(modulator_clk) then
-		if ri_dhb_ctrl.rstn = '0' then
-			--do nothing
-			s13_dhb_counter <= signed(ri_dhb_ctrl.u12_dhb_half_period);
-			st_count_dir := up;
-		else
-			CASE st_count_dir is 
-				WHEN up =>
-					s13_dhb_counter <= s13_dhb_counter + 1;
-					if s13_dhb_counter < signed(ri_dhb_ctrl.u12_dhb_half_period) then
-						st_count_dir := up;
-					else
-						st_count_dir := down;
-					end if;
-				WHEN down =>
-					s13_dhb_counter <= s13_dhb_counter - 1;
-					if s13_dhb_counter <= -signed(ri_dhb_ctrl.u12_dhb_half_period) then
-						st_count_dir := up;
-					else
-						st_count_dir := down;
-					end if;
-			END CASE;
-		end if;
-	end if; --rising_edge
-end process freq_generation;	
+    if rising_edge(modulator_clk) then
+        if ri_dhb_ctrl.rstn = '0' then
+            u12_pri_carrier <= (others => '0'); 
+            u12_sec_carrier <= (others => '0'); 
+            u16_master_carrier <= (others => '0');
+            s16_pri_phase <= (others => '0');
+            s16_sec_phase <= (others => '0');
+        else
 
-pri_pulse_generation : process(modulator_clk)
-begin
-	if rising_edge(modulator_clk) then
-		if ri_dhb_ctrl.rstn = '0' then
-			s_pri_pulse <= '0';
-		else
-			if s13_dhb_counter < 12d"0" then
-				s_pri_pulse <= '1';
-			else
-				s_pri_pulse <= '0';
-			end if;
-		end if; --ri_dhb_ctrl.rstn = '0'
-	end if; --rising_edge
-end process pri_pulse_generation;	
+            if ri_dhb_ctrl.s16_phase > 189 then
+                s16_pri_phase <= ri_dhb_ctrl.s16_phase - 189;
+                s16_sec_phase <= (others => '0');
+            else
+                s16_pri_phase <= (others => '0');
+                s16_sec_phase <= ri_dhb_ctrl.s16_phase;
+            end if;
 
-sec_pulse_generation : process(modulator_clk)
-begin
-	if rising_edge(modulator_clk) then
-		CASE s_sec_pulse is 
-			WHEN '1' =>
-				if s_pri_pulse = '0' then
-					u12_phase_delay <= u12_phase_delay + 1;
-				else
-					u12_phase_delay <= (others => '0');
-				end if;
-				if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) then
-					s_sec_pulse <= '0';
-				else
-					s_sec_pulse <= '1';
-				end if;
-			WHEN '0' =>
-				if s_pri_pulse = '1' then
-					u12_phase_delay <= u12_phase_delay + 1;
-				else
-					u12_phase_delay <= (others => '0');
-				end if;
+            if u16_master_carrier > 16d"1896" then
+                u16_master_carrier <= (others => '0');
+            else
+                u16_master_carrier<= u16_master_carrier+ 1;
+            end if;
 
-                if u12_phase_delay = ri_dhb_ctrl.s16_phase(11 downto 0) then
-					s_sec_pulse <= '1';
-				else
-					s_sec_pulse <= '0';
-				end if;
-			WHEN others =>
-				s_sec_pulse <= '1';
-		END CASE;
-	end if; --rising_edge
-end process sec_pulse_generation;	
+            if u12_pri_carrier > 16d"1896" OR u16_master_carrier = s16_pri_phase then
+                u12_pri_carrier <= (others => '0');
+            else
+                u12_pri_carrier <= u12_pri_carrier + 1;
+            end if;
+
+            if u12_sec_carrier > 16d"1896" OR u16_master_carrier = s16_sec_phase then
+                u12_sec_carrier <= (others => '0');
+            else
+                u12_sec_carrier <= u12_sec_carrier + 1;
+            end if;
+
+            if u12_pri_carrier > 16d"947" then
+                s_pri_pulse <= '0';
+            else
+                s_pri_pulse <= '1';
+            end if;
+            
+            if u12_sec_carrier > 16d"947" then
+                s_sec_pulse <= '0';
+            else
+                s_sec_pulse <= '1';
+            end if;
+        end if;
+    end if; --rising_edge
+end process carrier_gen;	
 
 pri_dt_generation : process(modulator_clk)
 	type t_dt_states is (pos,dt1,neg,dt2);
