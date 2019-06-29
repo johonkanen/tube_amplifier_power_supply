@@ -287,7 +287,7 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
             WHEN 3d"0" => 
                 if r_so_ada_ctrl.std3_ad_address = 3d"0" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= 16d"4661";
+                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
@@ -360,6 +360,8 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
 					jeemux := 3d"5";
 				WHEN 16d"6" => 
 					jeemux := 3d"6";
+				WHEN 16d"7" => 
+					jeemux := 3d"7";
 				WHEN others =>
 					-- do nothing
 			end CASE;

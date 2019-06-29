@@ -102,8 +102,8 @@ begin
 			CASE st_dt_states is 
 				WHEN pos=> 
 					dt_counter := (others => '0');
-                    po4_dhb_pwm.pri_high <= '1';
-                    po4_dhb_pwm.pri_low <= '0';
+                    po4_dhb_pwm.pri_high <= '0';
+                    po4_dhb_pwm.pri_low <= '1';
 					if s_pri_pulse = '0' then
 						st_dt_states := dt1;
 					else
@@ -119,8 +119,8 @@ begin
 						dt_counter := dt_counter + 1;
 					end if;
 				WHEN neg=>
-                    po4_dhb_pwm.pri_high <= '0';
-                    po4_dhb_pwm.pri_low <= '1';
+                    po4_dhb_pwm.pri_high <= '1';
+                    po4_dhb_pwm.pri_low <= '0';
 					dt_counter := (others => '0');
 					if s_pri_pulse = '1' then
 						st_dt_states := dt2;
@@ -155,8 +155,8 @@ begin
 			CASE st_dt_states is 
 				WHEN pos=> 
 					dt_counter := (others => '0');
-					po4_dhb_pwm.sec_high <= '1';
-					po4_dhb_pwm.sec_low <= '0';
+					po4_dhb_pwm.sec_high <= '0';
+					po4_dhb_pwm.sec_low <= '1';
 					if s_sec_pulse = '0' then
 						st_dt_states := dt1;
 					else
@@ -172,8 +172,8 @@ begin
 						dt_counter := dt_counter + 1;
 					end if;
 				WHEN neg=>
-					po4_dhb_pwm.sec_high <= '0';
-					po4_dhb_pwm.sec_low <= '1';
+					po4_dhb_pwm.sec_high <= '1';
+					po4_dhb_pwm.sec_low <= '0';
 					dt_counter := (others => '0');
 					if s_sec_pulse = '1' then
 						st_dt_states := dt2;

@@ -153,13 +153,13 @@ begin
                     end if;
                     po4_ht_pwm.pri_high <= '1';
                     po4_ht_pwm.pri_low <= '0';
-                    if sec_pwm_cntr > 12d"711" then
+                    if sec_pwm_cntr > 12d"532" then
                         po4_ht_pwm.sync1 <= '0';
                         po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        po4_ht_pwm.sync1 <= '0';
-                        po4_ht_pwm.sync2 <= '1';
+                        po4_ht_pwm.sync1 <= '1';
+                        po4_ht_pwm.sync2 <= '0';
                     end if;
                 WHEN dt1 => 
 
@@ -185,13 +185,13 @@ begin
                     po4_ht_pwm.pri_high <= '0';
                     po4_ht_pwm.pri_low <= '1';
 
-                    if sec_pwm_cntr > 12d"711" then
+                    if sec_pwm_cntr > 12d"532" then
                         po4_ht_pwm.sync1 <= '0';
                         po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        po4_ht_pwm.sync1 <= '1';
-                        po4_ht_pwm.sync2 <= '0';
+                        po4_ht_pwm.sync1 <= '0';
+                        po4_ht_pwm.sync2 <= '1';
                     end if;
                 WHEN dt2 =>
                     po4_ht_pwm <= (others => '0');
