@@ -275,7 +275,7 @@ system_data_control : data_control
 				start_dly <= '0';
 				-- wait until DC link above 100V
 
-                    if r_so_adb_ctrl.std3_ad_address= 3d"5" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                    if r_so_adb_ctrl.std3_ad_address= 3d"4" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                         if r_so_adb_ctrl.std16_ad_bus > 16d"617" then
                             st_main_states := bypass_relay;
                         else
