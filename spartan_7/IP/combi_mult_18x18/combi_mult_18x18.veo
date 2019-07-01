@@ -55,9 +55,10 @@
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 combi_mult_18x18 your_instance_name (
-  .A(A),  // input wire [17 : 0] A
-  .B(B),  // input wire [17 : 0] B
-  .P(P)  // output wire [35 : 0] P
+  .CLK(CLK),  // input wire CLK
+  .A(A),      // input wire [17 : 0] A
+  .B(B),      // input wire [17 : 0] B
+  .P(P)      // output wire [35 : 0] P
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

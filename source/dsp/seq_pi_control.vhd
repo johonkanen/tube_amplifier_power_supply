@@ -5,6 +5,7 @@ library ieee;
 
 library work;
 	use work.sys_ctrl_pkg.all;
+    use work.vendor_specifics_pkg.all;
 
 entity seq_pi_control is 
 	generic(
@@ -33,16 +34,8 @@ end seq_pi_control;
 
 architecture rtl of seq_pi_control is
 
-    type t_pi_ctrl_states is (init,idle, error_calc,out_calc,int_calc,done);
+    type t_pi_ctrl_states is (init,idle, wait_mult, error_calc,out_calc,int_calc,done);
     
-    component sign_18x18_mult_dsp IS
-    PORT
-	(
-	    dataa		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
-	    datab		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
-	    result		: OUT STD_LOGIC_VECTOR (35 DOWNTO 0)
-	);
-    END component;
 
     signal r_mult_ak : signed(17 downto 0);
     signal r_mult_bk : signed(17 downto 0);
@@ -55,20 +48,22 @@ architecture rtl of seq_pi_control is
     signal r_sign18_integrator : signed(17 downto 0);
 begin
 
-kp_mult : sign_18x18_mult_dsp
+kp_mult : combi_mult_18x18
     PORT map
 	    (
-		dataa => std_logic_vector(r_mult_ak),
-		datab => std_logic_vector(si_sign18_p_gain),
-		result => r_sign36_kp_mult_res
+            pi_clk,
+            std_logic_vector(r_mult_ak),
+            std_logic_vector(si_sign18_p_gain),
+            r_sign36_kp_mult_res
 	    );
 
-ki_mult : sign_18x18_mult_dsp
+ki_mult : combi_mult_18x18
     PORT map
 	    (
-		dataa => std_logic_vector(r_mult_ai),
-		datab => std_logic_vector(si_sign18_i_gain),
-		result => r_sign36_ki_mult_res
+            pi_clk,
+            std_logic_vector(r_mult_ai),
+            std_logic_vector(si_sign18_i_gain),
+            r_sign36_ki_mult_res
 	    );
    PI_ctrl : process(pi_clk)
 	variable ss_pi_states : t_pi_ctrl_states;
@@ -93,14 +88,15 @@ ki_mult : sign_18x18_mult_dsp
 		    so_pi_out_rdy <= '0'; 	
 		    
 		    if si_start = '1' then
-				ss_pi_states := error_calc;
+				ss_pi_states := wait_mult;
 				v_sign18_error := v_si_sign18_ref - v_si_sign18_meas + to_signed(gen_offset_sign18,18);
 				r_mult_ak <= v_sign18_error;
 				r_mult_ai <= v_sign18_error;
 		    else
 				ss_pi_states := idle;
 		    end if;
-
+        WHEN wait_mult => 
+            ss_pi_states := idle;
 		WHEN error_calc =>
 
 		    v_sign36_kp_mult_res := shift_left(signed(v_r_std36_kp_mult_res),gen_left_shift_p_gain);	

@@ -58,6 +58,7 @@ USE mult_gen_v12_0_15.mult_gen_v12_0_15;
 
 ENTITY combi_mult_18x18 IS
   PORT (
+    CLK : IN STD_LOGIC;
     A : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
     B : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
     P : OUT STD_LOGIC_VECTOR(35 DOWNTO 0)
@@ -107,6 +108,8 @@ ARCHITECTURE combi_mult_18x18_arch OF combi_mult_18x18 IS
   ATTRIBUTE X_INTERFACE_INFO OF B: SIGNAL IS "xilinx.com:signal:data:1.0 b_intf DATA";
   ATTRIBUTE X_INTERFACE_PARAMETER OF A: SIGNAL IS "XIL_INTERFACENAME a_intf, LAYERED_METADATA undef";
   ATTRIBUTE X_INTERFACE_INFO OF A: SIGNAL IS "xilinx.com:signal:data:1.0 a_intf DATA";
+  ATTRIBUTE X_INTERFACE_PARAMETER OF CLK: SIGNAL IS "XIL_INTERFACENAME clk_intf, ASSOCIATED_BUSIF p_intf:b_intf:a_intf, ASSOCIATED_RESET sclr, ASSOCIATED_CLKEN ce, FREQ_HZ 10000000, PHASE 0.000, INSERT_VIP 0";
+  ATTRIBUTE X_INTERFACE_INFO OF CLK: SIGNAL IS "xilinx.com:signal:clock:1.0 clk_intf CLK";
 BEGIN
   U0 : mult_gen_v12_0_15
     GENERIC MAP (
@@ -116,7 +119,7 @@ BEGIN
       C_XDEVICEFAMILY => "spartan7",
       C_HAS_CE => 0,
       C_HAS_SCLR => 0,
-      C_LATENCY => 0,
+      C_LATENCY => 1,
       C_A_WIDTH => 18,
       C_A_TYPE => 0,
       C_B_WIDTH => 18,
@@ -132,7 +135,7 @@ BEGIN
       C_ROUND_PT => 0
     )
     PORT MAP (
-      CLK => '1',
+      CLK => CLK,
       A => A,
       B => B,
       CE => '1',

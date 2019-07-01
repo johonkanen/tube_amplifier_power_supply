@@ -13,6 +13,7 @@ package vendor_specifics_pkg is
 
     COMPONENT combi_mult_18x18
       PORT (
+        CLK : IN STD_LOGIC;
         A : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
         B : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
         P : OUT STD_LOGIC_VECTOR(35 DOWNTO 0)
