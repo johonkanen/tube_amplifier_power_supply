@@ -35,7 +35,7 @@ end seq_pi_control;
 
 architecture rtl of seq_pi_control is
 
-    type t_pi_ctrl_states is (init,idle, wait_mult, error_calc,out_calc,int_calc,done);
+    type t_pi_ctrl_states is (idle, wait_mult, error_calc,out_calc,int_calc,done);
     
 
     signal r_mult_ak : signed(17 downto 0);
@@ -66,6 +66,7 @@ ki_mult : combi_mult_18x18
             std_logic_vector(si_sign18_i_gain),
             r_sign36_ki_mult_res
 	    );
+
    PI_ctrl : process(pi_clk)
 	variable ss_pi_states : t_pi_ctrl_states;
 	variable v_sign21_integrator : signed(20 downto 0);
@@ -81,57 +82,62 @@ ki_mult : combi_mult_18x18
     begin
 	if rising_edge(pi_clk) then
         if si_rstn = '0' then
-
-        else
-	    CASE ss_pi_states is 
-		WHEN init =>
 		    so_sign18_pi_out <= (others=>'0');
 		    ss_pi_states := idle;
-		WHEN idle =>
-		    so_pi_busy <= '0';
-		    so_pi_out_rdy <= '0'; 	
-		    
-		    if si_start = '1' then
-				ss_pi_states := wait_mult;
-				v_sign18_error := v_si_sign18_ref - v_si_sign18_meas + to_signed(gen_offset_sign18,18);
-				r_mult_ak <= v_sign18_error;
-				r_mult_ai <= v_sign18_error;
-		    else
-				ss_pi_states := idle;
-		    end if;
-        WHEN wait_mult => 
-            ss_pi_states := idle;
-		WHEN error_calc =>
+            so_pi_out_rdy <= '0'; 	
+            so_pi_busy <= '0';
 
-		    v_sign36_kp_mult_res := shift_left(signed(v_r_std36_kp_mult_res),gen_left_shift_p_gain);	
-		    v_so_sign18_pi_out := v_sign36_kp_mult_res(32 downto 15) + r_sign18_integrator;
+        else
+            CASE ss_pi_states is 
+            WHEN idle =>
+                so_pi_out_rdy <= '0'; 	
+                
+                if si_start = '1' then
+                    ss_pi_states := wait_mult;
+                    v_sign18_error := v_si_sign18_ref - v_si_sign18_meas + to_signed(gen_offset_sign18,18);
+                    r_mult_ak <= v_sign18_error;
+                    r_mult_ai <= v_sign18_error;
+                    so_pi_busy <= '1';
+                else
+                    ss_pi_states := idle;
+                    so_pi_busy <= '0';
+                end if;
+            WHEN wait_mult => 
+                so_pi_busy <= '1';
+                ss_pi_states := idle;
+                so_pi_out_rdy <= '0'; 	
 
-		   
-		    so_pi_busy <= '1';
-		    so_pi_out_rdy <= '0'; 	
-		    ss_pi_states := done;
+            WHEN error_calc =>
 
-		WHEN done =>
-		    if v_so_sign18_pi_out > to_signed(gen_pi_sat_high ,18) then
-				so_sign18_pi_out <=  to_signed(gen_pi_sat_high ,18);
-				r_sign18_integrator <= to_signed(gen_pi_sat_high,18) - signed(v_sign36_kp_mult_res(32 downto 15));
+                v_sign36_kp_mult_res := shift_left(signed(v_r_std36_kp_mult_res),gen_left_shift_p_gain);	
+                v_so_sign18_pi_out := v_sign36_kp_mult_res(32 downto 15) + r_sign18_integrator;
 
-		    elsif v_so_sign18_pi_out < to_signed(gen_pi_sat_low ,18) then
-				so_sign18_pi_out <=  to_signed(gen_pi_sat_low ,18);
-				r_sign18_integrator <= to_signed(gen_pi_sat_low ,18) - signed(v_sign36_kp_mult_res(32 downto 15));
+               
+                so_pi_busy <= '1';
+                so_pi_out_rdy <= '0'; 	
+                ss_pi_states := done;
 
-		    else
-				so_sign18_pi_out <=v_so_sign18_pi_out;
-				r_sign18_integrator <= r_sign18_integrator + signed(r_sign36_ki_mult_res(32 downto 15));
-		    end if;	
-		    so_pi_out_rdy <= '1'; 	
-		    so_pi_busy <= '1';
-		    ss_pi_states := idle;
+            WHEN done =>
+                if v_so_sign18_pi_out > to_signed(gen_pi_sat_high ,18) then
+                    so_sign18_pi_out <=  to_signed(gen_pi_sat_high ,18);
+                    r_sign18_integrator <= to_signed(gen_pi_sat_high,18) - signed(v_sign36_kp_mult_res(32 downto 15));
 
-		WHEN others =>
-		    ss_pi_states := init;
-	    end CASE;
-    end if;
+                elsif v_so_sign18_pi_out < to_signed(gen_pi_sat_low ,18) then
+                    so_sign18_pi_out <=  to_signed(gen_pi_sat_low ,18);
+                    r_sign18_integrator <= to_signed(gen_pi_sat_low ,18) - signed(v_sign36_kp_mult_res(32 downto 15));
+
+                else
+                    so_sign18_pi_out <=v_so_sign18_pi_out;
+                    r_sign18_integrator <= r_sign18_integrator + signed(r_sign36_ki_mult_res(32 downto 15));
+                end if;	
+                so_pi_out_rdy <= '1'; 	
+                so_pi_busy <= '1';
+                ss_pi_states := idle;
+
+            WHEN others =>
+                ss_pi_states := idle;
+            end CASE;
+        end if;
 	end if;
 		v_si_sign18_ref := si_sign18_ref;
 		v_si_sign18_meas := si_sign18_meas;
