@@ -86,44 +86,35 @@ ada_mux_sequencer : process(ad_clock)
 
 begin
     if rising_edge(ad_bus_clock) then
+            if so_adb_sh_rdy = '1' then
+                po3_ada_muxsel <= st_ada_seq_nxt;
+                po3_adb_muxsel <= st_ada_seq_nxt;
+            end if;
 
-        if so_adb_sh_rdy = '1' then
-            po3_ada_muxsel <= st_ada_seq_nxt;
-            po3_adb_muxsel <= st_ada_seq_nxt;
-        end if;
-
-        CASE test_ad is
-            WHEN ch0 => 
-                so_ada_ctrl.std3_ad_address <= 3d"0";
-                so_adb_ctrl.std3_ad_address <= 3d"0";
-                st_ada_seq_nxt := c_mux_ada1;  
-            WHEN ch1 => 
-                so_ada_ctrl.std3_ad_address <= 3d"1";
-                so_adb_ctrl.std3_ad_address <= 3d"1";
-                st_ada_seq_nxt := c_mux_ada2;  
-            WHEN ch2 => 
-                so_ada_ctrl.std3_ad_address <= 3d"2";
-                so_adb_ctrl.std3_ad_address <= 3d"2";
-                st_ada_seq_nxt := c_mux_ada3;  
-            WHEN ch3 => 
-                so_ada_ctrl.std3_ad_address <= 3d"3";
-                so_adb_ctrl.std3_ad_address <= 3d"3";
-                st_ada_seq_nxt := c_mux_ada4;  
-            WHEN ch4 => 
-                so_ada_ctrl.std3_ad_address <= 3d"4";
-                so_adb_ctrl.std3_ad_address <= 3d"4";
-                st_ada_seq_nxt := c_mux_ada5;  
-            WHEN ch5 => 
-                so_ada_ctrl.std3_ad_address <= 3d"5";
-                so_adb_ctrl.std3_ad_address <= 3d"5";
-                st_ada_seq_nxt := c_mux_ada6;  
-            WHEN ch6 => 
-                so_ada_ctrl.std3_ad_address <= 3d"6";
-                so_adb_ctrl.std3_ad_address <= 3d"6";
-                st_ada_seq_nxt := c_mux_ada0;  
-            WHEN others =>
-            --do nothing
-        end CASE;
+            CASE test_ad is
+                WHEN ch3 => 
+                    so_ada_ctrl.std3_ad_address <= 3d"3";
+                    so_adb_ctrl.std3_ad_address <= 3d"3";
+                    st_ada_seq_nxt := c_mux_ada1;  
+                WHEN ch1 => 
+                    so_ada_ctrl.std3_ad_address <= 3d"1";
+                    so_adb_ctrl.std3_ad_address <= 3d"1";
+                    st_ada_seq_nxt := c_mux_ada6;  
+                WHEN ch6 => 
+                    so_ada_ctrl.std3_ad_address <= 3d"6";
+                    so_adb_ctrl.std3_ad_address <= 3d"6";
+                    st_ada_seq_nxt := c_mux_ada2;  
+                WHEN ch2 => 
+                    so_ada_ctrl.std3_ad_address <= 3d"2";
+                    so_adb_ctrl.std3_ad_address <= 3d"2";
+                    st_ada_seq_nxt := c_mux_ada4;  
+                WHEN ch4 => 
+                    so_ada_ctrl.std3_ad_address <= 3d"4";
+                    so_adb_ctrl.std3_ad_address <= 3d"4";
+                    st_ada_seq_nxt := c_mux_ada3;  
+                WHEN others =>
+                --do nothing
+            end CASE;
     end if; --rising_edge
 end process;
 
@@ -134,7 +125,7 @@ begin
         trig_cnt <= trig_cnt + 1;
         CASE trig_cnt is
             WHEN 11d"0" => 
-                test_ad <= ch0;
+                test_ad <= ch3;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
             WHEN 11d"292" =>
@@ -142,23 +133,15 @@ begin
                 si_ada_start <= '1';
                 si_adb_start <= '1';
             WHEN 11d"584" =>
-                test_ad <= ch2;
+                test_ad <= ch6;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
             WHEN 11d"876" =>
-                test_ad <= ch3;
+                test_ad <= ch2;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
             WHEN 11d"1168" =>
                 test_ad <= ch4;
-                si_ada_start <= '1';
-                si_adb_start <= '1';
-            WHEN 11d"1460" =>
-                test_ad <= ch5;
-                si_ada_start <= '1';
-                si_adb_start <= '1';
-            WHEN 11d"1752" =>
-                test_ad <= ch6;
                 si_ada_start <= '1';
                 si_adb_start <= '1';
             WHEN others =>

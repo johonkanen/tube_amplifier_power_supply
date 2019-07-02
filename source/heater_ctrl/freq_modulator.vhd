@@ -153,7 +153,7 @@ begin
                     end if;
                     po4_ht_pwm.pri_high <= '1';
                     po4_ht_pwm.pri_low <= '0';
-                    if sec_pwm_cntr > 12d"532" then
+                    if sec_pwm_cntr > 12d"614" then
                         po4_ht_pwm.sync1 <= '0';
                         po4_ht_pwm.sync2 <= '0';
                     else
@@ -185,7 +185,7 @@ begin
                     po4_ht_pwm.pri_high <= '0';
                     po4_ht_pwm.pri_low <= '1';
 
-                    if sec_pwm_cntr > 12d"532" then
+                    if sec_pwm_cntr > 12d"614" then
                         po4_ht_pwm.sync1 <= '0';
                         po4_ht_pwm.sync2 <= '0';
                     else

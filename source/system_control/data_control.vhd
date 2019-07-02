@@ -283,44 +283,49 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
 
     begin
 	if rising_edge(core_clk) then
+        if si_pll_lock = '0' then
+            jeemux := 3d"0";
+            r_si_uart_start_event <= '0';
+            r_si16_uart_tx_data <= (others => '0');
+        else
             CASE jeemux is
             WHEN 3d"0" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"0" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                if r_so_adb_ctrl.std3_ad_address = 3d"3" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"1" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"1"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
+                if r_so_adb_ctrl.std3_ad_address = 3d"1"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"2" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"2"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
+                if r_so_adb_ctrl.std3_ad_address = 3d"6"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"3" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"3"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
+                if r_so_adb_ctrl.std3_ad_address = 3d"2"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"4" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"4"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
+                if r_so_adb_ctrl.std3_ad_address = 3d"4"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
+                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 3d"5" => 
-                if r_so_ada_ctrl.std3_ad_address = 3d"5"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
+                if r_so_ada_ctrl.std3_ad_address = 3d"3"  AND r_so_ada_ctrl.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
                 else
@@ -366,6 +371,7 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
 					-- do nothing
 			end CASE;
 	    end if;
+    end if;
 	end if;
     end process test_data_streaming;
 
