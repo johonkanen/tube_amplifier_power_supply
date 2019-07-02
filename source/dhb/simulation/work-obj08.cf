@@ -1,0 +1,9 @@
+v 4
+file . "tb_phase_modulator.vhd" "bd61dd0b8521e634882ffd268d310ea006257a6f" "20190702165129.585":
+  entity tb_phase_modulator at 1( 0) + 0 on 14;
+  architecture testi of tb_phase_modulator at 16( 317) + 0 on 15;
+file . "..\dhb_pkg.vhd" "0d4b3e414a1bca0405494bfc400576b8524e4e61" "20190702165129.383":
+  package dhb_pkg at 1( 0) + 0 on 11;
+file . "..\phase_modulator.vhd" "73bbba3aa238a29b551fb3fa011952d2f6773ab0" "20190702165129.484":
+  entity phase_modulator at 1( 0) + 0 on 12;
+  architecture rtl of phase_modulator at 23( 399) + 0 on 13;

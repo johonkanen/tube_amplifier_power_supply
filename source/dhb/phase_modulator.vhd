@@ -24,7 +24,9 @@ architecture rtl of phase_modulator is
 
 	signal s13_dhb_counter : signed(15 downto 0);
     signal s_pri_pulse : std_logic;
+    signal s1_pri_pulse : std_logic;
     signal s_sec_pulse : std_logic;
+    signal s1_sec_pulse : std_logic;
 	signal u12_phase_delay : unsigned(15 downto 0) := (others => '0');
     signal u12_pri_carrier : unsigned(15 downto 0);
     signal u12_sec_carrier : unsigned(15 downto 0);
@@ -40,11 +42,13 @@ carrier_gen : process(modulator_clk)
 begin
     if rising_edge(modulator_clk) then
         if ri_dhb_ctrl.rstn = '0' then
-            u12_pri_carrier <= (others => '0'); 
-            u12_sec_carrier <= (others => '0'); 
-            u16_master_carrier <= (others => '0');
+            u12_pri_carrier <= 16d"947";
+            u12_sec_carrier <= 16d"947";
+            u16_master_carrier <= 16d"947";
             s16_pri_phase <= (others => '0');
             s16_sec_phase <= (others => '0');
+            s_pri_pulse <= '0';
+            s_sec_pulse <= '0';
         else
 
             if ri_dhb_ctrl.s16_phase > 189 then
@@ -54,31 +58,31 @@ begin
                 s16_pri_phase <= (others => '0');
                 s16_sec_phase <= ri_dhb_ctrl.s16_phase;
             end if;
-
+            -- generate master carrier to which phase shifts are synchronized
             if u16_master_carrier > 16d"1896" then
                 u16_master_carrier <= (others => '0');
             else
                 u16_master_carrier<= u16_master_carrier+ 1;
             end if;
-
+            -- gen phase shifted pri carrier
             if u12_pri_carrier > 16d"1896" OR u16_master_carrier = s16_pri_phase then
                 u12_pri_carrier <= (others => '0');
             else
                 u12_pri_carrier <= u12_pri_carrier + 1;
             end if;
-
+            -- generate phase shifted secondary carrier
             if u12_sec_carrier > 16d"1896" OR u16_master_carrier = s16_sec_phase then
                 u12_sec_carrier <= (others => '0');
             else
                 u12_sec_carrier <= u12_sec_carrier + 1;
             end if;
-
+            -- generate 50% duty cycle for primary
             if u12_pri_carrier > 16d"947" then
                 s_pri_pulse <= '0';
             else
                 s_pri_pulse <= '1';
             end if;
-            
+            -- generate 50% duty for secondary 
             if u12_sec_carrier > 16d"947" then
                 s_sec_pulse <= '0';
             else
@@ -89,52 +93,44 @@ begin
 end process carrier_gen;	
 
 pri_dt_generation : process(modulator_clk)
-	type t_dt_states is (pos,dt1,neg,dt2);
+	type t_dt_states is (active_pulse,deadtime);
 	variable st_dt_states : t_dt_states;
 	variable dt_counter : unsigned(7 downto 0);
 begin
 	if rising_edge(modulator_clk) then
+        s1_pri_pulse <= s_pri_pulse;
 		if ri_dhb_ctrl.rstn = '0' then
-			st_dt_states := pos;
+			st_dt_states := active_pulse;
             po4_dhb_pwm.pri_high <= '0';
             po4_dhb_pwm.pri_low <= '0';
 		else
 			CASE st_dt_states is 
-				WHEN pos=> 
+				WHEN active_pulse=> 
 					dt_counter := (others => '0');
-                    po4_dhb_pwm.pri_high <= '0';
-                    po4_dhb_pwm.pri_low <= '1';
-					if s_pri_pulse = '0' then
-						st_dt_states := dt1;
+					if s_pri_pulse = s1_pri_pulse then
+                        po4_dhb_pwm.pri_high <= s_pri_pulse;
+                        po4_dhb_pwm.pri_low <=  NOT s_pri_pulse;
+						st_dt_states := active_pulse;
 					else
-						st_dt_states := pos;
+						st_dt_states := deadtime;
 					end if;
-				WHEN dt1 =>
+				WHEN deadtime =>
                     po4_dhb_pwm.pri_high <= '0';
                     po4_dhb_pwm.pri_low <= '0';
 					if dt_counter = g_u8_deadtime then
-						st_dt_states := neg;
+						st_dt_states := active_pulse;
 					else 
-						st_dt_states := dt1;
+						st_dt_states := deadtime;
 						dt_counter := dt_counter + 1;
 					end if;
-				WHEN neg=>
-                    po4_dhb_pwm.pri_high <= '1';
-                    po4_dhb_pwm.pri_low <= '0';
+                WHEN others => 
 					dt_counter := (others => '0');
-					if s_pri_pulse = '1' then
-						st_dt_states := dt2;
+					if s_pri_pulse = s1_pri_pulse then
+                        po4_dhb_pwm.pri_high <= s_pri_pulse;
+                        po4_dhb_pwm.pri_low <=  NOT s_pri_pulse;
+						st_dt_states := active_pulse;
 					else
-						st_dt_states := neg;
-					end if;
-				WHEN dt2 =>
-                    po4_dhb_pwm.pri_high <= '0';
-                    po4_dhb_pwm.pri_low <= '0';
-					dt_counter := dt_counter + 1;
-					if dt_counter = g_u8_deadtime then
-						st_dt_states := pos;
-					else 
-						st_dt_states := dt2;
+						st_dt_states := deadtime;
 					end if;
 			END CASE;
 		end if;
@@ -142,52 +138,44 @@ begin
 end process pri_dt_generation;	
 
 sec_dt_generation : process(modulator_clk)
-	type t_dt_states is (pos,dt1,neg,dt2);
+	type t_dt_states is (active_pulse,deadtime);
 	variable st_dt_states : t_dt_states;
 	variable dt_counter : unsigned(7 downto 0);
 begin
 	if rising_edge(modulator_clk) then
+        s1_sec_pulse <= s_sec_pulse;
 		if ri_dhb_ctrl.rstn = '0' then
-			st_dt_states := pos;
+			st_dt_states := active_pulse;
             po4_dhb_pwm.sec_high <= '0';
             po4_dhb_pwm.sec_low <= '0';
 		else
 			CASE st_dt_states is 
-				WHEN pos=> 
+				WHEN active_pulse=> 
 					dt_counter := (others => '0');
-					po4_dhb_pwm.sec_high <= '0';
-					po4_dhb_pwm.sec_low <= '1';
-					if s_sec_pulse = '0' then
-						st_dt_states := dt1;
+					if s_sec_pulse = s1_sec_pulse then
+                        po4_dhb_pwm.sec_high <= s_sec_pulse;
+                        po4_dhb_pwm.sec_low <=  NOT s_sec_pulse;
+						st_dt_states := active_pulse;
 					else
-						st_dt_states := pos;
+						st_dt_states := deadtime;
 					end if;
-				WHEN dt1 =>
-					po4_dhb_pwm.sec_high <= '0';
-					po4_dhb_pwm.sec_low <= '0';
+				WHEN deadtime =>
+                    po4_dhb_pwm.sec_high <= '0';
+                    po4_dhb_pwm.sec_low <= '0';
 					if dt_counter = g_u8_deadtime then
-						st_dt_states := neg;
+						st_dt_states := active_pulse;
 					else 
-						st_dt_states := dt1;
+						st_dt_states := deadtime;
 						dt_counter := dt_counter + 1;
 					end if;
-				WHEN neg=>
-					po4_dhb_pwm.sec_high <= '1';
-					po4_dhb_pwm.sec_low <= '0';
+                WHEN others => 
 					dt_counter := (others => '0');
-					if s_sec_pulse = '1' then
-						st_dt_states := dt2;
+					if s_sec_pulse = s1_sec_pulse then
+                        po4_dhb_pwm.sec_high <= s_sec_pulse;
+                        po4_dhb_pwm.sec_low <=  NOT s_sec_pulse;
+						st_dt_states := active_pulse;
 					else
-						st_dt_states := neg;
-					end if;
-				WHEN dt2 =>
-					po4_dhb_pwm.sec_high <= '0';
-					po4_dhb_pwm.sec_low <= '0';
-					dt_counter := dt_counter + 1;
-					if dt_counter = g_u8_deadtime then
-						st_dt_states := pos;
-					else 
-						st_dt_states := dt2;
+						st_dt_states := deadtime;
 					end if;
 			END CASE;
 		end if;

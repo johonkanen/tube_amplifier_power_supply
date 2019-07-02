@@ -7,8 +7,8 @@ USE ieee.STD_LOGIC_UNSIGNED.all  ;
 USE ieee.std_logic_unsigned.all  ; 
 USE std.textio.all  ; 
 
-library dhb_lib;
-	use dhb_lib.dhb_pkg.all;
+library work;
+	use work.dhb_pkg.all;
 
 ENTITY tb_phase_modulator  IS 
 END ; 
@@ -21,40 +21,36 @@ ARCHITECTURE testi OF tb_phase_modulator IS
 	signal po2_DHB_sec_pwm : std_logic_vector(1 downto 0);
 	signal si_rst_n : std_logic; 
 	signal jee_testi : std_logic;
+
+    signal ri_dhb_ctrl : rec_dhb_input;
+    signal po4_dhb_pwm : dhb_pwm;
+
 	component phase_modulator is
 		generic(
 		-- 223ns deadtime as default
-				g_u8_deadtime : unsigned(7 downto 0) := to_unsigned(57,8)
+				g_u8_deadtime : unsigned(7 downto 0)
 			);
 		port(
 			modulator_clk : in std_logic;
-			si_rst_n : in std_logic;
-
 			ri_dhb_ctrl : in rec_dhb_input;
-
-			po2_dhb_pri_pwm : out std_logic_vector(1 downto 0);
-			po2_dhb_sec_pwm : out std_logic_vector(1 downto 0)
+            po4_dhb_pwm : out dhb_pwm
 		);
 	end component;
-BEGIN
-
-
-
-jihuu.si_s16_phase <= (others => '0');
-jihuu.si_u12_dhb_half_period <= 12d"424";
-jihuu.si_load_phase <= '0';
+begin
 
 DUT : phase_modulator
 generic map(to_unsigned(57,8))
 		port map(
-			modulator_clk => modulator_clk,
-			si_rst_n => si_rst_n,
+            modulator_clk,
+            ri_dhb_ctrl,
+            po4_dhb_pwm);
 
-			ri_dhb_ctrl => jihuu,
+ri_dhb_ctrl.s16_phase <= 16d"120";
+ri_dhb_ctrl.u12_dhb_half_period <= 12d"948";
+ri_dhb_ctrl.rstn <= si_rst_n;
 
-			po2_dhb_pri_pwm => po2_dhb_pri_pwm,
-			po2_dhb_sec_pwm => po2_dhb_sec_pwm);
-
+po2_DHB_pri_pwm <= po4_dhb_pwm.pri_high & po4_dhb_pwm.pri_low;
+po2_DHB_sec_pwm <= po4_dhb_pwm.sec_high & po4_dhb_pwm.sec_low;
 
 -- "Clock Pattern" : dutyCycle = 50
 -- Start Time = 0 ns, End Time = 1 us, Period = 4 ns
