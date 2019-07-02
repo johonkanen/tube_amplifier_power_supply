@@ -16,6 +16,7 @@ entity seq_pi_control is
 			);
     port(
 	    pi_clk : in std_logic;
+        si_rstn : in std_logic;
 	    
 	    si_start : in std_logic;
 	    so_pi_busy : out std_logic;
@@ -79,6 +80,9 @@ ki_mult : combi_mult_18x18
 
     begin
 	if rising_edge(pi_clk) then
+        if si_rstn = '0' then
+
+        else
 	    CASE ss_pi_states is 
 		WHEN init =>
 		    so_sign18_pi_out <= (others=>'0');
@@ -127,6 +131,7 @@ ki_mult : combi_mult_18x18
 		WHEN others =>
 		    ss_pi_states := init;
 	    end CASE;
+    end if;
 	end if;
 		v_si_sign18_ref := si_sign18_ref;
 		v_si_sign18_meas := si_sign18_meas;
