@@ -15,6 +15,7 @@
 
 FUNCTION sign_18x18_mult_dsp 
 (
+	clock,
 	dataa[17..0],
 	datab[17..0]
 )

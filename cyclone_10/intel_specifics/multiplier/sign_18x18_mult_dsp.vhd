@@ -42,6 +42,7 @@ USE lpm.all;
 ENTITY sign_18x18_mult_dsp IS
 	PORT
 	(
+		clock		: IN STD_LOGIC ;
 		dataa		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
 		datab		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
 		result		: OUT STD_LOGIC_VECTOR (35 DOWNTO 0)
@@ -58,6 +59,7 @@ ARCHITECTURE SYN OF sign_18x18_mult_dsp IS
 	COMPONENT lpm_mult
 	GENERIC (
 		lpm_hint		: STRING;
+		lpm_pipeline		: NATURAL;
 		lpm_representation		: STRING;
 		lpm_type		: STRING;
 		lpm_widtha		: NATURAL;
@@ -65,6 +67,7 @@ ARCHITECTURE SYN OF sign_18x18_mult_dsp IS
 		lpm_widthp		: NATURAL
 	);
 	PORT (
+			clock	: IN STD_LOGIC ;
 			dataa	: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
 			datab	: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
 			result	: OUT STD_LOGIC_VECTOR (35 DOWNTO 0)
@@ -77,6 +80,7 @@ BEGIN
 	lpm_mult_component : lpm_mult
 	GENERIC MAP (
 		lpm_hint => "MAXIMIZE_SPEED=9",
+		lpm_pipeline => 1,
 		lpm_representation => "SIGNED",
 		lpm_type => "LPM_MULT",
 		lpm_widtha => 18,
@@ -84,6 +88,7 @@ BEGIN
 		lpm_widthp => 36
 	)
 	PORT MAP (
+		clock => clock,
 		dataa => dataa,
 		datab => datab,
 		result => sub_wire0
@@ -100,8 +105,8 @@ END SYN;
 -- Retrieval info: PRIVATE: B_isConstant NUMERIC "0"
 -- Retrieval info: PRIVATE: ConstantB NUMERIC "0"
 -- Retrieval info: PRIVATE: INTENDED_DEVICE_FAMILY STRING "Cyclone 10 LP"
--- Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "0"
--- Retrieval info: PRIVATE: Latency NUMERIC "0"
+-- Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "1"
+-- Retrieval info: PRIVATE: Latency NUMERIC "1"
 -- Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "1"
 -- Retrieval info: PRIVATE: SignedMult NUMERIC "1"
 -- Retrieval info: PRIVATE: USE_MULT NUMERIC "1"
@@ -115,14 +120,17 @@ END SYN;
 -- Retrieval info: PRIVATE: optimize NUMERIC "1"
 -- Retrieval info: LIBRARY: lpm lpm.lpm_components.all
 -- Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=9"
+-- Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "1"
 -- Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
 -- Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
 -- Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "18"
 -- Retrieval info: CONSTANT: LPM_WIDTHB NUMERIC "18"
 -- Retrieval info: CONSTANT: LPM_WIDTHP NUMERIC "36"
+-- Retrieval info: USED_PORT: clock 0 0 0 0 INPUT NODEFVAL "clock"
 -- Retrieval info: USED_PORT: dataa 0 0 18 0 INPUT NODEFVAL "dataa[17..0]"
 -- Retrieval info: USED_PORT: datab 0 0 18 0 INPUT NODEFVAL "datab[17..0]"
 -- Retrieval info: USED_PORT: result 0 0 36 0 OUTPUT NODEFVAL "result[35..0]"
+-- Retrieval info: CONNECT: @clock 0 0 0 0 clock 0 0 0 0
 -- Retrieval info: CONNECT: @dataa 0 0 18 0 dataa 0 0 18 0
 -- Retrieval info: CONNECT: @datab 0 0 18 0 datab 0 0 18 0
 -- Retrieval info: CONNECT: result 0 0 36 0 @result 0 0 36 0

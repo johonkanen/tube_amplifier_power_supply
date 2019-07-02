@@ -33,7 +33,7 @@
 //refer to the applicable agreement for further details.
 
 
-//lpm_mult DEVICE_FAMILY="Cyclone 10 LP" LPM_REPRESENTATION="SIGNED" LPM_WIDTHA=18 LPM_WIDTHB=18 LPM_WIDTHP=36 MAXIMIZE_SPEED=9 dataa datab result
+//lpm_mult DEVICE_FAMILY="Cyclone 10 LP" LPM_PIPELINE=1 LPM_REPRESENTATION="SIGNED" LPM_WIDTHA=18 LPM_WIDTHB=18 LPM_WIDTHP=36 MAXIMIZE_SPEED=9 clock dataa datab result
 //VERSION_BEGIN 18.1 cbx_cycloneii 2018:09:12:13:04:24:SJ cbx_lpm_add_sub 2018:09:12:13:04:24:SJ cbx_lpm_mult 2018:09:12:13:04:24:SJ cbx_mgl 2018:09:12:13:10:36:SJ cbx_nadder 2018:09:12:13:04:24:SJ cbx_padd 2018:09:12:13:04:24:SJ cbx_stratix 2018:09:12:13:04:24:SJ cbx_stratixii 2018:09:12:13:04:24:SJ cbx_util_mgl 2018:09:12:13:04:24:SJ  VERSION_END
 // synthesis VERILOG_INPUT_VERSION VERILOG_2001
 // altera message_off 10463
@@ -45,15 +45,26 @@
 //synopsys translate_on
 module  sign_18x18_mult_dsp_mult
 	( 
+	clock,
 	dataa,
 	datab,
 	result) /* synthesis synthesis_clearbox=1 */;
+	input   clock;
 	input   [17:0]  dataa;
 	input   [17:0]  datab;
 	output   [35:0]  result;
+`ifndef ALTERA_RESERVED_QIS
+// synopsys translate_off
+`endif
+	tri0   clock;
+`ifndef ALTERA_RESERVED_QIS
+// synopsys translate_on
+`endif
 
 	wire  [35:0]   wire_mac_mult1_dataout;
 	wire  [35:0]   wire_mac_out2_dataout;
+	wire aclr;
+	wire clken;
 
 	cyclone10lp_mac_mult   mac_mult1
 	( 
@@ -88,18 +99,11 @@ module  sign_18x18_mult_dsp_mult
 		mac_mult1.lpm_type = "cyclone10lp_mac_mult";
 	cyclone10lp_mac_out   mac_out2
 	( 
+	.aclr(aclr),
+	.clk(clock),
 	.dataa(wire_mac_mult1_dataout),
-	.dataout(wire_mac_out2_dataout)
-	`ifndef FORMAL_VERIFICATION
-	// synopsys translate_off
-	`endif
-	,
-	.aclr(1'b0),
-	.clk(1'b1),
-	.ena(1'b1)
-	`ifndef FORMAL_VERIFICATION
-	// synopsys translate_on
-	`endif
+	.dataout(wire_mac_out2_dataout),
+	.ena(clken)
 	// synopsys translate_off
 	,
 	.devclrn(1'b1),
@@ -108,9 +112,11 @@ module  sign_18x18_mult_dsp_mult
 	);
 	defparam
 		mac_out2.dataa_width = 36,
-		mac_out2.output_clock = "none",
+		mac_out2.output_clock = "0",
 		mac_out2.lpm_type = "cyclone10lp_mac_out";
 	assign
+		aclr = 1'b0,
+		clken = 1'b1,
 		result = wire_mac_out2_dataout[35:0];
 endmodule //sign_18x18_mult_dsp_mult
 //VALID FILE
@@ -120,10 +126,12 @@ endmodule //sign_18x18_mult_dsp_mult
 `timescale 1 ps / 1 ps
 // synopsys translate_on
 module sign_18x18_mult_dsp (
+	clock,
 	dataa,
 	datab,
 	result)/* synthesis synthesis_clearbox = 1 */;
 
+	input	  clock;
 	input	[17:0]  dataa;
 	input	[17:0]  datab;
 	output	[35:0]  result;
@@ -132,6 +140,7 @@ module sign_18x18_mult_dsp (
 	wire [35:0] result = sub_wire0[35:0];
 
 	sign_18x18_mult_dsp_mult	sign_18x18_mult_dsp_mult_component (
+				.clock (clock),
 				.dataa (dataa),
 				.datab (datab),
 				.result (sub_wire0));
@@ -145,8 +154,8 @@ endmodule
 // Retrieval info: PRIVATE: B_isConstant NUMERIC "0"
 // Retrieval info: PRIVATE: ConstantB NUMERIC "0"
 // Retrieval info: PRIVATE: INTENDED_DEVICE_FAMILY STRING "Cyclone 10 LP"
-// Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "0"
-// Retrieval info: PRIVATE: Latency NUMERIC "0"
+// Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "1"
+// Retrieval info: PRIVATE: Latency NUMERIC "1"
 // Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "1"
 // Retrieval info: PRIVATE: SignedMult NUMERIC "1"
 // Retrieval info: PRIVATE: USE_MULT NUMERIC "1"
@@ -160,14 +169,17 @@ endmodule
 // Retrieval info: PRIVATE: optimize NUMERIC "1"
 // Retrieval info: LIBRARY: lpm lpm.lpm_components.all
 // Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=9"
+// Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "1"
 // Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
 // Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
 // Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "18"
 // Retrieval info: CONSTANT: LPM_WIDTHB NUMERIC "18"
 // Retrieval info: CONSTANT: LPM_WIDTHP NUMERIC "36"
+// Retrieval info: USED_PORT: clock 0 0 0 0 INPUT NODEFVAL "clock"
 // Retrieval info: USED_PORT: dataa 0 0 18 0 INPUT NODEFVAL "dataa[17..0]"
 // Retrieval info: USED_PORT: datab 0 0 18 0 INPUT NODEFVAL "datab[17..0]"
 // Retrieval info: USED_PORT: result 0 0 36 0 OUTPUT NODEFVAL "result[35..0]"
+// Retrieval info: CONNECT: @clock 0 0 0 0 clock 0 0 0 0
 // Retrieval info: CONNECT: @dataa 0 0 18 0 dataa 0 0 18 0
 // Retrieval info: CONNECT: @datab 0 0 18 0 datab 0 0 18 0
 // Retrieval info: CONNECT: result 0 0 36 0 @result 0 0 36 0

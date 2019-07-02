@@ -4,7 +4,6 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
-	use work.sys_ctrl_pkg.all;
     use work.vendor_specifics_pkg.all;
 
 entity seq_pi_control is 
@@ -37,6 +36,14 @@ architecture rtl of seq_pi_control is
 
     type t_pi_ctrl_states is (idle, wait_mult, error_calc,out_calc,int_calc,done);
     
+    component combi_mult_18x18 is 
+    port (
+    CLK : in std_logic;
+    A : in std_logic_vector(17 downto 0);
+    B : in std_logic_vector(17 downto 0);
+    P : out std_logic_vector(35 downto 0)
+    );
+    end component;
 
     signal r_mult_ak : signed(17 downto 0);
     signal r_mult_bk : signed(17 downto 0);

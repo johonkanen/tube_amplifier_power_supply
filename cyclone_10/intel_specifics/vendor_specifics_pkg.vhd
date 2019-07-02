@@ -14,6 +14,7 @@ package vendor_specifics_pkg is
 		locked		: OUT STD_LOGIC 
 	);
     END component;
+
    constant g_vendor_specific_uart_clks_per_bit : integer := 25;
    constant g_vendor_specific_RX_bytes_in_word : integer := 2;
    constant g_vendor_specific_TX_bytes_in_word : integer := 2;

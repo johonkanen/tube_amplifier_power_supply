@@ -292,6 +292,12 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_s
 
 
 
+set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_multiplier_wrapper.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/tubepsu_commands_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/pfc_ctrl/pfc_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/led_driver/led_driver_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/heater_ctrl/llc_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/spartan_7/s7_adc_wrapper.vhd
 set_global_assignment -name VHDL_FILE intel_specifics/vendor_specifics_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/system_control/system_control.vhd
 set_global_assignment -name VHDL_FILE ../source/sw_supply_control/sw_supply_ctrl.vhd
