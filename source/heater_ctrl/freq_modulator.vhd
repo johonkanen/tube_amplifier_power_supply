@@ -32,6 +32,7 @@ architecture rtl of freq_modulator is
 
     signal u12_carrier: unsigned(11 downto 0);
     signal u12_deadtime : unsigned(11 downto 0);
+    signal r1_u12_deadtime : unsigned(11 downto 0);
     signal s_pulse : std_logic;
     signal u12_period : unsigned(11 downto 0);
 
@@ -56,6 +57,7 @@ begin
 
     begin
 	if rising_edge(modulator_clk) then
+        r1_u12_deadtime <= u12_deadtime;
 	    CASE st_startup is
 		WHEN init =>
 		    dly_cntr <= 14d"0";
@@ -81,7 +83,7 @@ begin
 		    if rstn = '0' then
                 st_startup <= init;
 		    else
-                if u12_deadtime = 64 then
+                if r1_u12_deadtime = 64 then
                     st_startup <= ready;
                 else
                     st_startup <= rampup;
@@ -166,7 +168,7 @@ begin
                     po4_ht_pwm <= (others => '0');
 
                     sec_pwm_cntr := (others => '0');
-                    if u12_dt_dly < u12_deadtime then
+                    if u12_dt_dly < r1_u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
                         dt_states <= dt1;
                     else
@@ -196,7 +198,7 @@ begin
                 WHEN dt2 =>
                     po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
-                    if u12_dt_dly < u12_deadtime then
+                    if u12_dt_dly < r1_u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
                         dt_states <= dt2;
                     else

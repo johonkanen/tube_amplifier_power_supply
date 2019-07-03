@@ -114,7 +114,7 @@ generic map(8d"56")
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 heater_control : heater_ctrl 
-    port map( core_clk, core_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
  pfc_control_ins : pfc_control
     port map(
