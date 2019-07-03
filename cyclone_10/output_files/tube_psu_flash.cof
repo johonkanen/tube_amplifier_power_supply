@@ -2,7 +2,7 @@
 <cof>
 	<eprom_name>EPCQ16</eprom_name>
 	<flash_loader_device>10CL010Y</flash_loader_device>
-	<output_filename>output_files/tube_psu_flash.jic</output_filename>
+	<output_filename>output_files/cl10_tubepsu_flash.jic</output_filename>
 	<n_pages>1</n_pages>
 	<width>1</width>
 	<mode>7</mode>
@@ -10,7 +10,7 @@
 		<user_name>Page_0</user_name>
 		<page_flags>1</page_flags>
 		<bit0>
-			<sof_filename>C:/Users/c0341878/mycodeprojects/tubepsu_v4_fpga/output_files/cl10_tubepsu.sof</sof_filename> 
+			<sof_filename>C:/Users/Jari/mycodeprojects/tube_psu/cyclone_10/output_files/cl10_tubepsu.sof</sof_filename> 
 		</bit0>
 	</sof_data>
 	<version>10</version>
