@@ -225,7 +225,7 @@ uart : uart_event_ctrl
 
 onboard_ad_control : ad_control 
     port map( 
-		ad_clock => modulator_clk,
+		ad_clock => core_clk,
 		ad_bus_clock => core_clk,
         si_pll_lock => si_pll_lock,
 
@@ -251,7 +251,7 @@ onboard_ad_control : ad_control
 
 ext_adc : ext_ad_control
 	port map( 
-		ad_clock => modulator_clk2,
+		ad_clock => core_clk,
 		ad_bus_clock => core_clk,
         si_rstn => si_pll_lock,
 

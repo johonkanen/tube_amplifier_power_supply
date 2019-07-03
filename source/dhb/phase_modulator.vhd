@@ -34,6 +34,8 @@ architecture rtl of phase_modulator is
     signal u12_phase : unsigned(15 downto 0);
     signal s16_pri_phase : unsigned(15 downto 0);
     signal s16_sec_phase : unsigned(15 downto 0);
+    signal pri_reset : std_logic;
+    signal sec_reset : std_logic;
 
 begin
 
@@ -49,6 +51,9 @@ begin
             s16_sec_phase <= (others => '0');
             s_pri_pulse <= '0';
             s_sec_pulse <= '0';
+            pri_reset <= '0';
+            sec_reset <= '0';
+
         else
 
             if ri_dhb_ctrl.s16_phase > 189 then
@@ -64,14 +69,27 @@ begin
             else
                 u16_master_carrier<= u16_master_carrier+ 1;
             end if;
+
+            if u16_master_carrier = s16_pri_phase then
+                pri_reset <= '1';
+            else
+                pri_reset <= '0';
+            end if;
+
+            if u16_master_carrier = s16_sec_phase then
+                sec_reset <= '1';
+            else
+                sec_reset <= '0';
+            end if;
+
             -- gen phase shifted pri carrier
-            if u12_pri_carrier > 16d"1896" OR u16_master_carrier = s16_pri_phase then
+            if u12_pri_carrier > 16d"1896" OR pri_reset = '1' then
                 u12_pri_carrier <= (others => '0');
             else
                 u12_pri_carrier <= u12_pri_carrier + 1;
             end if;
             -- generate phase shifted secondary carrier
-            if u12_sec_carrier > 16d"1896" OR u16_master_carrier = s16_sec_phase then
+            if u12_sec_carrier > 16d"1896" OR sec_reset <= '1' then
                 u12_sec_carrier <= (others => '0');
             else
                 u12_sec_carrier <= u12_sec_carrier + 1;

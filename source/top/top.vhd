@@ -139,9 +139,9 @@ core_clocks : main_pll
 
 main_system_control : system_control 
     port map(
-        clk_128mhz, 
         clk_128mhz,
-        clk_128mhz,
+        clk_256mhz,
+        clk_256mhz, 
 
         std_pll_lock,
 			
