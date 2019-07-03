@@ -85,6 +85,8 @@ component spi3w_ads7056_driver is
 		);	
 end component; 
 
+signal s16_spi_data : std_logic_vector(15 downto 0); 
+
 begin
 
 onboard_adc : ext_ad_spi3w
@@ -99,6 +101,8 @@ onboard_adc : ext_ad_spi3w
 			s_spi_busy,
 			so_spi_rdy,
 			so_sh_rdy,
-			b_spi_rx);
+			s16_spi_data);
+
+b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),0));
 
 end rtl;

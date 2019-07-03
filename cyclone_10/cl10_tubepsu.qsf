@@ -44,7 +44,7 @@ set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:17:12  OCTOBER 15, 20
 set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
-set_global_assignment -name SMART_RECOMPILE OFF
+set_global_assignment -name SMART_RECOMPILE ON
 set_global_assignment -name FLOW_ENABLE_IO_ASSIGNMENT_ANALYSIS ON
 
 # Pin & Location Assignments
@@ -80,7 +80,7 @@ set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
 
 # Compiler Assignments
 # ====================
-set_global_assignment -name OPTIMIZATION_MODE BALANCED
+set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
 
 # Analysis & Synthesis Assignments
 # ================================
@@ -88,7 +88,7 @@ set_global_assignment -name DEVICE_FILTER_PIN_COUNT 256
 set_global_assignment -name EDA_DESIGN_ENTRY_SYNTHESIS_TOOL "Synplify Pro"
 set_global_assignment -name TOP_LEVEL_ENTITY top
 set_global_assignment -name FAMILY "Cyclone 10 LP"
-set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE BALANCED
 set_global_assignment -name MUX_RESTRUCTURE OFF
 set_global_assignment -name ADV_NETLIST_OPT_SYNTH_WYSIWYG_REMAP ON
 set_global_assignment -name REMOVE_REDUNDANT_LOGIC_CELLS ON
@@ -270,12 +270,32 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_s
 
 
 
+set_location_assignment PIN_R8 -to po3_led1.red
+set_location_assignment PIN_T7 -to po3_led1.green
+set_location_assignment PIN_R7 -to po3_led2.blue
+set_location_assignment PIN_T8 -to po3_led1.blue
+set_location_assignment PIN_T3 -to po3_led3.red
+set_location_assignment PIN_R3 -to po3_led3.green
+set_location_assignment PIN_R4 -to po3_led3.blue
+set_location_assignment PIN_T6 -to po3_led2.red
+set_location_assignment PIN_R6 -to po3_led2.green
+set_location_assignment PIN_J15 -to po2_pfc_pwm.ac1
+set_location_assignment PIN_T13 -to po2_pfc_pwm.ac2
+set_location_assignment PIN_A11 -to po4_dhb_pwm.pri_high
+set_location_assignment PIN_B12 -to po4_dhb_pwm.pri_low
+set_location_assignment PIN_B14 -to po4_dhb_pwm.sec_high
+set_location_assignment PIN_B16 -to po4_dhb_pwm.sec_low
+set_location_assignment PIN_A13 -to po4_ht_pwm.pri_high
+set_location_assignment PIN_A12 -to po4_ht_pwm.pri_low
+set_location_assignment PIN_A15 -to po4_ht_pwm.sync1
+set_location_assignment PIN_D16 -to po4_ht_pwm.sync2
+
+set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_adc_wrapper.vhd
 set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_multiplier_wrapper.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/tubepsu_commands_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/pfc_ctrl/pfc_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/led_driver/led_driver_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/heater_ctrl/llc_pkg.vhd
-set_global_assignment -name VHDL_FILE ../source/spartan_7/s7_adc_wrapper.vhd
 set_global_assignment -name VHDL_FILE intel_specifics/vendor_specifics_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/system_control/system_control.vhd
 set_global_assignment -name VHDL_FILE ../source/sw_supply_control/sw_supply_ctrl.vhd
@@ -313,24 +333,5 @@ set_global_assignment -name QIP_FILE intel_specifics/memory_files/rom1port_16x51
 set_global_assignment -name QIP_FILE intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 set_global_assignment -name QIP_FILE intel_specifics/main_pll.qip
 set_global_assignment -name SDC_FILE cl10_tubepsu.out.sdc
-set_location_assignment PIN_R8 -to po3_led1.red
-set_location_assignment PIN_T7 -to po3_led1.green
-set_location_assignment PIN_R7 -to po3_led2.blue
-set_location_assignment PIN_T8 -to po3_led1.blue
-set_location_assignment PIN_T3 -to po3_led3.red
-set_location_assignment PIN_R3 -to po3_led3.green
-set_location_assignment PIN_R4 -to po3_led3.blue
-set_location_assignment PIN_T6 -to po3_led2.red
-set_location_assignment PIN_R6 -to po3_led2.green
-set_location_assignment PIN_J15 -to po2_pfc_pwm.ac1
-set_location_assignment PIN_T13 -to po2_pfc_pwm.ac2
-set_location_assignment PIN_A11 -to po4_dhb_pwm.pri_high
-set_location_assignment PIN_B12 -to po4_dhb_pwm.pri_low
-set_location_assignment PIN_B14 -to po4_dhb_pwm.sec_high
-set_location_assignment PIN_B16 -to po4_dhb_pwm.sec_low
-set_location_assignment PIN_A13 -to po4_ht_pwm.pri_high
-set_location_assignment PIN_A12 -to po4_ht_pwm.pri_low
-set_location_assignment PIN_A15 -to po4_ht_pwm.sync1
-set_location_assignment PIN_D16 -to po4_ht_pwm.sync2
-
+set_global_assignment -name SAFE_STATE_MACHINE ON
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
