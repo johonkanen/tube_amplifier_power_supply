@@ -307,9 +307,7 @@ set_global_assignment -name VHDL_FILE ../source/dhb/dhb_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/heater_ctrl/heater_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/pfc_ctrl/pfc_control.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/pi_ctrl_pipelined.vhd
-set_global_assignment -name VHDL_FILE ../source/aux_control/aux_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/ext_ad/ext_ad_control.vhd
-set_global_assignment -name VHDL_FILE ../source/ext_ad/ad_bus_driver.vhd
 set_global_assignment -name VHDL_FILE ../source/pfc_ctrl/pfc_modulator.vhd
 set_global_assignment -name VHDL_FILE ../source/dhb/phase_modulator.vhd
 set_global_assignment -name VHDL_FILE ../source/heater_ctrl/freq_modulator.vhd
@@ -318,11 +316,9 @@ set_global_assignment -name VHDL_FILE ../source/ext_ad/ad_ctrl.vhd
 set_global_assignment -name VHDL_FILE ../source/ext_ad/ad_bus_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/system_control/data_control.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/seq_pi_control.vhd
-set_global_assignment -name VHDL_FILE ../source/led_driver/led_indicator.vhd
 set_global_assignment -name VHDL_FILE ../source/led_driver/led_driver.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/command_shell.vhd
 set_global_assignment -name VHDL_FILE ../source/system_control/sys_ctrl_pkg.vhd
-set_global_assignment -name VHDL_FILE ../source/ext_ad/ext_ad_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/uart_tx.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/uart_rx.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/uart_event_ctrl.vhd
@@ -334,4 +330,5 @@ set_global_assignment -name QIP_FILE intel_specifics/multiplier/sign_18x18_mult_
 set_global_assignment -name QIP_FILE intel_specifics/main_pll.qip
 set_global_assignment -name SDC_FILE cl10_tubepsu.out.sdc
 set_global_assignment -name SAFE_STATE_MACHINE ON
+
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
