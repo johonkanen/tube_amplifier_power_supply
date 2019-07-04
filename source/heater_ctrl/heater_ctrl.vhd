@@ -22,7 +22,7 @@ entity heater_ctrl is
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
 
 -- ext ad converter data, in ad bus clock domain
-	    si16_ext_ad1_data : in std_logic_vector(15 downto 0);
+        ht_adc_control : in rec_ext_ad_ctrl;
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
 
 -- uart rx for testing 
@@ -82,11 +82,14 @@ begin
 
 heater_voltage_control : seq_pi_control
 	generic map(1700,948,0,0)
-port map(core_clk, r_si_rstn, '1',open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+port map(core_clk, r_si_rstn, ht_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+
+r_si_sign18_meas <= resize(signed(ht_adc_control.std16_ad_bus),18);
 
 llc_modulator : freq_modulator
     port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
 
+r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(17 downto 6));
 
 test_heater_pwm : process(core_clk)
     begin
@@ -94,7 +97,7 @@ test_heater_pwm : process(core_clk)
         if si_rstn = '0' then
             r_si_rstn <= '0';
             -- start frequency is 270kHz
-            r_piu12_per_ctrl <= 12d"948";
+            /* r_piu12_per_ctrl <= 12d"948"; */
         else
             if si_uart_ready_event = '1' then
             CASE si16_uart_rx_data(15 downto 12) is
@@ -109,7 +112,7 @@ test_heater_pwm : process(core_clk)
                 end CASE;
 
                 WHEN c_llc_freq =>
-                r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); 
+                /* r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
                 WHEN others =>
                 -- do nothing
             end CASE;

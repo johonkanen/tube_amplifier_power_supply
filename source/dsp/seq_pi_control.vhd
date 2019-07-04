@@ -74,7 +74,7 @@ ki_mult : combi_mult_18x18
             r_sign36_ki_mult_res
 	    );
 
-   PI_ctrl : process(pi_clk)
+   PI_ctrl : process(pi_clk, si_sign18_ref, si_sign18_meas, r_sign36_kp_mult_res)
 	variable ss_pi_states : t_pi_ctrl_states;
 	variable v_sign21_integrator : signed(20 downto 0);
 	variable v_so_sign18_pi_out : signed(17 downto 0);
@@ -93,6 +93,7 @@ ki_mult : combi_mult_18x18
 		    ss_pi_states := idle;
             so_pi_out_rdy <= '0'; 	
             so_pi_busy <= '0';
+            /* v_so_sign18_pi_out := (others => '0'); */
 
         else
             CASE ss_pi_states is 
@@ -111,7 +112,7 @@ ki_mult : combi_mult_18x18
                 end if;
             WHEN wait_mult => 
                 so_pi_busy <= '1';
-                ss_pi_states := idle;
+                ss_pi_states := error_calc;
                 so_pi_out_rdy <= '0'; 	
 
             WHEN error_calc =>

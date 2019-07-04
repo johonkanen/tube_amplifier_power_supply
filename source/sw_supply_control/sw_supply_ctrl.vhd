@@ -87,7 +87,7 @@ component heater_ctrl is
 	    si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
 -- ext ad converter data, in ad bus clock domain
-	    si16_ext_ad1_data : in std_logic_vector(15 downto 0);
+        ht_adc_control : in rec_ext_ad_ctrl;
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
@@ -114,7 +114,7 @@ generic map(8d"56")
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 heater_control : heater_ctrl 
-    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, (others => '0'), open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
  pfc_control_ins : pfc_control
     port map(
