@@ -12,9 +12,7 @@ entity phase_modulator is
 		);
     port(
 	    modulator_clk : in std_logic;
-
 		ri_dhb_ctrl : in rec_dhb_input;
-        
         po4_dhb_pwm : out dhb_pwm
 
 	);

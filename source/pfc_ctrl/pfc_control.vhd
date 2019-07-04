@@ -71,6 +71,9 @@ begin
 	    po2_pfc_pwm => po2_pfc_pwm
 	);
 
+
+
+
     test_pfc_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
@@ -97,6 +100,7 @@ begin
         else
             r_si_u12_pfc_duty <= (others => '0');
             r_si_rstn <= '0';
+            r_si_u12_pfc_duty <= (others => '0');
         end if;
             r_si_uart_ready_event <= si_uart_ready_event;
             r_si16_uart_rx_data <= si16_uart_rx_data;

@@ -52,6 +52,8 @@ signal r_piu12_per_ctrl  : unsigned(11 downto 0);
 
 begin
 
+/* heater_voltage_control : seq_pi_control */
+
 llc_modulator : freq_modulator
     port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
 
@@ -86,4 +88,7 @@ test_heater_pwm : process(core_clk)
 	    end if;
 	end if;
     end process test_heater_pwm;
+
+
+
 end behavioral;
