@@ -46,13 +46,43 @@ component freq_modulator is
         po4_ht_pwm : out hb_llc_pwm
 	);
 end component;
+
+component seq_pi_control is 
+	generic(
+				gen_pi_sat_high : integer; 
+				gen_pi_sat_low : integer;
+				gen_left_shift_p_gain : integer;
+				gen_offset_sign18 : integer
+			);
+    port(
+	    pi_clk : in std_logic;
+        si_rstn : in std_logic;
+	    
+	    si_start : in std_logic;
+	    so_pi_busy : out std_logic;
+	    so_pi_out_rdy : out std_logic;
+
+	    so_sign18_pi_out : out signed(17 downto 0);
+
+	    si_sign18_ref : in signed(17 downto 0);
+	    si_sign18_meas : in signed(17 downto 0);
+
+	    si_sign18_p_gain : in signed(17 downto 0);
+	    si_sign18_i_gain : in signed(17 downto 0)
+	);
+end component;
  
 signal r_si_rstn : std_logic;
+signal voltage_ctrl_rdy : std_logic;
 signal r_piu12_per_ctrl  : unsigned(11 downto 0); 
+signal r_so_sign18_pi_out : signed(17 downto 0);
+signal r_si_sign18_meas : signed(17 downto 0);
 
 begin
 
-/* heater_voltage_control : seq_pi_control */
+heater_voltage_control : seq_pi_control
+	generic map(1700,948,0,0)
+port map(core_clk, r_si_rstn, '1',open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
 
 llc_modulator : freq_modulator
     port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
