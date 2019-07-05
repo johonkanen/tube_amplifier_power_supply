@@ -49,61 +49,62 @@ architecture rtl of freq_modulator is
 
     type t_startup_states is (init, rampup, ready);
     signal st_startup : t_startup_states; 
+
+    signal reset_dly_cntr : std_logic;
 begin
-
-
 
     startup : process(modulator_clk)
 
     begin
 	if rising_edge(modulator_clk) then
         r1_u12_deadtime <= u12_deadtime;
-	    CASE st_startup is
-		WHEN init =>
-		    dly_cntr <= 14d"0";
-		    u12_period <= 12d"948"; -- 290kHz initial frequency
-		    u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
+        if rstn = '0' then
+            st_startup <= rampup;
+            dly_cntr <= 14d"0";
+            u12_period <= 12d"948"; -- 290kHz initial frequency
+            u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
+        else
+            CASE st_startup is
+                WHEN rampup => 
+                    -- ramp pulse from 100ns to normal by incrementing deadime
+                    dly_cntr <= dly_cntr + 1;
+                    if dly_cntr = 14d"350" then 
+                        reset_dly_cntr <= '1';
+                    else
+                        reset_dly_cntr <= '0';
+                    end if;
 
-		    if rstn = '0' then
-                st_startup <= init;
-		    else
-                st_startup <= rampup;
-		    end if;
-
-		WHEN rampup => 
-		    -- ramp pulse from 100ns to normal by incrementing deadime
-		    if dly_cntr = 14d"350" then 
-			dly_cntr <= 14d"0";
-			    u12_deadtime <= u12_deadtime - 1;
-		    else
-			    dly_cntr <= dly_cntr + 1;
-		    end if;
+                    if reset_dly_cntr = '1' then
+                        dly_cntr <= 14d"0";
+                        u12_deadtime <= u12_deadtime - 1;
+                    end if;
 
 
-		    if rstn = '0' then
-                st_startup <= init;
-		    else
-                if r1_u12_deadtime = 64 then
-                    st_startup <= ready;
-                else
+                    if r1_u12_deadtime = 64 then
+                        st_startup <= ready;
+                    else
+                        st_startup <= rampup;
+                    end if;
+
+
+                WHEN ready =>
+
+                    u12_period <= piu12_per_ctrl;
+
+                    if rstn = '0' then
+                        st_startup <= init;
+                    else
+                        st_startup <= ready;
+                    end if;
+
+                WHEN others =>
                     st_startup <= rampup;
-                end if;
-		    end if;
+                    dly_cntr <= 14d"0";
+                    u12_period <= 12d"948"; -- 290kHz initial frequency
+                    u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
+            end CASE;
 
-
-		WHEN ready =>
-
-		    u12_period <= piu12_per_ctrl;
-
-		    if rstn = '0' then
-                st_startup <= init;
-		    else
-                st_startup <= ready;
-		    end if;
-
-		WHEN others =>
-		    st_startup <= init;
-	    end CASE;
+        end if;
 	end if;
     end process startup;
 
@@ -142,12 +143,15 @@ begin
         variable sec_pwm_cntr : unsigned(11 downto 0);
     begin
 	if rising_edge(modulator_clk) then
-        if rstn = '1' then
+        if rstn = '0' then
+            po4_ht_pwm <= (others => '0');
+            sec_pwm_cntr := (others => '0');
+            u12_dt_dly <= 12d"0";
+        else
             CASE dt_states is
                 WHEN pos =>
                     -- high gate on
                      u12_dt_dly <= 12d"0";
-
                     if s_pulse = '0' then
                         dt_states <= dt1;
                     else
@@ -211,11 +215,7 @@ begin
                     u12_dt_dly <= 12d"0";
                     dt_states <= pos;
             end CASE;
-        else
-            po4_ht_pwm <= (others => '0');
-            sec_pwm_cntr := (others => '0');
         end if;
-
 	end if;
     end process pri_gate_ctrl;
     
