@@ -39,7 +39,7 @@ architecture synth of ext_ad_spi3w is
     constant c_convert : std_logic := '0';
     constant c_idle : std_logic := '1';
     signal i : integer range 0 to 31;
-    signal clk_buffer : std_logic;
+    signal clk_buffer : std_logic; 
 
 begin
 
@@ -48,8 +48,14 @@ begin
         variable spi_clk_div : unsigned(7 downto 0);
     begin
         if rising_edge(si_spi_clk) then
-            po_spi_clk_out <= clk_buffer;
-            if si_rstn = '1' then
+            if si_rstn = '0' then
+                po_spi_cs <= c_idle;
+                po_spi_clk_out <= '1';
+                clk_buffer <= '1';
+                b_spi_rx <= (others => '0');
+                so_spi_rdy <= '0';
+            else
+                po_spi_clk_out <= clk_buffer;
                 CASE po_spi_cs is
                     WHEN c_idle =>
                         so_spi_rdy <= '0';
@@ -84,11 +90,14 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             clk_buffer <= not clk_buffer;
+                        end if;
+
+                        if spi_clk_div = 2 then
                             b_spi_rx(i-2) <= pi_spi_serial;
                             i <= i - 1;
                         end if;
 
-                        if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2+2 then
+                        if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 + 1 then
                             po_spi_cs <= c_idle;
                             so_spi_rdy <= '1';
                         else
@@ -99,10 +108,6 @@ begin
                     WHEN others =>
                         po_spi_cs <= c_idle;
                 end CASE;
-            else
-                po_spi_cs <= '1';
-                clk_buffer <= '1';
-                b_spi_rx <= (others => '0');
             end if;
         end if; --rising_edge
     end process spi_control;	

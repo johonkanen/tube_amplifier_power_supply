@@ -1,13 +1,7 @@
 v 4
-file . "spi3w_testbench.vhd" "2230c95d141645cca95d9d4c832d20b4cd6ddd71" "20190518052829.695":
-  entity spi3w_testbench at 1( 0) + 0 on 415;
-  architecture testi of spi3w_testbench at 12( 271) + 0 on 416;
-file . "spi3w_ads7056_driver_tb.vhd" "3c55baae6d9eba2539600b14804ac64cfbf50d52" "20190527210724.366":
-  entity spi3w_ads7056_driver_tb at 1( 0) + 0 on 579;
-  architecture testi of spi3w_ads7056_driver_tb at 12( 278) + 0 on 580;
-file . "ext_ad_spi3w.vhd" "1d0edc6f2d2961e306ede44f67c8e5c421c81dcf" "20190518052829.598":
-  entity ext_ad_spi3w at 1( 0) + 0 on 413;
-  architecture synth of ext_ad_spi3w at 34( 881) + 0 on 414;
-file . "spi3w_ads7056_driver.vhd" "2bd121d23498ae6f0967d3ac336b9b6b9eacf0a7" "20190527210724.254":
-  entity spi3w_ads7056_driver at 1( 0) + 0 on 577;
-  architecture synth of spi3w_ads7056_driver at 35( 938) + 0 on 578;
+file . "spi3w_testbench.vhd" "eda6a970944331a2383587db1f3784dc063bc2ab" "20190705084419.859":
+  entity spi3w_testbench at 1( 0) + 0 on 41;
+  architecture testi of spi3w_testbench at 12( 271) + 0 on 42;
+file . "ext_ad_spi3w.vhd" "cf607e98abb6cb01f32eb805bb44224f1aa40a3a" "20190705084419.753":
+  entity ext_ad_spi3w at 1( 0) + 0 on 39;
+  architecture synth of ext_ad_spi3w at 35( 918) + 0 on 40;

@@ -276,7 +276,7 @@ system_data_control : data_control
 				-- wait until DC link above 100V
 
                     if r_so_adb_ctrl.std3_ad_address= 3d"4" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                        if r_so_adb_ctrl.std16_ad_bus > 16d"617" then
+                        if r_so_adb_ctrl.std16_ad_bus > 16d"4936" then
                             st_main_states := bypass_relay;
                         else
                             st_main_states := charge_dc_link; 
@@ -321,7 +321,7 @@ system_data_control : data_control
 				
                 if r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     if  r_so_adb_ctrl.std3_ad_address= 3d"2" then -- if bypass released at 0V, vac meas = 2088
-                        if r_so_adb_ctrl.std16_ad_bus > 16d"2063" AND r_so_adb_ctrl.std16_ad_bus < 16d"2113" then
+                        if r_so_adb_ctrl.std16_ad_bus > 16d"16504" AND r_so_adb_ctrl.std16_ad_bus < 16d"16904" then
                             zero_cross_event <= '1';
                         else
                             zero_cross_event <= '0';

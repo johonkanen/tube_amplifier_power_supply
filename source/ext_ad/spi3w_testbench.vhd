@@ -19,9 +19,16 @@ ARCHITECTURE testi   OF spi3w_testbench   IS
   SIGNAL po_spi_clk_out   :  STD_LOGIC  ; 
   SIGNAL pi_spi_serial   :  STD_LOGIC  ; 
   SIGNAL po_spi_cs   :  STD_LOGIC  ; 
+  signal si_rstn : std_logic;
   COMPONENT ext_ad_spi3w  
+	generic(
+				g_u8_clk_cnt : unsigned(7 downto 0);
+				g_u8_clks_per_conversion : unsigned(7 downto 0);
+				g_sh_counter_latch : unsigned(7 downto 0)
+			);
     PORT ( 
       so_spi_rdy  : out STD_LOGIC ; 
+      si_rstn : in std_logic;
       s_spi_busy  : out STD_LOGIC ; 
       si_spi_start  : in STD_LOGIC ; 
       si_spi_clk  : in STD_LOGIC ; 
@@ -33,7 +40,9 @@ ARCHITECTURE testi   OF spi3w_testbench   IS
   END COMPONENT ; 
 BEGIN
   DUT  : ext_ad_spi3w  
+    generic map(8d"8", 8d"14", 8d"9")
     PORT MAP ( 
+      si_rstn => si_rstn,
       so_spi_rdy   => so_spi_rdy  ,
       s_spi_busy   => s_spi_busy  ,
       si_spi_start   => si_spi_start  ,
@@ -51,7 +60,9 @@ BEGIN
   Process
 	Begin
 	 si_spi_clk  <= '0'  ;
+	 si_rstn  <= '0'  ;
 	wait for 2 ns ;
+	 si_rstn  <= '1'  ;
 -- 2 ns, single loop till start period.
 	for Z in 1 to 250
 	loop
