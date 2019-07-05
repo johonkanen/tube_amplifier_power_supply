@@ -151,11 +151,12 @@ begin
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= 12d"0";
+            st_dt_states := deadtime;
         else
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
-                     u12_dt_dly <= 12d"0";
+                    u12_dt_dly <= 12d"0";
                     po4_ht_pwm.pri_high <= s_pulse;
                     po4_ht_pwm.pri_low <= not s_pulse;
 
@@ -192,6 +193,4 @@ begin
         end if;
 	end if;
     end process pri_gate_ctrl;
-    
-
 end rtl;
