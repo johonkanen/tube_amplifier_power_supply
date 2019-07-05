@@ -34,6 +34,7 @@ architecture rtl of freq_modulator is
     signal u12_deadtime : unsigned(11 downto 0);
     signal r1_u12_deadtime : unsigned(11 downto 0);
     signal s_pulse : std_logic;
+    signal s1_pulse : std_logic;
     signal u12_period : unsigned(11 downto 0);
 
     signal r_po2_ht_pri_pwm : std_logic_vector(1 downto 0);
@@ -141,36 +142,39 @@ begin
 
     pri_gate_ctrl : process(modulator_clk)
         variable sec_pwm_cntr : unsigned(11 downto 0);
+        type t_dt_states is (active_pulse,deadtime);
+        variable st_dt_states : t_dt_states;
     begin
 	if rising_edge(modulator_clk) then
+            s1_pulse <= s_pulse;
         if rstn = '0' then
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= 12d"0";
         else
-            CASE dt_states is
-                WHEN pos =>
-                    -- high gate on
+            CASE st_dt_states is
+                WHEN active_pulse =>
+                    -- gate on
                      u12_dt_dly <= 12d"0";
-                    if s_pulse = '0' then
-                        dt_states <= dt1;
-                    else
-                        dt_states <= pos;
-                    end if;
-                    po4_ht_pwm.pri_high <= '1';
-                    po4_ht_pwm.pri_low <= '0';
+                    po4_ht_pwm.pri_high <= s_pulse;
+                    po4_ht_pwm.pri_low <= not s_pulse;
+
                     if sec_pwm_cntr > 12d"614" then
                         po4_ht_pwm.sync1 <= '0';
                         po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        po4_ht_pwm.sync1 <= '1';
-                        po4_ht_pwm.sync2 <= '0';
+                        po4_ht_pwm.sync1 <= s_pulse;
+                        po4_ht_pwm.sync2 <= not s_pulse;
                     end if;
-                WHEN dt1 => 
 
+                    if s1_pulse = s_pulse then
+                        st_dt_states := active_pulse;
+                    else
+                        st_dt_states := deadtime;
+                    end if;
+                WHEN deadtime => 
                     po4_ht_pwm <= (others => '0');
-
                     sec_pwm_cntr := (others => '0');
                     if u12_dt_dly < r1_u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
@@ -178,36 +182,6 @@ begin
                     else
                         u12_dt_dly <= 12d"0";
                         dt_states <= neg;
-                    end if;
-                WHEN neg =>
-                     u12_dt_dly <= 12d"0";
-
-                    if s_pulse = '1' then
-                        dt_states <= dt2;
-                    else
-                        dt_states <= neg;
-                    end if;
-
-                    po4_ht_pwm.pri_high <= '0';
-                    po4_ht_pwm.pri_low <= '1';
-
-                    if sec_pwm_cntr > 12d"614" then
-                        po4_ht_pwm.sync1 <= '0';
-                        po4_ht_pwm.sync2 <= '0';
-                    else
-                        sec_pwm_cntr := sec_pwm_cntr + 1;
-                        po4_ht_pwm.sync1 <= '0';
-                        po4_ht_pwm.sync2 <= '1';
-                    end if;
-                WHEN dt2 =>
-                    po4_ht_pwm <= (others => '0');
-                    sec_pwm_cntr := (others => '0');
-                    if u12_dt_dly < r1_u12_deadtime then
-                        u12_dt_dly <= u12_dt_dly + 1;
-                        dt_states <= dt2;
-                    else
-                         u12_dt_dly <= 12d"0";
-                        dt_states <= pos;
                     end if;
                 WHEN others => 
                     po4_ht_pwm <= (others => '0');
