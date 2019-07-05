@@ -103,6 +103,6 @@ onboard_adc : ext_ad_spi3w
 			so_sh_rdy,
 			s16_spi_data);
 
-b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),0));
+b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),3));
 
 end rtl;
