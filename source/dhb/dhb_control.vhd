@@ -79,6 +79,8 @@ dhb_modulator : phase_modulator
 generic map(8d"56")
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
+jihuu.s16_phase <= unsigned(resize(r_so_sign18_pi_out,16));
+jihuu.rstn <= si_rstn;
 
 
 end rtl;
