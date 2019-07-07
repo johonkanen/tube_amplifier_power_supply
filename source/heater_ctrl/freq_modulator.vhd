@@ -44,7 +44,7 @@ architecture rtl of freq_modulator is
     signal u12_car_per_2 : unsigned(11 downto 0);
 
     signal u12_dt_dly : unsigned(11 downto 0);
-    signal jipijee : unsigned(11 downto 0);
+    signal u12_reset_carrier : unsigned(11 downto 0);
     type st_deadtime is (zero, pos,dt1,neg,dt2);
     signal dt_states : st_deadtime;
 
@@ -113,32 +113,23 @@ begin
 
     begin
 	if rising_edge(modulator_clk) then
-	    if u12_carrier > jipijee then
-			u12_carrier <= 12d"0";
-	    else
-			u12_carrier <= u12_carrier + 1;
-	    end if;
+         u12_reset_carrier <= u12_period;
+        if rstn = '0' then
+            s_pulse <= '0';
+        else
+            if u12_carrier > u12_reset_carrier then
+                u12_carrier <= 12d"0";
+                s_pulse <= NOT s_pulse;
+            else
+                u12_carrier <= u12_carrier + 1;
+            end if;
 
-	    if u12_carrier = 12d"0" then
-			 jipijee <= u12_period;
-	    end if;
+            /* if u12_carrier = 12d"0" then */
+            /* end if; */
+        end if;
 	end if;
     end process freq_synth;
 
-
-    pulse_ctrl : process(modulator_clk)
-    begin
-        if rising_edge(modulator_clk) then
-
-            if reg_u12_carrier > u12_car_per_2 then
-                s_pulse <= '1';
-            else
-                s_pulse <= '0';	
-            end if;
-                reg_u12_carrier <= u12_carrier;
-                u12_car_per_2 <= shift_right(u12_period,1);
-        end if;
-    end process pulse_ctrl;
 
     pri_gate_ctrl : process(modulator_clk)
         variable sec_pwm_cntr : unsigned(11 downto 0);
@@ -151,7 +142,7 @@ begin
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= 12d"0";
-            st_dt_states := deadtime;
+            st_dt_states := active_pulse;
         else
             CASE st_dt_states is
                 WHEN active_pulse =>

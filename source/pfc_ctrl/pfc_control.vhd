@@ -72,8 +72,6 @@ begin
 	);
 
 
-
-
     test_pfc_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
