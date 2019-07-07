@@ -62,7 +62,7 @@ begin
         if rstn = '0' then
             st_startup <= rampup;
             dly_cntr <= 14d"0";
-            u12_period <= 12d"948"; -- 290kHz initial frequency
+            u12_period <= 12d"474"; -- 290kHz initial frequency
             u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
         else
             CASE st_startup is
@@ -92,16 +92,10 @@ begin
 
                     u12_period <= piu12_per_ctrl;
 
-                    if rstn = '0' then
-                        st_startup <= init;
-                    else
-                        st_startup <= ready;
-                    end if;
-
                 WHEN others =>
                     st_startup <= rampup;
                     dly_cntr <= 14d"0";
-                    u12_period <= 12d"948"; -- 290kHz initial frequency
+                    u12_period <= 12d"474"; -- 290kHz initial frequency
                     u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
             end CASE;
 
