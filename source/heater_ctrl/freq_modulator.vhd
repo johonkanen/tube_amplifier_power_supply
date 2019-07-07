@@ -164,16 +164,16 @@ begin
                     sec_pwm_cntr := (others => '0');
                     if u12_dt_dly < r1_u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
-                        dt_states <= dt1;
+                        st_dt_states := deadtime;
                     else
                         u12_dt_dly <= 12d"0";
-                        dt_states <= neg;
+                        st_dt_states := active_pulse;
                     end if;
                 WHEN others => 
                     po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
                     u12_dt_dly <= 12d"0";
-                    dt_states <= pos;
+                    st_dt_states := active_pulse;
             end CASE;
         end if;
 	end if;
