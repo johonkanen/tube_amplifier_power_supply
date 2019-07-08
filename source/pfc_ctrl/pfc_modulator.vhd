@@ -29,26 +29,26 @@ begin
     pfc_pwm : process(modulator_clk)
     
     begin
-	if rising_edge(modulator_clk) then
-	    if si_rstn = '1' then
-		if si_u12_pfc_duty < 12d"200" then
-		    safe_si_u12_pfc_duty <= si_u12_pfc_duty;
-		else
-		    safe_si_u12_pfc_duty <= safe_si_u12_pfc_duty;
-		end if;
+        if rising_edge(modulator_clk) then
+            if si_rstn = '0' then
+                po2_pfc_pwm.ac1 <= '0';
+                po2_pfc_pwm.ac2 <= '0';
+            else
+                if si_u12_pfc_duty < 12d"200" then
+                    safe_si_u12_pfc_duty <= si_u12_pfc_duty;
+                else
+                    safe_si_u12_pfc_duty <= safe_si_u12_pfc_duty;
+                end if;
 
-		if si_u12_sym_carrier < safe_si_u12_pfc_duty then
-		    po2_pfc_pwm.ac1 <= '1';
-		    po2_pfc_pwm.ac2 <= '1';
-		else 
-		    po2_pfc_pwm.ac1 <= '0';
-		    po2_pfc_pwm.ac2 <= '0';
-		end if;
-	    else
-		    po2_pfc_pwm.ac1 <= '0';
-		    po2_pfc_pwm.ac2 <= '0';
-	    end if;
-	end if;
+                if si_u12_sym_carrier < safe_si_u12_pfc_duty then
+                    po2_pfc_pwm.ac1 <= '1';
+                    po2_pfc_pwm.ac2 <= '1';
+                else 
+                    po2_pfc_pwm.ac1 <= '0';
+                    po2_pfc_pwm.ac2 <= '0';
+                end if;
+            end if;
+        end if;
     end process pfc_pwm;
 
 end rtl;

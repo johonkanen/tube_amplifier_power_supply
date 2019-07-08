@@ -70,7 +70,7 @@ begin
 
 dhb_voltage_control : seq_pi_control
 	generic map(1700,948,0,0)
-port map(core_clk, si_rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
 
 r_si_sign18_meas <= resize(signed(dhb_adc_control.std16_ad_bus),18);
 jihuu.u12_dhb_half_period <= 12d"472";
@@ -80,7 +80,36 @@ generic map(8d"56")
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 jihuu.s16_phase <= unsigned(resize(r_so_sign18_pi_out,16));
-jihuu.rstn <= si_rstn;
+
+
+test_dhb : process(core_clk)
+    begin
+	if rising_edge(core_clk) then
+        if si_rstn = '0' then
+            jihuu.rstn <= '0';
+        else
+	    if si_uart_ready_event = '1' then
+            CASE si16_uart_rx_data(15 downto 12) is
+                WHEN x"0" =>
+                CASE si16_uart_rx_data(11 downto 0) is
+                    WHEN 12d"30" =>
+                    jihuu.rstn <= '1';
+                    WHEN 12d"31" =>
+                    jihuu.rstn <= '0';
+                    WHEN others =>
+                    -- do nothing
+                end CASE;
+
+                WHEN x"3" =>
+                    /* jihuu.s16_phase(11 downto 0)  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
+                WHEN others =>
+                -- do nothing
+            end CASE;
+        end if;
+
+	    end if;
+	end if;
+    end process test_dhb;
 
 
 end rtl;

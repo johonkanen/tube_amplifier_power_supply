@@ -75,17 +75,25 @@ begin
     test_pfc_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
-        if si_rstn = '1' then
+        if si_rstn = '0' then
+            r_si_rstn <= '0';
+            r_si_u12_pfc_duty <= (others => '0');
+            r_si_uart_ready_event <= '0';
+            r_si16_uart_rx_data <= (others => '0');
+        else
+            r_si_uart_ready_event <= si_uart_ready_event;
+            r_si16_uart_rx_data <= si16_uart_rx_data;
+
             if r_si_uart_ready_event = '1' then
                 CASE r_si16_uart_rx_data(15 downto 12) is
                     WHEN c_uart_command =>
                     CASE r_si16_uart_rx_data(11 downto 0) is
                         WHEN c_pfc_start =>
-                        r_si_rstn <= '1';
+                            r_si_rstn <= '1';
                         WHEN c_pfc_stop =>
-                        r_si_rstn <= '0';
+                            r_si_rstn <= '0';
                         WHEN others =>
-                        -- do nothing
+                            -- do nothing
                     end CASE;
 
                     WHEN c_pfc_duty =>
@@ -95,13 +103,7 @@ begin
                 end CASE;
 
             end if;
-        else
-            r_si_u12_pfc_duty <= (others => '0');
-            r_si_rstn <= '0';
-            r_si_u12_pfc_duty <= (others => '0');
         end if;
-            r_si_uart_ready_event <= si_uart_ready_event;
-            r_si16_uart_rx_data <= si16_uart_rx_data;
 	end if;
     end process test_pfc_pwm;
 end behavioral;
