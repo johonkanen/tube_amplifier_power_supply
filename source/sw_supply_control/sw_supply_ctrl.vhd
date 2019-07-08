@@ -240,8 +240,9 @@ heater_control : heater_ctrl
     heater_ad_trigger : process(core_clk)
         variable heater_cntr : unsigned(11 downto 0);
     begin
+        -- 200khz sampling for both, llc and dhb
         if rising_edge(core_clk) then
-            if heater_cntr > 474 then
+            if heater_cntr > 640 then
                 heater_cntr := 12d"0";
                 so_ext_ad1_start <= '1';
                 so_ext_ad2_start <= '1';
