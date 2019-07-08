@@ -60,7 +60,7 @@ heater_ad_driver : ext_ad_spi3w
 	    -- output signal indicating sampling is done
 	    so_sh_rdy => open,
 	    -- output buffer
-	    b_spi_rx => ht_adc_control.std16_ad_bus
+	    b_spi_rx => r_so_ext_ad1_data 
 	);
 
 dhb_ad_driver : ext_ad_spi3w 
@@ -80,9 +80,10 @@ dhb_ad_driver : ext_ad_spi3w
 	    -- output signal indicating sampling is done
 	    so_sh_rdy => open,
 	    -- output buffer
-	    b_spi_rx => dhb_adc_control.std16_ad_bus
+	    b_spi_rx => r_so_ext_ad2_data
 	);
-
+ht_adc_control.std16_ad_bus <= '0'&r_so_ext_ad1_data(11 downto 0)&"000";
+dhb_adc_control.std16_ad_bus <= '0'&r_so_ext_ad2_data(11 downto 0)&"000";
 
 --    ht_bus_driver : cdc_bus_driver
 --    port map(ad_clock,ad_bus_clock,r_so_ext_ad1_data,ext_ad1_spi_rdy,ht_adc_control.std16_ad_bus,ht_adc_control.ad_rdy_trigger);
