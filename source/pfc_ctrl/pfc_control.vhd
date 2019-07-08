@@ -7,7 +7,6 @@ library work;
 	use work.ad_bus_pkg.all;
 	use work.pfc_pkg.all;
 	use work.tubepsu_commands_pkg.all;
-
     use work.onboard_ad_ctrl_pkg.all;
 
 entity pfc_control is
@@ -36,6 +35,31 @@ end pfc_control;
 
 architecture behavioral of pfc_control is
   
+    component seq_pi_control is 
+        generic(
+                    gen_pi_sat_high : integer; 
+                    gen_pi_sat_low : integer;
+                    gen_left_shift_p_gain : integer;
+                    gen_offset_sign18 : integer
+                );
+        port(
+            pi_clk : in std_logic;
+            si_rstn : in std_logic;
+            
+            si_start : in std_logic;
+            so_pi_busy : out std_logic;
+            so_pi_out_rdy : out std_logic;
+
+            so_sign18_pi_out : out signed(17 downto 0);
+
+            si_sign18_ref : in signed(17 downto 0);
+            si_sign18_meas : in signed(17 downto 0);
+
+            si_sign18_p_gain : in signed(17 downto 0);
+            si_sign18_i_gain : in signed(17 downto 0)
+        );
+    end component;
+
     component pfc_modulator is
     port(
 	    modulator_clk : in std_logic;
@@ -56,8 +80,23 @@ architecture behavioral of pfc_control is
     signal stable_si_rstn : std_logic;
     signal r_si_uart_ready_event : std_logic;
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
+    signal start_voltage_ctrl : std_logic; 
 
 begin 
+
+start_pfc_voltage_ctrl: process(si_adb_ctrl)
+    
+begin
+    if si_adb_ctrl.std3_ad_address = ch3 then
+        start_voltage_ctrl <= si_adb_ctrl.ad_rdy_trigger;
+    else
+        start_voltage_ctrl <= '0';
+    end if;
+end process;	
+
+pfc_voltage_control : seq_pi_control
+	generic map(1700,948,0,0)
+port map(core_clk, r_si_rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
  
     pfc_gate_control : pfc_modulator 
     port map(

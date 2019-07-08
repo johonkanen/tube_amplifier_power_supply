@@ -217,18 +217,17 @@ heater_control : heater_ctrl
                     end if;
 
                     CASE u12_carrier  is
-
                         WHEN 12d"300" => 
-                        r1_to_ada_triggers <= ch2;
-                        r1_to_adb_triggers <= ch2;
+                            r1_to_ada_triggers <= ch2;
+                            r1_to_adb_triggers <= ch2;
 
                         WHEN 12d"163" => 
-                        r1_to_ada_triggers <= ch2;
-                        r1_to_adb_triggers <= ch4;
+                            r1_to_ada_triggers <= ch2;
+                            r1_to_adb_triggers <= ch4;
 
                         WHEN others => 
-                        r1_to_ada_triggers <= (others => '0');
-                        r1_to_adb_triggers <= (others => '0');
+                            r1_to_ada_triggers <= (others => '0');
+                            r1_to_adb_triggers <= (others => '0');
                     end CASE;
 			WHEN others =>
 			    dir := up;
