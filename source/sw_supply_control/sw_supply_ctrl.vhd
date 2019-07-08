@@ -174,7 +174,7 @@ heater_control : heater_ctrl
 	type t_carrier_states is (up, down);
 	variable dir : t_carrier_states;
     begin
-	if rising_edge(core_clk) then
+	if rising_edge(modulator_clk) then
 	    -- carrier generation, 948*2 @ 256mhz = 135kHz
 	    if si_rstn = '0' then
 		    u12_carrier <= (others=>'0');
@@ -188,12 +188,12 @@ heater_control : heater_ctrl
 		else -- rstn = '1'
             r_to_ada_triggers <= r1_to_ada_triggers; 
             r_to_adb_triggers <= r1_to_adb_triggers; 
-            to_ada_triggers <= r_to_ada_triggers OR r_to_ada_triggers;
-            to_adb_triggers <= r_to_adb_triggers OR r_to_adb_triggers;
+            to_ada_triggers <= r_to_ada_triggers OR r1_to_ada_triggers;
+            to_adb_triggers <= r_to_adb_triggers OR r1_to_adb_triggers;
             CASE dir is
                 WHEN up =>
                     u12_carrier <= u12_carrier + 1;
-                    if u12_carrier >= 474 then
+                    if u12_carrier >= 948 then
                         dir := down;
                     else
                         dir := up;
@@ -222,18 +222,20 @@ heater_control : heater_ctrl
                         dir := down;
                     end if;
 
-                CASE u12_carrier  is
+                    CASE u12_carrier  is
 
-                    WHEN 12d"300" => 
-                    r1_to_adb_triggers <= ch2;
+                        WHEN 12d"300" => 
+                        r1_to_ada_triggers <= ch2;
+                        r1_to_adb_triggers <= ch2;
 
-                    WHEN 12d"163" => 
-                    r1_to_adb_triggers <= ch4;
+                        WHEN 12d"163" => 
+                        r1_to_ada_triggers <= ch2;
+                        r1_to_adb_triggers <= ch4;
 
-                    WHEN others => 
-                    r1_to_ada_triggers <= (others => '0');
-                    r1_to_adb_triggers <= (others => '0');
-                end CASE;
+                        WHEN others => 
+                        r1_to_ada_triggers <= (others => '0');
+                        r1_to_adb_triggers <= (others => '0');
+                    end CASE;
 			WHEN others =>
 			    dir := up;
 		    end CASE;
@@ -245,7 +247,7 @@ heater_control : heater_ctrl
 	variable heater_cntr : unsigned(11 downto 0);
     begin
 	if rising_edge(core_clk) then
-	    if heater_cntr > 948 then
+	    if heater_cntr > 474 then
 			heater_cntr := 12d"0";
 			so_ext_ad1_start <= '1';
 			so_ext_ad2_start <= '1';

@@ -72,6 +72,11 @@ signal adb_data : std_logic_vector(15 downto 0);
 signal test_ad : t_ad_triggers;
 signal trig_cnt : unsigned(10 downto 0);
 
+signal r_to_ada_triggers : t_ad_triggers;
+signal r1_to_ada_triggers : t_ad_triggers;
+signal r_to_adb_triggers : t_ad_triggers;
+signal r1_to_adb_triggers : t_ad_triggers;
+
 begin
 
 ada : adc_wrapper 
@@ -80,7 +85,7 @@ ada : adc_wrapper
 adb : adc_wrapper 
     port map(ad_bus_clock, si_pll_lock, po_adb_cs, po_adb_clk, pi_adb_sdata, si_adb_start, open, so_adb_ctrl.ad_rdy_trigger, so_adb_sh_rdy, so_adb_ctrl.std16_ad_bus);
 
-ada_mux_sequencer : process(ad_clock)
+ada_mux_sequencer : process(ad_bus_clock)
     variable st_ada_seq : t3_mux_pos;
     variable st_ada_seq_nxt : t3_mux_pos;
 
@@ -90,6 +95,11 @@ begin
             po3_ada_muxsel <= st_ada_seq_nxt;
             po3_adb_muxsel <= st_ada_seq_nxt;
         end if;
+        r_to_ada_triggers <= ti_ada_triggers;
+        r1_to_ada_triggers <= r_to_ada_triggers;
+
+        r_to_adb_triggers <= ti_adb_triggers;
+        r1_to_adb_triggers <= r_to_adb_triggers;
 
         CASE ti_adb_triggers is
             WHEN ch3 => 
@@ -118,10 +128,10 @@ begin
     end if; --rising_edge
 end process;
 
-start_adc : process(test_ad)
+start_adc : process(r1_to_adb_triggers)
     
 begin
-    CASE ti_adb_triggers is
+    CASE r1_to_adb_triggers is
         WHEN ch3 =>
             si_ada_start <= '1';
             si_adb_start <= '1';
