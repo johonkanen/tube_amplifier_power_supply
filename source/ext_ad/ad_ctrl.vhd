@@ -91,7 +91,7 @@ begin
             po3_adb_muxsel <= st_ada_seq_nxt;
         end if;
 
-        CASE test_ad is
+        CASE ti_adb_triggers is
             WHEN ch3 => 
                 so_ada_ctrl.std3_ad_address <= 3d"3";
                 so_adb_ctrl.std3_ad_address <= 3d"3";
@@ -121,7 +121,7 @@ end process;
 start_adc : process(test_ad)
     
 begin
-    CASE test_ad is
+    CASE ti_adb_triggers is
         WHEN ch3 =>
             si_ada_start <= '1';
             si_adb_start <= '1';
@@ -142,27 +142,4 @@ begin
             si_adb_start <= '0';
     end CASE;
 end process start_adc;	
-
-create_test_triggers : process(ad_bus_clock)
-    
-begin
-    if rising_edge(ad_bus_clock) then
-        trig_cnt <= trig_cnt + 1;
-        CASE trig_cnt is
-            WHEN 11d"0" => 
-                test_ad <= ch3;
-            WHEN 11d"292" =>
-                test_ad <= ch1;
-            WHEN 11d"584" =>
-                test_ad <= ch6;
-            WHEN 11d"876" =>
-                test_ad <= ch2;
-            WHEN 11d"1168" =>
-                test_ad <= ch4;
-            WHEN others =>
-                test_ad <= (others => '0');
-        END case;
-    end if; --rising_edge
-end process create_test_triggers;	
-
 end rtl;

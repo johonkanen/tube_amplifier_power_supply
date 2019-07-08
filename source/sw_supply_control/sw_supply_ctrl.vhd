@@ -121,6 +121,10 @@ component heater_ctrl is
 end component;
 
     signal u12_carrier : unsigned(11 downto 0);
+	signal r_to_ada_triggers : t_ad_triggers;
+	signal r1_to_ada_triggers : t_ad_triggers;
+	signal r_to_adb_triggers : t_ad_triggers;
+	signal r1_to_adb_triggers : t_ad_triggers;
 
     signal r_si_u12_pfc_duty : unsigned(11 downto 0); 
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
@@ -175,7 +179,17 @@ heater_control : heater_ctrl
 	    if si_rstn = '0' then
 		    u12_carrier <= (others=>'0');
             dir := up;
-		else -- rstn = '0'
+            r1_to_ada_triggers <= (others => '0');
+            r_to_ada_triggers <= (others => '0');
+            r1_to_adb_triggers <= (others => '0');
+            r_to_adb_triggers <= (others => '0');
+            to_ada_triggers <= (others => '0');
+            to_adb_triggers <= (others => '0');
+		else -- rstn = '1'
+            r_to_ada_triggers <= r1_to_ada_triggers; 
+            r_to_adb_triggers <= r1_to_adb_triggers; 
+            to_ada_triggers <= r_to_ada_triggers OR r_to_ada_triggers;
+            to_adb_triggers <= r_to_adb_triggers OR r_to_adb_triggers;
             CASE dir is
                 WHEN up =>
                     u12_carrier <= u12_carrier + 1;
@@ -185,20 +199,20 @@ heater_control : heater_ctrl
                         dir := up;
                     end if;
 
-                    /* CASE u12_carrier  is */
-
-                    /*     WHEN 12d"163" => */ 
-                    /*         to_ada_triggers <= aka_trig_aux; */
-                    /*         to_adb_triggers <= aka_trig_vac; */
-
-                    /*     WHEN 12d"6" => -- tested with oscilloscope, note old ad driver */
-                    /*         to_ada_triggers <= aka_trig_PFC_i2; */
-                    /*         to_adb_triggers <= aka_trig_PFC_i1; */
-
-                    /*     WHEN others => */ 
-                    /*         to_ada_triggers <= (others => '0'); */
-                    /*         to_adb_triggers <= (others => '0'); */
-                    /* end CASE; */
+                    CASE u12_carrier  is
+                        WHEN 12d"6" => -- tested with oscilloscope, note old ad driver
+                            r1_to_ada_triggers <= ch3;
+                            r1_to_adb_triggers <= ch3;
+                        WHEN 12d"163" => 
+                            r1_to_ada_triggers <= ch1;
+                            r1_to_adb_triggers <= ch1;
+                        WHEN 12d"300" => 
+                            r1_to_ada_triggers <= ch6;
+                            r1_to_adb_triggers <= ch6;
+                        WHEN others => 
+                            r1_to_ada_triggers <= (others => '0');
+                            r1_to_adb_triggers <= (others => '0');
+                    end CASE;
 
                 WHEN down =>
                     u12_carrier <= u12_carrier - 1;
@@ -208,15 +222,18 @@ heater_control : heater_ctrl
                         dir := down;
                     end if;
 
-                /* CASE u12_carrier  is */
+                CASE u12_carrier  is
 
-                /*     WHEN 12d"163" => */ 
-                /*     to_adb_triggers <= aka_trig_DC_link; */
+                    WHEN 12d"300" => 
+                    r1_to_adb_triggers <= ch2;
 
-                /*     WHEN others => */ 
-                /*     to_ada_triggers <= (others => '0'); */
-                /*     to_adb_triggers <= (others => '0'); */
-                /* end CASE; */
+                    WHEN 12d"163" => 
+                    r1_to_adb_triggers <= ch4;
+
+                    WHEN others => 
+                    r1_to_ada_triggers <= (others => '0');
+                    r1_to_adb_triggers <= (others => '0');
+                end CASE;
 			WHEN others =>
 			    dir := up;
 		    end CASE;
