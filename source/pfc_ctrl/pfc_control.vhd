@@ -81,23 +81,29 @@ architecture behavioral of pfc_control is
     signal r_si_uart_ready_event : std_logic;
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
     signal start_voltage_ctrl : std_logic; 
+    signal voltage_ctrl_rdy : std_logic; 
+    signal s18_voltage_pi_out : signed(17 downto 0);
+    signal s18_voltage_measurement : signed(17 downto 0); 
 
 begin 
 
 start_pfc_voltage_ctrl: process(si_adb_ctrl)
-    
 begin
-    if si_adb_ctrl.std3_ad_address = ch3 then
+    if si_adb_ctrl.std3_ad_address = 3d"6" then
         start_voltage_ctrl <= si_adb_ctrl.ad_rdy_trigger;
     else
         start_voltage_ctrl <= '0';
     end if;
 end process;	
 
+s18_voltage_measurement <= resize(signed(si_adb_ctrl.std16_ad_bus),18);
+
 pfc_voltage_control : seq_pi_control
-	generic map(1700,948,0,0)
-port map(core_clk, r_si_rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
- 
+	generic map(200,10,0,0)
+port map(core_clk, r_si_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, 18d"13945", s18_voltage_measurement, 18d"1500", 18d"500");
+
+r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
+
     pfc_gate_control : pfc_modulator 
     port map(
 	    modulator_clk => modulator_clk,
@@ -116,7 +122,7 @@ port map(core_clk, r_si_rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_
 	if rising_edge(core_clk) then
         if si_rstn = '0' then
             r_si_rstn <= '0';
-            r_si_u12_pfc_duty <= (others => '0');
+            /* r_si_u12_pfc_duty <= (others => '0'); */
             r_si_uart_ready_event <= '0';
             r_si16_uart_rx_data <= (others => '0');
         else
@@ -135,7 +141,7 @@ port map(core_clk, r_si_rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_
                                 -- do nothing
                         end CASE;
                     WHEN c_pfc_duty =>
-                        r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
+                        /* r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); */ 
                     WHEN others =>
                     -- do nothing
                 end CASE;
