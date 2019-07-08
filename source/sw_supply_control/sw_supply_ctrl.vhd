@@ -134,14 +134,8 @@ end component;
 	signal jihuu : rec_dhb_input;
 begin
 
-/* jihuu.u12_dhb_half_period <= 12d"472"; */
-
-/* dhb_modulator : phase_modulator */
-/* generic map(8d"56") */
-/* port map(modulator_clk, jihuu, po4_dhb_pwm); */
-
 dhb_ctrl : dhb_control
-port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
 heater_control : heater_ctrl 
     port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
@@ -171,8 +165,8 @@ heater_control : heater_ctrl
 
 
     sym_carrier : process(modulator_clk)
-	type t_carrier_states is (up, down);
-	variable dir : t_carrier_states;
+        type t_carrier_states is (up, down);
+        variable dir : t_carrier_states;
     begin
 	if rising_edge(modulator_clk) then
 	    -- carrier generation, 948*2 @ 256mhz = 135kHz
@@ -244,20 +238,20 @@ heater_control : heater_ctrl
     end process sym_carrier;
 
     heater_ad_trigger : process(core_clk)
-	variable heater_cntr : unsigned(11 downto 0);
+        variable heater_cntr : unsigned(11 downto 0);
     begin
-	if rising_edge(core_clk) then
-	    if heater_cntr > 474 then
-			heater_cntr := 12d"0";
-			so_ext_ad1_start <= '1';
-			so_ext_ad2_start <= '1';
-	    else
-			heater_cntr := heater_cntr + 1;
-			so_ext_ad1_start <= '0';
-			so_ext_ad2_start <= '0';
-	    end if;
+        if rising_edge(core_clk) then
+            if heater_cntr > 474 then
+                heater_cntr := 12d"0";
+                so_ext_ad1_start <= '1';
+                so_ext_ad2_start <= '1';
+            else
+                heater_cntr := heater_cntr + 1;
+                so_ext_ad1_start <= '0';
+                so_ext_ad2_start <= '0';
+            end if;
 
-	end if;
+        end if;
     end process heater_ad_trigger;
 
 end behavioral;
