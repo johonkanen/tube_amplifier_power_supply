@@ -172,7 +172,7 @@ heater_control : heater_ctrl
     begin
 	if rising_edge(core_clk) then
 	    -- carrier generation, 948*2 @ 256mhz = 135kHz
-	    if si_rstn = '1' then
+	    if si_rstn = '0' then
 		    u12_carrier <= (others=>'0');
             dir := up;
 		else -- rstn = '0'

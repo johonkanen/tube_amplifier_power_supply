@@ -87,21 +87,19 @@ begin
             if r_si_uart_ready_event = '1' then
                 CASE r_si16_uart_rx_data(15 downto 12) is
                     WHEN c_uart_command =>
-                    CASE r_si16_uart_rx_data(11 downto 0) is
-                        WHEN c_pfc_start =>
-                            r_si_rstn <= '1';
-                        WHEN c_pfc_stop =>
-                            r_si_rstn <= '0';
-                        WHEN others =>
-                            -- do nothing
-                    end CASE;
-
+                        CASE r_si16_uart_rx_data(11 downto 0) is
+                            WHEN c_pfc_start =>
+                                r_si_rstn <= '1';
+                            WHEN c_pfc_stop =>
+                                r_si_rstn <= '0';
+                            WHEN others =>
+                                -- do nothing
+                        end CASE;
                     WHEN c_pfc_duty =>
                         r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
                     WHEN others =>
                     -- do nothing
                 end CASE;
-
             end if;
         end if;
 	end if;
