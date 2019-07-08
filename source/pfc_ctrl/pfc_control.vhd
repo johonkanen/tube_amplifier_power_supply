@@ -89,7 +89,7 @@ begin
 
 start_pfc_voltage_ctrl: process(si_adb_ctrl)
 begin
-    if si_adb_ctrl.std3_ad_address = 3d"6" then
+    if si_adb_ctrl.std3_ad_address = 3d"4" then
         start_voltage_ctrl <= si_adb_ctrl.ad_rdy_trigger;
     else
         start_voltage_ctrl <= '0';
