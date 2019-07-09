@@ -24,6 +24,7 @@ entity dhb_control is
 -- ext ad converter data, in ad bus clock domain
         dhb_adc_control : in rec_ext_ad_ctrl;
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+        so_test_data_rdy : out std_logic;
 
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
@@ -70,7 +71,9 @@ begin
 
 dhb_voltage_control : seq_pi_control
 	generic map(1700,948,0,0)
-port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,open, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+
+so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 
 r_si_sign18_meas <= resize(signed(dhb_adc_control.std16_ad_bus),18);
 jihuu.u12_dhb_half_period <= 12d"472";

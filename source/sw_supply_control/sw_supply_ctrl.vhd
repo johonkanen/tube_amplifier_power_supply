@@ -92,6 +92,7 @@ component dhb_control is
 -- ext ad converter data, in ad bus clock domain
         dhb_adc_control : in rec_ext_ad_ctrl;
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+        so_test_data_rdy : out std_logic;
 
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
@@ -114,6 +115,7 @@ component heater_ctrl is
 -- ext ad converter data, in ad bus clock domain
         ht_adc_control : in rec_ext_ad_ctrl;
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+        so_test_data_rdy : out std_logic;
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
 	    si16_uart_rx_data	: in std_logic_vector(15 downto 0);
@@ -137,10 +139,10 @@ end component;
 begin
 
 dhb_ctrl : dhb_control
-    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
 heater_control : heater_ctrl 
-    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
  pfc_control_ins : pfc_control
     port map(
