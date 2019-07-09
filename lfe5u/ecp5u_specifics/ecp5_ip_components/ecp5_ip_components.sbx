@@ -79,14 +79,62 @@
                         </lattice:attributes>
                     </spirit:vendorExtensions>
                 </spirit:port>
+                <spirit:port>
+                    <spirit:name>mpy18x18_A</spirit:name>
+                    <spirit:displayName>mpy18x18_A</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">mpy18x18.A</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>mpy18x18_B</spirit:name>
+                    <spirit:displayName>mpy18x18_B</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">mpy18x18.B</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>mpy18x18_P</spirit:name>
+                    <spirit:displayName>mpy18x18_P</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>35</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">mpy18x18.P</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
             </spirit:ports>
         </spirit:model>
         <spirit:vendorExtensions>
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
             <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2019-05-18.08:54:51</lattice:date>
-            <lattice:modified>2019-05-18.23:59:13</lattice:modified>
-            <lattice:diamond>3.10.3.144</lattice:diamond>
+            <lattice:modified>2019-07-09.22:15:47</lattice:modified>
+            <lattice:diamond>3.11.0.396.4</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
                 <lattice:attribute lattice:name="AddComponent">true</lattice:attribute>
@@ -199,7 +247,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-05-18.23:59:13</lattice:modified>
+                        <lattice:modified>2019-07-09.22:15:47</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -572,6 +620,338 @@
                     </spirit:vendorExtensions>
                 </spirit:componentRef>
             </spirit:componentInstance>
+            <spirit:componentInstance>
+                <spirit:instanceName>mpy18x18</spirit:instanceName>
+                <spirit:componentRef>
+                    <spirit:vendor>Lattice Semiconductor Corporation</spirit:vendor>
+                    <spirit:library>LEGACY</spirit:library>
+                    <spirit:name>MULT</spirit:name>
+                    <spirit:version>4.2</spirit:version>
+                    <spirit:fileSets>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Simulation</spirit:name>
+                            <spirit:group>simulation</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./mpy18x18/mpy18x18.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Synthesis</spirit:name>
+                            <spirit:group>synthesis</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./mpy18x18/mpy18x18.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                    </spirit:fileSets>
+                    <spirit:componentGenerators>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>Configuration</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_core.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>CreateNGD</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_ngd.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                    </spirit:componentGenerators>
+                    <spirit:model>
+                        <spirit:views/>
+                        <spirit:ports>
+                            <spirit:port>
+                                <spirit:name>A</spirit:name>
+                                <spirit:displayName>A</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>B</spirit:name>
+                                <spirit:displayName>B</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>P</spirit:name>
+                                <spirit:displayName>P</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>35</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                        </spirit:ports>
+                    </spirit:model>
+                    <spirit:vendorExtensions>
+                        <lattice:synthesis>synplify</lattice:synthesis>
+                        <lattice:modified>2019-07-09.22:15:47</lattice:modified>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
+                            <lattice:attribute lattice:name="BBox">false</lattice:attribute>
+                            <lattice:attribute lattice:name="Change4to5">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConfig">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConnect">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeDevice">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeLocate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePack">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePart">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeSynthesis">false</lattice:attribute>
+                            <lattice:attribute lattice:name="CoreType">LPM</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_RXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_TXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="Migrate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="RemovedComponent">false</lattice:attribute>
+                        </lattice:attributes>
+                        <lattice:elements/>
+                        <lattice:lpc>
+                            <lattice:lpcsection lattice:name="Device"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Family</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ecp5u</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>OperatingCondition</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">COM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Package</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CABGA381</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F-8BG381C</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SpeedGrade</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">8</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Status</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">S</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="IP"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">MULT</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreRevision</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">4.2</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreStatus</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Demo</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LPM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Date</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">07/09/2019</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ModuleName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">mpy18x18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ParameterFileVersion</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1.0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceFormat</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">vhdl</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Time</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">22:15:00</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VendorName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Lattice Semiconductor Corporation</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Parameters"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Destination</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Synplicity</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EDIF</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRACE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRARST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnOR</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPM</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPR</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant"></lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Expression</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">BusA(0 to 7)</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>IO</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>InputA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>InputB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Order</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Big Endian [MSB:LSB]</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignedA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignedB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VHDL</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Verilog</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>area_speed</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Area</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>gsr</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>reset</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">SYNC</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>shiftouta</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>shiftoutb</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>widtha</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>widthb</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>widthp</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">36</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Command"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>cmd_line</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">-w -n mpy18x18 -lang vhdl -synth synplify -bus_exp 7 -bb -arch sa5p00 -type dspmult -widtha 18 -widthb 18 -widthp 36 -area -signed -enable_sync</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                        </lattice:lpc>
+                        <lattice:groups/>
+                    </spirit:vendorExtensions>
+                </spirit:componentRef>
+            </spirit:componentInstance>
         </spirit:componentInstances>
         <spirit:adHocConnections>
             <spirit:adHocConnection>
@@ -603,6 +983,456 @@
                 <spirit:displayName>main_pll_LOCK</spirit:displayName>
                 <spirit:internalPortReference spirit:portRef="LOCK" spirit:componentRef="main_pll"/>
                 <spirit:externalPortReference spirit:portRef="main_pll_LOCK"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A</spirit:name>
+                <spirit:displayName>mpy18x18_A</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="A" spirit:componentRef="mpy18x18" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="mpy18x18_A" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[0]</spirit:name>
+                <spirit:displayName>mpy18x18_A[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[0]"/>
+                <spirit:internalPortReference spirit:portRef="A[0]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[10]</spirit:name>
+                <spirit:displayName>mpy18x18_A[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[10]"/>
+                <spirit:internalPortReference spirit:portRef="A[10]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[11]</spirit:name>
+                <spirit:displayName>mpy18x18_A[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[11]"/>
+                <spirit:internalPortReference spirit:portRef="A[11]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[12]</spirit:name>
+                <spirit:displayName>mpy18x18_A[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[12]"/>
+                <spirit:internalPortReference spirit:portRef="A[12]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[13]</spirit:name>
+                <spirit:displayName>mpy18x18_A[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[13]"/>
+                <spirit:internalPortReference spirit:portRef="A[13]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[14]</spirit:name>
+                <spirit:displayName>mpy18x18_A[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[14]"/>
+                <spirit:internalPortReference spirit:portRef="A[14]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[15]</spirit:name>
+                <spirit:displayName>mpy18x18_A[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[15]"/>
+                <spirit:internalPortReference spirit:portRef="A[15]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[16]</spirit:name>
+                <spirit:displayName>mpy18x18_A[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[16]"/>
+                <spirit:internalPortReference spirit:portRef="A[16]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[17]</spirit:name>
+                <spirit:displayName>mpy18x18_A[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[17]"/>
+                <spirit:internalPortReference spirit:portRef="A[17]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[1]</spirit:name>
+                <spirit:displayName>mpy18x18_A[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[1]"/>
+                <spirit:internalPortReference spirit:portRef="A[1]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[2]</spirit:name>
+                <spirit:displayName>mpy18x18_A[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[2]"/>
+                <spirit:internalPortReference spirit:portRef="A[2]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[3]</spirit:name>
+                <spirit:displayName>mpy18x18_A[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[3]"/>
+                <spirit:internalPortReference spirit:portRef="A[3]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[4]</spirit:name>
+                <spirit:displayName>mpy18x18_A[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[4]"/>
+                <spirit:internalPortReference spirit:portRef="A[4]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[5]</spirit:name>
+                <spirit:displayName>mpy18x18_A[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[5]"/>
+                <spirit:internalPortReference spirit:portRef="A[5]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[6]</spirit:name>
+                <spirit:displayName>mpy18x18_A[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[6]"/>
+                <spirit:internalPortReference spirit:portRef="A[6]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[7]</spirit:name>
+                <spirit:displayName>mpy18x18_A[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[7]"/>
+                <spirit:internalPortReference spirit:portRef="A[7]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[8]</spirit:name>
+                <spirit:displayName>mpy18x18_A[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[8]"/>
+                <spirit:internalPortReference spirit:portRef="A[8]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_A[9]</spirit:name>
+                <spirit:displayName>mpy18x18_A[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_A[9]"/>
+                <spirit:internalPortReference spirit:portRef="A[9]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B</spirit:name>
+                <spirit:displayName>mpy18x18_B</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="B" spirit:componentRef="mpy18x18" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="mpy18x18_B" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[0]</spirit:name>
+                <spirit:displayName>mpy18x18_B[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[0]"/>
+                <spirit:internalPortReference spirit:portRef="B[0]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[10]</spirit:name>
+                <spirit:displayName>mpy18x18_B[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[10]"/>
+                <spirit:internalPortReference spirit:portRef="B[10]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[11]</spirit:name>
+                <spirit:displayName>mpy18x18_B[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[11]"/>
+                <spirit:internalPortReference spirit:portRef="B[11]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[12]</spirit:name>
+                <spirit:displayName>mpy18x18_B[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[12]"/>
+                <spirit:internalPortReference spirit:portRef="B[12]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[13]</spirit:name>
+                <spirit:displayName>mpy18x18_B[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[13]"/>
+                <spirit:internalPortReference spirit:portRef="B[13]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[14]</spirit:name>
+                <spirit:displayName>mpy18x18_B[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[14]"/>
+                <spirit:internalPortReference spirit:portRef="B[14]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[15]</spirit:name>
+                <spirit:displayName>mpy18x18_B[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[15]"/>
+                <spirit:internalPortReference spirit:portRef="B[15]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[16]</spirit:name>
+                <spirit:displayName>mpy18x18_B[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[16]"/>
+                <spirit:internalPortReference spirit:portRef="B[16]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[17]</spirit:name>
+                <spirit:displayName>mpy18x18_B[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[17]"/>
+                <spirit:internalPortReference spirit:portRef="B[17]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[1]</spirit:name>
+                <spirit:displayName>mpy18x18_B[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[1]"/>
+                <spirit:internalPortReference spirit:portRef="B[1]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[2]</spirit:name>
+                <spirit:displayName>mpy18x18_B[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[2]"/>
+                <spirit:internalPortReference spirit:portRef="B[2]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[3]</spirit:name>
+                <spirit:displayName>mpy18x18_B[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[3]"/>
+                <spirit:internalPortReference spirit:portRef="B[3]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[4]</spirit:name>
+                <spirit:displayName>mpy18x18_B[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[4]"/>
+                <spirit:internalPortReference spirit:portRef="B[4]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[5]</spirit:name>
+                <spirit:displayName>mpy18x18_B[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[5]"/>
+                <spirit:internalPortReference spirit:portRef="B[5]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[6]</spirit:name>
+                <spirit:displayName>mpy18x18_B[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[6]"/>
+                <spirit:internalPortReference spirit:portRef="B[6]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[7]</spirit:name>
+                <spirit:displayName>mpy18x18_B[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[7]"/>
+                <spirit:internalPortReference spirit:portRef="B[7]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[8]</spirit:name>
+                <spirit:displayName>mpy18x18_B[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[8]"/>
+                <spirit:internalPortReference spirit:portRef="B[8]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_B[9]</spirit:name>
+                <spirit:displayName>mpy18x18_B[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_B[9]"/>
+                <spirit:internalPortReference spirit:portRef="B[9]" spirit:componentRef="mpy18x18"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P</spirit:name>
+                <spirit:displayName>mpy18x18_P</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="P" spirit:componentRef="mpy18x18" spirit:left="35"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="mpy18x18_P" spirit:left="35"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[0]</spirit:name>
+                <spirit:displayName>mpy18x18_P[0]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[0]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[0]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[10]</spirit:name>
+                <spirit:displayName>mpy18x18_P[10]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[10]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[10]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[11]</spirit:name>
+                <spirit:displayName>mpy18x18_P[11]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[11]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[11]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[12]</spirit:name>
+                <spirit:displayName>mpy18x18_P[12]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[12]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[12]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[13]</spirit:name>
+                <spirit:displayName>mpy18x18_P[13]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[13]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[13]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[14]</spirit:name>
+                <spirit:displayName>mpy18x18_P[14]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[14]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[14]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[15]</spirit:name>
+                <spirit:displayName>mpy18x18_P[15]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[15]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[15]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[16]</spirit:name>
+                <spirit:displayName>mpy18x18_P[16]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[16]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[16]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[17]</spirit:name>
+                <spirit:displayName>mpy18x18_P[17]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[17]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[17]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[18]</spirit:name>
+                <spirit:displayName>mpy18x18_P[18]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[18]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[18]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[19]</spirit:name>
+                <spirit:displayName>mpy18x18_P[19]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[19]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[19]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[1]</spirit:name>
+                <spirit:displayName>mpy18x18_P[1]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[1]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[1]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[20]</spirit:name>
+                <spirit:displayName>mpy18x18_P[20]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[20]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[20]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[21]</spirit:name>
+                <spirit:displayName>mpy18x18_P[21]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[21]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[21]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[22]</spirit:name>
+                <spirit:displayName>mpy18x18_P[22]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[22]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[22]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[23]</spirit:name>
+                <spirit:displayName>mpy18x18_P[23]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[23]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[23]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[24]</spirit:name>
+                <spirit:displayName>mpy18x18_P[24]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[24]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[24]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[25]</spirit:name>
+                <spirit:displayName>mpy18x18_P[25]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[25]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[25]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[26]</spirit:name>
+                <spirit:displayName>mpy18x18_P[26]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[26]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[26]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[27]</spirit:name>
+                <spirit:displayName>mpy18x18_P[27]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[27]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[27]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[28]</spirit:name>
+                <spirit:displayName>mpy18x18_P[28]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[28]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[28]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[29]</spirit:name>
+                <spirit:displayName>mpy18x18_P[29]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[29]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[29]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[2]</spirit:name>
+                <spirit:displayName>mpy18x18_P[2]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[2]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[2]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[30]</spirit:name>
+                <spirit:displayName>mpy18x18_P[30]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[30]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[30]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[31]</spirit:name>
+                <spirit:displayName>mpy18x18_P[31]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[31]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[31]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[32]</spirit:name>
+                <spirit:displayName>mpy18x18_P[32]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[32]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[32]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[33]</spirit:name>
+                <spirit:displayName>mpy18x18_P[33]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[33]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[33]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[34]</spirit:name>
+                <spirit:displayName>mpy18x18_P[34]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[34]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[34]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[35]</spirit:name>
+                <spirit:displayName>mpy18x18_P[35]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[35]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[35]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[3]</spirit:name>
+                <spirit:displayName>mpy18x18_P[3]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[3]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[3]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[4]</spirit:name>
+                <spirit:displayName>mpy18x18_P[4]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[4]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[4]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[5]</spirit:name>
+                <spirit:displayName>mpy18x18_P[5]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[5]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[5]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[6]</spirit:name>
+                <spirit:displayName>mpy18x18_P[6]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[6]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[6]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[7]</spirit:name>
+                <spirit:displayName>mpy18x18_P[7]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[7]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[7]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[8]</spirit:name>
+                <spirit:displayName>mpy18x18_P[8]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[8]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[8]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>mpy18x18_P[9]</spirit:name>
+                <spirit:displayName>mpy18x18_P[9]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="P[9]" spirit:componentRef="mpy18x18"/>
+                <spirit:externalPortReference spirit:portRef="mpy18x18_P[9]"/>
             </spirit:adHocConnection>
         </spirit:adHocConnections>
     </spirit:design>
