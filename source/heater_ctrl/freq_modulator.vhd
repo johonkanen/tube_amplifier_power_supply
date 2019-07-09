@@ -52,6 +52,8 @@ architecture rtl of freq_modulator is
     signal st_startup : t_startup_states; 
 
     signal reset_dly_cntr : std_logic;
+    signal r_po4_ht_pwm : hb_llc_pwm;
+
 begin
 
     startup : process(modulator_clk)
@@ -133,25 +135,27 @@ begin
 	if rising_edge(modulator_clk) then
             s1_pulse <= s_pulse;
         if rstn = '0' then
+            r_po4_ht_pwm <= (others => '0');
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= 12d"0";
             st_dt_states := active_pulse;
         else
+            po4_ht_pwm <= r_po4_ht_pwm;
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
                     u12_dt_dly <= 12d"0";
-                    po4_ht_pwm.pri_high <= s_pulse;
-                    po4_ht_pwm.pri_low <= not s_pulse;
+                    r_po4_ht_pwm.pri_high <= s_pulse;
+                    r_po4_ht_pwm.pri_low <= not s_pulse;
 
                     if sec_pwm_cntr > 12d"614" then
-                        po4_ht_pwm.sync1 <= '0';
-                        po4_ht_pwm.sync2 <= '0';
+                        r_po4_ht_pwm.sync1 <= '0';
+                        r_po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        po4_ht_pwm.sync1 <= s_pulse;
-                        po4_ht_pwm.sync2 <= not s_pulse;
+                        r_po4_ht_pwm.sync1 <= s_pulse;
+                        r_po4_ht_pwm.sync2 <= not s_pulse;
                     end if;
 
                     if s1_pulse = s_pulse then
@@ -160,7 +164,7 @@ begin
                         st_dt_states := deadtime;
                     end if;
                 WHEN deadtime => 
-                    po4_ht_pwm <= (others => '0');
+                    r_po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
                     if u12_dt_dly < r1_u12_deadtime then
                         u12_dt_dly <= u12_dt_dly + 1;
@@ -170,6 +174,7 @@ begin
                         st_dt_states := active_pulse;
                     end if;
                 WHEN others => 
+                    r_po4_ht_pwm <= (others => '0');
                     po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
                     u12_dt_dly <= 12d"0";
