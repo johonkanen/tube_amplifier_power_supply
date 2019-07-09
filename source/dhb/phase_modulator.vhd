@@ -54,12 +54,12 @@ begin
 
         else
 
-            if ri_dhb_ctrl.s16_phase > 189 then
-                s16_pri_phase <= ri_dhb_ctrl.s16_phase - 189;
+            if ri_dhb_ctrl.s16_phase < 0 then
+                s16_pri_phase <= unsigned(-ri_dhb_ctrl.s16_phase);
                 s16_sec_phase <= (others => '0');
             else
                 s16_pri_phase <= (others => '0');
-                s16_sec_phase <= ri_dhb_ctrl.s16_phase;
+                s16_sec_phase <= unsigned(ri_dhb_ctrl.s16_phase);
             end if;
             -- generate master carrier to which phase shifts are synchronized
             if u16_master_carrier > 16d"1896" then

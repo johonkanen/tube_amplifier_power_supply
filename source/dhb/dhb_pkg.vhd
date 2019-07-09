@@ -12,7 +12,7 @@ package dhb_pkg is
     end record;
 
 	type rec_dhb_input is record
-		s16_phase : unsigned(15 downto 0);
+		s16_phase : signed(15 downto 0);
 		u12_dhb_half_period : unsigned(11 downto 0);
 		rstn : std_logic;
 	end record;

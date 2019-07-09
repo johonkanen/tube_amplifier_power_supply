@@ -135,38 +135,16 @@ end component;
 
     signal r_si16_ext_ad1_data : std_logic_vector(15 downto 0);
     signal r_si16_ext_ad2_data : std_logic_vector(15 downto 0);
-	signal jihuu : rec_dhb_input;
 begin
 
 dhb_ctrl : dhb_control
-    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, so_std18_test_data, so_test_data_rdy, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
 heater_control : heater_ctrl 
     port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
- pfc_control_ins : pfc_control
-    port map(
-	    core_clk => core_clk,
-	    modulator_clk => modulator_clk,
-        si_rstn => si_rstn,
-
--- PFC pwm
-	    po2_pfc_pwm => po2_pfc_pwm,
-
-	    si_ada_ctrl => si_ada_ctrl,
-	    si_adb_ctrl => si_adb_ctrl,
-
-	    so_std18_test_data => so_std18_test_data,
-        so_test_data_rdy => so_test_data_rdy,
-
-	    ui12_carrier => u12_carrier,
-
--- uart rx for testg 
-	    si_uart_ready_event	=> si_uart_ready_event,
-	    si16_uart_rx_data => si16_uart_rx_data,
-
-	    si_tcmd_system_cmd => si_tcmd_system_cmd
-	);
+pfc_control_ins : pfc_control
+    port map(core_clk, modulator_clk, si_rstn, po2_pfc_pwm, si_ada_ctrl, si_adb_ctrl, open, open, u12_carrier, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
 
     sym_carrier : process(modulator_clk)
