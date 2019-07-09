@@ -40,6 +40,7 @@ entity sw_supply_ctrl is
 	    so_ext_ad2_start : out std_logic;
 -- test data out 
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+        so_test_data_rdy : out std_logic;
 -- uart rx for testing 
 	    si_uart_ready_event	: in std_logic;
 	    si16_uart_rx_data	: in std_logic_vector(15 downto 0);
@@ -64,6 +65,7 @@ component pfc_control is
 	    si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
 
 	    so_std18_test_data : out std_logic_vector(17 downto 0);
+        so_test_data_rdy : out std_logic;
 
 	    ui12_carrier : in unsigned(11 downto 0);
 
@@ -153,6 +155,7 @@ heater_control : heater_ctrl
 	    si_adb_ctrl => si_adb_ctrl,
 
 	    so_std18_test_data => so_std18_test_data,
+        so_test_data_rdy => so_test_data_rdy,
 
 	    ui12_carrier => u12_carrier,
 
