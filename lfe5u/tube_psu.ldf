@@ -4,7 +4,7 @@
         <Option name="HDL type" value="VHDL"/>
     </Options>
     <Implementation title="rtl" dir="rtl" description="rtl" synthesis="synplify" default_strategy="Strategy1">
-        <Options def_top="command_shell" top="top"/>
+        <Options top="top"/>
         <Source name="../source/top/top.vhd" type="VHDL" type_short="VHDL">
             <Options top_module="top"/>
         </Source>
@@ -92,6 +92,9 @@
         <Source name="ecp5u_specifics/ecp5_ip_components/main_pll/main_pll.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
+        <Source name="ecp5u_specifics/ecp5_ip_components/mpy18x18/mpy18x18.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
         <Source name="../source/led_driver/led_driver_pkg.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -108,6 +111,9 @@
             <Options/>
         </Source>
         <Source name="../source/ecp5/ecp5_pll_wrapper.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/ecp5/ecp5_multiplier_wrapper.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming">

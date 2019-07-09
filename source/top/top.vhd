@@ -137,8 +137,8 @@ core_clocks : pll_wrapper
 	port map
 	(
 		xclk32mhz,
-		clk_256mhz,
         clk_128mhz,
+		clk_256mhz,
         clk2_256mhz,
 		std_pll_lock
 	);
