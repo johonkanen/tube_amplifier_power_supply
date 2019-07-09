@@ -3,7 +3,6 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
-    use work.vendor_specifics_pkg.all;
     use work.led_driver_pkg.all;
 	use work.dhb_pkg.all;
     use work.llc_pkg.all;
@@ -61,6 +60,15 @@ end top;
 
 architecture behavioral of top is
 
+component pll_wrapper is
+    port (
+        xclk : in std_logic;
+        core_clk : out std_logic;
+        modulator_clk : out std_logic;
+        modulator_clk2 : out std_logic;
+        pll_lock : out std_logic
+    );
+end component;
     signal clk_256mhz : std_logic;
     signal clk2_256mhz : std_logic;
     signal clk_128mhz :std_logic;
@@ -125,7 +133,7 @@ end component;
 
 begin
 
-core_clocks : main_pll
+core_clocks : pll_wrapper
 	port map
 	(
 		xclk32mhz,

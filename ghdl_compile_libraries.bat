@@ -9,3 +9,4 @@ ghdl -a --std=08 --ieee=synopsys source/top/top_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/heater_ctrl/llc_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/pfc_ctrl/pfc_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/uart/tubepsu_commands_pkg.vhd
+ghdl -a --std=08 --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd

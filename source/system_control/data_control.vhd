@@ -9,7 +9,6 @@ library work;
     use work.dhb_pkg.all;
     use work.llc_pkg.all;
     use work.pfc_pkg.all;
-
     use work.vendor_specifics_pkg.all;
 
 entity data_control is

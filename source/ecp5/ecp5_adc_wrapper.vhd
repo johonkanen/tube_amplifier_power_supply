@@ -89,8 +89,8 @@ signal s16_spi_data : std_logic_vector(15 downto 0);
 
 begin
 
-onboard_adc : ext_ad_spi3w
-    generic map(8d"4",8d"14",8d"9")
+onboard_adc : spi3w_ads7056_driver
+    generic map(8d"2",8d"18",8d"9")
     port map(
 			si_spi_clk,
             si_pll_lock,
@@ -103,6 +103,6 @@ onboard_adc : ext_ad_spi3w
 			so_sh_rdy,
 			s16_spi_data);
 
-b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),3));
+b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),1));
 
 end rtl;
