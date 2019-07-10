@@ -80,7 +80,7 @@ set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
 
 # Compiler Assignments
 # ====================
-set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
+set_global_assignment -name OPTIMIZATION_MODE BALANCED
 
 # Analysis & Synthesis Assignments
 # ================================
@@ -293,6 +293,7 @@ set_location_assignment PIN_D16 -to po4_ht_pwm.sync2
 set_global_assignment -name SAFE_STATE_MACHINE ON
 
 
+set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_pll_wrapper.vhd
 set_global_assignment -name VHDL_FILE ../source/dhb/dhb_control.vhd
 set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_adc_wrapper.vhd
 set_global_assignment -name VHDL_FILE ../source/cyclone_10lp/cl10_multiplier_wrapper.vhd

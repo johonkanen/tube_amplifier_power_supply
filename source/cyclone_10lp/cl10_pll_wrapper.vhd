@@ -5,7 +5,7 @@ library ieee;
     library work;
         use work.vendor_specifics_pkg.all;
 
-entity main_pll is
+entity pll_wrapper is
     port (
         xclk : in std_logic;
         core_clk : out std_logic;
@@ -13,9 +13,9 @@ entity main_pll is
         modulator_clk2 : out std_logic;
         pll_lock : out std_logic
     );
-end entity main_pll;
+end entity pll_wrapper;
 
-architecture rtl of main_pll is
+architecture rtl of pll_wrapper is
 
     component main_pll IS
 	PORT
