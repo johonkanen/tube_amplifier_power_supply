@@ -91,7 +91,7 @@ r_si_sign18_meas <= resize(signed(ht_adc_control.std16_ad_bus),18);
 llc_modulator : freq_modulator
     port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
 
-r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(17 downto 6));
+/* r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(17 downto 6)); */
 
 test_heater_pwm : process(core_clk)
     begin
@@ -99,7 +99,7 @@ test_heater_pwm : process(core_clk)
         if si_rstn = '0' then
             r_si_rstn <= '0';
             -- start frequency is 270kHz
-            /* r_piu12_per_ctrl <= 12d"948"; */
+            r_piu12_per_ctrl <= 12d"474";
         else
             if si_uart_ready_event = '1' then
             CASE si16_uart_rx_data(15 downto 12) is
@@ -114,7 +114,7 @@ test_heater_pwm : process(core_clk)
                 end CASE;
 
                 WHEN c_llc_freq =>
-                /* r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
+                r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); 
                 WHEN others =>
                 -- do nothing
             end CASE;

@@ -109,13 +109,14 @@ begin
 
     begin
 	if rising_edge(modulator_clk) then
-         u12_reset_carrier <= u12_period;
         if rstn = '0' then
             s_pulse <= '0';
+            u12_reset_carrier <= 12d"474";
         else
+            u12_reset_carrier <= u12_period;
             if u12_carrier > u12_reset_carrier then
-                u12_carrier <= 12d"0";
-                s_pulse <= NOT s_pulse;
+               u12_carrier <= 12d"0";
+               s_pulse <= NOT s_pulse;
             else
                 u12_carrier <= u12_carrier + 1;
             end if;
@@ -139,23 +140,23 @@ begin
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= 12d"0";
-            st_dt_states := active_pulse;
+            st_dt_states := deadtime;
         else
             po4_ht_pwm <= r_po4_ht_pwm;
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
                     u12_dt_dly <= 12d"0";
-                    r_po4_ht_pwm.pri_high <= s_pulse;
-                    r_po4_ht_pwm.pri_low <= not s_pulse;
+                    r_po4_ht_pwm.pri_high <= s1_pulse;
+                    r_po4_ht_pwm.pri_low <= not s1_pulse;
 
                     if sec_pwm_cntr > 12d"614" then
                         r_po4_ht_pwm.sync1 <= '0';
                         r_po4_ht_pwm.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        r_po4_ht_pwm.sync1 <= s_pulse;
-                        r_po4_ht_pwm.sync2 <= not s_pulse;
+                        r_po4_ht_pwm.sync1 <= s1_pulse;
+                        r_po4_ht_pwm.sync2 <= not s1_pulse;
                     end if;
 
                     if s1_pulse = s_pulse then
