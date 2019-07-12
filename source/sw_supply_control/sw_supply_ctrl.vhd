@@ -130,11 +130,6 @@ end component;
 	signal r_to_adb_triggers : t_ad_triggers;
 	signal r1_to_adb_triggers : t_ad_triggers;
 
-    signal r_si_u12_pfc_duty : unsigned(11 downto 0); 
-    signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
-
-    signal r_si16_ext_ad1_data : std_logic_vector(15 downto 0);
-    signal r_si16_ext_ad2_data : std_logic_vector(15 downto 0);
 begin
 
 dhb_ctrl : dhb_control

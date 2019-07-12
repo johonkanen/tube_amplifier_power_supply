@@ -124,10 +124,6 @@ subtype t_ad_triggers is std_logic_vector(6 downto 0);
     alias aka_mux_heater_cap_ad_meas : t3_mux_pos is c_mux_ADB5;
     alias aka_mux_DHB_I_MEAS : t3_mux_pos is c_mux_ADB6;
 
-    -- one hot encoding, ch corresponds to 7d"3" and is also named using triggers
-    signal r_ada_triggers : t_ad_triggers;
-    signal r_adb_triggers : t_ad_triggers;
-    
 	-- one hot encoding for ad triggers
 	constant ch0 : t_ad_triggers := 7d"1"; -- (0)
 	constant ch1 : t_ad_triggers := 7d"2"; -- (1)

@@ -36,9 +36,7 @@ end ext_ad_control;
 
 architecture rtl of ext_ad_control is 
 
-    signal ext_ad1_spi_rdy : std_logic;
     signal r_so_ext_ad1_data : std_logic_vector(15 downto 0);
-    signal ext_ad2_spi_rdy : std_logic;
     signal r_so_ext_ad2_data : std_logic_vector(15 downto 0);
 
 begin

@@ -37,16 +37,10 @@ architecture rtl of freq_modulator is
     signal s1_pulse : std_logic;
     signal u12_period : unsigned(11 downto 0);
 
-    signal r_po2_ht_pri_pwm : std_logic_vector(1 downto 0);
-    signal r_po2_ht_sec_pwm : std_logic_vector(1 downto 0);
     signal dly_cntr : unsigned(13 downto 0);
-    signal reg_u12_carrier : unsigned(11 downto 0);
-    signal u12_car_per_2 : unsigned(11 downto 0);
 
     signal u12_dt_dly : unsigned(11 downto 0);
     signal u12_reset_carrier : unsigned(11 downto 0);
-    type st_deadtime is (zero, pos,dt1,neg,dt2);
-    signal dt_states : st_deadtime;
 
     type t_startup_states is (init, rampup, ready);
     signal st_startup : t_startup_states; 

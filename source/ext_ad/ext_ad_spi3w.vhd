@@ -34,8 +34,6 @@ end ext_ad_spi3w;
  
 architecture synth of ext_ad_spi3w is 
 
-    signal clock_count : unsigned(3 downto 0); 
-    signal spi_rx_buffer : std_logic_vector(15 downto 0);
     constant c_convert : std_logic := '0';
     constant c_idle : std_logic := '1';
     signal i : integer range 0 to 31;

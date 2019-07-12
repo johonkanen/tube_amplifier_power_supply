@@ -26,8 +26,6 @@ end uart_event_ctrl;
 
 architecture rtl of uart_event_ctrl is
 
-	signal r_data_stream : std_logic_vector(15 downto 0); 
-	 
 	signal r_rx_data_out		: std_logic_vector(15 downto 0);
 	alias rx_uart_cmd_offset	: std_logic_vector(3 downto 0) is r_rx_data_out(15 downto 12);
 	alias rx_uart_cmd_data		: std_logic_vector(11 downto 0) is r_rx_data_out(11 downto 0);
@@ -36,8 +34,6 @@ architecture rtl of uart_event_ctrl is
 							ack, 
 							latch, 
 							ready); 
-	
-	signal parse_state, next_state : st_uart_stream;
 	
 	signal r15_uart_data_in		: std_logic_vector(15 downto 0); 
 	signal route_uart_tx_data	: std_logic_vector(15 downto 0); 
@@ -57,8 +53,6 @@ architecture rtl of uart_event_ctrl is
 						 
 	signal r_pres_state, r_next_state : uart_states; 
 	 
-	signal r_rx_start : std_logic; 
- 
 component uart is
 	generic (
 				g_CLKS_PER_BIT : integer; 
@@ -114,7 +108,7 @@ begin
 	
 r_pres_state <=r_next_state;
 
-	uart_control : process(uart_Clk,r_pres_state,route_uart_tx_active)
+	uart_control : process(uart_Clk,r_pres_state,route_uart_tx_active, r_pres_state)
 	begin
 	if rising_edge(uart_Clk) then 
 		CASE r_next_state is 

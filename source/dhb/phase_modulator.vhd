@@ -20,7 +20,6 @@ end phase_modulator;
 
 architecture rtl of phase_modulator is
 
-	signal s13_dhb_counter : signed(15 downto 0);
     signal s_pri_pulse : std_logic;
     signal s1_pri_pulse : std_logic;
     signal s_sec_pulse : std_logic;
@@ -29,7 +28,6 @@ architecture rtl of phase_modulator is
     signal u12_pri_carrier : unsigned(15 downto 0);
     signal u12_sec_carrier : unsigned(15 downto 0);
     signal u16_master_carrier : unsigned(15 downto 0);
-    signal u12_phase : unsigned(15 downto 0);
     signal s16_pri_phase : unsigned(15 downto 0);
     signal s16_sec_phase : unsigned(15 downto 0);
     signal pri_reset : std_logic;

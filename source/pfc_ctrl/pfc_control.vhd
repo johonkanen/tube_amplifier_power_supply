@@ -74,11 +74,7 @@ architecture behavioral of pfc_control is
 	);
     end component; 
     signal r_si_u12_pfc_duty : unsigned(11 downto 0); 
-    signal unstable_si_u12_pfc_duty : unsigned(11 downto 0); 
-    signal stable_si_u12_pfc_duty : unsigned(11 downto 0); 
     signal r_si_rstn : std_logic;
-    signal unstable_si_rstn : std_logic;
-    signal stable_si_rstn : std_logic;
     signal r_si_uart_ready_event : std_logic;
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
     signal start_voltage_ctrl : std_logic; 

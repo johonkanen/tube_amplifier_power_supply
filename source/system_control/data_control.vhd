@@ -188,13 +188,9 @@ signal r_ti_ada_triggers : t_ad_triggers;
 signal r_ti_adb_triggers : t_ad_triggers;
 
 --safe, clocked in ad bus clock domain
-signal r_so16_ext_ad1_data : std_logic_vector(15 downto 0);
-signal r_so16_ext_ad2_data : std_logic_vector(15 downto 0);
 
 signal r_si_ext_ad1_start : std_logic;
 signal r_si_ext_ad2_start : std_logic;
-signal r_so_ext_ad1_rdy : std_logic; 
-signal r_so_ext_ad2_rdy : std_logic; 
 
 signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
@@ -212,7 +208,6 @@ uart : uart_event_ctrl
 				g_RX_bytes_in_word => g_vendor_specific_RX_bytes_in_word,
 				g_TX_bytes_in_word => g_vendor_specific_TX_bytes_in_word 
 			)
-				
     port map(
 		uart_Clk => core_clk,
 		

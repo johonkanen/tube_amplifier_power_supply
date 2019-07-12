@@ -63,14 +63,9 @@ architecture rtl of ad_control is
 
 signal si_ada_start : std_logic;
 signal so_ada_sh_rdy : std_logic;
-signal ada_data : std_logic_vector(15 downto 0);
 
 signal si_adb_start : std_logic;
 signal so_adb_sh_rdy : std_logic;
-signal adb_data : std_logic_vector(15 downto 0);
-
-signal test_ad : t_ad_triggers;
-signal trig_cnt : unsigned(10 downto 0);
 
 signal r_to_ada_triggers : t_ad_triggers;
 signal r1_to_ada_triggers : t_ad_triggers;

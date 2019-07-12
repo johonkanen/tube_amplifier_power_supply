@@ -46,11 +46,9 @@ architecture rtl of seq_pi_control is
     end component;
 
     signal r_mult_ak : signed(17 downto 0);
-    signal r_mult_bk : signed(17 downto 0);
     signal r_sign36_kp_mult_res : std_logic_vector(35 downto 0);
 
     signal r_mult_ai : signed(17 downto 0);
-    signal r_mult_bi : signed(17 downto 0);
     signal r_sign36_ki_mult_res : std_logic_vector(35 downto 0);
 
     signal r_sign18_integrator : signed(17 downto 0);
