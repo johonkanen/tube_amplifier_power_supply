@@ -70,8 +70,8 @@ end component;
 begin
 
 dhb_voltage_control : seq_pi_control
-	generic map(189,-189,0,0)
-port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"1500", 18d"500");
+	generic map(40,-40,0,0)
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"13945", r_si_sign18_meas, 18d"500", 18d"50");
 
 so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 
@@ -90,6 +90,7 @@ test_dhb : process(core_clk)
 	if rising_edge(core_clk) then
         if si_rstn = '0' then
             jihuu.rstn <= '0';
+            /* jihuu.s16_phase <= (others => '0'); */
         else
 	    if si_uart_ready_event = '1' then
             CASE si16_uart_rx_data(15 downto 12) is
@@ -104,7 +105,7 @@ test_dhb : process(core_clk)
                 end CASE;
 
                 WHEN x"3" =>
-                    /* jihuu.s16_phase(11 downto 0)  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
+                    /* jihuu.s16_phase <= resize(signed(si16_uart_rx_data(11 downto 0)),16); */ 
                 WHEN others =>
                 -- do nothing
             end CASE;
