@@ -66,12 +66,13 @@ end component;
     signal r_so_sign18_pi_out : signed(17 downto 0);
     signal r_si_sign18_meas : signed(17 downto 0);
     signal voltage_ctrl_rdy : std_logic;
+    signal s18_dhb_reference : signed(17 downto 0); 
 
 begin
 
 dhb_voltage_control : seq_pi_control
 	generic map(40,-40,0,0)
-port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, 18d"12420", r_si_sign18_meas, 18d"500", 18d"50");
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, s18_dhb_reference, r_si_sign18_meas, 18d"500", 18d"50");
 
 so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 
@@ -84,6 +85,21 @@ port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 jihuu.s16_phase <= (resize(r_so_sign18_pi_out,16));
 
+ramp_reference : process(core_clk)
+    
+begin
+    if rising_edge(core_clk) then
+        if jihuu.rstn = '0' then
+            -- reset state
+            s18_dhb_reference <= (others => '0');
+        else
+            if s18_dhb_reference < 18d"12420" then
+                s18_dhb_reference <= s18_dhb_reference + 1;
+            end if;
+
+        end if; -- rstn
+    end if; --rising_edge
+end process ramp_reference;	
 
 test_dhb : process(core_clk)
     begin

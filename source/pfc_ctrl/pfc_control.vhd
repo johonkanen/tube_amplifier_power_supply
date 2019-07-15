@@ -74,30 +74,58 @@ architecture behavioral of pfc_control is
 	);
     end component; 
     signal r_si_u12_pfc_duty : unsigned(11 downto 0); 
-    signal r_si_rstn : std_logic;
+    signal pfc_ctrl_rstn : std_logic;
     signal r_si_uart_ready_event : std_logic;
     signal r_si16_uart_rx_data : std_logic_vector(15 downto 0);
     signal start_voltage_ctrl : std_logic; 
     signal voltage_ctrl_rdy : std_logic; 
     signal s18_voltage_pi_out : signed(17 downto 0);
     signal s18_voltage_measurement : signed(17 downto 0); 
+    signal s18_pfc_reference : signed(17 downto 0); 
 
 begin 
 
-start_pfc_voltage_ctrl: process(si_adb_ctrl)
+start_pfc_voltage_ctrl: process(core_clk,si_adb_ctrl)
 begin
-    if si_adb_ctrl.std3_ad_address = 3d"4" then
-        start_voltage_ctrl <= si_adb_ctrl.ad_rdy_trigger;
-    else
-        start_voltage_ctrl <= '0';
+    if rising_edge(core_clk) then
+        if si_adb_ctrl.std3_ad_address = 3d"4" then
+            start_voltage_ctrl <= si_adb_ctrl.ad_rdy_trigger;
+            s18_voltage_measurement <= resize(signed(si_adb_ctrl.std16_ad_bus),18);
+        else
+            start_voltage_ctrl <= '0';
+        end if;
     end if;
 end process;	
 
-s18_voltage_measurement <= resize(signed(si_adb_ctrl.std16_ad_bus),18);
+DC_link_rampup : process(core_clk)
+    variable u12_rampup_cntr : unsigned(11 downto 0);
+begin
+    if rising_edge(core_clk) then
+        if  pfc_ctrl_rstn = '0' then
+        -- reset state, set initial dc link reference to peak ac voltage
+           s18_pfc_reference <= s18_voltage_measurement; 
+           u12_rampup_cntr := (others => '0');
+        else
+            if u12_rampup_cntr < 128 then
+                u12_rampup_cntr := u12_rampup_cntr + 1;
+            else
+                u12_rampup_cntr := (others => '0');
+            end if;
+
+            if s18_pfc_reference < 18d"6000" then
+                if u12_rampup_cntr = 12d"0" then
+                    s18_pfc_reference <= s18_pfc_reference + 1;
+                end if;
+            end if;
+        end if; -- rstn
+    end if; --rising_edge
+end process DC_link_rampup;	
+
+
 
 pfc_voltage_control : seq_pi_control
 	generic map(200,10,0,0)
-port map(core_clk, r_si_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, 18d"13945", s18_voltage_measurement, 18d"1500", 18d"50");
+port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"1500", 18d"50");
 
 r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
 so_std18_test_data <= std_logic_vector(s18_voltage_pi_out);
@@ -107,7 +135,7 @@ so_test_data_rdy <= voltage_ctrl_rdy;
     port map(
 	    modulator_clk => modulator_clk,
 	    dsp_clk => core_clk,
-	    si_rstn => r_si_rstn,
+	    si_rstn => pfc_ctrl_rstn,
 
 	    si_u12_pfc_duty =>  r_si_u12_pfc_duty,
 	    si_u12_sym_carrier => ui12_carrier,
@@ -120,7 +148,7 @@ so_test_data_rdy <= voltage_ctrl_rdy;
     begin
 	if rising_edge(core_clk) then
         if si_rstn = '0' then
-            r_si_rstn <= '0';
+            pfc_ctrl_rstn <= '0';
             /* r_si_u12_pfc_duty <= (others => '0'); */
             r_si_uart_ready_event <= '0';
             r_si16_uart_rx_data <= (others => '0');
@@ -133,9 +161,9 @@ so_test_data_rdy <= voltage_ctrl_rdy;
                     WHEN c_uart_command =>
                         CASE r_si16_uart_rx_data(11 downto 0) is
                             WHEN c_pfc_start =>
-                                r_si_rstn <= '1';
+                                pfc_ctrl_rstn <= '1';
                             WHEN c_pfc_stop =>
-                                r_si_rstn <= '0';
+                                pfc_ctrl_rstn <= '0';
                             WHEN others =>
                                 -- do nothing
                         end CASE;
