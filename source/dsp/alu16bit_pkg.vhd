@@ -4,6 +4,6 @@ library ieee;
 
 package alu16bit_pkg is
 
-   type t_alu_commands is (nop,add,sub,a_mpy_b,a_div_b,sqrt_a);
+   type t_alu_commands is (add,sub,a_mpy_b,a_div_b,sqrt_a);
 
 end package;
