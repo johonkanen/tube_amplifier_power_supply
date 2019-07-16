@@ -71,8 +71,8 @@ end component;
 begin
 
 dhb_voltage_control : seq_pi_control
-	generic map(40,-40,0,0)
-port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, s18_dhb_reference, r_si_sign18_meas, 18d"500", 18d"50");
+	generic map(80,-80,0,0)
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, s18_dhb_reference, r_si_sign18_meas, 18d"15000", 18d"2200");
 
 so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 
@@ -93,7 +93,8 @@ begin
             -- reset state
             s18_dhb_reference <= (others => '0');
         else
-            if s18_dhb_reference < 18d"12420" then
+            -- dhb reference, 3105 = 125.5V
+            if s18_dhb_reference <= 18d"3504" then
                 s18_dhb_reference <= s18_dhb_reference + 1;
             end if;
 

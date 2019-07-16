@@ -88,9 +88,6 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             clk_buffer <= not clk_buffer;
-                        end if;
-
-                        if spi_clk_div = 2 then
                             b_spi_rx(i-2) <= pi_spi_serial;
                             i <= i - 1;
                         end if;

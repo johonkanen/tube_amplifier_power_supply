@@ -42,7 +42,7 @@ architecture rtl of ext_ad_control is
 begin
 
 heater_ad_driver : ext_ad_spi3w 
-    generic map(8d"8",8d"16",8d"17")
+    generic map(8d"8",8d"14",8d"17")
     port map( 
 	    si_spi_clk => ad_clock,
         si_rstn => si_rstn,
@@ -62,7 +62,7 @@ heater_ad_driver : ext_ad_spi3w
 	);
 
 dhb_ad_driver : ext_ad_spi3w 
-    generic map(8d"8",8d"16",8d"17")
+    generic map(8d"8",8d"14",8d"17")
     port map( 
 	    si_spi_clk => ad_clock,
         si_rstn => si_rstn,
@@ -80,8 +80,8 @@ dhb_ad_driver : ext_ad_spi3w
 	    -- output buffer
 	    b_spi_rx => r_so_ext_ad2_data
 	);
-ht_adc_control.std16_ad_bus <= '0'&r_so_ext_ad1_data(11 downto 0)&"000";
-dhb_adc_control.std16_ad_bus <= '0'&r_so_ext_ad2_data(11 downto 0)&"000";
+ht_adc_control.std16_ad_bus <= std_logic_vector(shift_left(unsigned(r_so_ext_ad1_data),3));
+dhb_adc_control.std16_ad_bus <= std_logic_vector(shift_left(unsigned(r_so_ext_ad2_data),3));
 
 --    ht_bus_driver : cdc_bus_driver
 --    port map(ad_clock,ad_bus_clock,r_so_ext_ad1_data,ext_ad1_spi_rdy,ht_adc_control.std16_ad_bus,ht_adc_control.ad_rdy_trigger);
