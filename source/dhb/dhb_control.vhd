@@ -93,8 +93,8 @@ begin
             -- reset state
             s18_dhb_reference <= (others => '0');
         else
-            -- dhb reference, 3105 = 125.5V
-            if s18_dhb_reference <= 18d"3504" then
+            -- dhb reference, 4960 = 199.9V
+            if s18_dhb_reference <= 18d"4960" then
                 s18_dhb_reference <= s18_dhb_reference + 1;
             end if;
 

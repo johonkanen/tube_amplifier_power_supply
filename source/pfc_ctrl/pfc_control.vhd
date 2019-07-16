@@ -112,7 +112,7 @@ begin
                 u12_rampup_cntr := (others => '0');
             end if;
 
-            if s18_pfc_reference < 18d"6000" then
+            if s18_pfc_reference < 18d"5000" then
                 if u12_rampup_cntr = 12d"0" then
                     s18_pfc_reference <= s18_pfc_reference + 1;
                 end if;
