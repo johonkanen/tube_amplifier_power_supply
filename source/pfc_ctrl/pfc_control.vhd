@@ -127,7 +127,7 @@ pfc_voltage_control : seq_pi_control
 	generic map(200,10,0,0)
 port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"1500", 18d"50");
 
-r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
+/* r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0)); */
 so_std18_test_data <= std_logic_vector(s18_voltage_pi_out);
 so_test_data_rdy <= voltage_ctrl_rdy;
 
@@ -168,7 +168,7 @@ so_test_data_rdy <= voltage_ctrl_rdy;
                                 -- do nothing
                         end CASE;
                     WHEN c_pfc_duty =>
-                        /* r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); */ 
+                        r_si_u12_pfc_duty <= unsigned(r_si16_uart_rx_data(11 downto 0)); 
                     WHEN others =>
                     -- do nothing
                 end CASE;
