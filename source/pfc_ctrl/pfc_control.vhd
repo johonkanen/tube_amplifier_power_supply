@@ -125,7 +125,7 @@ end process DC_link_rampup;
 
 pfc_voltage_control : seq_pi_control
 	generic map(200,10,0,0)
-port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"500", 18d"100");
+port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"500", 18d"75");
 
 r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
 so_std18_test_data <= std_logic_vector(s18_voltage_pi_out);
