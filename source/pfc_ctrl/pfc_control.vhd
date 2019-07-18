@@ -83,7 +83,20 @@ architecture behavioral of pfc_control is
     signal s18_voltage_measurement : signed(17 downto 0); 
     signal s18_pfc_reference : signed(17 downto 0); 
 
+
 begin 
+
+pfc_voltage_control : seq_pi_control
+	generic map(200,10,0,0)
+port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"500", 18d"75");
+
+pfc_gate_control : pfc_modulator 
+    port map(modulator_clk, core_clk, pfc_ctrl_rstn, r_si_u12_pfc_duty, ui12_carrier, po2_pfc_pwm);
+
+--type casts for modulator and PI control signals
+r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
+so_std18_test_data <= std_logic_vector(s18_voltage_pi_out);
+so_test_data_rdy <= voltage_ctrl_rdy;
 
 start_pfc_voltage_ctrl: process(core_clk,si_adb_ctrl)
 begin
@@ -121,30 +134,7 @@ begin
     end if; --rising_edge
 end process DC_link_rampup;	
 
-
-
-pfc_voltage_control : seq_pi_control
-	generic map(200,10,0,0)
-port map(core_clk, pfc_ctrl_rstn, start_voltage_ctrl,open, voltage_ctrl_rdy, s18_voltage_pi_out, s18_pfc_reference, s18_voltage_measurement, 18d"500", 18d"75");
-
-r_si_u12_pfc_duty <= unsigned(s18_voltage_pi_out(11 downto 0));
-so_std18_test_data <= std_logic_vector(s18_voltage_pi_out);
-so_test_data_rdy <= voltage_ctrl_rdy;
-
-    pfc_gate_control : pfc_modulator 
-    port map(
-	    modulator_clk => modulator_clk,
-	    dsp_clk => core_clk,
-	    si_rstn => pfc_ctrl_rstn,
-
-	    si_u12_pfc_duty =>  r_si_u12_pfc_duty,
-	    si_u12_sym_carrier => ui12_carrier,
-
-	    po2_pfc_pwm => po2_pfc_pwm
-	);
-
-
-    test_pfc_pwm : process(core_clk)
+test_pfc_pwm : process(core_clk)
     begin
 	if rising_edge(core_clk) then
         if si_rstn = '0' then
@@ -176,4 +166,5 @@ so_test_data_rdy <= voltage_ctrl_rdy;
         end if;
 	end if;
     end process test_pfc_pwm;
+
 end behavioral;

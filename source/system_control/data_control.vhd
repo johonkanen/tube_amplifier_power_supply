@@ -202,6 +202,21 @@ signal test_data_rdy : std_logic;
 
     type t_pfc_current_channel is (a3,b3);
     signal st_pfc_current_channel : t_pfc_current_channel;
+procedure send_data_to_uart
+(
+    signal std3_ad_ch : in std_logic_vector(2 downto 0);
+    signal ad_control : in rec_onboard_ad_ctrl_signals;
+    signal uart_start_event : out std_logic;
+    signal uart_data : out std_logic_vector(15 downto 0)
+) is
+begin
+    if ad_control.std3_ad_address = 3d"3" AND ad_control.ad_rdy_trigger = '1' then
+        uart_start_event <= '1';
+        uart_data <= ad_control.std16_ad_bus;
+    else
+        uart_start_event <= '0';
+    end if;
+end send_data_to_uart;
 
 begin
 
