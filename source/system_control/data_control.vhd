@@ -202,21 +202,24 @@ signal test_data_rdy : std_logic;
 
     type t_pfc_current_channel is (a3,b3);
     signal st_pfc_current_channel : t_pfc_current_channel;
-procedure send_data_to_uart
-(
-    signal std3_ad_ch : in std_logic_vector(2 downto 0);
-    signal ad_control : in rec_onboard_ad_ctrl_signals;
-    signal uart_start_event : out std_logic;
-    signal uart_data : out std_logic_vector(15 downto 0)
-) is
-begin
-    if ad_control.std3_ad_address = 3d"3" AND ad_control.ad_rdy_trigger = '1' then
-        uart_start_event <= '1';
-        uart_data <= ad_control.std16_ad_bus;
-    else
-        uart_start_event <= '0';
-    end if;
-end send_data_to_uart;
+
+
+    procedure send_adc_data_to_uart
+    (
+        constant std3_ad_ch : in std_logic_vector(2 downto 0);
+        signal ad_control : in rec_onboard_ad_ctrl_signals;
+        signal uart_tx_data : in std_logic_vector(15 downto 0);
+        signal uart_start_event : out std_logic;
+        signal uart_data : out std_logic_vector(15 downto 0)
+    ) is
+    begin
+        if ad_control.std3_ad_address = std3_ad_ch AND ad_control.ad_rdy_trigger = '1' then
+            uart_start_event <= '1';
+            uart_data <= ad_control.std16_ad_bus;
+        else
+            uart_start_event <= '0';
+        end if;
+    end send_adc_data_to_uart;
 
 begin
 
@@ -331,49 +334,13 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
                     end if;
                 end if;
             WHEN 4d"1" => 
-                if r_so_adb_ctrl.std3_ad_address = 3d"1"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
-                    r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
-                else
-                    r_si_uart_start_event <= '0';
-                end if;
+                send_adc_data_to_uart(3d"1", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
             WHEN 4d"2" => 
-                if r_so_adb_ctrl.std3_ad_address = 3d"6"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
-                    r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
-                else
-                    r_si_uart_start_event <= '0';
-                end if;
+                send_adc_data_to_uart(3d"6", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
             WHEN 4d"3" => 
-                if r_so_adb_ctrl.std3_ad_address = 3d"2"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
-                    r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
-                else
-                    r_si_uart_start_event <= '0';
-                end if;
+                send_adc_data_to_uart(3d"2", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
             WHEN 4d"4" => 
-                if r_so_adb_ctrl.std3_ad_address = 3d"4"  AND r_so_adb_ctrl.ad_rdy_trigger = '1'  then
-                    r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
-                else
-                    r_si_uart_start_event <= '0';
-                end if;
-            WHEN 4d"5" => 
-                if st_pfc_current_channel = b3 then
-                    if r_so_adb_ctrl.std3_ad_address = 3d"3" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                        r_si_uart_start_event <= '1';
-                        r_si16_uart_tx_data <= r_so_adb_ctrl.std16_ad_bus;
-                    else
-                        r_si_uart_start_event <= '0';
-                    end if;
-                else
-                    if r_so_ada_ctrl.std3_ad_address = 3d"3"  AND r_so_ada_ctrl.ad_rdy_trigger = '1'  then
-                        r_si_uart_start_event <= '1';
-                        r_si16_uart_tx_data <= r_so_ada_ctrl.std16_ad_bus;
-                    else
-                        r_si_uart_start_event <= '0';
-                    end if;
-                end if;
+                send_adc_data_to_uart(3d"4", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
             WHEN 4d"6" => 
                 if ht_adc_control.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
