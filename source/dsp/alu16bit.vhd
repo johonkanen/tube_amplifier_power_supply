@@ -17,8 +17,8 @@ entity alu16bit is
         data1 : in signed(17 downto 0);
         data2 : in signed(17 downto 0);
 
-        so_alu_busy : out boolean;
-        so_alu_rdy : out boolean;
+        so_alu_busy : out std_logic;
+        so_alu_rdy : out std_logic;
         so18_alu_data : out signed(17 downto 0)
     );
 end entity alu16bit;
@@ -42,7 +42,7 @@ architecture rtl of alu16bit is
     signal mpy2_b : std_logic_vector(17 downto 0); 
     signal mpy2_result : std_logic_vector(35 downto 0); 
     signal r1_si_start_alu : std_logic;  
-    signal busy : boolean;
+    signal busy : std_logic;
 
     signal mult1_rdy : std_logic;
     signal start_mpy : std_logic; 
@@ -69,6 +69,8 @@ begin
                     mpy1_a <= std_logic_vector(data1);
                     mpy1_b <= std_logic_vector(data2);
                     so18_alu_data <= signed(mpy1_result(17 downto 0));
+                    so_alu_busy <= mult1_rdy;
+                    so_alu_rdy <= mult1_rdy;
                 WHEN a_div_b =>
                 WHEN sqrt_a =>
             end CASE;
@@ -86,7 +88,7 @@ alu_commands : process(core_clk)
                 alu_mux_pos <= add; -- initialize to known value
             else
                 r1_si_start_alu <= si_start_alu;
-                if r1_si_start_alu = not si_start_alu and busy = FALSE then
+                if r1_si_start_alu = not si_start_alu and busy = '0' then
                     alu_mux_pos <= alu_command;
                     start_mpy <= '1';
                 else
