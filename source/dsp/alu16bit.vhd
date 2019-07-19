@@ -239,17 +239,26 @@ begin
                 WHEN m2 =>
                     div_rdy <= '0';
                     div_out <= (others => '0');
-                    div_start_mpy <= '0';
                     if mult1_rdy = '1' then
+                        div_mpy1_a <= mpy1_result(17 downto 0);
+                        div_mpy1_b <= mpy1_result(17 downto 0);
                         st_division_states := rdy;
+                        div_start_mpy <= '1';
                     else
                         st_division_states := m2;
+                        div_start_mpy <= '0';
                     end if;
                 WHEN rdy =>
-                    st_division_states := idle;
                     div_start_mpy <= '0';
-                    div_out <= mpy1_result(17 downto 0);
-                    div_rdy <= '1';
+                    if mult1_rdy = '1' then
+                        div_out <= mpy1_result(17 downto 0);
+                        div_rdy <= '1';
+                        st_division_states := idle;
+                    else
+                        st_division_states := rdy;
+                        div_rdy <= '0';
+                    end if;
+
                 WHEN others => 
                     -- do nothing
             end CASE;
