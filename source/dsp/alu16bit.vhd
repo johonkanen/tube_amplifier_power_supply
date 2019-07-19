@@ -44,6 +44,9 @@ architecture rtl of alu16bit is
     signal div_mpy1_a : std_logic_vector(17 downto 0); 
     signal div_mpy1_b : std_logic_vector(17 downto 0); 
 
+    signal div_mpy2_a : std_logic_vector(17 downto 0); 
+    signal div_mpy2_b : std_logic_vector(17 downto 0); 
+
     signal mpy2_a : std_logic_vector(17 downto 0); 
     signal mpy2_b : std_logic_vector(17 downto 0); 
     signal mpy2_result : std_logic_vector(35 downto 0); 
@@ -62,6 +65,9 @@ begin
 
 mpy1_a <= alu_mpy1_a OR div_mpy1_a;
 mpy1_b <= alu_mpy1_b OR div_mpy1_b;
+
+mpy2_a <= div_mpy2_a;
+mpy2_b <= div_mpy2_b;
 
 mpy1 : combi_mult_18x18
     port map(core_clk, mpy1_a, mpy1_b, mpy1_result);
@@ -195,8 +201,10 @@ begin
 end process mult1;	
 
 div : process(core_clk)
-    type t_division_states is (idle,m1,m2,rdy);
+    type t_division_states is (idle,m1,m2,m3,rdy);
     variable st_division_states : t_division_states;
+    variable id : std_logic_vector(17 downto 0);
+    variable iR : std_logic_vector(17 downto 0);
 begin
     if rising_edge(core_clk) then
         if rstn = '0' then
@@ -207,16 +215,21 @@ begin
             div_start_mpy <= '0';
             div_mpy1_a <= (others => '0');
             div_mpy1_b <= (others => '0');
+            div_mpy2_a <= (others => '0');
+            div_mpy2_b <= (others => '0');
         else
             CASE st_division_states is 
                 WHEN idle =>
                     div_rdy <= '0';
                     div_out <= (others => '0');
+                    -- invert data2
 
+                    div_mpy2_a <= (others => '0');
+                    div_mpy2_b <= (others => '0');
                     if start_div = '1' then
                         st_division_states := m1;
-                        div_mpy1_a <= std_logic_vector(data2);
-                        div_mpy1_b <= std_logic_vector(data1);
+                        div_mpy1_a <= 18d"22175"; -- magic constant, tested to be optimal
+                        div_mpy1_b <= std_logic_vector(data2);
                         div_start_mpy <= '1';
                     else
                         st_division_states := idle;
@@ -228,8 +241,11 @@ begin
                     div_rdy <= '0';
                     div_out <= (others => '0');
                     if mult1_rdy = '1' then
-                        div_mpy1_a <= mpy1_result(17 downto 0);
-                        div_mpy1_b <= mpy1_result(17 downto 0);
+                        div_mpy1_a <= mpy1_result(35 downto 18);
+                        div_mpy1_b <= not mpy1_result(35 downto 18);
+
+                        div_mpy2_a <= not mpy1_result(35 downto 18);
+                        div_mpy2_b <= 18d"22175";
                         div_start_mpy <= '1';
                         st_division_states := m2;
                     else
@@ -240,18 +256,36 @@ begin
                     div_rdy <= '0';
                     div_out <= (others => '0');
                     if mult1_rdy = '1' then
-                        div_mpy1_a <= mpy1_result(17 downto 0);
-                        div_mpy1_b <= mpy1_result(17 downto 0);
-                        st_division_states := rdy;
+                        div_mpy1_a <= mpy1_result(35 downto 18);
+                        div_mpy1_b <= not mpy1_result(35 downto 18);
+
+                        div_mpy2_a <= not mpy1_result(35 downto 18);
+                        div_mpy2_b <= mpy2_result(35 downto 18);
+                        st_division_states := m3;
                         div_start_mpy <= '1';
                     else
                         st_division_states := m2;
                         div_start_mpy <= '0';
                     end if;
+                WHEN m3 =>
+                    div_rdy <= '0';
+                    div_out <= (others => '0');
+                    if mult1_rdy = '1' then
+                        div_mpy1_a <= mpy1_result(35 downto 18);
+                        div_mpy1_b <= not mpy1_result(35 downto 18);
+
+                        div_mpy2_a <= not mpy1_result(35 downto 18);
+                        div_mpy2_b <= mpy2_result(35 downto 18);
+                        st_division_states := rdy;
+                        div_start_mpy <= '1';
+                    else
+                        st_division_states := m3;
+                        div_start_mpy <= '0';
+                    end if;
                 WHEN rdy =>
                     div_start_mpy <= '0';
                     if mult1_rdy = '1' then
-                        div_out <= mpy1_result(17 downto 0);
+                        div_out <= mpy2_result(35 downto 18);
                         div_rdy <= '1';
                         st_division_states := idle;
                     else

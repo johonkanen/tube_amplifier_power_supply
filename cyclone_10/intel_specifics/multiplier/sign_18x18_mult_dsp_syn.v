@@ -33,7 +33,7 @@
 //refer to the applicable agreement for further details.
 
 
-//lpm_mult DEVICE_FAMILY="Cyclone 10 LP" LPM_PIPELINE=1 LPM_REPRESENTATION="SIGNED" LPM_WIDTHA=18 LPM_WIDTHB=18 LPM_WIDTHP=36 MAXIMIZE_SPEED=9 clock dataa datab result
+//lpm_mult DEVICE_FAMILY="Cyclone 10 LP" LPM_PIPELINE=1 LPM_REPRESENTATION="UNSIGNED" LPM_WIDTHA=18 LPM_WIDTHB=18 LPM_WIDTHP=36 MAXIMIZE_SPEED=9 clock dataa datab result
 //VERSION_BEGIN 18.1 cbx_cycloneii 2018:09:12:13:04:24:SJ cbx_lpm_add_sub 2018:09:12:13:04:24:SJ cbx_lpm_mult 2018:09:12:13:04:24:SJ cbx_mgl 2018:09:12:13:10:36:SJ cbx_nadder 2018:09:12:13:04:24:SJ cbx_padd 2018:09:12:13:04:24:SJ cbx_stratix 2018:09:12:13:04:24:SJ cbx_stratixii 2018:09:12:13:04:24:SJ cbx_util_mgl 2018:09:12:13:04:24:SJ  VERSION_END
 // synthesis VERILOG_INPUT_VERSION VERILOG_2001
 // altera message_off 10463
@@ -71,8 +71,8 @@ module  sign_18x18_mult_dsp_mult
 	.dataa({dataa}),
 	.datab({datab}),
 	.dataout(wire_mac_mult1_dataout),
-	.signa(1'b1),
-	.signb(1'b1)
+	.signa(1'b0),
+	.signb(1'b0)
 	`ifndef FORMAL_VERIFICATION
 	// synopsys translate_off
 	`endif
@@ -157,7 +157,7 @@ endmodule
 // Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "1"
 // Retrieval info: PRIVATE: Latency NUMERIC "1"
 // Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "1"
-// Retrieval info: PRIVATE: SignedMult NUMERIC "1"
+// Retrieval info: PRIVATE: SignedMult NUMERIC "0"
 // Retrieval info: PRIVATE: USE_MULT NUMERIC "1"
 // Retrieval info: PRIVATE: ValidConstant NUMERIC "0"
 // Retrieval info: PRIVATE: WidthA NUMERIC "18"
@@ -170,7 +170,7 @@ endmodule
 // Retrieval info: LIBRARY: lpm lpm.lpm_components.all
 // Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=9"
 // Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "1"
-// Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
+// Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "UNSIGNED"
 // Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
 // Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "18"
 // Retrieval info: CONSTANT: LPM_WIDTHB NUMERIC "18"
