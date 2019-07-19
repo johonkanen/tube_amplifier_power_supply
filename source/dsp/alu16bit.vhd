@@ -46,7 +46,12 @@ architecture rtl of alu16bit is
 
     signal mult1_rdy : std_logic;
     signal start_mpy : std_logic; 
-    signal alu_mux_pos : t_alu_commands; 
+
+    signal start_div : std_logic; 
+    signal div_rdy : std_logic; 
+    signal div_out : std_logic_vector(17 downto 0); 
+    signal div_start_mpy : std_logic; 
+    signal alu_start_mpy : std_logic; 
 begin
 
 mpy1 : combi_mult_18x18
@@ -62,13 +67,13 @@ alu_commands : process(core_clk)
         if rising_edge(core_clk) then
             if rstn = '0' then
             -- reset state
-                start_mpy <= '0';
+                alu_start_mpy <= '0';
                 r1_si_start_alu <= si_start_alu;
                 st_alu_states := idle;
-                mpy1_a <= (others => '0');
-                mpy1_b <= (others => '0');
-                mpy2_a <= (others => '0');
-                mpy2_b <= (others => '0');
+                /* mpy1_a <= (others => '0'); */
+                /* mpy1_b <= (others => '0'); */
+                /* mpy2_a <= (others => '0'); */
+                /* mpy2_b <= (others => '0'); */
                 so18_alu_data <= (others => '0');
             else
                 r1_si_start_alu <= si_start_alu;
@@ -80,12 +85,15 @@ alu_commands : process(core_clk)
                                 WHEN add =>
                                 WHEN sub =>
                                 WHEN a_mpy_b =>
-                                    mpy1_a <= std_logic_vector(data1);
-                                    mpy1_b <= std_logic_vector(data2);
+                                    /* mpy1_a <= std_logic_vector(data1); */
+                                    /* mpy1_b <= std_logic_vector(data2); */
                                     so_alu_busy <= '1';
-                                    start_mpy <= '1';
+                                    alu_start_mpy <= '1';
                                     st_alu_states := mult;
                                 WHEN a_div_b =>
+                                    so_alu_busy <= '1';
+                                    start_div <= '1';
+                                    st_alu_states := div;
                                 WHEN sqrt_a =>
                                 WHEN others =>
                             end CASE;
@@ -107,12 +115,27 @@ alu_commands : process(core_clk)
                             st_alu_states := mult;
                             so18_alu_data <= (others => '0');
                         end if;
+                    WHEN div =>
+                        if div_rdy = '1' then
+                            --alu out <= multiplier out
+                            st_alu_states := idle;
+                            so_alu_busy <= '0';
+                            so_alu_rdy <= '1';
+                            so18_alu_data <= signed(div_out);
+                        else 
+                            so_alu_rdy <= '0';
+                            so_alu_busy <= '1';
+                            st_alu_states := mult;
+                            so18_alu_data <= (others => '0');
+                        end if;
                     WHEN others =>
                         st_alu_states := idle;
                     end CASE;
             end if; -- rstn
         end if; --rising_edge
     end process ;	
+
+start_mpy <= alu_start_mpy OR div_start_mpy;
 
 mult1 : process(core_clk)
     type t_multiplier_states is (idle,mult);
@@ -141,4 +164,59 @@ begin
     end if; --rising_edge
 end process mult1;	
 
+div : process(core_clk)
+    type t_division_states is (idle,m1,m2,rdy);
+    variable st_division_states : t_division_states;
+begin
+    if rising_edge(core_clk) then
+        if rstn = '0' then
+        -- reset state
+            st_division_states := idle;
+            div_rdy <= '0';
+            div_out <= (others => '0');
+            div_start_mpy <= '0';
+        else
+            CASE st_division_states is 
+                WHEN idle =>
+                    div_out <= (others => '0');
+                    if start_div = '1' then
+                        st_division_states := m1;
+                    else
+                        st_division_states := idle;
+                    end if;
+                    div_rdy <= '0';
+                    div_start_mpy <= '0';
+                WHEN m1 =>
+                    div_out <= (others => '0');
+                    mpy1_a <= std_logic_vector(data1);
+                    mpy1_b <= std_logic_vector(data2);
+
+                    if mult1_rdy = '1' then
+                        st_division_states := m2;
+                        div_start_mpy <= '0';
+                    else
+                        div_start_mpy <= '1';
+                        st_division_states := m1;
+                    end if;
+                WHEN m2 =>
+                    div_out <= (others => '0');
+                    mpy1_a <= mpy1_result(17 downto 0);
+                    mpy1_b <= mpy1_result(17 downto 0);
+                    if mult1_rdy = '1' then
+                        st_division_states := rdy;
+                        div_start_mpy <= '0';
+                    else
+                        div_start_mpy <= '1';
+                        st_division_states := m2;
+                    end if;
+
+                WHEN rdy =>
+                    div_out <= mpy1_result(35 downto 18);
+                    div_rdy <= '1';
+                WHEN others => 
+                    -- do nothing
+            end CASE;
+        end if; -- rstn
+    end if; --rising_edge
+end process div;	
 end rtl;
