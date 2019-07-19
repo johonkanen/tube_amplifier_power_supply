@@ -179,8 +179,8 @@ begin
                     end if;
                     mult1_rdy <= '0';
                 WHEN mult =>
-                    mult_dly := mult_dly + 1;
-                    if mult_dly = 3d"3" then
+                    mult_dly := (others => '0');
+                    if mult_dly = 3d"0" then
                         mult1_rdy <= '1';
                         st_multiplier_states := idle;
                     else
@@ -246,8 +246,9 @@ begin
                         st_division_states := m2;
                     end if;
                 WHEN rdy =>
+                    st_division_states := idle;
                     div_start_mpy <= '0';
-                    div_out <= mpy1_result(35 downto 18);
+                    div_out <= mpy1_result(17 downto 0);
                     div_rdy <= '1';
                 WHEN others => 
                     -- do nothing

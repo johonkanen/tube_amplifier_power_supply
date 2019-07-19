@@ -301,7 +301,7 @@ supply_ctrl_layer : sw_supply_ctrl
 port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, std18_test_data, test_data_rdy, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
 test_alu : alu16bit
-    port map(core_clk, si_pll_lock, start_alu, r_alu_command, 18d"500",18d"250",open,r_so_alu_rdy,r_so18_alu_data);
+    port map(core_clk, si_pll_lock, start_alu, r_alu_command, 18d"1",18d"2",open,r_so_alu_rdy,r_so18_alu_data);
 
     test_data_streaming : process(core_clk)
 	variable jeemux : unsigned(3 downto 0);
