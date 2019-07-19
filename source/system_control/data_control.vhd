@@ -10,6 +10,8 @@ library work;
     use work.llc_pkg.all;
     use work.pfc_pkg.all;
     use work.vendor_specifics_pkg.all;
+    use work.alu16bit_pkg.all;
+    use work.alu_routines_pkg.all;
 
 entity data_control is
     port(
@@ -199,6 +201,7 @@ signal dhb_adc_control : rec_ext_ad_ctrl;
 
 signal std18_test_data : std_logic_vector(17 downto 0);
 signal test_data_rdy : std_logic;
+signal start_alu : std_logic;
 
     type t_pfc_current_channel is (a3,b3);
     signal st_pfc_current_channel : t_pfc_current_channel;
@@ -297,6 +300,9 @@ ext_adc : ext_ad_control
 supply_ctrl_layer : sw_supply_ctrl
 port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, std18_test_data, test_data_rdy, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
+test_alu : alu16bit
+    port map(core_clk, si_pll_lock, start_alu, a_mpy_b, 18d"500",18d"250",open,r_so_alu_rdy,r_so18_alu_data);
+
     test_data_streaming : process(core_clk)
 	variable jeemux : unsigned(3 downto 0);
 
@@ -307,6 +313,7 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
             r_si_uart_start_event <= '0';
             r_si16_uart_tx_data <= (others => '0');
             st_pfc_current_channel <= a3;
+            start_alu <= '0';
         else
             if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                 if r_so_adb_ctrl.std16_ad_bus < 16d"16361" then
@@ -356,9 +363,14 @@ port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 4d"8" => 
-                if test_data_rdy = '1'  then
+                if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                    start_alu <= '1';
+                else
+                    start_alu <= '0';
+                end if;
+                if r_so_alu_rdy = '1' then
                     r_si_uart_start_event <= '1';
-                    r_si16_uart_tx_data <= std18_test_data(15 downto 0);
+                    r_si16_uart_tx_data <= std_logic_vector(r_so18_alu_data(15 downto 0));
                 else
                     r_si_uart_start_event <= '0';
                 end if;

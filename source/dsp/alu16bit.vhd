@@ -55,44 +55,61 @@ mpy1 : combi_mult_18x18
 mpy2 : combi_mult_18x18
     port map(core_clk, mpy2_a, mpy2_b, mpy2_result);
 
-
-alu_mux : process(core_clk)
-begin
-    if rising_edge(core_clk) then
-        if rstn = '0' then
-        -- reset state
-        else
-            CASE alu_mux_pos is
-                WHEN add =>
-                WHEN sub =>
-                WHEN a_mpy_b =>
-                    mpy1_a <= std_logic_vector(data1);
-                    mpy1_b <= std_logic_vector(data2);
-                    so18_alu_data <= signed(mpy1_result(17 downto 0));
-                    so_alu_busy <= mult1_rdy;
-                    so_alu_rdy <= mult1_rdy;
-                WHEN a_div_b =>
-                WHEN sqrt_a =>
-            end CASE;
-        end if; -- rstn
-    end if; --rising_edge
-end process alu_mux;	
-
 alu_commands : process(core_clk)
+        type t_alu_states is (idle,mult,div,sqrt);
+        variable st_alu_states : t_alu_states;
     begin
         if rising_edge(core_clk) then
             if rstn = '0' then
             -- reset state
                 start_mpy <= '0';
                 r1_si_start_alu <= si_start_alu;
-                alu_mux_pos <= add; -- initialize to known value
+                st_alu_states := idle;
+                mpy1_a <= (others => '0');
+                mpy1_b <= (others => '0');
+                mpy2_a <= (others => '0');
+                mpy2_b <= (others => '0');
+                so18_alu_data <= (others => '0');
             else
                 r1_si_start_alu <= si_start_alu;
-                if r1_si_start_alu = not si_start_alu and busy = '0' then
-                    alu_mux_pos <= alu_command;
-                    start_mpy <= '1';
-                else
-                end if;
+                --alu states
+                CASE st_alu_states is 
+                    WHEN idle =>
+                        if r1_si_start_alu = not si_start_alu then
+                            CASE alu_command is
+                                WHEN add =>
+                                WHEN sub =>
+                                WHEN a_mpy_b =>
+                                    mpy1_a <= std_logic_vector(data1);
+                                    mpy1_b <= std_logic_vector(data2);
+                                    so_alu_busy <= '1';
+                                    start_mpy <= '1';
+                                    st_alu_states := mult;
+                                WHEN a_div_b =>
+                                WHEN sqrt_a =>
+                                WHEN others =>
+                            end CASE;
+                        else
+                            st_alu_states := idle;
+                            so_alu_busy <= '0';
+                            so_alu_rdy <= '0';
+                        end if;
+                    WHEN mult =>
+                        if mult1_rdy = '1' then
+                            --alu out <= multiplier out
+                            st_alu_states := idle;
+                            so_alu_busy <= '0';
+                            so_alu_rdy <= '1';
+                            so18_alu_data <= signed(mpy1_result(17 downto 0));
+                        else 
+                            so_alu_rdy <= '0';
+                            so_alu_busy <= '1';
+                            st_alu_states := mult;
+                            so18_alu_data <= (others => '0');
+                        end if;
+                    WHEN others =>
+                        st_alu_states := idle;
+                    end CASE;
             end if; -- rstn
         end if; --rising_edge
     end process ;	
@@ -105,8 +122,6 @@ begin
         if rstn = '0' then
         -- reset state
             st_multiplier_states := idle;
-            mpy1_a <= (others => '0');
-            mpy1_b <= (others => '0');
             mult1_rdy <= '0';
         else
             CASE st_multiplier_states is 
