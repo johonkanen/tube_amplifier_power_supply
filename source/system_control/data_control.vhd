@@ -365,9 +365,7 @@ test_alu : alu16bit
             WHEN 4d"8" => 
                 r_alu_command <= a_mpy_b;
                 if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                    start_alu <= '1';
-                else
-                    start_alu <= '0';
+                    start_alu <= not start_alu;
                 end if;
                 if r_so_alu_rdy = '1' then
                     r_si_uart_start_event <= '1';
@@ -378,9 +376,7 @@ test_alu : alu16bit
             WHEN 4d"9" => 
                 r_alu_command <= a_div_b;
                 if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                    start_alu <= '1';
-                else
-                    start_alu <= '0';
+                    start_alu <= not start_alu;
                 end if;
                 if r_so_alu_rdy = '1' then
                     r_si_uart_start_event <= '1';

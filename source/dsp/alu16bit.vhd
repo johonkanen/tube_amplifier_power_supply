@@ -97,11 +97,12 @@ alu_commands : process(core_clk)
                                     alu_mpy1_a <= std_logic_vector(data1);
                                     alu_mpy1_b <= std_logic_vector(data2);
                                     so_alu_busy <= '1';
-                                    alu_start_mpy <= '1';
+                                    alu_start_mpy <= '0';
                                     st_alu_states := mult;
                                 WHEN a_div_b =>
                                     alu_mpy1_a <= (others => '0');
                                     alu_mpy1_b <= (others => '0');
+                                    alu_start_mpy <= '0';
                                     so_alu_busy <= '1';
                                     start_div <= '1';
                                     st_alu_states := div;
@@ -125,7 +126,9 @@ alu_commands : process(core_clk)
                             so_alu_busy <= '0';
                             so_alu_rdy <= '1';
                             so18_alu_data <= signed(mpy1_result(17 downto 0));
+                            alu_start_mpy <= '0';
                         else 
+                            alu_start_mpy <= '1';
                             so_alu_rdy <= '0';
                             so_alu_busy <= '1';
                             st_alu_states := mult;
@@ -157,15 +160,18 @@ start_mpy <= alu_start_mpy OR div_start_mpy;
 mult1 : process(core_clk)
     type t_multiplier_states is (idle,mult);
     variable st_multiplier_states : t_multiplier_states;
+    variable mult_dly : unsigned(2 downto 0);
 begin
     if rising_edge(core_clk) then
         if rstn = '0' then
         -- reset state
             st_multiplier_states := idle;
             mult1_rdy <= '0';
+            mult_dly := (others => '0');
         else
             CASE st_multiplier_states is 
                 WHEN idle =>
+                    mult_dly := (others => '0');
                     if start_mpy = '1' then
                         st_multiplier_states := mult;
                     else
@@ -173,7 +179,14 @@ begin
                     end if;
                     mult1_rdy <= '0';
                 WHEN mult =>
-                    mult1_rdy <= '1';
+                    mult_dly := mult_dly + 1;
+                    if mult_dly = 3d"3" then
+                        mult1_rdy <= '1';
+                        st_multiplier_states := idle;
+                    else
+                        mult1_rdy <= '0';
+                        st_multiplier_states := mult;
+                    end if;
                 WHEN others => 
                     -- do nothing
             end CASE;
@@ -233,6 +246,8 @@ begin
                     end if;
 
                 WHEN rdy =>
+                    div_mpy1_a <= (others => '0');
+                    div_mpy1_b <= (others => '0');
                     div_start_mpy <= '0';
                     div_out <= mpy1_result(35 downto 18);
                     div_rdy <= '1';
