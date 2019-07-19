@@ -96,8 +96,10 @@ alu_commands : process(core_clk)
                                 WHEN a_mpy_b =>
                                     alu_mpy1_a <= std_logic_vector(data1);
                                     alu_mpy1_b <= std_logic_vector(data2);
+                                    alu_start_mpy <= '1';
+                                    start_div <= '0';
+
                                     so_alu_busy <= '1';
-                                    alu_start_mpy <= '0';
                                     st_alu_states := mult;
                                 WHEN a_div_b =>
                                     alu_mpy1_a <= (others => '0');
@@ -126,9 +128,7 @@ alu_commands : process(core_clk)
                             so_alu_busy <= '0';
                             so_alu_rdy <= '1';
                             so18_alu_data <= signed(mpy1_result(17 downto 0));
-                            alu_start_mpy <= '0';
                         else 
-                            alu_start_mpy <= '1';
                             so_alu_rdy <= '0';
                             so_alu_busy <= '1';
                             st_alu_states := mult;
@@ -145,7 +145,7 @@ alu_commands : process(core_clk)
                         else 
                             so_alu_rdy <= '0';
                             so_alu_busy <= '1';
-                            st_alu_states := mult;
+                            st_alu_states := div;
                             so18_alu_data <= (others => '0');
                         end if;
                     WHEN others =>
@@ -210,44 +210,42 @@ begin
         else
             CASE st_division_states is 
                 WHEN idle =>
-                    div_mpy1_a <= (others => '0');
-                    div_mpy1_b <= (others => '0');
                     div_rdy <= '0';
-                    div_start_mpy <= '0';
                     div_out <= (others => '0');
 
                     if start_div = '1' then
                         st_division_states := m1;
+                        div_mpy1_a <= std_logic_vector(data2);
+                        div_mpy1_b <= std_logic_vector(data1);
+                        div_start_mpy <= '1';
                     else
                         st_division_states := idle;
+                        div_mpy1_a <= (others => '0');
+                        div_mpy1_b <= (others => '0');
+                        div_start_mpy <= '0';
                     end if;
                 WHEN m1 =>
+                    div_rdy <= '0';
                     div_out <= (others => '0');
-                    div_mpy1_a <= std_logic_vector(data1);
-                    div_mpy1_b <= std_logic_vector(data2);
-
                     if mult1_rdy = '1' then
-                        st_division_states := m2;
-                        div_start_mpy <= '0';
-                    else
+                        div_mpy1_a <= mpy1_result(17 downto 0);
+                        div_mpy1_b <= mpy1_result(17 downto 0);
                         div_start_mpy <= '1';
+                        st_division_states := m2;
+                    else
+                        div_start_mpy <= '0';
                         st_division_states := m1;
                     end if;
                 WHEN m2 =>
+                    div_rdy <= '0';
                     div_out <= (others => '0');
-                    div_mpy1_a <= mpy1_result(17 downto 0);
-                    div_mpy1_b <= mpy1_result(17 downto 0);
+                    div_start_mpy <= '0';
                     if mult1_rdy = '1' then
                         st_division_states := rdy;
-                        div_start_mpy <= '0';
                     else
-                        div_start_mpy <= '1';
                         st_division_states := m2;
                     end if;
-
                 WHEN rdy =>
-                    div_mpy1_a <= (others => '0');
-                    div_mpy1_b <= (others => '0');
                     div_start_mpy <= '0';
                     div_out <= mpy1_result(35 downto 18);
                     div_rdy <= '1';
