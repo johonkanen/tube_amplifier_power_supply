@@ -38,6 +38,12 @@ architecture rtl of alu16bit is
     signal mpy1_b : std_logic_vector(17 downto 0); 
     signal mpy1_result : std_logic_vector(35 downto 0); 
 
+    signal alu_mpy1_a : std_logic_vector(17 downto 0); 
+    signal alu_mpy1_b : std_logic_vector(17 downto 0); 
+
+    signal div_mpy1_a : std_logic_vector(17 downto 0); 
+    signal div_mpy1_b : std_logic_vector(17 downto 0); 
+
     signal mpy2_a : std_logic_vector(17 downto 0); 
     signal mpy2_b : std_logic_vector(17 downto 0); 
     signal mpy2_result : std_logic_vector(35 downto 0); 
@@ -53,6 +59,9 @@ architecture rtl of alu16bit is
     signal div_start_mpy : std_logic; 
     signal alu_start_mpy : std_logic; 
 begin
+
+mpy1_a <= alu_mpy1_a OR div_mpy1_a;
+mpy1_b <= alu_mpy1_b OR div_mpy1_b;
 
 mpy1 : combi_mult_18x18
     port map(core_clk, mpy1_a, mpy1_b, mpy1_result);
@@ -70,8 +79,8 @@ alu_commands : process(core_clk)
                 alu_start_mpy <= '0';
                 r1_si_start_alu <= si_start_alu;
                 st_alu_states := idle;
-                /* mpy1_a <= (others => '0'); */
-                /* mpy1_b <= (others => '0'); */
+                alu_mpy1_a <= (others => '0');
+                alu_mpy1_b <= (others => '0');
                 /* mpy2_a <= (others => '0'); */
                 /* mpy2_b <= (others => '0'); */
                 so18_alu_data <= (others => '0');
@@ -85,12 +94,14 @@ alu_commands : process(core_clk)
                                 WHEN add =>
                                 WHEN sub =>
                                 WHEN a_mpy_b =>
-                                    /* mpy1_a <= std_logic_vector(data1); */
-                                    /* mpy1_b <= std_logic_vector(data2); */
+                                    alu_mpy1_a <= std_logic_vector(data1);
+                                    alu_mpy1_b <= std_logic_vector(data2);
                                     so_alu_busy <= '1';
                                     alu_start_mpy <= '1';
                                     st_alu_states := mult;
                                 WHEN a_div_b =>
+                                    /* alu_mpy1_a <= (others => '0'); */
+                                    /* alu_mpy1_b <= (others => '0'); */
                                     so_alu_busy <= '1';
                                     start_div <= '1';
                                     st_alu_states := div;
@@ -101,6 +112,7 @@ alu_commands : process(core_clk)
                             st_alu_states := idle;
                             so_alu_busy <= '0';
                             so_alu_rdy <= '0';
+                            start_div <= '0';
                         end if;
                     WHEN mult =>
                         if mult1_rdy = '1' then
@@ -116,6 +128,7 @@ alu_commands : process(core_clk)
                             so18_alu_data <= (others => '0');
                         end if;
                     WHEN div =>
+                            start_div <= '0';
                         if div_rdy = '1' then
                             --alu out <= multiplier out
                             st_alu_states := idle;
@@ -175,6 +188,8 @@ begin
             div_rdy <= '0';
             div_out <= (others => '0');
             div_start_mpy <= '0';
+            div_mpy1_a <= (others => '0');
+            div_mpy1_b <= (others => '0');
         else
             CASE st_division_states is 
                 WHEN idle =>
@@ -188,8 +203,8 @@ begin
                     div_start_mpy <= '0';
                 WHEN m1 =>
                     div_out <= (others => '0');
-                    mpy1_a <= std_logic_vector(data1);
-                    mpy1_b <= std_logic_vector(data2);
+                    div_mpy1_a <= std_logic_vector(data1);
+                    div_mpy1_b <= std_logic_vector(data2);
 
                     if mult1_rdy = '1' then
                         st_division_states := m2;
@@ -200,8 +215,8 @@ begin
                     end if;
                 WHEN m2 =>
                     div_out <= (others => '0');
-                    mpy1_a <= mpy1_result(17 downto 0);
-                    mpy1_b <= mpy1_result(17 downto 0);
+                    div_mpy1_a <= mpy1_result(17 downto 0);
+                    div_mpy1_b <= mpy1_result(17 downto 0);
                     if mult1_rdy = '1' then
                         st_division_states := rdy;
                         div_start_mpy <= '0';
@@ -211,6 +226,7 @@ begin
                     end if;
 
                 WHEN rdy =>
+                    div_start_mpy <= '0';
                     div_out <= mpy1_result(35 downto 18);
                     div_rdy <= '1';
                 WHEN others => 
