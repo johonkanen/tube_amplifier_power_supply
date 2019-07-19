@@ -301,7 +301,7 @@ supply_ctrl_layer : sw_supply_ctrl
 port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, std18_test_data, test_data_rdy, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
 test_alu : alu16bit
-    port map(core_clk, si_pll_lock, start_alu, a_div_b, 18d"500",18d"250",open,r_so_alu_rdy,r_so18_alu_data);
+    port map(core_clk, si_pll_lock, start_alu, r_alu_command, 18d"500",18d"250",open,r_so_alu_rdy,r_so18_alu_data);
 
     test_data_streaming : process(core_clk)
 	variable jeemux : unsigned(3 downto 0);
@@ -363,6 +363,20 @@ test_alu : alu16bit
                     r_si_uart_start_event <= '0';
                 end if;
             WHEN 4d"8" => 
+                r_alu_command <= a_mpy_b;
+                if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                    start_alu <= '1';
+                else
+                    start_alu <= '0';
+                end if;
+                if r_so_alu_rdy = '1' then
+                    r_si_uart_start_event <= '1';
+                    r_si16_uart_tx_data <= std_logic_vector(r_so18_alu_data(15 downto 0));
+                else
+                    r_si_uart_start_event <= '0';
+                end if;
+            WHEN 4d"9" => 
+                r_alu_command <= a_div_b;
                 if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     start_alu <= '1';
                 else
@@ -398,6 +412,8 @@ test_alu : alu16bit
 					jeemux := 4d"7";
 				WHEN 16d"8" => 
 					jeemux := 4d"8";
+				WHEN 16d"9" => 
+					jeemux := 4d"9";
 				WHEN others =>
 					-- do nothing
 			end CASE;

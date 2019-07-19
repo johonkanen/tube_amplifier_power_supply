@@ -100,8 +100,8 @@ alu_commands : process(core_clk)
                                     alu_start_mpy <= '1';
                                     st_alu_states := mult;
                                 WHEN a_div_b =>
-                                    /* alu_mpy1_a <= (others => '0'); */
-                                    /* alu_mpy1_b <= (others => '0'); */
+                                    alu_mpy1_a <= (others => '0');
+                                    alu_mpy1_b <= (others => '0');
                                     so_alu_busy <= '1';
                                     start_div <= '1';
                                     st_alu_states := div;
@@ -109,12 +109,16 @@ alu_commands : process(core_clk)
                                 WHEN others =>
                             end CASE;
                         else
+                            alu_start_mpy <= '0';
                             st_alu_states := idle;
                             so_alu_busy <= '0';
                             so_alu_rdy <= '0';
                             start_div <= '0';
+                            alu_mpy1_a <= (others => '0');
+                            alu_mpy1_b <= (others => '0');
                         end if;
                     WHEN mult =>
+                        alu_start_mpy <= '0';
                         if mult1_rdy = '1' then
                             --alu out <= multiplier out
                             st_alu_states := idle;
@@ -193,14 +197,17 @@ begin
         else
             CASE st_division_states is 
                 WHEN idle =>
+                    div_mpy1_a <= (others => '0');
+                    div_mpy1_b <= (others => '0');
+                    div_rdy <= '0';
+                    div_start_mpy <= '0';
                     div_out <= (others => '0');
+
                     if start_div = '1' then
                         st_division_states := m1;
                     else
                         st_division_states := idle;
                     end if;
-                    div_rdy <= '0';
-                    div_start_mpy <= '0';
                 WHEN m1 =>
                     div_out <= (others => '0');
                     div_mpy1_a <= std_logic_vector(data1);

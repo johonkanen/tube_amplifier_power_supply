@@ -21,6 +21,12 @@ package alu16bit_pkg is
             so18_alu_data : out signed(17 downto 0)
         );
    end component alu16bit;
+   signal r_si_start_alu : std_logic;
+   signal r_alu_command : t_alu_commands;
+   signal r_data1 : signed(17 downto 0);
+   signal r_data2 : signed(17 downto 0);
+
+   signal r_so_alu_busy : std_logic;
    signal r_so_alu_rdy : std_logic;
    signal r_so18_alu_data : signed(17 downto 0);
 
