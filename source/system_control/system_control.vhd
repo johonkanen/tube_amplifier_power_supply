@@ -241,7 +241,16 @@ system_data_control : data_control
     begin
 
 	if rising_edge(core_clk) then
-        if si_pll_lock = '1' then
+        if si_pll_lock = '0' then
+            led1_color <= led_color_red; 
+            led2_color <= led_color_red;
+            led3_color <= led_color_red;
+            r_si_tcmd_system_cmd <= init;
+            start_dly <= '0';
+            u10_dly_cnt <= 10d"0";
+            st_main_states := init;
+        else
+
 	    CASE st_main_states is
 			WHEN init =>
 
@@ -250,9 +259,8 @@ system_data_control : data_control
                 led3_color <= led_color_red;
 
 				u10_dly_cnt <= 10d"0";
-
-
 				po_bypass_relay <= '0';
+
 				start_dly <= '0';
 				r_si_tcmd_system_cmd <= init;
 
@@ -288,7 +296,6 @@ system_data_control : data_control
                 led1_color <= led_color_pink; 
                 led2_color <= led_color_pink;
                 led3_color <= led_color_pink;
-
 
 				r_si_tcmd_system_cmd <= bypass_relay;
 				u10_dly_cnt <= 10d"6";
@@ -347,14 +354,6 @@ system_data_control : data_control
 				u10_dly_cnt <= 10d"0";
 				st_main_states := init;
 	    end CASE;
-    else
-            led1_color <= led_color_red; 
-            led2_color <= led_color_red;
-            led3_color <= led_color_red;
-            r_si_tcmd_system_cmd <= init;
-            start_dly <= '0';
-            u10_dly_cnt <= 10d"0";
-            st_main_states := init;
     end if;
 
 	end if;
