@@ -6,6 +6,7 @@ library work;
     use work.vendor_specifics_pkg.all;
     use work.alu16bit_pkg.all;
     use work.alu_routines_pkg.all;
+    use work.rad4_inv16bit_pkg.all;
 
 entity alu16bit is
     port (
@@ -200,5 +201,8 @@ begin
         end if; -- rstn
     end if; --rising_edge
 end process mult1;	
+
+inv16bit : rad4_inv16bit
+port map(core_clk, rstn, start_div, data2, mpy1_result, mpy2_result, mult1_rdy, div_mpy1_a, div_mpy1_b, div_mpy2_a, div_mpy2_b, div_start_mpy, open, div_rdy, div_out); 
 
 end rtl;

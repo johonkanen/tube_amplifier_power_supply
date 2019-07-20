@@ -294,6 +294,8 @@ set_global_assignment -name SAFE_STATE_MACHINE ON
 
 
 
+set_global_assignment -name VHDL_FILE ../source/dsp/rad4_inv16bit_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/dsp/rad4_inv16bit.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/alu16bit_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/alu16bit.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/alu_routines_pkg.vhd
