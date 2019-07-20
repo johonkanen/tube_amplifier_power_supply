@@ -12,3 +12,4 @@ ghdl -a --std=08 --ieee=synopsys source/uart/tubepsu_commands_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd
 ghdl -a --std=08 --ieee=synopsys source/dsp/alu16bit_pkg.vhd
 ghdl -a --std=08 --ieee=synopsys source/dsp/alu_routines_pkg.vhd
+ghdl -a --std=08 --ieee=synopsys source/dsp/rad4_inv16bit_pkg.vhd
