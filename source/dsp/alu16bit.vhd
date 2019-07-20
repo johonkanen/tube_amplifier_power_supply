@@ -61,6 +61,7 @@ architecture rtl of alu16bit is
     signal div_out : std_logic_vector(17 downto 0); 
     signal div_start_mpy : std_logic; 
     signal alu_start_mpy : std_logic; 
+
 begin
 
 mpy1_a <= alu_mpy1_a OR div_mpy1_a;
