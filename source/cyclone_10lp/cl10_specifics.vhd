@@ -4,12 +4,16 @@ use IEEE.numeric_std.ALL;
 
 package vendor_specifics_pkg is
 
-   component pll_1x256mhz is
-   port (
-       clk_out1: out  std_logic; 
-       locked: out  std_logic; 
-       clk_in1 : in  std_logic);
-   end component;
+    component main_pll IS
+	PORT
+	(
+		inclk0		: IN STD_LOGIC  := '0';
+		c0		: OUT STD_LOGIC ;
+		c1		: OUT STD_LOGIC ;
+		c2		: OUT STD_LOGIC ;
+		locked		: OUT STD_LOGIC 
+	);
+    END component;
 
     COMPONENT combi_mult_18x18
       PORT (
@@ -29,7 +33,7 @@ package vendor_specifics_pkg is
       );
     END COMPONENT;
 
-   constant g_vendor_specific_uart_clks_per_bit : integer := 50;
+   constant g_vendor_specific_uart_clks_per_bit : integer := 25;
    constant g_vendor_specific_RX_bytes_in_word : integer := 2;
    constant g_vendor_specific_TX_bytes_in_word : integer := 2;
 end vendor_specifics_pkg;
