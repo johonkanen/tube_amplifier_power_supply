@@ -46,6 +46,7 @@ begin
         -- reset state
             st_division_states := idle;
             so_div_rdy <= '0';
+            so_div_busy <= '0';
             so18_div_out <= (others => '0');
             so_div_start_mpy <= '0';
             so18_div_mpy1_a <= (others => '0');
@@ -76,10 +77,10 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= si36_mpy1_result(35 downto 18);
-                        so18_div_mpy1_b <= not si36_mpy1_result(35 downto 18);
+                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
+                        so18_div_mpy1_b <= "00"& not (si36_mpy1_result(30 downto 15));
 
-                        so18_div_mpy2_a <= not si36_mpy1_result(35 downto 18);
+                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
                         so18_div_mpy2_b <= inv_magic_number;
                         so_div_start_mpy <= '1';
                         st_division_states := m2;
@@ -91,11 +92,11 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= si36_mpy1_result(35 downto 18);
-                        so18_div_mpy1_b <= not si36_mpy1_result(35 downto 18);
+                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
+                        so18_div_mpy1_b <= "00"&(not si36_mpy1_result(30 downto 15));
 
-                        so18_div_mpy2_a <= not si36_mpy1_result(35 downto 18);
-                        so18_div_mpy2_b <= si36_mpy2_result(35 downto 18);
+                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
+                        so18_div_mpy2_b <= "00"&si36_mpy2_result(30 downto 15);
                         st_division_states := m3;
                         so_div_start_mpy <= '1';
                     else
@@ -106,11 +107,11 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= si36_mpy1_result(35 downto 18);
-                        so18_div_mpy1_b <= not si36_mpy1_result(35 downto 18);
+                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
+                        so18_div_mpy1_b <= "00"&(not si36_mpy1_result(30 downto 15));
 
-                        so18_div_mpy2_a <= not si36_mpy1_result(35 downto 18);
-                        so18_div_mpy2_b <= si36_mpy2_result(35 downto 18);
+                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
+                        so18_div_mpy2_b <= "00"&si36_mpy2_result(30 downto 15);
                         st_division_states := rdy;
                         so_div_start_mpy <= '1';
                     else
@@ -120,7 +121,7 @@ begin
                 WHEN rdy =>
                     so_div_start_mpy <= '0';
                     if si_mult_rdy = '1' then
-                        so18_div_out <= si36_mpy2_result(35 downto 18);
+                        so18_div_out <= "00"&si36_mpy1_result(30 downto 15);
                         so_div_rdy <= '1';
                         st_division_states := idle;
                     else

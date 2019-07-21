@@ -199,6 +199,7 @@ signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 signal ht_adc_control : rec_ext_ad_ctrl;
 signal dhb_adc_control : rec_ext_ad_ctrl;
 
+signal s16_inv_test : unsigned(15 downto 0);
 signal std18_test_data : std_logic_vector(17 downto 0);
 signal test_data_rdy : std_logic;
 signal start_alu : std_logic;
@@ -378,7 +379,8 @@ test_alu : alu16bit
                 if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     start_alu <= not start_alu;
                     r_data1 <= 18d"4095";
-                    r_data2 <= r_data2 + 1;
+                    r_data2 <= signed(resize(s16_inv_test,18));
+                    s16_inv_test <= s16_inv_test - 1;
                 end if;
                 if r_so_alu_rdy = '1' then
                     r_si_uart_start_event <= '1';

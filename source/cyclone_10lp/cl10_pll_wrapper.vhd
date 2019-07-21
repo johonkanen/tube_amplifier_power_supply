@@ -32,7 +32,4 @@ begin
 
     core_clocks : main_pll
     port map(xclk, modulator_clk, core_clk, modulator_clk2, pll_lock);
-
-
-
 end rtl;
