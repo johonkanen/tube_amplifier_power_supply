@@ -134,7 +134,7 @@ begin
                 WHEN rdy =>
                     so_div_start_mpy <= '0';
                     if si_mult_rdy = '1' then
-                        so18_div_out <= "00"&rounded_mpy(si36_mpy1_result);
+                        so18_div_out <= "00"&rounded_mpy(si36_mpy2_result);
                         so_div_rdy <= '1';
                         st_division_states := idle;
                     else
