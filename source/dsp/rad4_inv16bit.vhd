@@ -33,12 +33,12 @@ end entity rad4_inv16bit;
 
 architecture rtl of rad4_inv16bit is
 
-    constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"22175";
+    constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"22174";
 
 begin
 
 div : process(core_clk)
-    type t_division_states is (idle,m1,m2,m3,rdy);
+    type t_division_states is (idle,m1,m2,m3, m4,rdy);
     variable st_division_states : t_division_states;
 begin
     if rising_edge(core_clk) then

@@ -81,7 +81,7 @@ BEGIN
 	GENERIC MAP (
 		lpm_hint => "MAXIMIZE_SPEED=9",
 		lpm_pipeline => 1,
-		lpm_representation => "UNSIGNED",
+		lpm_representation => "SIGNED",
 		lpm_type => "LPM_MULT",
 		lpm_widtha => 18,
 		lpm_widthb => 18,
@@ -108,7 +108,7 @@ END SYN;
 -- Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "1"
 -- Retrieval info: PRIVATE: Latency NUMERIC "1"
 -- Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "1"
--- Retrieval info: PRIVATE: SignedMult NUMERIC "0"
+-- Retrieval info: PRIVATE: SignedMult NUMERIC "1"
 -- Retrieval info: PRIVATE: USE_MULT NUMERIC "1"
 -- Retrieval info: PRIVATE: ValidConstant NUMERIC "0"
 -- Retrieval info: PRIVATE: WidthA NUMERIC "18"
@@ -121,7 +121,7 @@ END SYN;
 -- Retrieval info: LIBRARY: lpm lpm.lpm_components.all
 -- Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=9"
 -- Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "1"
--- Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "UNSIGNED"
+-- Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
 -- Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
 -- Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "18"
 -- Retrieval info: CONSTANT: LPM_WIDTHB NUMERIC "18"

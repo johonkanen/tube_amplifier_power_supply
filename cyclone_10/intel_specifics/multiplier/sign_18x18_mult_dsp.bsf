@@ -52,7 +52,7 @@ refer to the applicable agreement for further details.
 		(line (pt 168 72)(pt 104 72)(line_width 3))
 	)
 	(drawing
-		(text "Unsigned" (rect 104 72 245 155)(font "Arial" ))
+		(text "Signed" (rect 104 72 234 155)(font "Arial" ))
 		(text "multiplication" (rect 104 82 260 175)(font "Arial" ))
 		(line (pt 88 32)(pt 88 56))
 		(line (pt 82 66)(pt 94 78)(line_width 3))

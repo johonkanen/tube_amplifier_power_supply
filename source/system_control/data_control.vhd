@@ -380,7 +380,11 @@ test_alu : alu16bit
                     start_alu <= not start_alu;
                     r_data1 <= 18d"4095";
                     r_data2 <= signed(resize(s16_inv_test,18));
-                    s16_inv_test <= s16_inv_test - 1;
+                    if s16_inv_test = 16d"32767" then
+                        s16_inv_test <= 16d"65535";
+                    else
+                        s16_inv_test <= s16_inv_test - 1;
+                    end if;
                 end if;
                 if r_so_alu_rdy = '1' then
                     r_si_uart_start_event <= '1';
