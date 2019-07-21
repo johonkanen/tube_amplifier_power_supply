@@ -33,7 +33,20 @@ end entity rad4_inv16bit;
 
 architecture rtl of rad4_inv16bit is
 
-    constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"22174";
+    constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"21750";
+    function rounded_mpy
+    (
+        mpy_out : std_logic_vector(35 downto 0)
+    )
+    return std_logic_vector
+    is
+    begin
+        if mpy_out(14) = '1' then
+            return std_logic_vector((unsigned(mpy_out(30 downto 15)) + 1));
+        else
+            return mpy_out(30 downto 15);
+        end if;
+    end rounded_mpy;
 
 begin
 
@@ -77,10 +90,10 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
-                        so18_div_mpy1_b <= "00"& not (si36_mpy1_result(30 downto 15));
+                        so18_div_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
+                        so18_div_mpy1_b <= "00"& not (rounded_mpy(si36_mpy1_result));
 
-                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
+                        so18_div_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
                         so18_div_mpy2_b <= inv_magic_number;
                         so_div_start_mpy <= '1';
                         st_division_states := m2;
@@ -92,11 +105,11 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
-                        so18_div_mpy1_b <= "00"&(not si36_mpy1_result(30 downto 15));
+                        so18_div_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
+                        so18_div_mpy1_b <= "00"&(not rounded_mpy(si36_mpy1_result));
 
-                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
-                        so18_div_mpy2_b <= "00"&si36_mpy2_result(30 downto 15);
+                        so18_div_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
+                        so18_div_mpy2_b <= "00"&rounded_mpy(si36_mpy2_result);
                         st_division_states := m3;
                         so_div_start_mpy <= '1';
                     else
@@ -107,11 +120,11 @@ begin
                     so_div_rdy <= '0';
                     so18_div_out <= (others => '0');
                     if si_mult_rdy = '1' then
-                        so18_div_mpy1_a <= "00"&si36_mpy1_result(30 downto 15);
-                        so18_div_mpy1_b <= "00"&(not si36_mpy1_result(30 downto 15));
+                        so18_div_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
+                        so18_div_mpy1_b <= "00"&(not rounded_mpy(si36_mpy1_result));
 
-                        so18_div_mpy2_a <= "00"&(not si36_mpy1_result(30 downto 15));
-                        so18_div_mpy2_b <= "00"&si36_mpy2_result(30 downto 15);
+                        so18_div_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
+                        so18_div_mpy2_b <= "00"&rounded_mpy(si36_mpy2_result);
                         st_division_states := rdy;
                         so_div_start_mpy <= '1';
                     else
@@ -121,7 +134,7 @@ begin
                 WHEN rdy =>
                     so_div_start_mpy <= '0';
                     if si_mult_rdy = '1' then
-                        so18_div_out <= "00"&si36_mpy1_result(30 downto 15);
+                        so18_div_out <= "00"&rounded_mpy(si36_mpy1_result);
                         so_div_rdy <= '1';
                         st_division_states := idle;
                     else
