@@ -35,10 +35,20 @@ architecture rtl of rad4_inv16bit is
 
     constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"21750";
     -- constants optimized for max error of 10 units for 10bit sqrt using multiplicative normalized method
-    type u15_array is array (0 to 15) of unsigned(17 downto 0);
-    constant sqrt_range : u15_array := (18d"34275", 18d"35913", 18d"37617", 18d"39387", 18d"41182", 18d"43181", 18d"45186", 18d"47251", 18d"49400", 18d"51615", 18d"53903", 18d"56262", 18d"58706", 18d"61210", 18d"63798", 18d"65535");
-    constant sqrt_init_range : u15_array := (18d"45808", 18d"44760", 18d"43744", 18d"42761", 18d"41778", 18d"40828", 18d"39907", 18d"39016", 18d"38157", 18d"37322", 18d"36519", 18d"35739", 18d"34985", 18d"34095", 18d"33550", 18d"32865");
+    type u15_array is array (0 to 2) of unsigned(17 downto 0);
+    constant sin_chebychev : u15_array := (18d"26695", 18d"10579", 18d"1272");
+    constant cos_chebyshev : u15_array := (18d"32767", 18d"20201", 18d"4029");
+    type sin_chebyshev16bit is record
+        s1 : unsigned(17 downto 0);
+        s3 : unsigned(17 downto 0);
+        s5 : unsigned(17 downto 0);
+    end record;
 
+    type cos_chebyshev16bit is record
+        s0 : unsigned(17 downto 0);
+        s2 : unsigned(17 downto 0);
+        s4 : unsigned(17 downto 0);
+    end record;
 
     function rounded_mpy
     (
