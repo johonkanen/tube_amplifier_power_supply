@@ -80,6 +80,42 @@
                     </spirit:vendorExtensions>
                 </spirit:port>
                 <spirit:port>
+                    <spirit:name>pipelined_multiplier_Aclr</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_Aclr</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.Aclr</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>pipelined_multiplier_ClkEn</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_ClkEn</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.ClkEn</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>pipelined_multiplier_Clock</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_Clock</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.Clock</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
                     <spirit:name>mpy18x18_A</spirit:name>
                     <spirit:displayName>mpy18x18_A</spirit:displayName>
                     <spirit:wire>
@@ -127,13 +163,61 @@
                         </lattice:attributes>
                     </spirit:vendorExtensions>
                 </spirit:port>
+                <spirit:port>
+                    <spirit:name>pipelined_multiplier_DataA</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_DataA</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.DataA</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>pipelined_multiplier_DataB</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_DataB</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.DataB</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>pipelined_multiplier_Result</spirit:name>
+                    <spirit:displayName>pipelined_multiplier_Result</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>35</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.Result</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
             </spirit:ports>
         </spirit:model>
         <spirit:vendorExtensions>
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
             <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2019-05-18.08:54:51</lattice:date>
-            <lattice:modified>2019-07-09.22:15:47</lattice:modified>
+            <lattice:modified>2019-07-22.08:12:24</lattice:modified>
             <lattice:diamond>3.11.0.396.4</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
@@ -247,7 +331,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-07-09.22:15:47</lattice:modified>
+                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -699,7 +783,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-07-09.22:15:47</lattice:modified>
+                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -952,6 +1036,283 @@
                     </spirit:vendorExtensions>
                 </spirit:componentRef>
             </spirit:componentInstance>
+            <spirit:componentInstance>
+                <spirit:instanceName>pipelined_multiplier</spirit:instanceName>
+                <spirit:componentRef>
+                    <spirit:vendor>Lattice Semiconductor Corporation</spirit:vendor>
+                    <spirit:library>LEGACY</spirit:library>
+                    <spirit:name>Multiplier</spirit:name>
+                    <spirit:version>4.9</spirit:version>
+                    <spirit:fileSets>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Simulation</spirit:name>
+                            <spirit:group>simulation</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./pipelined_multiplier/pipelined_multiplier.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Synthesis</spirit:name>
+                            <spirit:group>synthesis</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./pipelined_multiplier/pipelined_multiplier.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                    </spirit:fileSets>
+                    <spirit:componentGenerators>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>Configuration</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_core.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>CreateNGD</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_ngd.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                    </spirit:componentGenerators>
+                    <spirit:model>
+                        <spirit:views/>
+                        <spirit:ports>
+                            <spirit:port>
+                                <spirit:name>Aclr</spirit:name>
+                                <spirit:displayName>Aclr</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>ClkEn</spirit:name>
+                                <spirit:displayName>ClkEn</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>Clock</spirit:name>
+                                <spirit:displayName>Clock</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>DataA</spirit:name>
+                                <spirit:displayName>DataA</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>DataB</spirit:name>
+                                <spirit:displayName>DataB</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>Result</spirit:name>
+                                <spirit:displayName>Result</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>35</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                        </spirit:ports>
+                    </spirit:model>
+                    <spirit:vendorExtensions>
+                        <lattice:synthesis>synplify</lattice:synthesis>
+                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
+                            <lattice:attribute lattice:name="BBox">false</lattice:attribute>
+                            <lattice:attribute lattice:name="Change4to5">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConfig">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConnect">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeDevice">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeLocate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePack">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePart">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeSynthesis">false</lattice:attribute>
+                            <lattice:attribute lattice:name="CoreType">LPM</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_RXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_TXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="Migrate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="RemovedComponent">false</lattice:attribute>
+                        </lattice:attributes>
+                        <lattice:elements/>
+                        <lattice:lpc>
+                            <lattice:lpcsection lattice:name="Device"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Family</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ecp5u</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>OperatingCondition</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">COM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Package</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CABGA381</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F-8BG381C</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SpeedGrade</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">8</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Status</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">S</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="IP"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Multiplier</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreRevision</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">4.9</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreStatus</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Demo</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LPM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Date</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">07/22/2019</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ModuleName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">pipelined_multiplier</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ParameterFileVersion</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1.0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceFormat</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">vhdl</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Time</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">08:12:04</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VendorName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Lattice Semiconductor Corporation</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Parameters"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Destination</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Synplicity</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EDIF</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Expression</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">BusA(0 to 7)</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>IO</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Order</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Big Endian [MSB:LSB]</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VHDL</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Verilog</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_additional_pipeline</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_coeff_value</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">2</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_const_coeff</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">No</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_dataa_width</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_datab_width</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_datap_width</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">36</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_implemenntation</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DSP</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_input_reg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">No</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_output_reg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">No</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_ram_mult</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">No</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_signa</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>pmi_signb</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Command"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>cmd_line</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">-w -n pipelined_multiplier -lang vhdl -synth synplify -bus_exp 7 -bb -arch sa5p00 -type dspmult -simple_portname -widtha 18 -widthb 18 -widthp 36 -signed -PL_stages 1 -clk0 -ce0 -rst0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                        </lattice:lpc>
+                        <lattice:groups/>
+                    </spirit:vendorExtensions>
+                </spirit:componentRef>
+            </spirit:componentInstance>
         </spirit:componentInstances>
         <spirit:adHocConnections>
             <spirit:adHocConnection>
@@ -983,6 +1344,24 @@
                 <spirit:displayName>main_pll_LOCK</spirit:displayName>
                 <spirit:internalPortReference spirit:portRef="LOCK" spirit:componentRef="main_pll"/>
                 <spirit:externalPortReference spirit:portRef="main_pll_LOCK"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Aclr</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Aclr</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Aclr" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Aclr"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_ClkEn</spirit:name>
+                <spirit:displayName>pipelined_multiplier_ClkEn</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="ClkEn" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_ClkEn"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Clock</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Clock</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Clock" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Clock"/>
             </spirit:adHocConnection>
             <spirit:adHocConnection>
                 <spirit:name>mpy18x18_A</spirit:name>
@@ -1433,6 +1812,456 @@
                 <spirit:displayName>mpy18x18_P[9]</spirit:displayName>
                 <spirit:internalPortReference spirit:portRef="P[9]" spirit:componentRef="mpy18x18"/>
                 <spirit:externalPortReference spirit:portRef="mpy18x18_P[9]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="DataA" spirit:componentRef="pipelined_multiplier" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="pipelined_multiplier_DataA" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[0]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[0]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[0]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[10]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[10]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[10]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[11]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[11]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[11]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[12]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[12]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[12]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[13]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[13]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[13]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[14]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[14]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[14]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[15]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[15]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[15]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[16]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[16]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[16]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[17]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[17]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[17]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[1]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[1]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[1]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[2]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[2]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[2]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[3]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[3]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[3]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[4]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[4]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[4]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[5]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[5]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[5]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[6]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[6]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[6]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[7]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[7]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[7]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[8]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[8]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[8]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataA[9]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataA[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataA[9]"/>
+                <spirit:internalPortReference spirit:portRef="DataA[9]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="DataB" spirit:componentRef="pipelined_multiplier" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="pipelined_multiplier_DataB" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[0]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[0]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[0]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[10]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[10]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[10]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[11]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[11]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[11]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[12]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[12]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[12]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[13]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[13]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[13]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[14]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[14]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[14]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[15]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[15]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[15]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[16]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[16]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[16]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[17]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[17]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[17]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[1]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[1]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[1]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[2]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[2]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[2]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[3]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[3]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[3]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[4]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[4]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[4]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[5]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[5]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[5]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[6]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[6]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[6]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[7]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[7]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[7]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[8]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[8]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[8]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_DataB[9]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_DataB[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_DataB[9]"/>
+                <spirit:internalPortReference spirit:portRef="DataB[9]" spirit:componentRef="pipelined_multiplier"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="Result" spirit:componentRef="pipelined_multiplier" spirit:left="35"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="pipelined_multiplier_Result" spirit:left="35"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[0]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[0]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[0]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[0]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[10]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[10]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[10]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[10]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[11]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[11]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[11]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[11]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[12]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[12]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[12]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[12]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[13]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[13]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[13]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[13]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[14]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[14]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[14]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[14]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[15]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[15]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[15]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[15]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[16]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[16]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[16]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[16]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[17]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[17]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[17]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[17]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[18]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[18]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[18]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[18]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[19]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[19]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[19]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[19]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[1]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[1]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[1]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[1]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[20]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[20]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[20]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[20]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[21]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[21]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[21]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[21]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[22]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[22]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[22]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[22]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[23]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[23]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[23]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[23]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[24]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[24]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[24]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[24]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[25]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[25]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[25]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[25]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[26]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[26]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[26]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[26]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[27]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[27]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[27]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[27]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[28]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[28]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[28]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[28]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[29]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[29]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[29]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[29]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[2]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[2]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[2]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[2]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[30]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[30]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[30]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[30]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[31]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[31]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[31]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[31]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[32]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[32]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[32]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[32]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[33]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[33]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[33]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[33]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[34]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[34]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[34]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[34]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[35]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[35]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[35]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[35]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[3]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[3]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[3]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[3]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[4]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[4]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[4]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[4]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[5]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[5]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[5]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[5]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[6]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[6]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[6]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[6]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[7]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[7]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[7]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[7]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[8]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[8]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[8]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[8]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>pipelined_multiplier_Result[9]</spirit:name>
+                <spirit:displayName>pipelined_multiplier_Result[9]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[9]" spirit:componentRef="pipelined_multiplier"/>
+                <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Result[9]"/>
             </spirit:adHocConnection>
         </spirit:adHocConnections>
     </spirit:design>

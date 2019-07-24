@@ -71,9 +71,6 @@
         <Source name="../source/led_driver/led_driver.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
-        <Source name="ecp5u_specifics/ecp5_ip_components/ecp5_ip_components.sbx" type="sbx" type_short="SBX">
-            <Options/>
-        </Source>
         <Source name="../source/uart/uart.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
@@ -114,6 +111,24 @@
             <Options/>
         </Source>
         <Source name="../source/ecp5/ecp5_multiplier_wrapper.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/alu_routines_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/alu16bit.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/alu16bit_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/rad4_inv16bit.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/rad4_inv16bit_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="ecp5u_specifics/ecp5_ip_components/ecp5_ip_components.sbx" type="sbx" type_short="SBX">
             <Options/>
         </Source>
         <Source name="rtl/flash_programmingl.xcf" type="Programming Project File" type_short="Programming">
