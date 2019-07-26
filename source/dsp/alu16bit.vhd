@@ -89,8 +89,6 @@ alu_commands : process(core_clk)
                 st_alu_states := idle;
                 alu_mpy1_a <= (others => '0');
                 alu_mpy1_b <= (others => '0');
-                /* mpy2_a <= (others => '0'); */
-                /* mpy2_b <= (others => '0'); */
                 so18_alu_data <= (others => '0');
             else
                 r1_si_start_alu <= si_start_alu;
@@ -188,7 +186,7 @@ begin
                     mult1_rdy <= '0';
                 WHEN mult =>
                     mult_dly := (others => '0');
-                    if mult_dly = 3d"0" then
+                    if mult_dly = to_unsigned(0,3) then
                         mult1_rdy <= '1';
                         st_multiplier_states := idle;
                     else

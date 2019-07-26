@@ -38,6 +38,7 @@ architecture synth of ext_ad_spi3w is
     constant c_idle : std_logic := '1';
     signal i : integer range 0 to 31;
     signal clk_buffer : std_logic; 
+    signal r_po_spi_cs : std_logic; 
 
 begin
 
@@ -47,14 +48,14 @@ begin
     begin
         if rising_edge(si_spi_clk) then
             if si_rstn = '0' then
-                po_spi_cs <= c_idle;
+                r_po_spi_cs <= c_idle;
                 po_spi_clk_out <= '1';
                 clk_buffer <= '1';
                 b_spi_rx <= (others => '0');
                 so_spi_rdy <= '0';
             else
                 po_spi_clk_out <= clk_buffer;
-                CASE po_spi_cs is
+                CASE r_po_spi_cs is
                     WHEN c_idle =>
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
@@ -63,10 +64,10 @@ begin
                         b_spi_rx <= (others => '0');  
 
                         if si_spi_start = '1' then
-                            po_spi_cs <= c_convert;
+                            r_po_spi_cs <= c_convert;
                             clk_buffer <= '0';
                         else
-                            po_spi_cs <= c_idle;
+                            r_po_spi_cs <= c_idle;
                             clk_buffer <= '1';
                         end if;
                     WHEN c_convert =>
@@ -93,19 +94,19 @@ begin
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 + 1 then
-                            po_spi_cs <= c_idle;
+                            r_po_spi_cs <= c_idle;
                             so_spi_rdy <= '1';
                         else
-                            po_spi_cs <= c_convert;
+                            r_po_spi_cs <= c_convert;
                             so_spi_rdy <= '0';
                         end if;
 
                     WHEN others =>
-                        po_spi_cs <= c_idle;
+                        r_po_spi_cs <= c_idle;
                 end CASE;
             end if;
         end if; --rising_edge
     end process spi_control;	
-
-s_spi_busy <= not po_spi_cs;
+po_spi_cs <= r_po_spi_cs; 
+s_spi_busy <= not r_po_spi_cs;
 end synth; --architecture

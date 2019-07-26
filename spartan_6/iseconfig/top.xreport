@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2019-07-26T18:05:54</DateModified>
+  <DateModified>2019-07-26T21:14:25</DateModified>
   <ModuleName>top</ModuleName>
-  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
+  <SummaryTimeStamp>2019-07-26T18:18:05</SummaryTimeStamp>
   <SavedFilePath>C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/iseconfig/top.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>C:/Users/Jari/mycodeprojects/tube_psu/spartan_6</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>C:/Users/Jari/mycodeprojects/tube_psu/spartan_6\</ImplementationReportsDirectory>
   <DateInitialized>2019-07-26T18:05:54</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>

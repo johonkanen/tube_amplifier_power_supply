@@ -201,7 +201,7 @@ system_data_control : data_control
     begin
 	if rising_edge(core_clk) then
 	    if start_dly = '1' then
-			if u22_init_dly_cnt = 22d"2560000" then
+			if u22_init_dly_cnt = 2560000 then
 				u22_init_dly_cnt := (others=>'0');
 				v_u10_dly_cnt := v_u10_dly_cnt + 1;
 
@@ -247,7 +247,7 @@ system_data_control : data_control
             led3_color <= led_color_red;
             r_si_tcmd_system_cmd <= init;
             start_dly <= '0';
-            u10_dly_cnt <= 10d"0";
+            u10_dly_cnt <= (others => '0');
             st_main_states := init;
         else
 
@@ -258,7 +258,7 @@ system_data_control : data_control
                 led2_color <= led_color_red;
                 led3_color <= led_color_red;
 
-				u10_dly_cnt <= 10d"0";
+				u10_dly_cnt <= (others => '0');
 				po_bypass_relay <= '0';
 
 				start_dly <= '0';
@@ -277,14 +277,14 @@ system_data_control : data_control
                 led3_color <= led_color_yellow;
 
 
-				u10_dly_cnt <= 10d"0";
+				u10_dly_cnt <= (others => '0');
 				po_bypass_relay <= '0';
 				r_si_tcmd_system_cmd <= charge_dc_link;
 				start_dly <= '0';
 				-- wait until DC link above 100V
 
-                    if r_so_adb_ctrl.std3_ad_address= 3d"4" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                        if r_so_adb_ctrl.std16_ad_bus > 16d"4936" then
+                    if r_so_adb_ctrl.std3_ad_address= 4 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                        if unsigned(r_so_adb_ctrl.std16_ad_bus) > 4936 then
                             st_main_states := bypass_relay;
                         else
                             st_main_states := charge_dc_link; 
@@ -298,7 +298,7 @@ system_data_control : data_control
                 led3_color <= led_color_pink;
 
 				r_si_tcmd_system_cmd <= bypass_relay;
-				u10_dly_cnt <= 10d"6";
+				u10_dly_cnt <= to_unsigned(6,10);
 				po_bypass_relay <= '0';
 
 				if dly_complete = '1' then
@@ -315,7 +315,7 @@ system_data_control : data_control
                 led2_color <= led_color_purple;
                 led3_color <= led_color_purple;
 
-				u10_dly_cnt <= 10d"50";
+				u10_dly_cnt <= to_unsigned(50,10);
 				po_bypass_relay <= '0';
 				
 				if dly_complete = '1' OR  zero_cross_event = '1' then
@@ -327,8 +327,8 @@ system_data_control : data_control
 				end if;
 				
                 if r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                    if  r_so_adb_ctrl.std3_ad_address= 3d"2" then -- if bypass released at 0V, vac meas = 2088
-                        if r_so_adb_ctrl.std16_ad_bus > 16d"16504" AND r_so_adb_ctrl.std16_ad_bus < 16d"16904" then
+                    if  r_so_adb_ctrl.std3_ad_address = 2 then -- if bypass released at 0V, vac meas = 2088
+                        if unsigned(r_so_adb_ctrl.std16_ad_bus) > 16504 AND unsigned(r_so_adb_ctrl.std16_ad_bus) < 16904 then
                             zero_cross_event <= '1';
                         else
                             zero_cross_event <= '0';
@@ -346,12 +346,12 @@ system_data_control : data_control
 
 				start_dly <= '0';
 				po_bypass_relay <= '1';
-				u10_dly_cnt <= 10d"0";
+				u10_dly_cnt <= (others => '0');
 				st_main_states := system_running; 
 
 			WHEN others=>
 				start_dly <= '0';
-				u10_dly_cnt <= 10d"0";
+				u10_dly_cnt <= (others => '0');
 				st_main_states := init;
 	    end CASE;
     end if;

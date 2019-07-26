@@ -72,15 +72,15 @@ begin
 
 dhb_voltage_control : seq_pi_control
 	generic map(80,-80,0,0)
-port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, s18_dhb_reference, r_si_sign18_meas, 18d"15000", 18d"2200");
+port map(core_clk, jihuu.rstn, dhb_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, s18_dhb_reference, r_si_sign18_meas, to_signed(15000,18), to_signed(2200,18));
 
 so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 
 r_si_sign18_meas <= resize(signed(dhb_adc_control.std16_ad_bus),18);
-jihuu.u12_dhb_half_period <= 12d"472";
+jihuu.u12_dhb_half_period <= to_unsigned(472,12);
 
 dhb_modulator : phase_modulator
-generic map(8d"56")
+generic map(to_unsigned(56,8))
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 jihuu.s16_phase <= (resize(r_so_sign18_pi_out,16));
@@ -94,7 +94,7 @@ begin
             s18_dhb_reference <= (others => '0');
         else
             -- dhb reference, 4960 = 199.9V
-            if s18_dhb_reference <= 18d"4960" then
+            if s18_dhb_reference <= to_signed(4960,18) then
                 s18_dhb_reference <= s18_dhb_reference + 1;
             end if;
 
@@ -107,22 +107,22 @@ test_dhb : process(core_clk)
 	if rising_edge(core_clk) then
         if si_rstn = '0' then
             jihuu.rstn <= '0';
-            /* jihuu.s16_phase <= (others => '0'); */
+            --/* jihuu.s16_phase <= (others => '0'); */
         else
 	    if si_uart_ready_event = '1' then
             CASE si16_uart_rx_data(15 downto 12) is
                 WHEN x"0" =>
                 CASE si16_uart_rx_data(11 downto 0) is
-                    WHEN 12d"30" =>
+                    WHEN c_dhb_start =>
                     jihuu.rstn <= '1';
-                    WHEN 12d"31" =>
+                    WHEN c_dhb_stop =>
                     jihuu.rstn <= '0';
                     WHEN others =>
                     -- do nothing
                 end CASE;
 
                 WHEN x"3" =>
-                    /* jihuu.s16_phase <= resize(signed(si16_uart_rx_data(11 downto 0)),16); */ 
+                    --/* jihuu.s16_phase <= resize(signed(si16_uart_rx_data(11 downto 0)),16); */ 
                 WHEN others =>
                 -- do nothing
             end CASE;

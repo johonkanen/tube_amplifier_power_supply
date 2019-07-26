@@ -210,7 +210,7 @@ signal start_alu : std_logic;
 
     procedure send_adc_data_to_uart
     (
-        constant std3_ad_ch : in std_logic_vector(2 downto 0);
+        constant std3_ad_ch : in integer;
         signal ad_control : in rec_onboard_ad_ctrl_signals;
         signal uart_tx_data : in std_logic_vector(15 downto 0);
         signal uart_start_event : out std_logic;
@@ -305,19 +305,19 @@ test_alu : alu16bit
     port map(core_clk, si_pll_lock, start_alu, r_alu_command, r_data1,r_data2,open,r_so_alu_rdy,r_so18_alu_data);
 
     test_data_streaming : process(core_clk)
-	variable jeemux : unsigned(3 downto 0);
+	variable jeemux : integer;
 
     begin
 	if rising_edge(core_clk) then
         if si_pll_lock = '0' then
-            jeemux := 4d"0";
+            jeemux := 0;
             r_si_uart_start_event <= '0';
             r_si16_uart_tx_data <= (others => '0');
             st_pfc_current_channel <= a3;
             start_alu <= '0';
         else
-            if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                if r_so_adb_ctrl.std16_ad_bus < 16d"16361" then
+            if r_so_adb_ctrl.std3_ad_address = 1 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                if unsigned(r_so_adb_ctrl.std16_ad_bus) < to_unsigned(16361,16) then
                     st_pfc_current_channel <= a3;
                 else
                     st_pfc_current_channel <= b3;
@@ -325,47 +325,47 @@ test_alu : alu16bit
             end if;
 
             CASE jeemux is
-            WHEN 4d"0" => 
+            WHEN 0 => 
                 if st_pfc_current_channel = a3 then
-                    if r_so_adb_ctrl.std3_ad_address = 3d"3" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                    if r_so_adb_ctrl.std3_ad_address = 3 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                         r_si_uart_start_event <= '1';
-                        r_si16_uart_tx_data <= std_logic_vector(signed(r_so_adb_ctrl.std16_ad_bus) - 16d"16000");
+                        r_si16_uart_tx_data <= std_logic_vector(signed(r_so_adb_ctrl.std16_ad_bus) - to_signed(16000,16));
                     else
                         r_si_uart_start_event <= '0';
                     end if;
                 else
-                    if r_so_ada_ctrl.std3_ad_address = 3d"3"  AND r_so_ada_ctrl.ad_rdy_trigger = '1'  then
+                    if r_so_ada_ctrl.std3_ad_address = 3  AND r_so_ada_ctrl.ad_rdy_trigger = '1'  then
                         r_si_uart_start_event <= '1';
-                        r_si16_uart_tx_data <= std_logic_vector(16d"16000" - signed(r_so_ada_ctrl.std16_ad_bus));
+                        r_si16_uart_tx_data <= std_logic_vector(to_signed(16000,16) - signed(r_so_ada_ctrl.std16_ad_bus));
                     else
                         r_si_uart_start_event <= '0';
                     end if;
                 end if;
-            WHEN 4d"1" => 
-                send_adc_data_to_uart(3d"1", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
-            WHEN 4d"2" => 
-                send_adc_data_to_uart(3d"6", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
-            WHEN 4d"3" => 
-                send_adc_data_to_uart(3d"2", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
-            WHEN 4d"4" => 
-                send_adc_data_to_uart(3d"4", r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
-            WHEN 4d"6" => 
+            WHEN 1 => 
+                send_adc_data_to_uart(1, r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
+            WHEN 2 => 
+                send_adc_data_to_uart(6, r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
+            WHEN 3 => 
+                send_adc_data_to_uart(2, r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
+            WHEN 4 => 
+                send_adc_data_to_uart(4, r_so_adb_ctrl,r_so_adb_ctrl.std16_ad_bus, r_si_uart_start_event, r_si16_uart_tx_data);
+            WHEN 6 => 
                 if ht_adc_control.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= ht_adc_control.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
-            WHEN 4d"7" => 
+            WHEN 7 => 
                 if dhb_adc_control.ad_rdy_trigger = '1'  then
                     r_si_uart_start_event <= '1';
                     r_si16_uart_tx_data <= dhb_adc_control.std16_ad_bus;
                 else
                     r_si_uart_start_event <= '0';
                 end if;
-            WHEN 4d"8" => 
+            WHEN 8 => 
                 r_alu_command <= a_mpy_b;
-                if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                if r_so_adb_ctrl.std3_ad_address = 1 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     start_alu <= not start_alu;
                 end if;
                 if r_so_alu_rdy = '1' then
@@ -374,14 +374,14 @@ test_alu : alu16bit
                 else
                     r_si_uart_start_event <= '0';
                 end if;
-            WHEN 4d"9" => 
+            WHEN 9 => 
                 r_alu_command <= a_div_b;
-                if r_so_adb_ctrl.std3_ad_address = 3d"1" AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                if r_so_adb_ctrl.std3_ad_address = 1 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
                     start_alu <= not start_alu;
-                    r_data1 <= 18d"4095";
+                    r_data1 <= to_signed(4095,18);
                     r_data2 <= signed(resize(s16_inv_test,18));
-                    if s16_inv_test = 16d"32767" then
-                        s16_inv_test <= 16d"65535";
+                    if s16_inv_test = 32767 then
+                        s16_inv_test <= (others => '1');
                     else
                         s16_inv_test <= s16_inv_test - 1;
                     end if;
@@ -397,27 +397,27 @@ test_alu : alu16bit
             end CASE;
 
 	    if r_so_uart_rx_rdy = '1' then
-			CASE r_so16_uart_rx_data is
-				WHEN 16d"0" => 
-					jeemux := 4d"0";
-				WHEN 16d"1" => 
-					jeemux := 4d"1";
-				WHEN 16d"2" => 
-					jeemux := 4d"2";
-				WHEN 16d"3" => 
-					jeemux := 4d"3";
-				WHEN 16d"4" => 
-					jeemux := 4d"4";
-				WHEN 16d"5" => 
-					jeemux := 4d"5";
-				WHEN 16d"6" => 
-					jeemux := 4d"6";
-				WHEN 16d"7" => 
-					jeemux := 4d"7";
-				WHEN 16d"8" => 
-					jeemux := 4d"8";
-				WHEN 16d"9" => 
-					jeemux := 4d"9";
+			CASE to_integer(unsigned(r_so16_uart_rx_data)) is
+				WHEN 0 => 
+					jeemux := 0;
+				WHEN 1 => 
+					jeemux := 1;
+				WHEN 2 => 
+					jeemux := 2;
+				WHEN 3 => 
+					jeemux := 3;
+				WHEN 4 => 
+					jeemux := 4;
+				WHEN 5 => 
+					jeemux := 5;
+				WHEN 6 => 
+					jeemux := 6;
+				WHEN 7 => 
+					jeemux := 7;
+				WHEN 8 => 
+					jeemux := 8;
+				WHEN 9 => 
+					jeemux := 9;
 				WHEN others =>
 					-- do nothing
 			end CASE;

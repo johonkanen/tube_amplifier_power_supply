@@ -93,24 +93,24 @@ type rec_ext_ad_ctrl is record
 end record;
 
 subtype t3_mux_pos is std_logic_vector(2 downto 0);
-subtype t_ad_triggers is std_logic_vector(6 downto 0);
+subtype t_ad_triggers is std_logic_vector(7 downto 0);
 
     --ad mux positions
-    constant c_mux_ada0 : t3_mux_pos := 3d"2";
-    constant c_mux_ada1 : t3_mux_pos := 3d"1";
-    constant c_mux_ada2 : t3_mux_pos := 3d"0";
-    constant c_mux_ada3 : t3_mux_pos := 3d"3";
-    constant c_mux_ada4 : t3_mux_pos := 3d"4";
-    constant c_mux_ada5 : t3_mux_pos := 3d"6";
-    constant c_mux_ada6 : t3_mux_pos := 3d"7";
+    constant c_mux_ada0 : t3_mux_pos := std_logic_vector(to_unsigned(2,3));
+    constant c_mux_ada1 : t3_mux_pos := std_logic_vector(to_unsigned(1,3));
+    constant c_mux_ada2 : t3_mux_pos := std_logic_vector(to_unsigned(0,3));
+    constant c_mux_ada3 : t3_mux_pos := std_logic_vector(to_unsigned(3,3));
+    constant c_mux_ada4 : t3_mux_pos := std_logic_vector(to_unsigned(4,3));
+    constant c_mux_ada5 : t3_mux_pos := std_logic_vector(to_unsigned(6,3));
+    constant c_mux_ada6 : t3_mux_pos := std_logic_vector(to_unsigned(7,3));
 
-    constant c_mux_adb0 : t3_mux_pos := 3d"2";
-    constant c_mux_adb1 : t3_mux_pos := 3d"1";
-    constant c_mux_adb2 : t3_mux_pos := 3d"0";
-    constant c_mux_adb3 : t3_mux_pos := 3d"3";
-    constant c_mux_adb4 : t3_mux_pos := 3d"4";
-    constant c_mux_adb5 : t3_mux_pos := 3d"6";
-    constant c_mux_adb6 : t3_mux_pos := 3d"7";
+    constant c_mux_adb0 : t3_mux_pos := std_logic_vector(to_unsigned(2,3));
+    constant c_mux_adb1 : t3_mux_pos := std_logic_vector(to_unsigned(1,3));
+    constant c_mux_adb2 : t3_mux_pos := std_logic_vector(to_unsigned(0,3));
+    constant c_mux_adb3 : t3_mux_pos := std_logic_vector(to_unsigned(3,3));
+    constant c_mux_adb4 : t3_mux_pos := std_logic_vector(to_unsigned(4,3));
+    constant c_mux_adb5 : t3_mux_pos := std_logic_vector(to_unsigned(6,3));
+    constant c_mux_adb6 : t3_mux_pos := std_logic_vector(to_unsigned(7,3));
 
     -- tube psu measurements
     alias aka_mux_PFC_I2_MEAS : t3_mux_pos is c_mux_ADA3;
@@ -125,14 +125,14 @@ subtype t_ad_triggers is std_logic_vector(6 downto 0);
     alias aka_mux_DHB_I_MEAS : t3_mux_pos is c_mux_ADB6;
 
 	-- one hot encoding for ad triggers
-	constant ch0 : t_ad_triggers := 7d"1"; -- (0)
-	constant ch1 : t_ad_triggers := 7d"2"; -- (1)
-	constant ch2 : t_ad_triggers := 7d"4"; -- (2)
-	constant ch3 : t_ad_triggers := 7d"8"; -- (3)
-	constant ch4 : t_ad_triggers := 7d"16"; -- (4)
-	constant ch5 : t_ad_triggers := 7d"32"; -- (5)
-	constant ch6 : t_ad_triggers := 7d"64"; -- (6)
-	constant inactive : t_ad_triggers := 7d"0";
+	constant ch0 : t_ad_triggers := x"01"; -- (0)
+	constant ch1 : t_ad_triggers := x"02"; -- (1)
+	constant ch2 : t_ad_triggers := x"04"; -- (2)
+	constant ch3 : t_ad_triggers := x"08"; -- (3)
+	constant ch4 : t_ad_triggers := x"10"; -- (4)
+	constant ch5 : t_ad_triggers := x"20"; -- (5)
+	constant ch6 : t_ad_triggers := x"40"; -- (6)
+	constant inactive : t_ad_triggers := (others => '0');
 
     alias aka_trig_ada0 : t_ad_triggers is ch0;
     alias aka_trig_ada1 : t_ad_triggers is ch1;

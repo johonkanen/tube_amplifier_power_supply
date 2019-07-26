@@ -34,7 +34,7 @@ begin
                 po2_pfc_pwm.ac1 <= '0';
                 po2_pfc_pwm.ac2 <= '0';
             else
-                if si_u12_pfc_duty < 12d"200" then
+                if si_u12_pfc_duty < to_unsigned(200,12) then
                     safe_si_u12_pfc_duty <= si_u12_pfc_duty;
                 else
                     safe_si_u12_pfc_duty <= safe_si_u12_pfc_duty;

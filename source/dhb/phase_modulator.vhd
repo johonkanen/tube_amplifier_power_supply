@@ -40,9 +40,9 @@ carrier_gen : process(modulator_clk)
 begin
     if rising_edge(modulator_clk) then
         if ri_dhb_ctrl.rstn = '0' then
-            u12_pri_carrier <= 16d"1422";
-            u12_sec_carrier <= 16d"1422";
-            u16_master_carrier <= 16d"1422";
+            u12_pri_carrier <= to_unsigned(1422,16);
+            u12_sec_carrier <= to_unsigned(1422,16);
+            u16_master_carrier <= to_unsigned(1422,16);
             s16_pri_phase <= (others => '0');
             s16_sec_phase <= (others => '0');
             s_pri_pulse <= '0';
@@ -52,7 +52,7 @@ begin
 
         else
 
-            if ri_dhb_ctrl.s16_phase > 16d"0" then
+            if ri_dhb_ctrl.s16_phase > to_signed(0,16) then
                 s16_pri_phase <= (others => '0');
                 s16_sec_phase <= unsigned(ri_dhb_ctrl.s16_phase);
             else
@@ -60,7 +60,7 @@ begin
                 s16_sec_phase <= (others => '0');
             end if;
             -- generate master carrier to which phase shifts are synchronized
-            if u16_master_carrier > 16d"1896" then
+            if u16_master_carrier > to_unsigned(1896,16) then
                 u16_master_carrier <= (others => '0');
             else
                 u16_master_carrier<= u16_master_carrier+ 1;
@@ -79,25 +79,25 @@ begin
             end if;
 
             -- gen phase shifted pri carrier
-            if u12_pri_carrier > 16d"1896" OR pri_reset = '1' then
+            if u12_pri_carrier > to_unsigned(1896,16) OR pri_reset = '1' then
                 u12_pri_carrier <= (others => '0');
             else
                 u12_pri_carrier <= u12_pri_carrier + 1;
             end if;
             -- generate phase shifted secondary carrier
-            if u12_sec_carrier > 16d"1896" OR sec_reset = '1' then
+            if u12_sec_carrier > to_unsigned(1896,16) OR sec_reset = '1' then
                 u12_sec_carrier <= (others => '0');
             else
                 u12_sec_carrier <= u12_sec_carrier + 1;
             end if;
             -- generate 50% duty cycle for primary
-            if u12_pri_carrier > 16d"947" then
+            if u12_pri_carrier > to_unsigned(947,16) then
                 s_pri_pulse <= '0';
             else
                 s_pri_pulse <= '1';
             end if;
             -- generate 50% duty for secondary 
-            if u12_sec_carrier > 16d"947" then
+            if u12_sec_carrier > to_unsigned(947,16) then
                 s_sec_pulse <= '0';
             else
                 s_sec_pulse <= '1';

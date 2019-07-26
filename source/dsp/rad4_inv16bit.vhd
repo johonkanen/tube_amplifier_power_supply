@@ -33,7 +33,7 @@ end entity rad4_inv16bit;
 
 architecture rtl of rad4_inv16bit is
 
-    constant inv_magic_number : std_logic_vector(17 downto 0) := 18d"21750";
+    constant inv_magic_number : std_logic_vector(17 downto 0) := std_logic_vector(to_unsigned(21750,18));
     function rounded_mpy
     (
         mpy_out : std_logic_vector(35 downto 0)

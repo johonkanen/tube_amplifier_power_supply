@@ -29,13 +29,13 @@ component led_driver is
         );
 end component;
 
-constant led_color_red : led_counters := (9d"80", 9d"0", 9d"0");
-constant led_color_grn : led_counters := (9d"0", 9d"50", 9d"0");
-constant led_color_blu : led_counters := (9d"0", 9d"0", 9d"80");
+constant led_color_red : led_counters := (to_unsigned(80,9), to_unsigned(0,9), to_unsigned(0,9));
+constant led_color_grn : led_counters := (to_unsigned(0,9), to_unsigned(50,9), to_unsigned(0,9));
+constant led_color_blu : led_counters := (to_unsigned(0,9), to_unsigned(0,9), to_unsigned(80,9));
 
-constant led_color_pink : led_counters := (9d"40", 9d"10", 9d"80");
-constant led_color_yellow : led_counters := (9d"80", 9d"40", 9d"0");
-constant led_color_purple : led_counters := (9d"60", 9d"0", 9d"80");
-constant led_color_off : led_counters := (9d"0", 9d"0", 9d"0");
+constant led_color_pink : led_counters := (to_unsigned(40,9), to_unsigned(10,9), to_unsigned(80,9));
+constant led_color_yellow : led_counters := (to_unsigned(80,9), to_unsigned(40,9), to_unsigned(0,9));
+constant led_color_purple : led_counters := (to_unsigned(60,9), to_unsigned(0,9), to_unsigned(80,9));
+constant led_color_off : led_counters := (to_unsigned(0,9), to_unsigned(0,9), to_unsigned(0,9));
 
 end led_driver_pkg;

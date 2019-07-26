@@ -98,24 +98,24 @@ begin
 
         CASE ti_adb_triggers is
             WHEN ch3 => 
-                so_ada_ctrl.std3_ad_address <= 3d"3";
-                so_adb_ctrl.std3_ad_address <= 3d"3";
+                so_ada_ctrl.std3_ad_address <= 3;
+                so_adb_ctrl.std3_ad_address <= 3;
                 st_ada_seq_nxt := c_mux_ada1;  
             WHEN ch1 => 
-                so_ada_ctrl.std3_ad_address <= 3d"1";
-                so_adb_ctrl.std3_ad_address <= 3d"1";
+                so_ada_ctrl.std3_ad_address <= 1;
+                so_adb_ctrl.std3_ad_address <= 1;
                 st_ada_seq_nxt := c_mux_ada6;  
             WHEN ch6 => 
-                so_ada_ctrl.std3_ad_address <= 3d"6";
-                so_adb_ctrl.std3_ad_address <= 3d"6";
+                so_ada_ctrl.std3_ad_address <= 6;
+                so_adb_ctrl.std3_ad_address <= 6;
                 st_ada_seq_nxt := c_mux_ada2;  
             WHEN ch2 => 
-                so_ada_ctrl.std3_ad_address <= 3d"2";
-                so_adb_ctrl.std3_ad_address <= 3d"2";
+                so_ada_ctrl.std3_ad_address <= 2;
+                so_adb_ctrl.std3_ad_address <= 2;
                 st_ada_seq_nxt := c_mux_ada4;  
             WHEN ch4 => 
-                so_ada_ctrl.std3_ad_address <= 3d"4";
-                so_adb_ctrl.std3_ad_address <= 3d"4";
+                so_ada_ctrl.std3_ad_address <= 4;
+                so_adb_ctrl.std3_ad_address <= 4;
                 st_ada_seq_nxt := c_mux_ada3;  
             WHEN others =>
             --do nothing

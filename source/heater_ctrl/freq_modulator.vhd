@@ -57,22 +57,22 @@ begin
         r1_u12_deadtime <= u12_deadtime;
         if rstn = '0' then
             st_startup <= rampup;
-            dly_cntr <= 14d"0";
-            u12_period <= 12d"474"; -- 290kHz initial frequency
-            u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
+            dly_cntr <= (others => '0');
+            u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
+            u12_deadtime <= to_unsigned(461,12); -- 883/2-13 cycle initial pulse width
         else
             CASE st_startup is
                 WHEN rampup => 
                     -- ramp pulse from 100ns to normal by incrementing deadime
                     dly_cntr <= dly_cntr + 1;
-                    if dly_cntr = 14d"350" then 
+                    if dly_cntr = to_unsigned(350,14) then 
                         reset_dly_cntr <= '1';
                     else
                         reset_dly_cntr <= '0';
                     end if;
 
                     if reset_dly_cntr = '1' then
-                        dly_cntr <= 14d"0";
+                        dly_cntr <= (others => '0');
                         u12_deadtime <= u12_deadtime - 1;
                     end if;
 
@@ -90,9 +90,9 @@ begin
 
                 WHEN others =>
                     st_startup <= rampup;
-                    dly_cntr <= 14d"0";
-                    u12_period <= 12d"474"; -- 290kHz initial frequency
-                    u12_deadtime <= 12d"461"; -- 883/2-13 cycle initial pulse width
+                    dly_cntr <= (others => '0');
+                    u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
+                    u12_deadtime <= to_unsigned(461,12); -- 883/2-13 cycle initial pulse width
             end CASE;
 
         end if;
@@ -105,18 +105,15 @@ begin
 	if rising_edge(modulator_clk) then
         if rstn = '0' then
             s_pulse <= '0';
-            u12_reset_carrier <= 12d"474";
+            u12_reset_carrier <= to_unsigned(474,12);
         else
             u12_reset_carrier <= u12_period;
             if u12_carrier > u12_reset_carrier then
-               u12_carrier <= 12d"0";
+               u12_carrier <= (others => '0');
                s_pulse <= NOT s_pulse;
             else
                 u12_carrier <= u12_carrier + 1;
             end if;
-
-            /* if u12_carrier = 12d"0" then */
-            /* end if; */
         end if;
 	end if;
     end process freq_synth;
@@ -133,18 +130,18 @@ begin
             r_po4_ht_pwm <= (others => '0');
             po4_ht_pwm <= (others => '0');
             sec_pwm_cntr := (others => '0');
-            u12_dt_dly <= 12d"0";
+            u12_dt_dly <= (others => '0');
             st_dt_states := deadtime;
         else
             po4_ht_pwm <= r_po4_ht_pwm;
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
-                    u12_dt_dly <= 12d"0";
+                    u12_dt_dly <= (others => '0');
                     r_po4_ht_pwm.pri_high <= s1_pulse;
                     r_po4_ht_pwm.pri_low <= not s1_pulse;
 
-                    if sec_pwm_cntr > 12d"614" then
+                    if sec_pwm_cntr > to_unsigned(614,12) then
                         r_po4_ht_pwm.sync1 <= '0';
                         r_po4_ht_pwm.sync2 <= '0';
                     else
@@ -165,14 +162,14 @@ begin
                         u12_dt_dly <= u12_dt_dly + 1;
                         st_dt_states := deadtime;
                     else
-                        u12_dt_dly <= 12d"0";
+                        u12_dt_dly <= (others => '0');
                         st_dt_states := active_pulse;
                     end if;
                 WHEN others => 
                     r_po4_ht_pwm <= (others => '0');
                     po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
-                    u12_dt_dly <= 12d"0";
+                    u12_dt_dly <= (others => '0');
                     st_dt_states := active_pulse;
             end CASE;
         end if;

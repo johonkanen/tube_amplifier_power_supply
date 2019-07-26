@@ -130,7 +130,7 @@ end component;
 	signal r_to_adb_triggers : t_ad_triggers;
 	signal r1_to_adb_triggers : t_ad_triggers;
 
-    procedure count_up_and_wrap_at
+    procedure pr_count_up_and_wrap
     (
        signal counter_value : inout unsigned(15 downto 0);
        signal wrap_value : in unsigned(15 downto 0)
@@ -142,7 +142,7 @@ end component;
         else
             counter_value <= counter_value + 1;
         end if;
-    end f_count_up_and_wrap;
+    end pr_count_up_and_wrap;
 
 begin
 
@@ -185,14 +185,14 @@ pfc_control_ins : pfc_control
                         dir := up;
                     end if;
 
-                    CASE u12_carrier  is
-                        WHEN 12d"6" => -- tested with oscilloscope, note old ad driver
+                    CASE to_integer(u12_carrier)  is
+                        WHEN 6 => -- tested with oscilloscope, note old ad driver
                             r1_to_ada_triggers <= ch3;
                             r1_to_adb_triggers <= ch3;
-                        WHEN 12d"163" => 
+                        WHEN 163 => 
                             r1_to_ada_triggers <= ch1;
                             r1_to_adb_triggers <= ch1;
-                        WHEN 12d"300" => 
+                        WHEN 300 => 
                             r1_to_ada_triggers <= ch6;
                             r1_to_adb_triggers <= ch6;
                         WHEN others => 
@@ -208,12 +208,12 @@ pfc_control_ins : pfc_control
                         dir := down;
                     end if;
 
-                    CASE u12_carrier  is
-                        WHEN 12d"300" => 
+                    CASE to_integer(u12_carrier)  is
+                        WHEN 300 => 
                             r1_to_ada_triggers <= ch2;
                             r1_to_adb_triggers <= ch2;
 
-                        WHEN 12d"163" => 
+                        WHEN 163 => 
                             r1_to_ada_triggers <= ch2;
                             r1_to_adb_triggers <= ch4;
 
@@ -234,7 +234,7 @@ pfc_control_ins : pfc_control
         -- 200khz sampling for both, llc and dhb
         if rising_edge(core_clk) then
             if heater_cntr > 640 then
-                heater_cntr := 12d"0";
+                heater_cntr := (others => '0');
                 so_ext_ad1_start <= '1';
                 so_ext_ad2_start <= '1';
             else

@@ -91,7 +91,6 @@ ki_mult : combi_mult_18x18
 		    ss_pi_states := idle;
             so_pi_out_rdy <= '0'; 	
             so_pi_busy <= '0';
-            /* v_so_sign18_pi_out := (others => '0'); */
 
         else
             CASE ss_pi_states is 
