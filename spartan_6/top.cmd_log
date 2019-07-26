@@ -1,0 +1,2 @@
+xst -intstyle ise -ifn "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/top.xst" -ofn "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/top.syr" 
+xst -intstyle ise -ifn "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/top.xst" -ofn "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/top.syr" 
