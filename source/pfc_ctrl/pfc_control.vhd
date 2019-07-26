@@ -8,6 +8,7 @@ library work;
 	use work.pfc_pkg.all;
 	use work.tubepsu_commands_pkg.all;
     use work.onboard_ad_ctrl_pkg.all;
+    use work.alu16bit_pkg.all;
 
 entity pfc_control is
     port(
@@ -85,6 +86,8 @@ architecture behavioral of pfc_control is
 
 
 begin 
+pfc_alu : alu16bit
+port map(core_clk, si_rstn, r_si_start_alu, r_alu_command, r_data1, r_data2, r_so_alu_busy, r_so_alu_rdy, r_so18_alu_data);
 
 pfc_voltage_control : seq_pi_control
 	generic map(200,10,0,0)

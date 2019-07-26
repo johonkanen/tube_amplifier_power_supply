@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(10CL010YU256) Path("C:/Users/Jari/mycodeprojects/tube_psu/cyclone_10/output_files/") File("cl10_tubepsu.sof") MfrSpec(OpMask(1));
+		Device PartName(10CL010Y) Path("C:/Users/Jari/mycodeprojects/tube_psu/cyclone_10/output_files/") File("cl10_tubepsu_flash.jic") MfrSpec(OpMask(1) SEC_Device(EPCQ16) Child_OpMask(1 1));
 
 ChainEnd;
 

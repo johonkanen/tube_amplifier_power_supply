@@ -130,6 +130,20 @@ end component;
 	signal r_to_adb_triggers : t_ad_triggers;
 	signal r1_to_adb_triggers : t_ad_triggers;
 
+    procedure f_count_up_and_wrap
+    (
+       signal counter_value : inout unsigned(15 downto 0);
+       signal wrap_value : in unsigned(15 downto 0)
+    )
+    is
+    begin
+        if counter_value >= wrap_value then
+            counter_value <= (others => '0');
+        else
+            counter_value <= counter_value + 1;
+        end if;
+    end f_count_up_and_wrap;
+
 begin
 
 dhb_ctrl : dhb_control

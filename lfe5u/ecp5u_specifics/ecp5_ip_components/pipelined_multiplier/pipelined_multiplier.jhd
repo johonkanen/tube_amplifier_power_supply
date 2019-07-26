@@ -1,0 +1,2 @@
+VHDL_ENTITY_ONLY pipelined_multiplier DEFIN pipelined_multiplier.vhd
+MODULE pipelined_multiplier DEFIN pipelined_multiplier.vhd
