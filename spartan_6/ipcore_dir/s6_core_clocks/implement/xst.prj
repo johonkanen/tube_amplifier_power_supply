@@ -1,0 +1,2 @@
+vhdl work ../../s6_core_clocks.vhd
+vhdl work ../example_design/s6_core_clocks_exdes.vhd

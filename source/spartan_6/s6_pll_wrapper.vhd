@@ -17,19 +17,25 @@ end entity pll_wrapper;
 
 architecture rtl of pll_wrapper is
 
-    component main_pll IS
-	PORT
-	(
-		inclk0		: IN STD_LOGIC  := '0';
-		c0		: OUT STD_LOGIC ;
-		c1		: OUT STD_LOGIC ;
-		c2		: OUT STD_LOGIC ;
-		locked		: OUT STD_LOGIC 
-	);
-    END component;
+component s6_core_clocks
+port
+ (
+      -- Clock in ports
+      CLK_IN1           : in     std_logic;
+      -- Clock out ports
+      CLK_OUT1          : out    std_logic;
+      CLK_OUT2          : out    std_logic;
+      -- Status and control signals
+      LOCKED            : out    std_logic
+ );
+end component;
+
+signal r_modulator_clk : std_logic;
 
 begin
+    modulator_clk2 <= r_modulator_clk;
+    modulator_clk <= r_modulator_clk;
 
-    core_clocks : main_pll
-    port map(xclk, modulator_clk, core_clk, modulator_clk2, pll_lock);
+    core_clocks : s6_core_clocks
+    port map(xclk, r_modulator_clk, core_clk, pll_lock);
 end rtl;

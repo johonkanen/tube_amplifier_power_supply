@@ -1,0 +1,14 @@
+# Output products list for <multiplier_s18xs18>
+_xmsgs\pn_parser.xmsgs
+multiplier_s18xs18.asy
+multiplier_s18xs18.gise
+multiplier_s18xs18.ngc
+multiplier_s18xs18.vhd
+multiplier_s18xs18.vho
+multiplier_s18xs18.xco
+multiplier_s18xs18.xise
+multiplier_s18xs18\doc\mult_gen_ds255.pdf
+multiplier_s18xs18\doc\mult_gen_v11_2_readme.txt
+multiplier_s18xs18\doc\mult_gen_v11_2_vinfo.html
+multiplier_s18xs18_flist.txt
+multiplier_s18xs18_xmdf.tcl

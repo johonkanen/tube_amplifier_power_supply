@@ -1,6 +1,9 @@
-set -tmpdir "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/xst/projnav.tmp"
-set -xsthdpdir "C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/xst"
-run -compileonly yes
+set -tmpdir "xst/projnav.tmp"
+set -xsthdpdir "xst"
+run
+-ifn top.prj
+-ofn top
+-ofmt NGC
 -p xc6slx16-3-ftg256
 -top top
 -opt_mode Speed
@@ -12,6 +15,7 @@ run -compileonly yes
 -rtlview Yes
 -glob_opt AllClockNets
 -read_cores YES
+-sd {"ipcore_dir"  }
 -write_timing_constraints NO
 -cross_clock_analysis NO
 -hierarchy_separator /
@@ -47,4 +51,3 @@ run -compileonly yes
 -iob Auto
 -equivalent_register_removal YES
 -slice_utilization_ratio_maxmargin 5
--ifn top.prj

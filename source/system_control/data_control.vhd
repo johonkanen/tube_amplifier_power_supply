@@ -204,6 +204,15 @@ signal std18_test_data : std_logic_vector(17 downto 0);
 signal test_data_rdy : std_logic;
 signal start_alu : std_logic;
 
+   signal r_si_start_alu : std_logic;
+   signal r_alu_command : t_alu_commands;
+   signal r_data1 : signed(17 downto 0);
+   signal r_data2 : signed(17 downto 0);
+
+   signal r_so_alu_busy : std_logic;
+   signal r_so_alu_rdy : std_logic;
+   signal r_so18_alu_data : signed(17 downto 0);
+
     type t_pfc_current_channel is (a3,b3);
     signal st_pfc_current_channel : t_pfc_current_channel;
 

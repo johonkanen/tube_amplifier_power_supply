@@ -63,6 +63,15 @@ architecture rtl of alu16bit is
     signal div_start_mpy : std_logic; 
     signal alu_start_mpy : std_logic; 
 
+   signal r_si_start_alu : std_logic;
+   signal r_alu_command : t_alu_commands;
+   signal r_data1 : signed(17 downto 0);
+   signal r_data2 : signed(17 downto 0);
+
+   signal r_so_alu_busy : std_logic;
+   signal r_so_alu_rdy : std_logic;
+   signal r_so18_alu_data : signed(17 downto 0);
+
 begin
 
 mpy1_a <= alu_mpy1_a OR div_mpy1_a;

@@ -1,0 +1,107 @@
+--------------------------------------------------------------------------------
+Release 14.7 Trace  (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+
+C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\trce.exe -intstyle ise -v 3 -s 3
+-n 3 -fastpaths -xml top.twx top.ncd -o top.twr top.pcf
+
+Design file:              top.ncd
+Physical constraint file: top.pcf
+Device,package,speed:     xc6slx16,ftg256,C,-3 (PRODUCTION 1.23 2013-10-13)
+Report level:             verbose report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2698 - No timing constraints found, doing default enumeration.
+INFO:Timing:3412 - To improve timing, see the Timing Closure User Guide (UG612).
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on 
+   a 50 Ohm transmission line loading model.  For the details of this model, 
+   and for more information on accounting for different loading conditions, 
+   please see the device datasheet.
+
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Setup/Hold to clock xclk32mhz
+----------------+------------+------------+------------+------------+------------------+--------+
+                |Max Setup to|  Process   |Max Hold to |  Process   |                  | Clock  |
+Source          | clk (edge) |   Corner   | clk (edge) |   Corner   |Internal Clock(s) | Phase  |
+----------------+------------+------------+------------+------------+------------------+--------+
+pi_ada_sdata    |    4.086(R)|      SLOW  |   -1.848(R)|      FAST  |clk_128mhz        |   0.000|
+pi_adb_sdata    |    3.153(R)|      SLOW  |   -1.301(R)|      FAST  |clk_128mhz        |   0.000|
+pi_ext_ad1_sdata|    4.223(R)|      SLOW  |   -2.319(R)|      FAST  |clk_128mhz        |   0.000|
+pi_ext_ad2_sdata|    3.952(R)|      SLOW  |   -2.037(R)|      FAST  |clk_128mhz        |   0.000|
+pi_uart_rx      |    1.873(R)|      SLOW  |   -1.271(R)|      FAST  |clk_128mhz        |   0.000|
+----------------+------------+------------+------------+------------+------------------+--------+
+
+Clock xclk32mhz to Pad
+--------------------+-----------------+------------+-----------------+------------+------------------+--------+
+                    |Max (slowest) clk|  Process   |Min (fastest) clk|  Process   |                  | Clock  |
+Destination         |  (edge) to PAD  |   Corner   |  (edge) to PAD  |   Corner   |Internal Clock(s) | Phase  |
+--------------------+-----------------+------------+-----------------+------------+------------------+--------+
+po2_pfc_pwm_ac1     |         5.088(R)|      SLOW  |         2.872(R)|      FAST  |clk_256mhz        |   0.000|
+po2_pfc_pwm_ac2     |         5.897(R)|      SLOW  |         3.487(R)|      FAST  |clk_256mhz        |   0.000|
+po3_ada_muxsel<0>   |         5.295(R)|      SLOW  |         3.033(R)|      FAST  |clk_128mhz        |   0.000|
+po3_ada_muxsel<1>   |         5.907(R)|      SLOW  |         3.484(R)|      FAST  |clk_128mhz        |   0.000|
+po3_ada_muxsel<2>   |         5.489(R)|      SLOW  |         3.161(R)|      FAST  |clk_128mhz        |   0.000|
+po3_adb_muxsel<0>   |         5.155(R)|      SLOW  |         2.949(R)|      FAST  |clk_128mhz        |   0.000|
+po3_adb_muxsel<1>   |         5.670(R)|      SLOW  |         3.293(R)|      FAST  |clk_128mhz        |   0.000|
+po3_adb_muxsel<2>   |         5.489(R)|      SLOW  |         3.161(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led1_blue       |         5.445(R)|      SLOW  |         3.171(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led1_green      |         5.014(R)|      SLOW  |         2.913(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led1_red        |         5.339(R)|      SLOW  |         3.133(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led2_blue       |         5.358(R)|      SLOW  |         3.081(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led2_green      |         5.990(R)|      SLOW  |         3.525(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led2_red        |         5.163(R)|      SLOW  |         2.966(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led3_blue       |         5.224(R)|      SLOW  |         3.059(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led3_green      |         5.638(R)|      SLOW  |         3.290(R)|      FAST  |clk_128mhz        |   0.000|
+po3_led3_red        |         5.449(R)|      SLOW  |         3.170(R)|      FAST  |clk_128mhz        |   0.000|
+po4_dhb_pwm_pri_high|         6.092(R)|      SLOW  |         3.535(R)|      FAST  |clk_256mhz        |   0.000|
+po4_dhb_pwm_pri_low |         6.118(R)|      SLOW  |         3.561(R)|      FAST  |clk_256mhz        |   0.000|
+po4_dhb_pwm_sec_high|         5.037(R)|      SLOW  |         2.836(R)|      FAST  |clk_256mhz        |   0.000|
+po4_dhb_pwm_sec_low |         5.100(R)|      SLOW  |         2.907(R)|      FAST  |clk_256mhz        |   0.000|
+po4_ht_pwm_pri_high |         5.540(R)|      SLOW  |         3.162(R)|      FAST  |clk_256mhz        |   0.000|
+po4_ht_pwm_pri_low  |         5.806(R)|      SLOW  |         3.364(R)|      FAST  |clk_256mhz        |   0.000|
+po4_ht_pwm_sync1    |         5.639(R)|      SLOW  |         3.224(R)|      FAST  |clk_256mhz        |   0.000|
+po4_ht_pwm_sync2    |         5.665(R)|      SLOW  |         3.235(R)|      FAST  |clk_256mhz        |   0.000|
+po_ada_clk          |         5.112(R)|      SLOW  |         2.937(R)|      FAST  |clk_128mhz        |   0.000|
+po_ada_cs           |         5.052(R)|      SLOW  |         2.866(R)|      FAST  |clk_128mhz        |   0.000|
+po_adb_clk          |         5.486(R)|      SLOW  |         3.176(R)|      FAST  |clk_128mhz        |   0.000|
+po_adb_cs           |         5.984(R)|      SLOW  |         3.463(R)|      FAST  |clk_128mhz        |   0.000|
+po_bypass_relay     |         4.760(R)|      SLOW  |         2.694(R)|      FAST  |clk_128mhz        |   0.000|
+po_ext_ad1_clk      |         5.662(R)|      SLOW  |         3.309(R)|      FAST  |clk_128mhz        |   0.000|
+po_ext_ad1_cs       |         6.836(R)|      SLOW  |         3.994(R)|      FAST  |clk_128mhz        |   0.000|
+po_ext_ad2_clk      |         5.083(R)|      SLOW  |         2.883(R)|      FAST  |clk_128mhz        |   0.000|
+po_ext_ad2_cs       |         6.182(R)|      SLOW  |         3.562(R)|      FAST  |clk_128mhz        |   0.000|
+po_uart_tx          |         5.215(R)|      SLOW  |         2.994(R)|      FAST  |clk_128mhz        |   0.000|
+--------------------+-----------------+------------+-----------------+------------+------------------+--------+
+
+Clock to Setup on destination clock xclk32mhz
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+xclk32mhz      |    5.913|         |         |         |
+---------------+---------+---------+---------+---------+
+
+
+Analysis completed Fri Jul 26 23:01:35 2019 
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 241 MB
+
+
+

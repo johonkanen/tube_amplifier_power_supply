@@ -13,18 +13,17 @@ end combi_mult_18x18;
 
 architecture rtl of combi_mult_18x18 is
 
-    component sign_18x18_mult_dsp IS
-	PORT
-	(
-		clock		: IN STD_LOGIC ;
-		dataA		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
-		dataB		: IN STD_LOGIC_VECTOR (17 DOWNTO 0);
-		result		: OUT STD_LOGIC_VECTOR (35 DOWNTO 0)
-	);
-    END component;
+COMPONENT multiplier_s18xs18
+  PORT (
+    clk : IN STD_LOGIC;
+    a : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    b : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    p : OUT STD_LOGIC_VECTOR(35 DOWNTO 0)
+  );
+END COMPONENT;
 
 begin
-    multiplier_wrapper : sign_18x18_mult_dsp
+    multiplier_wrapper : multiplier_s18xs18
     port map(CLK, A, B, P);
 
 

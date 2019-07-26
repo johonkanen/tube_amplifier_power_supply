@@ -3,10 +3,10 @@
 <!--The data in this file is primarily intended for consumption by Xilinx tools.
 The structure and the elements are likely to change over the next few releases.
 This means code written to parse this file will need to be revisited each subsequent release.-->
-<application name="pn" timeStamp="Fri Jul 26 21:56:31 2019">
+<application name="pn" timeStamp="Fri Jul 26 23:01:18 2019">
 <section name="Project Information" visible="false">
 <property name="ProjectID" value="A1BED25994C9465DB7306C084C940E64" type="project"/>
-<property name="ProjectIteration" value="0" type="project"/>
+<property name="ProjectIteration" value="1" type="project"/>
 <property name="ProjectFile" value="C:/Users/Jari/mycodeprojects/tube_psu/spartan_6/spartan_6.xise" type="project"/>
 <property name="ProjectCreationTimestamp" value="2019-07-26T18:05:41" type="project"/>
 </section>
@@ -27,6 +27,7 @@ This means code written to parse this file will need to be revisited each subseq
 <property name="PROP_VHDLSourceAnalysisStandard" value="VHDL-200X" type="process"/>
 <property name="PROP_intProjectCreationTimestamp" value="2019-07-26T18:05:41" type="design"/>
 <property name="PROP_intWbtProjectID" value="A1BED25994C9465DB7306C084C940E64" type="design"/>
+<property name="PROP_intWbtProjectIteration" value="1" type="process"/>
 <property name="PROP_intWorkingDirLocWRTProjDir" value="Same" type="design"/>
 <property name="PROP_intWorkingDirUsed" value="No" type="design"/>
 <property name="PROP_xilxBitgStart_IntDone" value="true" type="process"/>
@@ -38,6 +39,7 @@ This means code written to parse this file will need to be revisited each subseq
 <property name="PROP_Synthesis_Tool" value="XST (VHDL/Verilog)" type="design"/>
 <property name="PROP_DevSpeed" value="-3" type="design"/>
 <property name="PROP_PreferredLanguage" value="VHDL" type="design"/>
+<property name="FILE_COREGEN" value="2" type="source"/>
 <property name="FILE_VHDL" value="39" type="source"/>
 </section>
 </application>

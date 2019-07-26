@@ -1,0 +1,1040 @@
+Release 14.7 Map P.20131013 (nt64)
+Xilinx Mapping Report File for Design 'top'
+
+Design Information
+------------------
+Command Line   : map -intstyle ise -p xc6slx16-ftg256-3 -w -logic_opt off -ol
+high -t 1 -xt 0 -register_duplication off -r 4 -global_opt off -mt off -ir off
+-pr off -lc off -power off -o top_map.ncd top.ngd top.pcf 
+Target Device  : xc6slx16
+Target Package : ftg256
+Target Speed   : -3
+Mapper Version : spartan6 -- $Revision: 1.55 $
+Mapped Date    : Fri Jul 26 23:01:03 2019
+
+Design Summary
+--------------
+Number of errors:      0
+Number of warnings:    0
+Slice Logic Utilization:
+  Number of Slice Registers:                 1,025 out of  18,224    5%
+    Number used as Flip Flops:               1,025
+    Number used as Latches:                      0
+    Number used as Latch-thrus:                  0
+    Number used as AND/OR logics:                0
+  Number of Slice LUTs:                      1,211 out of   9,112   13%
+    Number used as logic:                    1,174 out of   9,112   12%
+      Number using O6 output only:             638
+      Number using O5 output only:             192
+      Number using O5 and O6:                  344
+      Number used as ROM:                        0
+    Number used as Memory:                       4 out of   2,176    1%
+      Number used as Dual Port RAM:              0
+      Number used as Single Port RAM:            0
+      Number used as Shift Register:             4
+        Number using O6 output only:             2
+        Number using O5 output only:             0
+        Number using O5 and O6:                  2
+    Number used exclusively as route-thrus:     33
+      Number with same-slice register load:     15
+      Number with same-slice carry load:        18
+      Number with other load:                    0
+
+Slice Logic Distribution:
+  Number of occupied Slices:                   419 out of   2,278   18%
+  Number of MUXCYs used:                       628 out of   4,556   13%
+  Number of LUT Flip Flop pairs used:        1,318
+    Number with an unused Flip Flop:           426 out of   1,318   32%
+    Number with an unused LUT:                 107 out of   1,318    8%
+    Number of fully used LUT-FF pairs:         785 out of   1,318   59%
+    Number of unique control sets:              70
+    Number of slice register sites lost
+      to control set restrictions:             241 out of  18,224    1%
+
+  A LUT Flip Flop pair for this architecture represents one LUT paired with
+  one Flip Flop within a slice.  A control set is a unique combination of
+  clock, reset, set, and enable signals for a registered element.
+  The Slice Logic Distribution report is not meaningful if the design is
+  over-mapped for a non-slice resource or if Placement fails.
+
+IO Utilization:
+  Number of bonded IOBs:                        41 out of     186   22%
+
+Specific Feature Utilization:
+  Number of RAMB16BWERs:                         0 out of      32    0%
+  Number of RAMB8BWERs:                          0 out of      64    0%
+  Number of BUFIO2/BUFIO2_2CLKs:                 1 out of      32    3%
+    Number used as BUFIO2s:                      1
+    Number used as BUFIO2_2CLKs:                 0
+  Number of BUFIO2FB/BUFIO2FB_2CLKs:             1 out of      32    3%
+    Number used as BUFIO2FBs:                    1
+    Number used as BUFIO2FB_2CLKs:               0
+  Number of BUFG/BUFGMUXs:                       3 out of      16   18%
+    Number used as BUFGs:                        3
+    Number used as BUFGMUX:                      0
+  Number of DCM/DCM_CLKGENs:                     0 out of       4    0%
+  Number of ILOGIC2/ISERDES2s:                   0 out of     248    0%
+  Number of IODELAY2/IODRP2/IODRP2_MCBs:         0 out of     248    0%
+  Number of OLOGIC2/OSERDES2s:                   0 out of     248    0%
+  Number of BSCANs:                              0 out of       4    0%
+  Number of BUFHs:                               0 out of     128    0%
+  Number of BUFPLLs:                             0 out of       8    0%
+  Number of BUFPLL_MCBs:                         0 out of       4    0%
+  Number of DSP48A1s:                            8 out of      32   25%
+  Number of ICAPs:                               0 out of       1    0%
+  Number of MCBs:                                0 out of       2    0%
+  Number of PCILOGICSEs:                         0 out of       2    0%
+  Number of PLL_ADVs:                            1 out of       2   50%
+  Number of PMVs:                                0 out of       1    0%
+  Number of STARTUPs:                            0 out of       1    0%
+  Number of SUSPEND_SYNCs:                       0 out of       1    0%
+
+Average Fanout of Non-Clock Nets:                3.42
+
+Peak Memory Usage:  439 MB
+Total REAL time to MAP completion:  13 secs 
+Total CPU time to MAP completion:   12 secs 
+
+Table of Contents
+-----------------
+Section 1 - Errors
+Section 2 - Warnings
+Section 3 - Informational
+Section 4 - Removed Logic Summary
+Section 5 - Removed Logic
+Section 6 - IOB Properties
+Section 7 - RPMs
+Section 8 - Guide Report
+Section 9 - Area Group and Partition Summary
+Section 10 - Timing Report
+Section 11 - Configuration String Information
+Section 12 - Control Set Information
+Section 13 - Utilization by Hierarchy
+
+Section 1 - Errors
+------------------
+
+Section 2 - Warnings
+--------------------
+
+Section 3 - Informational
+-------------------------
+INFO:LIT:243 - Logical network
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<35> has no load.
+INFO:LIT:395 - The above info message is repeated 203 more times for the
+   following (max. 5 shown):
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<34>,
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<33>,
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<14>,
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<13>,
+   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc
+   _voltage_control/kp_mult/multiplier_wrapper/p<12>
+   To see the details of these info messages, please use the -detail switch.
+INFO:MapLib:562 - No environment variables are currently set.
+INFO:LIT:244 - All of the single ended outputs in this design are using slew
+   rate limited output drivers. The delay on speed critical single ended outputs
+   can be dramatically reduced by designating them as fast outputs.
+INFO:Pack:1716 - Initializing temperature to 85.000 Celsius. (default - Range:
+   0.000 to 85.000 Celsius)
+INFO:Pack:1720 - Initializing voltage to 1.140 Volts. (default - Range: 1.140 to
+   1.260 Volts)
+INFO:Map:215 - The Interim Design Summary has been generated in the MAP Report
+   (.mrp).
+INFO:Pack:1650 - Map created a placed design.
+
+Section 4 - Removed Logic Summary
+---------------------------------
+   6 block(s) removed
+  18 block(s) optimized away
+ 208 signal(s) removed
+
+Section 5 - Removed Logic
+-------------------------
+
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<35>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<34>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<33>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<14>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<13>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<12>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<11>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<10>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<9>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<8>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<7>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<6>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<5>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<4>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<3>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<2>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<1>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/kp_mult/multiplier_wrapper/p<0>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<35>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<34>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<33>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<14>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<13>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<12>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<11>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<10>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<9>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<8>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<7>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<6>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<5>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<4>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<3>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<2>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<1>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_v
+oltage_control/ki_mult/multiplier_wrapper/p<0>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/p<35>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/p<34>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/p<33>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/p<32>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/p<31>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<35>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<34>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<33>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<32>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<31>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<13>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<12>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<11>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<10>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<9>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<8>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<7>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<6>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<5>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<4>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<3>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<2>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<1>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/p<0>"
+is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<35>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<34>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<33>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<32>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<31>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<30>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<29>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<28>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<27>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<26>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<25>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<24>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<23>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<22>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<21>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<20>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<19>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<18>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<17>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<16>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<15>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<14>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<13>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<12>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<11>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<10>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<9>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<8>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<7>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<6>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<5>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<4>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<3>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<2>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<1>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/p<0>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/blk00000001/sig0000004b" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/blk00000001/sig0000004a" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<35>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<34>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<33>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<32>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<31>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<30>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<29>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<28>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<27>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<26>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<25>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<24>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<23>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<22>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<21>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<20>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<19>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<18>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<17>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<16>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<15>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<14>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<13>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<12>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<11>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<10>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<9>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<8>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<7>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<6>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<5>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<4>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<3>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<2>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<1>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/p<0>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/blk00000001/sig0000004b" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/blk00000001/sig0000004a" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<35>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<34>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<33>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<14>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<13>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<12>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<11>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<10>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<9>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<8>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<7>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<6>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<5>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<4>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<3>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<2>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<1>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/kp_mult/multiplier_wrapper/p<0>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<35>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<34>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<33>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<14>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<13>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<12>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<11>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<10>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<9>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<8>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<7>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<6>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<5>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<4>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<3>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<2>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<1>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/heater_control/heater
+_voltage_control/ki_mult/multiplier_wrapper/p<0>" is sourceless and has been
+removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<35>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<34>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<33>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<14>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<13>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<12>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<11>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<10>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<9>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<8>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<7>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<6>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<5>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<4>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<3>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<2>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<1>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/kp_mult/multiplier_wrapper/p<0>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<35>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<34>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<33>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<14>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<13>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<12>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<11>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<10>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<9>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<8>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<7>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<6>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<5>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<4>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<3>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<2>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<1>" is sourceless and has been removed.
+The signal
+"main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_
+control/ki_mult/multiplier_wrapper/p<0>" is sourceless and has been removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/blk00000001/blk00000002" (ONE) removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/blk00000001/blk00000003" (ZERO) removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy1/multiplier_wrapper/blk00000001/blk00000004" (DSP48A1) removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/blk00000001/blk00000002" (ONE) removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/blk00000001/blk00000003" (ZERO) removed.
+Unused block
+"main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_a
+lu/mpy2/multiplier_wrapper/blk00000001/blk00000004" (DSP48A1) removed.
+
+Optimized Block(s):
+TYPE 		BLOCK
+GND 		XST_GND
+VCC 		XST_VCC
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage
+_control/ki_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage
+_control/ki_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage
+_control/kp_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage
+_control/kp_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/heater_control/heate
+r_voltage_control/ki_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/heater_control/heate
+r_voltage_control/ki_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/heater_control/heate
+r_voltage_control/kp_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/heater_control/heate
+r_voltage_control/kp_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_
+voltage_control/ki_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_
+voltage_control/ki_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_
+voltage_control/kp_mult/multiplier_wrapper/blk00000001/blk00000002
+GND
+		main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_
+voltage_control/kp_mult/multiplier_wrapper/blk00000001/blk00000003
+VCC
+		main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/blk00
+000001/blk00000002
+GND
+		main_system_control/system_data_control/test_alu/mpy1/multiplier_wrapper/blk00
+000001/blk00000003
+VCC
+		main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/blk00
+000001/blk00000002
+GND
+		main_system_control/system_data_control/test_alu/mpy2/multiplier_wrapper/blk00
+000001/blk00000003
+
+To enable printing of redundant blocks removed and signals merged, set the
+detailed map report option and rerun map.
+
+Section 6 - IOB Properties
+--------------------------
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| IOB Name                           | Type             | Direction | IO Standard          | Diff  | Drive    | Slew | Reg (s)      | Resistor | IOB      |
+|                                    |                  |           |                      | Term  | Strength | Rate |              |          | Delay    |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| pi_ada_sdata                       | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
+| pi_adb_sdata                       | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
+| pi_ext_ad1_sdata                   | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
+| pi_ext_ad2_sdata                   | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
+| pi_uart_rx                         | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
+| po2_pfc_pwm_ac1                    | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po2_pfc_pwm_ac2                    | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_ada_muxsel<0>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_ada_muxsel<1>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_ada_muxsel<2>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_adb_muxsel<0>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_adb_muxsel<1>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_adb_muxsel<2>                  | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led1_blue                      | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led1_green                     | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led1_red                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led2_blue                      | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led2_green                     | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led2_red                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led3_blue                      | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led3_green                     | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po3_led3_red                       | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_dhb_pwm_pri_high               | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_dhb_pwm_pri_low                | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_dhb_pwm_sec_high               | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_dhb_pwm_sec_low                | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_ht_pwm_pri_high                | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_ht_pwm_pri_low                 | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_ht_pwm_sync1                   | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po4_ht_pwm_sync2                   | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ada_clk                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ada_cs                          | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_adb_clk                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_adb_cs                          | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_bypass_relay                    | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ext_ad1_clk                     | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ext_ad1_cs                      | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ext_ad2_clk                     | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_ext_ad2_cs                      | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| po_uart_tx                         | IOB              | OUTPUT    | LVCMOS25             |       | 12       | SLOW |              |          |          |
+| xclk32mhz                          | IOB              | INPUT     | LVCMOS25             |       |          |      |              |          |          |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Section 7 - RPMs
+----------------
+
+Section 8 - Guide Report
+------------------------
+Guide not run on this design.
+
+Section 9 - Area Group and Partition Summary
+--------------------------------------------
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+Area Group Information
+----------------------
+
+  No area groups were found in this design.
+
+----------------------
+
+Section 10 - Timing Report
+--------------------------
+A logic-level (pre-route) timing report can be generated by using Xilinx static
+timing analysis tools, Timing Analyzer (GUI) or TRCE (command line), with the
+mapped NCD and PCF files. Please note that this timing report will be generated
+using estimated delay information. For accurate numbers, please generate a
+timing report with the post Place and Route NCD file.
+
+For more information about the Timing Analyzer, consult the Xilinx Timing
+Analyzer Reference Manual; for more information about TRCE, consult the Xilinx
+Command Line Tools User Guide "TRACE" chapter.
+
+Section 11 - Configuration String Details
+-----------------------------------------
+Use the "-detail" map option to print out Configuration Strings
+
+Section 12 - Control Set Information
+------------------------------------
+Use the "-detail" map option to print out Control Set Information.
+
+Section 13 - Utilization by Hierarchy
+-------------------------------------
+Use the "-detail" map option to print out the Utilization by Hierarchy section.
