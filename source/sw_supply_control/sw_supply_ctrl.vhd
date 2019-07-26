@@ -130,7 +130,7 @@ end component;
 	signal r_to_adb_triggers : t_ad_triggers;
 	signal r1_to_adb_triggers : t_ad_triggers;
 
-    procedure f_count_up_and_wrap
+    procedure count_up_and_wrap_at
     (
        signal counter_value : inout unsigned(15 downto 0);
        signal wrap_value : in unsigned(15 downto 0)
