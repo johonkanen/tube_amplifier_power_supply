@@ -1,0 +1,106 @@
+- fpga.cmd
+identification
+status
+time short
+memory on
+run
+-opt_mode SPEED
+-opt_level 1
+-ifn fpga.prj
+-ofn fpga.ngc
+-p xa6slx25-2ftg256
+-equivalent_register_removal no
+-max_fanout 10000
+-top fpga
+
+--------------------------------------------
+compile.bat
+set my_path=c:\Xilinx\14.7\ISE_DS\ISE\bin\nt64
+
+c:\cygwin64\bin\bash.exe compile_version.txt
+@if errorlevel 1 goto error
+
+%my_path%\xst -ifn "fpga.cmd"
+@if errorlevel 1 goto error
+
+-- note, needs ucf file
+%my_path%\ngdbuild -p XA6SLX25-2FTG256 -nt timestamp fpga.ngc -uc ../ucf/fpga.ucf fpga.ngd
+@if errorlevel 1 goto error
+
+%my_path%\map -o fpga_map.ncd -w -pr b -ol high -detail -timing fpga.ngd fpga.pcf
+@if errorlevel 1 goto error
+
+%my_path%\par -w -ol high fpga_map.ncd fpga.ncd fpga.pcf
+@if errorlevel 1 goto error
+
+%my_path%\trce -e 3 -u 30 -xml fpga.twx fpga.ncd fpga.pcf
+@if errorlevel 1 goto error
+
+%my_path%\bitgen -w -f bitgen.ut fpga
+@if errorlevel 1 goto error
+
+%windir%\system32\find "WARN" *.srp | %windir%\system32\sort >> warnings.txt
+%windir%\system32\find "WARN" *.mrp | %windir%\system32\sort >> warnings.txt
+%windir%\system32\find "WARN" *.par | %windir%\system32\sort >> warnings.txt
+%windir%\system32\find "WARN" *.twr | %windir%\system32\sort >> warnings.txt
+
+c:\cygwin64\bin\bash.exe compile_finish.txt
+@if errorlevel 1 goto error
+
+@echo compile.bat succeeded.
+@goto end
+
+:error
+@echo An error occurred
+
+:end
+
+pause
+
+--------------------------------------------
+compile.sh
+#!/bin/bash
+clear
+
+compile_version.txt
+
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/xst -ifn "fpga.cmd"
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/ngdbuild -p XA6SLX25-2FTG256 -nt timestamp fpga.ngc -uc ../ucf/fpga.ucf fpga.ngd
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/map -o fpga_map.ncd -w -pr b -ol high -detail -timing fpga.ngd fpga.pcf
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/par -w -ol high fpga_map.ncd fpga.ncd fpga.pcf
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/trce -e 3 -u 30 -xml fpga.twx fpga.ncd fpga.pcf
+/opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/bitgen -w -f bitgen.ut fpga
+
+
+#grep --include \*.srp "WARN" | sort > warnings.txt
+#grep --include \*.mrp "WARN" | sort >> warnings.txt
+#grep --include \*.par "WARN" | sort >> warnings.txt
+#grep --include \*.twr "WARN" | sort >> warnings.txt
+
+#compile_finish.txt
+
+
+echo compile.bat succeeded.
+
+---------------------------------------------
+.prj component has source and library files
+example
+vhdl work ./source/top/top.vhd
+
+
+
+---------------------------------------------
+simulation scripts
+
+view_simulation_wlf.bat
+@echo off
+
+REM modelsim.exe
+
+modelsim.exe -do "dataset open vsim.wlf; do cmd_wave_long.txt"
+
+REM dataset open vsim_data_C_mult_1x.wlf
+REM dataset open vsim_data_C_mult_2x.wlf
+REM dataset open vsim_data_C_mult_3x.wlf
+REM dataset open vsim_data_C_mult_4x.wlf
+REM do cmd_wave_long.txt
