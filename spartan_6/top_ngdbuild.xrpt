@@ -5,7 +5,7 @@
     The structure and the elements are likely to change over the next few releases.
     This means code written to parse this file will need to be revisited each subsequent release.-->
 
-  <application stringID="NgdBuild" timeStamp="Sat Jul 27 00:49:44 2019">
+  <application stringID="NgdBuild" timeStamp="Sat Jul 27 01:01:49 2019">
     <section stringID="User_Env">
       <table stringID="User_EnvVar">
         <column stringID="variable"/>
@@ -80,9 +80,9 @@
         <item dataType="int" stringID="NGDBUILD_NUM_IBUFG" value="1"/>
         <item dataType="int" stringID="NGDBUILD_NUM_INV" value="78"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT1" value="207"/>
-        <item dataType="int" stringID="NGDBUILD_NUM_LUT2" value="285"/>
+        <item dataType="int" stringID="NGDBUILD_NUM_LUT2" value="286"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT3" value="199"/>
-        <item dataType="int" stringID="NGDBUILD_NUM_LUT4" value="159"/>
+        <item dataType="int" stringID="NGDBUILD_NUM_LUT4" value="158"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT5" value="163"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT6" value="274"/>
         <item dataType="int" stringID="NGDBUILD_NUM_MUXCY" value="536"/>
@@ -106,9 +106,9 @@
         <item dataType="int" stringID="NGDBUILD_NUM_IBUFG" value="1"/>
         <item dataType="int" stringID="NGDBUILD_NUM_INV" value="78"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT1" value="207"/>
-        <item dataType="int" stringID="NGDBUILD_NUM_LUT2" value="285"/>
+        <item dataType="int" stringID="NGDBUILD_NUM_LUT2" value="286"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT3" value="199"/>
-        <item dataType="int" stringID="NGDBUILD_NUM_LUT4" value="159"/>
+        <item dataType="int" stringID="NGDBUILD_NUM_LUT4" value="158"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT5" value="163"/>
         <item dataType="int" stringID="NGDBUILD_NUM_LUT6" value="274"/>
         <item dataType="int" stringID="NGDBUILD_NUM_MUXCY" value="536"/>

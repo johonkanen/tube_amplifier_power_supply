@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\Users\Jari\mycodeprojects\tube_psu\spartan_6\top.ncd
+OUTFILE=C:\Users\Jari\mycodeprojects\tube_psu\spartan_6\top.bit
+FAMILY=Spartan6
+PART=xc6slx16-3ftg256
+WORKINGDIR=C:\Users\Jari\mycodeprojects\tube_psu\spartan_6
+LICENSE=WebPack
+USER_INFO=211415300_0_0_273

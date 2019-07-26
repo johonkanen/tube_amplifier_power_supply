@@ -69,19 +69,52 @@ Timing constraint: TS_core_clocks_core_clocks_clkout1 = PERIOD TIMEGRP
 INPUT_JITTER 0.05 ns;
 For more information, see Period Analysis in the Timing Closure User Guide (UG612).
 
- 68517 paths analyzed, 4597 endpoints analyzed, 0 failing endpoints
+ 68517 paths analyzed, 4599 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is   6.823ns.
+ Minimum period is   6.579ns.
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 (SLICE_X7Y52.C5), 5 paths
+Paths for end point main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0 (SLICE_X17Y44.A5), 5 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.706ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.601ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0 (FF)
+  Requirement:          3.891ns
+  Data Path Delay:      2.922ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.118ns (1.494 - 1.612)
+  Source Clock:         clk_256mhz rising at 3.890ns
+  Destination Clock:    clk_128mhz rising at 7.781ns
+  Clock Uncertainty:    0.250ns
+
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Discrete Jitter (DJ):       0.250ns
+    Phase Error (PE):           0.120ns
+
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X17Y43.AQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1
+    SLICE_X17Y43.D2      net (fanout=4)        0.614   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<1>
+    SLICE_X17Y43.DMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>21
+    SLICE_X17Y44.A5      net (fanout=1)        1.282   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>2
+    SLICE_X17Y44.CLK     Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<0>1
+                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
+    -------------------------------------------------  ---------------------------
+    Total                                      2.922ns (1.026ns logic, 1.896ns route)
+                                                       (35.1% logic, 64.9% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     0.611ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0 (FF)
   Requirement:          3.891ns
-  Data Path Delay:      2.817ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.118ns (1.525 - 1.643)
+  Data Path Delay:      2.905ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.125ns (1.494 - 1.619)
   Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -91,30 +124,30 @@ Slack (setup path):     0.706ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y53.BQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X15Y44.BQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
                                                        main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4
-    SLICE_X7Y52.B2       net (fanout=5)        0.857   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
+    SLICE_X17Y43.D5      net (fanout=5)        0.597   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X17Y43.DMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>21
+    SLICE_X17Y44.A5      net (fanout=1)        1.282   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>2
+    SLICE_X17Y44.CLK     Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<0>1
+                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
     -------------------------------------------------  ---------------------------
-    Total                                      2.817ns (1.082ns logic, 1.735ns route)
-                                                       (38.4% logic, 61.6% route)
+    Total                                      2.905ns (1.026ns logic, 1.879ns route)
+                                                       (35.3% logic, 64.7% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.954ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.662ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0 (FF)
   Requirement:          3.891ns
-  Data Path Delay:      2.569ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.118ns (1.525 - 1.643)
+  Data Path Delay:      2.854ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.125ns (1.494 - 1.619)
   Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -124,66 +157,33 @@ Slack (setup path):     0.954ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y53.AQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X15Y44.AQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
                                                        main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2
-    SLICE_X7Y52.B1       net (fanout=5)        0.609   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<2>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
+    SLICE_X17Y43.D3      net (fanout=5)        0.546   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<2>
+    SLICE_X17Y43.DMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>21
+    SLICE_X17Y44.A5      net (fanout=1)        1.282   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>2
+    SLICE_X17Y44.CLK     Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<0>1
+                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_0
     -------------------------------------------------  ---------------------------
-    Total                                      2.569ns (1.082ns logic, 1.487ns route)
-                                                       (42.1% logic, 57.9% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     1.081ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 (FF)
-  Requirement:          3.891ns
-  Data Path Delay:      2.440ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.120ns (1.525 - 1.645)
-  Source Clock:         clk_256mhz rising at 3.890ns
-  Destination Clock:    clk_128mhz rising at 7.781ns
-  Clock Uncertainty:    0.250ns
-
-  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Discrete Jitter (DJ):       0.250ns
-    Phase Error (PE):           0.120ns
-
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 to main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X6Y52.BQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3
-    SLICE_X7Y52.B3       net (fanout=4)        0.480   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<3>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.322   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_9_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
-    -------------------------------------------------  ---------------------------
-    Total                                      2.440ns (1.082ns logic, 1.358ns route)
-                                                       (44.3% logic, 55.7% route)
+    Total                                      2.854ns (1.026ns logic, 1.828ns route)
+                                                       (35.9% logic, 64.1% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1 (SLICE_X7Y52.C5), 5 paths
+Paths for end point main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2 (SLICE_X16Y46.B5), 5 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.801ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.802ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2 (FF)
   Requirement:          3.891ns
-  Data Path Delay:      2.722ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.118ns (1.525 - 1.643)
+  Data Path Delay:      2.716ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.123ns (1.496 - 1.619)
   Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -193,30 +193,30 @@ Slack (setup path):     0.801ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y53.BQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X15Y44.BQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
                                                        main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4
-    SLICE_X7Y52.B2       net (fanout=5)        0.857   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.227   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+    SLICE_X17Y44.B5      net (fanout=5)        0.626   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X17Y44.B       Tilo                  0.259   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>21
+    SLICE_X16Y46.B5      net (fanout=4)        1.099   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>2
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<1>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     -------------------------------------------------  ---------------------------
-    Total                                      2.722ns (0.987ns logic, 1.735ns route)
-                                                       (36.3% logic, 63.7% route)
+    Total                                      2.716ns (0.991ns logic, 1.725ns route)
+                                                       (36.5% logic, 63.5% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     1.049ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1 (FF)
+Slack (setup path):     0.816ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2 (FF)
   Requirement:          3.891ns
-  Data Path Delay:      2.474ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.118ns (1.525 - 1.643)
+  Data Path Delay:      2.709ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.116ns (1.496 - 1.612)
   Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -226,30 +226,30 @@ Slack (setup path):     1.049ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y53.AQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2
-    SLICE_X7Y52.B1       net (fanout=5)        0.609   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<2>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.227   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+    SLICE_X17Y43.AQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1
+    SLICE_X17Y44.B2      net (fanout=4)        0.619   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<1>
+    SLICE_X17Y44.B       Tilo                  0.259   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>21
+    SLICE_X16Y46.B5      net (fanout=4)        1.099   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>2
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<1>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     -------------------------------------------------  ---------------------------
-    Total                                      2.474ns (0.987ns logic, 1.487ns route)
-                                                       (39.9% logic, 60.1% route)
+    Total                                      2.709ns (0.991ns logic, 1.718ns route)
+                                                       (36.6% logic, 63.4% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     1.176ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.831ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2 (FF)
   Requirement:          3.891ns
-  Data Path Delay:      2.345ns (Levels of Logic = 2)
-  Clock Path Skew:      -0.120ns (1.525 - 1.645)
+  Data Path Delay:      2.694ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.116ns (1.496 - 1.612)
   Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -259,139 +259,124 @@ Slack (setup path):     1.176ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y52.BQ       Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+    SLICE_X17Y43.BQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
                                                        main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3
-    SLICE_X7Y52.B3       net (fanout=4)        0.480   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<3>
-    SLICE_X7Y52.BMUX     Tilo                  0.313   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/out31
-    SLICE_X7Y52.C5       net (fanout=4)        0.878   main_system_control/system_data_control/onboard_ad_control/out3
-    SLICE_X7Y52.CLK      Tas                   0.227   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>1
-                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_1
+    SLICE_X17Y44.B1      net (fanout=4)        0.604   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<3>
+    SLICE_X17Y44.B       Tilo                  0.259   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>21
+    SLICE_X16Y46.B5      net (fanout=4)        1.099   main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<2>2
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<1>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_2
     -------------------------------------------------  ---------------------------
-    Total                                      2.345ns (0.987ns logic, 1.358ns route)
-                                                       (42.1% logic, 57.9% route)
+    Total                                      2.694ns (0.991ns logic, 1.703ns route)
+                                                       (36.8% logic, 63.2% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/s16_inv_test_5 (SLICE_X36Y33.SR), 25 paths
+Paths for end point main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (SLICE_X16Y46.A2), 3 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.958ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_1 (FF)
-  Destination:          main_system_control/system_data_control/s16_inv_test_5 (FF)
-  Requirement:          7.781ns
-  Data Path Delay:      6.697ns (Levels of Logic = 3)
-  Clock Path Skew:      0.004ns (0.387 - 0.383)
-  Source Clock:         clk_128mhz rising at 0.000ns
+Slack (setup path):     0.967ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (FF)
+  Requirement:          3.891ns
+  Data Path Delay:      2.551ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.123ns (1.496 - 1.619)
+  Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
-  Clock Uncertainty:    0.130ns
+  Clock Uncertainty:    0.250ns
 
-  Clock Uncertainty:          0.130ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter (TSJ):  0.070ns
     Discrete Jitter (DJ):       0.250ns
-    Phase Error (PE):           0.000ns
+    Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_1 to main_system_control/system_data_control/s16_inv_test_5
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X7Y52.AMUX     Tshcko                0.461   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_1
-    SLICE_X21Y39.D5      net (fanout=6)        2.908   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<1>
-    SLICE_X21Y39.D       Tilo                  0.259   main_system_control/system_data_control/start_alu
-                                                       main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o1
-    SLICE_X34Y35.D4      net (fanout=3)        1.347   main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o
-    SLICE_X34Y35.D       Tilo                  0.203   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C6      net (fanout=9)        0.138   main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C       Tilo                  0.204   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02325
-    SLICE_X36Y33.SR      net (fanout=4)        0.748   main_system_control/system_data_control/_n0232
-    SLICE_X36Y33.CLK     Tsrck                 0.429   main_system_control/system_data_control/s16_inv_test<7>
-                                                       main_system_control/system_data_control/s16_inv_test_5
+    SLICE_X15Y44.BQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4
+    SLICE_X16Y46.C4      net (fanout=5)        0.973   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X16Y46.CMUX    Tilo                  0.251   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>_SW0
+    SLICE_X16Y46.A2      net (fanout=1)        0.595   N58
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     -------------------------------------------------  ---------------------------
-    Total                                      6.697ns (1.556ns logic, 5.141ns route)
-                                                       (23.2% logic, 76.8% route)
+    Total                                      2.551ns (0.983ns logic, 1.568ns route)
+                                                       (38.5% logic, 61.5% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     1.706ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 (FF)
-  Destination:          main_system_control/system_data_control/s16_inv_test_5 (FF)
-  Requirement:          7.781ns
-  Data Path Delay:      5.949ns (Levels of Logic = 3)
-  Clock Path Skew:      0.004ns (0.387 - 0.383)
-  Source Clock:         clk_128mhz rising at 0.000ns
+Slack (setup path):     1.171ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (FF)
+  Requirement:          3.891ns
+  Data Path Delay:      2.354ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.116ns (1.496 - 1.612)
+  Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
-  Clock Uncertainty:    0.130ns
+  Clock Uncertainty:    0.250ns
 
-  Clock Uncertainty:          0.130ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter (TSJ):  0.070ns
     Discrete Jitter (DJ):       0.250ns
-    Phase Error (PE):           0.000ns
+    Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2 to main_system_control/system_data_control/s16_inv_test_5
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X7Y52.CQ       Tcko                  0.391   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address_2
-    SLICE_X21Y39.D6      net (fanout=6)        2.230   main_system_control/system_data_control/onboard_ad_control/so_adb_ctrl_std3_ad_address<2>
-    SLICE_X21Y39.D       Tilo                  0.259   main_system_control/system_data_control/start_alu
-                                                       main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o1
-    SLICE_X34Y35.D4      net (fanout=3)        1.347   main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o
-    SLICE_X34Y35.D       Tilo                  0.203   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C6      net (fanout=9)        0.138   main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C       Tilo                  0.204   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02325
-    SLICE_X36Y33.SR      net (fanout=4)        0.748   main_system_control/system_data_control/_n0232
-    SLICE_X36Y33.CLK     Tsrck                 0.429   main_system_control/system_data_control/s16_inv_test<7>
-                                                       main_system_control/system_data_control/s16_inv_test_5
+    SLICE_X17Y43.AQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1
+    SLICE_X16Y46.C2      net (fanout=4)        0.776   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<1>
+    SLICE_X16Y46.CMUX    Tilo                  0.251   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>_SW0
+    SLICE_X16Y46.A2      net (fanout=1)        0.595   N58
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.949ns (1.486ns logic, 4.463ns route)
-                                                       (25.0% logic, 75.0% route)
+    Total                                      2.354ns (0.983ns logic, 1.371ns route)
+                                                       (41.8% logic, 58.2% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     1.725ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/so_spi_rdy (FF)
-  Destination:          main_system_control/system_data_control/s16_inv_test_5 (FF)
-  Requirement:          7.781ns
-  Data Path Delay:      5.951ns (Levels of Logic = 3)
-  Clock Path Skew:      0.025ns (0.387 - 0.362)
-  Source Clock:         clk_128mhz rising at 0.000ns
+Slack (setup path):     1.262ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (FF)
+  Requirement:          3.891ns
+  Data Path Delay:      2.263ns (Levels of Logic = 2)
+  Clock Path Skew:      -0.116ns (1.496 - 1.612)
+  Source Clock:         clk_256mhz rising at 3.890ns
   Destination Clock:    clk_128mhz rising at 7.781ns
-  Clock Uncertainty:    0.130ns
+  Clock Uncertainty:    0.250ns
 
-  Clock Uncertainty:          0.130ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
     Total System Jitter (TSJ):  0.070ns
     Discrete Jitter (DJ):       0.250ns
-    Phase Error (PE):           0.000ns
+    Phase Error (PE):           0.120ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/so_spi_rdy to main_system_control/system_data_control/s16_inv_test_5
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X11Y53.AQ      Tcko                  0.391   main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/r_po_spi_cs
-                                                       main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/so_spi_rdy
-    SLICE_X21Y39.D2      net (fanout=5)        2.232   main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/so_spi_rdy
-    SLICE_X21Y39.D       Tilo                  0.259   main_system_control/system_data_control/start_alu
-                                                       main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o1
-    SLICE_X34Y35.D4      net (fanout=3)        1.347   main_system_control/system_data_control/GND_23_o_r_so_adb_ctrl_ad_rdy_trigger_AND_96_o
-    SLICE_X34Y35.D       Tilo                  0.203   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C6      net (fanout=9)        0.138   main_system_control/system_data_control/_n02321
-    SLICE_X34Y35.C       Tilo                  0.204   main_system_control/system_data_control/r_data2<3>
-                                                       main_system_control/system_data_control/_n02325
-    SLICE_X36Y33.SR      net (fanout=4)        0.748   main_system_control/system_data_control/_n0232
-    SLICE_X36Y33.CLK     Tsrck                 0.429   main_system_control/system_data_control/s16_inv_test<7>
-                                                       main_system_control/system_data_control/s16_inv_test_5
+    SLICE_X17Y43.BQ      Tcko                  0.391   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_3
+    SLICE_X16Y46.C3      net (fanout=4)        0.685   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<3>
+    SLICE_X16Y46.CMUX    Tilo                  0.251   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>_SW0
+    SLICE_X16Y46.A2      net (fanout=1)        0.595   N58
+    SLICE_X16Y46.CLK     Tas                   0.341   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
+                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>
+                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
     -------------------------------------------------  ---------------------------
-    Total                                      5.951ns (1.486ns logic, 4.465ns route)
-                                                       (25.0% logic, 75.0% route)
+    Total                                      2.263ns (0.983ns logic, 1.280ns route)
+                                                       (43.4% logic, 56.6% route)
 
 --------------------------------------------------------------------------------
 
@@ -400,14 +385,14 @@ Hold Paths: TS_core_clocks_core_clocks_clkout1 = PERIOD TIMEGRP
         INPUT_JITTER 0.05 ns;
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_6 (SLICE_X6Y47.CI), 1 path
+Paths for end point main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_1 (SLICE_X18Y43.DI), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.075ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_6 (FF)
+Slack (hold path):      0.113ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_1 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.545ns (Levels of Logic = 0)
-  Clock Path Skew:      0.220ns (0.906 - 0.686)
+  Data Path Delay:      0.576ns (Levels of Logic = 0)
+  Clock Path Skew:      0.213ns (0.866 - 0.653)
   Source Clock:         clk_256mhz rising at 7.781ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -417,29 +402,61 @@ Slack (hold path):      0.075ns (requirement - (clock path skew + uncertainty - 
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6 to main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_6
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1 to main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_1
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y52.CQ       Tcko                  0.234   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6
-    SLICE_X6Y47.CI       net (fanout=5)        0.261   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
-    SLICE_X6Y47.CLK      Tdh         (-Th)    -0.050   main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>
-                                                       main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_6
+    SLICE_X17Y43.AQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_1
+    SLICE_X18Y43.DI      net (fanout=4)        0.345   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<1>
+    SLICE_X18Y43.CLK     Tdh         (-Th)    -0.033   main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>
+                                                       main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_1
     -------------------------------------------------  ---------------------------
-    Total                                      0.545ns (0.284ns logic, 0.261ns route)
-                                                       (52.1% logic, 47.9% route)
+    Total                                      0.576ns (0.231ns logic, 0.345ns route)
+                                                       (40.1% logic, 59.9% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_2 (SLICE_X6Y47.BX), 1 path
+Paths for end point main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_4 (SLICE_X18Y43.AI), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.147ns (requirement - (clock path skew + uncertainty - data path))
+Slack (hold path):      0.260ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 (FF)
+  Destination:          main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_4 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.716ns (Levels of Logic = 0)
+  Clock Path Skew:      0.206ns (0.866 - 0.660)
+  Source Clock:         clk_256mhz rising at 7.781ns
+  Destination Clock:    clk_128mhz rising at 7.781ns
+  Clock Uncertainty:    0.250ns
+
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Discrete Jitter (DJ):       0.250ns
+    Phase Error (PE):           0.120ns
+
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4 to main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_4
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X15Y44.BQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_4
+    SLICE_X18Y43.AI      net (fanout=5)        0.488   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X18Y43.CLK     Tdh         (-Th)    -0.030   main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>
+                                                       main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_4
+    -------------------------------------------------  ---------------------------
+    Total                                      0.716ns (0.228ns logic, 0.488ns route)
+                                                       (31.8% logic, 68.2% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_2 (SLICE_X18Y43.BX), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.264ns (requirement - (clock path skew + uncertainty - data path))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2 (FF)
   Destination:          main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_2 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.619ns (Levels of Logic = 0)
-  Clock Path Skew:      0.222ns (0.906 - 0.684)
+  Data Path Delay:      0.720ns (Levels of Logic = 0)
+  Clock Path Skew:      0.206ns (0.866 - 0.660)
   Source Clock:         clk_256mhz rising at 7.781ns
   Destination Clock:    clk_128mhz rising at 7.781ns
   Clock Uncertainty:    0.250ns
@@ -453,47 +470,14 @@ Slack (hold path):      0.147ns (requirement - (clock path skew + uncertainty - 
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X6Y53.AQ       Tcko                  0.234   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
+    SLICE_X15Y44.AQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<4>
                                                        main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers_2
-    SLICE_X6Y47.BX       net (fanout=5)        0.465   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<2>
-    SLICE_X6Y47.CLK      Tdh         (-Th)     0.080   main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>
+    SLICE_X18Y43.BX      net (fanout=5)        0.602   main_system_control/system_data_control/supply_ctrl_layer/to_adb_triggers<2>
+    SLICE_X18Y43.CLK     Tdh         (-Th)     0.080   main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>
                                                        main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_2
     -------------------------------------------------  ---------------------------
-    Total                                      0.619ns (0.154ns logic, 0.465ns route)
-                                                       (24.9% logic, 75.1% route)
-
---------------------------------------------------------------------------------
-
-Paths for end point main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (SLICE_X6Y51.B4), 1 path
---------------------------------------------------------------------------------
-Slack (hold path):      0.198ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6 (FF)
-  Destination:          main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0 (FF)
-  Requirement:          0.000ns
-  Data Path Delay:      0.664ns (Levels of Logic = 1)
-  Clock Path Skew:      0.216ns (0.902 - 0.686)
-  Source Clock:         clk_256mhz rising at 7.781ns
-  Destination Clock:    clk_128mhz rising at 7.781ns
-  Clock Uncertainty:    0.250ns
-
-  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Discrete Jitter (DJ):       0.250ns
-    Phase Error (PE):           0.120ns
-
-  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6 to main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X6Y52.CQ       Tcko                  0.234   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers_6
-    SLICE_X6Y51.B4       net (fanout=5)        0.233   main_system_control/system_data_control/supply_ctrl_layer/to_ada_triggers<6>
-    SLICE_X6Y51.CLK      Tah         (-Th)    -0.197   main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt<2>
-                                                       main_system_control/system_data_control/onboard_ad_control/GND_28_o_GND_28_o_select_10_OUT<3>
-                                                       main_system_control/system_data_control/onboard_ad_control/ada_mux_sequencer.st_ada_seq_nxt_0
-    -------------------------------------------------  ---------------------------
-    Total                                      0.664ns (0.431ns logic, 0.233ns route)
-                                                       (64.9% logic, 35.1% route)
+    Total                                      0.720ns (0.118ns logic, 0.602ns route)
+                                                       (16.4% logic, 83.6% route)
 
 --------------------------------------------------------------------------------
 
@@ -514,7 +498,7 @@ Slack: 6.781ns (period - min period limit)
   Min period limit: 1.000ns (1000.000MHz) (Tcp)
   Physical resource: main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>/CLK
   Logical resource: main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_3/CLK
-  Location pin: SLICE_X6Y47.CLK
+  Location pin: SLICE_X18Y43.CLK
   Clock network: clk_128mhz
 --------------------------------------------------------------------------------
 Slack: 6.781ns (period - min period limit)
@@ -522,7 +506,7 @@ Slack: 6.781ns (period - min period limit)
   Min period limit: 1.000ns (1000.000MHz) (Tcp)
   Physical resource: main_system_control/system_data_control/onboard_ad_control/r1_to_adb_triggers<1>/CLK
   Logical resource: main_system_control/system_data_control/onboard_ad_control/Mshreg_r1_to_adb_triggers_4/CLK
-  Location pin: SLICE_X6Y47.CLK
+  Location pin: SLICE_X18Y43.CLK
   Clock network: clk_128mhz
 --------------------------------------------------------------------------------
 
@@ -534,17 +518,17 @@ For more information, see Period Analysis in the Timing Closure User Guide (UG61
 
  4231 paths analyzed, 1087 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is   3.790ns.
+ Minimum period is   3.807ns.
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8 (SLICE_X2Y8.CE), 12 paths
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1 (SLICE_X16Y16.SR), 43 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.100ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8 (FF)
+Slack (setup path):     0.083ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.658ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.016ns (0.280 - 0.296)
+  Data Path Delay:      3.691ns (Levels of Logic = 3)
+  Clock Path Skew:      0.000ns
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -554,35 +538,36 @@ Slack (setup path):     0.100ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y6.DQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3
-    SLICE_X3Y5.D2        net (fanout=2)        0.593   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+    SLICE_X16Y16.AQ      Tcko                  0.408   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
+    SLICE_X12Y18.A4      net (fanout=2)        0.836   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<0>
+    SLICE_X12Y18.COUT    Topcya                0.409   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lutdi
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.455   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     -------------------------------------------------  ---------------------------
-    Total                                      3.658ns (1.609ns logic, 2.049ns route)
-                                                       (44.0% logic, 56.0% route)
+    Total                                      3.691ns (1.753ns logic, 1.938ns route)
+                                                       (47.5% logic, 52.5% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.154ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8 (FF)
+Slack (setup path):     0.097ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.606ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.014ns (0.280 - 0.294)
+  Data Path Delay:      3.677ns (Levels of Logic = 3)
+  Clock Path Skew:      0.000ns
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -592,35 +577,36 @@ Slack (setup path):     0.154ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y7.CQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6
-    SLICE_X3Y7.A6        net (fanout=2)        0.285   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<6>
-    SLICE_X3Y7.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/s1_pulse
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o12
-    SLICE_X3Y6.A1        net (fanout=1)        0.596   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+    SLICE_X16Y16.AQ      Tcko                  0.408   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
+    SLICE_X12Y18.A4      net (fanout=2)        0.836   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<0>
+    SLICE_X12Y18.COUT    Topcya                0.395   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lut<0>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.455   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     -------------------------------------------------  ---------------------------
-    Total                                      3.606ns (1.609ns logic, 1.997ns route)
-                                                       (44.6% logic, 55.4% route)
+    Total                                      3.677ns (1.739ns logic, 1.938ns route)
+                                                       (47.3% logic, 52.7% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.183ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8 (FF)
+Slack (setup path):     0.124ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.577ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.014ns (0.280 - 0.294)
+  Data Path Delay:      3.626ns (Levels of Logic = 3)
+  Clock Path Skew:      -0.024ns (0.247 - 0.271)
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -630,38 +616,39 @@ Slack (setup path):     0.183ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y7.AQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4
-    SLICE_X3Y5.D3        net (fanout=2)        0.512   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<4>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_8
+    SLICE_X10Y19.BQ      Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2
+    SLICE_X12Y18.B5      net (fanout=1)        0.766   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier<2>
+    SLICE_X12Y18.COUT    Topcyb                0.375   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lut<1>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.455   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_1
     -------------------------------------------------  ---------------------------
-    Total                                      3.577ns (1.609ns logic, 1.968ns route)
-                                                       (45.0% logic, 55.0% route)
+    Total                                      3.626ns (1.758ns logic, 1.868ns route)
+                                                       (48.5% logic, 51.5% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11 (SLICE_X2Y8.CE), 12 paths
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (SLICE_X16Y16.SR), 43 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.140ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11 (FF)
+Slack (setup path):     0.094ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.618ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.016ns (0.280 - 0.296)
+  Data Path Delay:      3.680ns (Levels of Logic = 3)
+  Clock Path Skew:      0.000ns
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -671,35 +658,36 @@ Slack (setup path):     0.140ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y6.DQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3
-    SLICE_X3Y5.D2        net (fanout=2)        0.593   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.291   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+    SLICE_X16Y16.AQ      Tcko                  0.408   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
+    SLICE_X12Y18.A4      net (fanout=2)        0.836   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<0>
+    SLICE_X12Y18.COUT    Topcya                0.409   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lutdi
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.444   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     -------------------------------------------------  ---------------------------
-    Total                                      3.618ns (1.569ns logic, 2.049ns route)
-                                                       (43.4% logic, 56.6% route)
+    Total                                      3.680ns (1.742ns logic, 1.938ns route)
+                                                       (47.3% logic, 52.7% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.194ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11 (FF)
+Slack (setup path):     0.108ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.566ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.014ns (0.280 - 0.294)
+  Data Path Delay:      3.666ns (Levels of Logic = 3)
+  Clock Path Skew:      0.000ns
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -709,35 +697,36 @@ Slack (setup path):     0.194ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y7.CQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6
-    SLICE_X3Y7.A6        net (fanout=2)        0.285   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<6>
-    SLICE_X3Y7.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/s1_pulse
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o12
-    SLICE_X3Y6.A1        net (fanout=1)        0.596   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.291   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+    SLICE_X16Y16.AQ      Tcko                  0.408   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
+    SLICE_X12Y18.A4      net (fanout=2)        0.836   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<0>
+    SLICE_X12Y18.COUT    Topcya                0.395   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lut<0>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.444   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     -------------------------------------------------  ---------------------------
-    Total                                      3.566ns (1.569ns logic, 1.997ns route)
-                                                       (44.0% logic, 56.0% route)
+    Total                                      3.666ns (1.728ns logic, 1.938ns route)
+                                                       (47.1% logic, 52.9% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.223ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11 (FF)
+Slack (setup path):     0.135ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.537ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.014ns (0.280 - 0.294)
+  Data Path Delay:      3.615ns (Levels of Logic = 3)
+  Clock Path Skew:      -0.024ns (0.247 - 0.271)
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -747,37 +736,38 @@ Slack (setup path):     0.223ns (requirement - (data path - clock path skew + un
     Discrete Jitter (DJ):       0.220ns
     Phase Error (PE):           0.000ns
 
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y7.AQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4
-    SLICE_X3Y5.D3        net (fanout=2)        0.512   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<4>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y8.CE        net (fanout=3)        0.502   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y8.CLK       Tceck                 0.291   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<11>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_11
+    SLICE_X10Y19.BQ      Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier_2
+    SLICE_X12Y18.B5      net (fanout=1)        0.766   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_reset_carrier<2>
+    SLICE_X12Y18.COUT    Topcyb                0.375   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_lut<1>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.CIN     net (fanout=1)        0.003   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<3>
+    SLICE_X12Y19.BMUX    Tcinb                 0.222   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B5      net (fanout=1)        0.648   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mcompar_u12_reset_carrier[11]_u12_carrier[11]_LessThan_22_o_cy<5>
+    SLICE_X17Y18.B       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n01181
+    SLICE_X16Y16.SR      net (fanout=3)        0.451   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0118
+    SLICE_X16Y16.CLK     Tsrck                 0.444   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_0
     -------------------------------------------------  ---------------------------
-    Total                                      3.537ns (1.569ns logic, 1.968ns route)
-                                                       (44.4% logic, 55.6% route)
+    Total                                      3.615ns (1.747ns logic, 1.868ns route)
+                                                       (48.3% logic, 51.7% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (SLICE_X2Y6.CE), 12 paths
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (SLICE_X14Y13.CE), 12 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     0.143ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.107ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3 (FF)
   Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.631ns (Levels of Logic = 3)
+  Data Path Delay:      3.667ns (Levels of Logic = 3)
   Clock Path Skew:      0.000ns
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
@@ -792,69 +782,31 @@ Slack (setup path):     0.143ns (requirement - (data path - clock path skew + un
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y6.DQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+    SLICE_X14Y13.DQ      Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_3
-    SLICE_X3Y5.D2        net (fanout=2)        0.593   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
+    SLICE_X15Y12.D2      net (fanout=2)        0.593   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+    SLICE_X15Y12.D       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<2>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
+    SLICE_X15Y13.A6      net (fanout=1)        0.507   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
+    SLICE_X15Y13.A       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
+    SLICE_X15Y14.B4      net (fanout=2)        0.496   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
+    SLICE_X15Y14.BMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.st_dt_states
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y6.CE        net (fanout=3)        0.475   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y6.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+    SLICE_X14Y13.CE      net (fanout=3)        0.462   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
+    SLICE_X14Y13.CLK     Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
     -------------------------------------------------  ---------------------------
-    Total                                      3.631ns (1.609ns logic, 2.022ns route)
-                                                       (44.3% logic, 55.7% route)
+    Total                                      3.667ns (1.609ns logic, 2.058ns route)
+                                                       (43.9% logic, 56.1% route)
 
 --------------------------------------------------------------------------------
-Slack (setup path):     0.188ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (FF)
-  Requirement:          3.890ns
-  Data Path Delay:      3.579ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.007ns (0.144 - 0.151)
-  Source Clock:         clk_256mhz rising at 0.000ns
-  Destination Clock:    clk_256mhz rising at 3.890ns
-  Clock Uncertainty:    0.116ns
-
-  Clock Uncertainty:          0.116ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
-    Total System Jitter (TSJ):  0.070ns
-    Discrete Jitter (DJ):       0.220ns
-    Phase Error (PE):           0.000ns
-
-  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X2Y7.CQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_6
-    SLICE_X3Y7.A6        net (fanout=2)        0.285   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<6>
-    SLICE_X3Y7.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/s1_pulse
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o12
-    SLICE_X3Y6.A1        net (fanout=1)        0.596   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y6.CE        net (fanout=3)        0.475   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y6.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
-    -------------------------------------------------  ---------------------------
-    Total                                      3.579ns (1.609ns logic, 1.970ns route)
-                                                       (45.0% logic, 55.0% route)
-
---------------------------------------------------------------------------------
-Slack (setup path):     0.217ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     0.174ns (requirement - (data path - clock path skew + uncertainty))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4 (FF)
   Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (FF)
   Requirement:          3.890ns
-  Data Path Delay:      3.550ns (Levels of Logic = 3)
-  Clock Path Skew:      -0.007ns (0.144 - 0.151)
+  Data Path Delay:      3.589ns (Levels of Logic = 3)
+  Clock Path Skew:      -0.011ns (0.154 - 0.165)
   Source Clock:         clk_256mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 3.890ns
   Clock Uncertainty:    0.116ns
@@ -868,23 +820,61 @@ Slack (setup path):     0.217ns (requirement - (data path - clock path skew + un
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X2Y7.AQ        Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
+    SLICE_X14Y14.AQ      Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<7>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_4
-    SLICE_X3Y5.D3        net (fanout=2)        0.512   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<4>
-    SLICE_X3Y5.D         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
+    SLICE_X15Y12.D3      net (fanout=2)        0.515   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<4>
+    SLICE_X15Y12.D       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<2>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
-    SLICE_X3Y6.A6        net (fanout=1)        0.340   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
-    SLICE_X3Y6.A         Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
+    SLICE_X15Y13.A6      net (fanout=1)        0.507   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
+    SLICE_X15Y13.A       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
-    SLICE_X1Y7.B1        net (fanout=2)        0.614   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
-    SLICE_X1Y7.BMUX      Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_dt_dly<6>
+    SLICE_X15Y14.B4      net (fanout=2)        0.496   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
+    SLICE_X15Y14.BMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.st_dt_states
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
-    SLICE_X2Y6.CE        net (fanout=3)        0.475   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
-    SLICE_X2Y6.CLK       Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+    SLICE_X14Y13.CE      net (fanout=3)        0.462   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
+    SLICE_X14Y13.CLK     Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
                                                        main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
     -------------------------------------------------  ---------------------------
-    Total                                      3.550ns (1.609ns logic, 1.941ns route)
-                                                       (45.3% logic, 54.7% route)
+    Total                                      3.589ns (1.609ns logic, 1.980ns route)
+                                                       (44.8% logic, 55.2% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     0.295ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 (FF)
+  Requirement:          3.890ns
+  Data Path Delay:      3.479ns (Levels of Logic = 3)
+  Clock Path Skew:      0.000ns
+  Source Clock:         clk_256mhz rising at 0.000ns
+  Destination Clock:    clk_256mhz rising at 3.890ns
+  Clock Uncertainty:    0.116ns
+
+  Clock Uncertainty:          0.116ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Discrete Jitter (DJ):       0.220ns
+    Phase Error (PE):           0.000ns
+
+  Maximum Data Path at Slow Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0 to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X14Y13.AQ      Tcko                  0.447   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
+    SLICE_X15Y12.D4      net (fanout=2)        0.405   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<0>
+    SLICE_X15Y12.D       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<2>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o11
+    SLICE_X15Y13.A6      net (fanout=1)        0.507   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o1
+    SLICE_X15Y13.A       Tilo                  0.259   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/r_po4_ht_pwm_sync2<0>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o13
+    SLICE_X15Y14.B4      net (fanout=2)        0.496   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/GND_107_o_pri_gate_ctrl.sec_pwm_cntr[11]_LessThan_29_o
+    SLICE_X15Y14.BMUX    Tilo                  0.313   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.st_dt_states
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv1
+    SLICE_X14Y13.CE      net (fanout=3)        0.462   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/_n0152_inv
+    SLICE_X14Y13.CLK     Tceck                 0.331   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/pri_gate_ctrl.sec_pwm_cntr_0
+    -------------------------------------------------  ---------------------------
+    Total                                      3.479ns (1.609ns logic, 1.870ns route)
+                                                       (46.2% logic, 53.8% route)
 
 --------------------------------------------------------------------------------
 
@@ -893,14 +883,46 @@ Hold Paths: TS_core_clocks_core_clocks_clkout0 = PERIOD TIMEGRP
         INPUT_JITTER 0.05 ns;
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_2 (SLICE_X18Y9.B5), 1 path
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_2 (SLICE_X22Y47.CX), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.067ns (requirement - (clock path skew + uncertainty - data path))
+Slack (hold path):      0.005ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_2 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_2 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.463ns (Levels of Logic = 0)
+  Clock Path Skew:      0.208ns (0.880 - 0.672)
+  Source Clock:         clk_128mhz rising at 0.000ns
+  Destination Clock:    clk_256mhz rising at 0.000ns
+  Clock Uncertainty:    0.250ns
+
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Discrete Jitter (DJ):       0.250ns
+    Phase Error (PE):           0.120ns
+
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_2 to main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_2
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X25Y47.CQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_2
+    SLICE_X22Y47.CX      net (fanout=1)        0.224   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<2>
+    SLICE_X22Y47.CLK     Tckdi       (-Th)    -0.041   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_2
+    -------------------------------------------------  ---------------------------
+    Total                                      0.463ns (0.239ns logic, 0.224ns route)
+                                                       (51.6% logic, 48.4% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_2 (SLICE_X29Y13.B5), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.083ns (requirement - (clock path skew + uncertainty - data path))
   Source:               main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out_2 (FF)
   Destination:          main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_2 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.531ns (Levels of Logic = 1)
-  Clock Path Skew:      0.214ns (0.860 - 0.646)
+  Data Path Delay:      0.548ns (Levels of Logic = 1)
+  Clock Path Skew:      0.215ns (0.896 - 0.681)
   Source Clock:         clk_128mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 0.000ns
   Clock Uncertainty:    0.250ns
@@ -914,26 +936,26 @@ Slack (hold path):      0.067ns (requirement - (clock path skew + uncertainty - 
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X19Y9.CQ       Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out<3>
+    SLICE_X29Y11.CQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out<2>
                                                        main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out_2
-    SLICE_X18Y9.B5       net (fanout=3)        0.202   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out<2>
-    SLICE_X18Y9.CLK      Tah         (-Th)    -0.131   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase<5>
+    SLICE_X29Y13.B5      net (fanout=3)        0.195   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_voltage_control/so_sign18_pi_out<2>
+    SLICE_X29Y13.CLK     Tah         (-Th)    -0.155   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase<1>
                                                        main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/Mmux_GND_64_o_ri_dhb_ctrl_s16_phase[15]_mux_3_OUT91
                                                        main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_2
     -------------------------------------------------  ---------------------------
-    Total                                      0.531ns (0.329ns logic, 0.202ns route)
-                                                       (62.0% logic, 38.0% route)
+    Total                                      0.548ns (0.353ns logic, 0.195ns route)
+                                                       (64.4% logic, 35.6% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_3 (SLICE_X10Y18.CE), 1 path
+Paths for end point main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3 (SLICE_X22Y47.CE), 6 paths
 --------------------------------------------------------------------------------
-Slack (hold path):      0.173ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_3 (FF)
+Slack (hold path):      0.086ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_3 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.618ns (Levels of Logic = 0)
-  Clock Path Skew:      0.195ns (0.885 - 0.690)
+  Data Path Delay:      0.544ns (Levels of Logic = 1)
+  Clock Path Skew:      0.208ns (0.880 - 0.672)
   Source Clock:         clk_128mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 0.000ns
   Clock Uncertainty:    0.250ns
@@ -943,29 +965,29 @@ Slack (hold path):      0.173ns (requirement - (clock path skew + uncertainty - 
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_3
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_3 to main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X7Y14.BQ       Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-    SLICE_X10Y18.CE      net (fanout=28)       0.528   main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-    SLICE_X10Y18.CLK     Tckce       (-Th)     0.108   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier<3>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_carrier_3
+    SLICE_X25Y47.DQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_3
+    SLICE_X22Y47.A4      net (fanout=2)        0.221   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<3>
+    SLICE_X22Y47.A       Tilo                  0.156   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv1
+    SLICE_X22Y47.CE      net (fanout=2)        0.077   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv
+    SLICE_X22Y47.CLK     Tckce       (-Th)     0.108   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
     -------------------------------------------------  ---------------------------
-    Total                                      0.618ns (0.090ns logic, 0.528ns route)
-                                                       (14.6% logic, 85.4% route)
+    Total                                      0.544ns (0.246ns logic, 0.298ns route)
+                                                       (45.2% logic, 54.8% route)
 
 --------------------------------------------------------------------------------
-
-Paths for end point main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_deadtime_6 (SLICE_X5Y13.D4), 1 path
---------------------------------------------------------------------------------
-Slack (hold path):      0.175ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn (FF)
-  Destination:          main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_deadtime_6 (FF)
+Slack (hold path):      0.231ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_4 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3 (FF)
   Requirement:          0.000ns
-  Data Path Delay:      0.644ns (Levels of Logic = 1)
-  Clock Path Skew:      0.219ns (0.909 - 0.690)
+  Data Path Delay:      0.675ns (Levels of Logic = 1)
+  Clock Path Skew:      0.194ns (0.880 - 0.686)
   Source Clock:         clk_128mhz rising at 0.000ns
   Destination Clock:    clk_256mhz rising at 0.000ns
   Clock Uncertainty:    0.250ns
@@ -975,19 +997,53 @@ Slack (hold path):      0.175ns (requirement - (clock path skew + uncertainty - 
     Discrete Jitter (DJ):       0.250ns
     Phase Error (PE):           0.120ns
 
-  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn to main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_deadtime_6
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_4 to main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X7Y14.BQ       Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-    SLICE_X5Y13.D4       net (fanout=28)       0.291   main_system_control/system_data_control/supply_ctrl_layer/heater_control/r_si_rstn
-    SLICE_X5Y13.CLK      Tah         (-Th)    -0.155   main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_deadtime<9>
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/Mmux_st_startup[1]_GND_107_o_mux_15_OUT91
-                                                       main_system_control/system_data_control/supply_ctrl_layer/heater_control/llc_modulator/u12_deadtime_6
+    SLICE_X29Y48.BQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_4
+    SLICE_X22Y47.A5      net (fanout=2)        0.352   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<4>
+    SLICE_X22Y47.A       Tilo                  0.156   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv1
+    SLICE_X22Y47.CE      net (fanout=2)        0.077   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv
+    SLICE_X22Y47.CLK     Tckce       (-Th)     0.108   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
     -------------------------------------------------  ---------------------------
-    Total                                      0.644ns (0.353ns logic, 0.291ns route)
-                                                       (54.8% logic, 45.2% route)
+    Total                                      0.675ns (0.246ns logic, 0.429ns route)
+                                                       (36.4% logic, 63.6% route)
+
+--------------------------------------------------------------------------------
+Slack (hold path):      0.314ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_6 (FF)
+  Destination:          main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.758ns (Levels of Logic = 1)
+  Clock Path Skew:      0.194ns (0.880 - 0.686)
+  Source Clock:         clk_128mhz rising at 0.000ns
+  Destination Clock:    clk_256mhz rising at 0.000ns
+  Clock Uncertainty:    0.250ns
+
+  Clock Uncertainty:          0.250ns  ((TSJ^2 + DJ^2)^1/2) / 2 + PE
+    Total System Jitter (TSJ):  0.070ns
+    Discrete Jitter (DJ):       0.250ns
+    Phase Error (PE):           0.120ns
+
+  Minimum Data Path at Fast Process Corner: main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_6 to main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X29Y48.DQ      Tcko                  0.198   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<6>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out_6
+    SLICE_X22Y47.A3      net (fanout=2)        0.435   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_voltage_control/so_sign18_pi_out<6>
+    SLICE_X22Y47.A       Tilo                  0.156   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv1
+    SLICE_X22Y47.CE      net (fanout=2)        0.077   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/_n0019_inv
+    SLICE_X22Y47.CLK     Tckce       (-Th)     0.108   main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty<3>
+                                                       main_system_control/system_data_control/supply_ctrl_layer/pfc_control_ins/pfc_gate_control/safe_si_u12_pfc_duty_3
+    -------------------------------------------------  ---------------------------
+    Total                                      0.758ns (0.246ns logic, 0.512ns route)
+                                                       (32.5% logic, 67.5% route)
 
 --------------------------------------------------------------------------------
 
@@ -1006,17 +1062,17 @@ Slack: 2.160ns (period - min period limit)
 Slack: 3.460ns (period - min period limit)
   Period: 3.890ns
   Min period limit: 0.430ns (2325.581MHz) (Tcp)
-  Physical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u12_sec_carrier<3>/CLK
-  Logical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u12_sec_carrier_0/CK
-  Location pin: SLICE_X8Y4.CLK
+  Physical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u16_master_carrier<3>/CLK
+  Logical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u16_master_carrier_0/CK
+  Location pin: SLICE_X24Y12.CLK
   Clock network: clk_256mhz
 --------------------------------------------------------------------------------
 Slack: 3.460ns (period - min period limit)
   Period: 3.890ns
   Min period limit: 0.430ns (2325.581MHz) (Tcp)
-  Physical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u12_sec_carrier<3>/CLK
-  Logical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u12_sec_carrier_1/CK
-  Location pin: SLICE_X8Y4.CLK
+  Physical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u16_master_carrier<3>/CLK
+  Logical resource: main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/u16_master_carrier_1/CK
+  Location pin: SLICE_X24Y12.CLK
   Clock network: clk_256mhz
 --------------------------------------------------------------------------------
 
@@ -1028,10 +1084,10 @@ Derived Constraints for TS_xclk32mhz
 |           Constraint          | Requirement |-------------+-------------|-------------+-------------|-------------+-------------|
 |                               |             |   Direct    | Derivative  |   Direct    | Derivative  |   Direct    | Derivative  |
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
-|TS_xclk32mhz                   |     31.125ns|     10.000ns|     30.320ns|            0|            0|            0|        72748|
-| TS_core_clocks_core_clocks_clk|      7.781ns|      6.823ns|          N/A|            0|            0|        68517|            0|
+|TS_xclk32mhz                   |     31.125ns|     10.000ns|     30.456ns|            0|            0|            0|        72748|
+| TS_core_clocks_core_clocks_clk|      7.781ns|      6.579ns|          N/A|            0|            0|        68517|            0|
 | out1                          |             |             |             |             |             |             |             |
-| TS_core_clocks_core_clocks_clk|      3.891ns|      3.790ns|          N/A|            0|            0|         4231|            0|
+| TS_core_clocks_core_clocks_clk|      3.891ns|      3.807ns|          N/A|            0|            0|         4231|            0|
 | out0                          |             |             |             |             |             |             |             |
 +-------------------------------+-------------+-------------+-------------+-------------+-------------+-------------+-------------+
 
@@ -1047,7 +1103,7 @@ Clock to Setup on destination clock xclk32mhz
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-xclk32mhz      |    6.823|         |         |         |
+xclk32mhz      |    5.711|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -1056,7 +1112,7 @@ Timing summary:
 
 Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
 
-Constraints cover 72748 paths, 0 nets, and 5251 connections
+Constraints cover 72748 paths, 0 nets, and 5265 connections
 
 Design statistics:
    Minimum period:  10.000ns{1}   (Maximum frequency: 100.000MHz)
@@ -1065,7 +1121,7 @@ Design statistics:
 ------------------------------------Footnotes-----------------------------------
 1)  The minimum period statistic assumes all single cycle delays.
 
-Analysis completed Sat Jul 27 00:50:21 2019 
+Analysis completed Sat Jul 27 01:02:26 2019 
 --------------------------------------------------------------------------------
 
 Trace Settings:

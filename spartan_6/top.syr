@@ -4,13 +4,13 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.15 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.15 secs
+Total CPU time to Xst completion: 0.09 secs
  
 --> Reading design: top.prj
 
@@ -593,7 +593,7 @@ Unit <adc_wrapper> synthesized.
 Synthesizing Unit <ext_ad_spi3w_1>.
     Related source file is "C:\Users\Jari\mycodeprojects\tube_psu\source\ext_ad\ext_ad_spi3w.vhd".
         g_u8_clk_cnt = "00000100"
-        g_u8_clks_per_conversion = "00001110"
+        g_u8_clks_per_conversion = "00010000"
         g_sh_counter_latch = "00001001"
     Found 1-bit register for signal <po_spi_clk_out>.
     Found 1-bit register for signal <clk_buffer>.
@@ -2341,9 +2341,9 @@ Primitive and Black Box Usage:
 #      GND                         : 11
 #      INV                         : 78
 #      LUT1                        : 207
-#      LUT2                        : 285
+#      LUT2                        : 286
 #      LUT3                        : 199
-#      LUT4                        : 159
+#      LUT4                        : 158
 #      LUT5                        : 163
 #      LUT6                        : 274
 #      MUXCY                       : 536
@@ -2503,8 +2503,8 @@ Offset:              2.462ns (Levels of Logic = 2)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O            13   1.222   0.933  pi_ada_sdata_IBUF (pi_ada_sdata_IBUF)
-     LUT5:I4->O            1   0.205   0.000  main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/Mmux_b_spi_rx[15]_GND_30_o_mux_17_OUT21 (main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx[15]_GND_30_o_mux_17_OUT<10>)
-     FDRE:D                    0.102          main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_10
+     LUT5:I4->O            1   0.205   0.000  main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/Mmux_b_spi_rx[15]_GND_30_o_mux_17_OUT41 (main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx[15]_GND_30_o_mux_17_OUT<12>)
+     FDRE:D                    0.102          main_system_control/system_data_control/onboard_ad_control/ada/onboard_adc/b_spi_rx_12
     ----------------------------------------
     Total                      2.462ns (1.529ns logic, 0.933ns route)
                                        (62.1% logic, 37.9% route)
@@ -2573,12 +2573,12 @@ core_clocks/core_clocks/pll_base_inst/CLKOUT1|    6.094|         |         |    
 =========================================================================
 
 
-Total REAL time to Xst completion: 14.00 secs
-Total CPU time to Xst completion: 14.60 secs
+Total REAL time to Xst completion: 15.00 secs
+Total CPU time to Xst completion: 15.64 secs
  
 --> 
 
-Total memory usage is 290236 kilobytes
+Total memory usage is 289020 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :  670 (   0 filtered)

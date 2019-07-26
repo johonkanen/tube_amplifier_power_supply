@@ -90,7 +90,7 @@ signal s16_spi_data : std_logic_vector(15 downto 0);
 begin
 
 onboard_adc : ext_ad_spi3w
-    generic map(to_unsigned(4,8),to_unsigned(14,8),to_unsigned(9,8))
+    generic map(to_unsigned(4,8),to_unsigned(16,8),to_unsigned(9,8))
     port map(
 			si_spi_clk,
             si_pll_lock,
