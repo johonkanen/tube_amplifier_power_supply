@@ -1,7 +1,4 @@
-
-// file: pll_1x256mhz.v
-// 
-// (c) Copyright 2008 - 2013 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2019 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -47,47 +44,25 @@
 // THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 // PART OF THIS FILE AT ALL TIMES.
 // 
-//----------------------------------------------------------------------------
-// User entered comments
-//----------------------------------------------------------------------------
-// None
-//
-//----------------------------------------------------------------------------
-//  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
-//   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
-//----------------------------------------------------------------------------
-// clk_out1___256.000______0.000______50.0______169.732____198.711
-// clk_out2___128.000______0.000______50.0______188.836____198.711
-//
-//----------------------------------------------------------------------------
-// Input Clock   Freq (MHz)    Input Jitter (UI)
-//----------------------------------------------------------------------------
-// __primary__________32.000____________0.010
+// DO NOT MODIFY THIS FILE.
 
-`timescale 1ps/1ps
+// IP VLNV: xilinx.com:ip:mult_gen:12.0
+// IP Revision: 15
 
-(* CORE_GENERATION_INFO = "pll_1x256mhz,clk_wiz_v6_0_3_0_0,{component_name=pll_1x256mhz,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=MMCM,num_out_clk=2,clkin1_period=31.250,clkin2_period=10.0,use_power_down=false,use_reset=false,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *)
+// The following must be inserted into your Verilog file for this
+// core to be instantiated. Change the instance name and port connections
+// (in parentheses) to your own signal names.
 
-module pll_1x256mhz 
- (
-  // Clock out ports
-  output        clk_out1,
-  output        clk_out2,
-  // Status and control signals
-  output        locked,
- // Clock in ports
-  input         clk_in1
- );
+//----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
+sign_mult_18x18 your_instance_name (
+  .CLK(CLK),  // input wire CLK
+  .A(A),      // input wire [17 : 0] A
+  .B(B),      // input wire [17 : 0] B
+  .P(P)      // output wire [35 : 0] P
+);
+// INST_TAG_END ------ End INSTANTIATION Template ---------
 
-  pll_1x256mhz_clk_wiz inst
-  (
-  // Clock out ports  
-  .clk_out1(clk_out1),
-  .clk_out2(clk_out2),
-  // Status and control signals               
-  .locked(locked),
- // Clock in ports
-  .clk_in1(clk_in1)
-  );
+// You must compile the wrapper file sign_mult_18x18.v when simulating
+// the core, sign_mult_18x18. When compiling the wrapper file, be sure to
+// reference the Verilog simulation library.
 
-endmodule

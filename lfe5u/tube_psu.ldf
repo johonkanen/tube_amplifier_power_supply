@@ -4,7 +4,7 @@
         <Option name="HDL type" value="VHDL"/>
     </Options>
     <Implementation title="rtl" dir="rtl" description="rtl" synthesis="synplify" default_strategy="Strategy1">
-        <Options def_top="command_shell" top="top"/>
+        <Options def_top="pipelined_multiplier" top="top"/>
         <Source name="../source/top/top.vhd" type="VHDL" type_short="VHDL">
             <Options top_module="top"/>
         </Source>

@@ -56,7 +56,8 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// clk_out1___256.000______0.000______50.0______173.096____203.212
+// clk_out1___256.000______0.000______50.0______169.732____198.711
+// clk_out2___128.000______0.000______50.0______188.836____198.711
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
@@ -70,6 +71,7 @@ module pll_1x256mhz_clk_wiz
  (// Clock in ports
   // Clock out ports
   output        clk_out1,
+  output        clk_out2,
   // Status and control signals
   output        locked,
   input         clk_in1
@@ -105,10 +107,8 @@ wire clk_in2_pll_1x256mhz;
   wire        psdone_unused;
   wire        locked_int;
   wire        clkfbout_pll_1x256mhz;
-  wire        clkfbout_buf_pll_1x256mhz;
   wire        clkfboutb_unused;
     wire clkout0b_unused;
-   wire clkout1_unused;
    wire clkout1b_unused;
    wire clkout2_unused;
    wire clkout2b_unused;
@@ -126,13 +126,17 @@ wire clk_in2_pll_1x256mhz;
     .COMPENSATION         ("ZHOLD"),
     .STARTUP_WAIT         ("FALSE"),
     .DIVCLK_DIVIDE        (1),
-    .CLKFBOUT_MULT_F      (31.000),
+    .CLKFBOUT_MULT_F      (32.000),
     .CLKFBOUT_PHASE       (0.000),
     .CLKFBOUT_USE_FINE_PS ("FALSE"),
-    .CLKOUT0_DIVIDE_F     (3.875),
+    .CLKOUT0_DIVIDE_F     (4.000),
     .CLKOUT0_PHASE        (0.000),
     .CLKOUT0_DUTY_CYCLE   (0.500),
     .CLKOUT0_USE_FINE_PS  ("FALSE"),
+    .CLKOUT1_DIVIDE       (8),
+    .CLKOUT1_PHASE        (0.000),
+    .CLKOUT1_DUTY_CYCLE   (0.500),
+    .CLKOUT1_USE_FINE_PS  ("FALSE"),
     .CLKIN1_PERIOD        (31.250))
   mmcm_adv_inst
     // Output clocks
@@ -141,7 +145,7 @@ wire clk_in2_pll_1x256mhz;
     .CLKFBOUTB           (clkfboutb_unused),
     .CLKOUT0             (clk_out1_pll_1x256mhz),
     .CLKOUT0B            (clkout0b_unused),
-    .CLKOUT1             (clkout1_unused),
+    .CLKOUT1             (clk_out2_pll_1x256mhz),
     .CLKOUT1B            (clkout1b_unused),
     .CLKOUT2             (clkout2_unused),
     .CLKOUT2B            (clkout2b_unused),
@@ -151,7 +155,7 @@ wire clk_in2_pll_1x256mhz;
     .CLKOUT5             (clkout5_unused),
     .CLKOUT6             (clkout6_unused),
      // Input clock control
-    .CLKFBIN             (clkfbout_buf_pll_1x256mhz),
+    .CLKFBIN             (clkfbout_pll_1x256mhz),
     .CLKIN1              (clk_in1_pll_1x256mhz),
     .CLKIN2              (1'b0),
      // Tied to always select the primary input clock
@@ -182,10 +186,6 @@ wire clk_in2_pll_1x256mhz;
  // Output buffering
   //-----------------------------------
 
-  BUFG clkf_buf
-   (.O (clkfbout_buf_pll_1x256mhz),
-    .I (clkfbout_pll_1x256mhz));
-
 
 
 
@@ -195,6 +195,10 @@ wire clk_in2_pll_1x256mhz;
    (.O   (clk_out1),
     .I   (clk_out1_pll_1x256mhz));
 
+
+  BUFG clkout2_buf
+   (.O   (clk_out2),
+    .I   (clk_out2_pll_1x256mhz));
 
 
 
