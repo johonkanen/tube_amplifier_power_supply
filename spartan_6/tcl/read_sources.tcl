@@ -1,0 +1,39 @@
+add_files -norecurse ../../source/dsp/alu16bit_pkg.vhd
+add_files -norecurse ../../source/system_control/sys_ctrl_pkg.vhd
+add_files -norecurse ../../source/spartan_6/s6_specifics.vhd
+add_files -norecurse ../../source/spartan_6/s6_multiplier_wrapper.vhd
+add_files -norecurse ../../source/pfc_ctrl/pfc_pkg.vhd
+add_files -norecurse ../../source/heater_ctrl/llc_pkg.vhd
+add_files -norecurse ../../source/ext_ad/ad_bus_pkg.vhd
+add_files -norecurse ../../source/dsp/rad4_inv16bit_pkg.vhd
+add_files -norecurse ../../source/dsp/rad4_inv16bit.vhd
+add_files -norecurse ../../source/dsp/alu_routines_pkg.vhd
+add_files -norecurse ../../source/dhb/dhb_pkg.vhd
+add_files -norecurse ../../source/uart/uart_tx.vhd
+add_files -norecurse ../../source/uart/uart_rx.vhd
+add_files -norecurse ../../source/uart/tubepsu_commands_pkg.vhd
+add_files -norecurse ../../source/pfc_ctrl/pfc_modulator.vhd
+add_files -norecurse ../../source/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
+add_files -norecurse ../../source/heater_ctrl/freq_modulator.vhd
+add_files -norecurse ../../source/ext_ad/ext_ad_spi3w.vhd
+add_files -norecurse ../../source/dsp/seq_pi_control.vhd
+add_files -norecurse ../../source/dsp/alu16bit.vhd
+add_files -norecurse ../../source/dhb/phase_modulator.vhd
+add_files -norecurse ../../source/uart/uart.vhd
+add_files -norecurse ../../source/spartan_6/s6_adc_wrapper.vhd
+add_files -norecurse ../../source/pfc_ctrl/pfc_control.vhd
+add_files -norecurse ../../source/heater_ctrl/heater_ctrl.vhd
+add_files -norecurse ../../source/dhb/dhb_control.vhd
+add_files -norecurse ../../source/uart/uart_event_ctrl.vhd
+add_files -norecurse ../../source/sw_supply_control/sw_supply_ctrl.vhd
+add_files -norecurse ../../source/led_driver/led_driver_pkg.vhd
+add_files -norecurse ../../source/ext_ad/ext_ad_control.vhd
+add_files -norecurse ../../source/ext_ad/ad_ctrl.vhd
+add_files -norecurse ../../source/system_control/data_control.vhd
+add_files -norecurse ../../source/led_driver/led_driver.vhd
+add_files -norecurse ../../source/system_control/system_control.vhd
+add_files -norecurse ../../source/spartan_6/s6_pll_wrapper.vhd
+add_files -norecurse ../../source/top/top.vhd
+
+# add_files -norecurse ipcore_dir/s6_core_clocks.vhd
+# add_files -norecurse ipcore_dir/multiplier_s18xs18.vhd
