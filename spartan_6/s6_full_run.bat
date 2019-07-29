@@ -51,8 +51,8 @@ REM-----------------------------------------------------------------------------
 REM Script to synthesize and implement the RTL provided for the clocking wizard
 REM-----------------------------------------------------------------------------
 
-del \f results
-mkdir results
-cd results
+del \f output
+mkdir output
+cd output
 
-planAhead -mode batch -source ../planAhead_ise.tcl
+planAhead -mode tcl -source ../tcl/s6_run.tcl

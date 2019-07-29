@@ -4,7 +4,7 @@ set_property design_mode RTL [get_property srcset [current_run]]
 # set_property ng.output_hdl_format VHDL [get_filesets sim_1]
 
 
-source read_sources.tcl
+source ../tcl/read_sources.tcl
 read_ip ../ip/clk_wiz_v3_6_0/system_clocks.xci
 read_ip ../ip/mult_gen_v11_2_0/mult_sign18x18.xci
 add_files -fileset [get_property constrset [current_run]] -norecurse {../ucf/s6_tubepsu.ucf}
