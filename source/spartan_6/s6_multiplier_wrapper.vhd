@@ -13,7 +13,7 @@ end combi_mult_18x18;
 
 architecture rtl of combi_mult_18x18 is
 
-COMPONENT multiplier_s18xs18
+COMPONENT mult_sign18x18
   PORT (
     clk : IN STD_LOGIC;
     a : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
@@ -23,7 +23,7 @@ COMPONENT multiplier_s18xs18
 END COMPONENT;
 
 begin
-    multiplier_wrapper : multiplier_s18xs18
+    multiplier_wrapper : mult_sign18x18
     port map(CLK, A, B, P);
 
 

@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<BillOfMaterials Version="1" Minor="2">
+  <IPInstance name="system_clocks">
+    <FileSets>
+      <FileSet generator="apply_current_project_options_generator">
+        <File name="./apply_current_project_options_generator.xlog" type="ignore" timestamp="Mon Jul 29 06:58:39 GMT 2019" checksum="0xFFFFFFFF"></File>
+      </FileSet>
+      <FileSet generator="model_parameter_resolution_generator">
+        <File name="./model_parameter_resolution_generator.xlog" type="ignore" timestamp="Mon Jul 29 06:58:39 GMT 2019" checksum="0xFFFFFFFF"></File>
+      </FileSet>
+      <FileSet generator="ip_xco_generator">
+        <File name="./system_clocks.xco" type="xco" timestamp="Mon Jul 29 06:58:21 GMT 2019" checksum="0xFE4606AC"></File>
+      </FileSet>
+      <FileSet generator="tcl_flow_generator">
+        <File name="./system_clocks/example_design/system_clocks_exdes.ucf" type="ignore" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0x4A7E26B7"></File>
+        <File name="./system_clocks/example_design/system_clocks_exdes.v" type="ignore" timestamp="Mon Jul 29 06:58:21 GMT 2019" checksum="0x9D23F63A"></File>
+        <File name="./system_clocks/example_design/system_clocks_exdes.xdc" type="ignore" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0x9C4684A1"></File>
+        <File name="./system_clocks/implement/implement.bat" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0xCFBC35E5"></File>
+        <File name="./system_clocks/implement/implement.sh" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0x0B63ED72"></File>
+        <File name="./system_clocks/implement/planAhead_ise.bat" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0x6966A508"></File>
+        <File name="./system_clocks/implement/planAhead_ise.sh" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0x7F8B5943"></File>
+        <File name="./system_clocks/implement/planAhead_ise.tcl" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0xFE11E5B0"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.bat" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0xB9373CFA"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.sh" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0xDCE9D96C"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.tcl" type="ignore" timestamp="Mon Jul 29 06:58:26 GMT 2019" checksum="0xEB4A4BDC"></File>
+        <File name="./system_clocks/implement/xst.prj" type="ignore" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0x5B1B5FB6"></File>
+        <File name="./system_clocks/implement/xst.scr" type="ignore" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0xA1E593C9"></File>
+        <File name="./system_clocks/simulation/functional/simcmds.tcl" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x37E4D469"></File>
+        <File name="./system_clocks/simulation/functional/simulate_isim.bat" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x90DB1541"></File>
+        <File name="./system_clocks/simulation/functional/simulate_isim.sh" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0xB01BC7E0"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.bat" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0x2406C287"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.do" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0xDA695686"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.sh" type="ignore" timestamp="Mon Jul 29 06:58:22 GMT 2019" checksum="0x37C85DEC"></File>
+        <File name="./system_clocks/simulation/functional/simulate_ncsim.sh" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x8EE89BA2"></File>
+        <File name="./system_clocks/simulation/functional/simulate_vcs.sh" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0x18D5CEB8"></File>
+        <File name="./system_clocks/simulation/functional/ucli_commands.key" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0xE5464195"></File>
+        <File name="./system_clocks/simulation/functional/vcs_session.tcl" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0x77CA230F"></File>
+        <File name="./system_clocks/simulation/functional/wave.do" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0x50CE6747"></File>
+        <File name="./system_clocks/simulation/functional/wave.sv" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x6C525211"></File>
+        <File name="./system_clocks/simulation/system_clocks_tb.v" type="ignore" timestamp="Mon Jul 29 06:58:21 GMT 2019" checksum="0x900AC1F8"></File>
+        <File name="./system_clocks/simulation/timing/sdf_cmd_file" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0xC1A09F46"></File>
+        <File name="./system_clocks/simulation/timing/simcmds.tcl" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0xA29228D0"></File>
+        <File name="./system_clocks/simulation/timing/simulate_isim.sh" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x7C73ACBE"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.bat" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0x66B46D61"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.do" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0x99E0F8C0"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.sh" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0x1154C493"></File>
+        <File name="./system_clocks/simulation/timing/simulate_ncsim.sh" type="ignore" timestamp="Mon Jul 29 06:58:24 GMT 2019" checksum="0x762A162D"></File>
+        <File name="./system_clocks/simulation/timing/simulate_vcs.sh" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0x28D0E753"></File>
+        <File name="./system_clocks/simulation/timing/system_clocks_tb.v" type="ignore" timestamp="Mon Jul 29 06:58:22 GMT 2019" checksum="0xF5C77231"></File>
+        <File name="./system_clocks/simulation/timing/ucli_commands.key" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0x9DC0E037"></File>
+        <File name="./system_clocks/simulation/timing/vcs_session.tcl" type="ignore" timestamp="Mon Jul 29 06:58:25 GMT 2019" checksum="0x28340249"></File>
+        <File name="./system_clocks/simulation/timing/wave.do" type="ignore" timestamp="Mon Jul 29 06:58:23 GMT 2019" checksum="0xAFE248C4"></File>
+        <File name="./system_clocks.ucf" type="ucf" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0x3E9DC1BF"></File>
+        <File name="./system_clocks.v" type="verilog" timestamp="Mon Jul 29 06:58:21 GMT 2019" checksum="0x2343BBBA"></File>
+        <File name="./system_clocks.veo" type="veo" timestamp="Mon Jul 29 06:58:22 GMT 2019" checksum="0xCCBBABCD"></File>
+        <File name="./system_clocks.xdc" type="ignore" timestamp="Mon Jul 29 06:58:27 GMT 2019" checksum="0x5A1D7EEF"></File>
+        <File name="./system_clocks_xmdf.tcl" type="tcl" timestamp="Mon Jul 29 06:58:22 GMT 2019" checksum="0xB31B58CE"></File>
+      </FileSet>
+      <FileSet generator="associated_files_generator">
+        <File name="./system_clocks/clk_wiz_v3_6_readme.txt" type="ignore" timestamp="Sun Oct 13 18:34:18 GMT 2013" checksum="0x5B63DA78"></File>
+      </FileSet>
+      <FileSet generator="ejava_generator">
+        <File name="./system_clocks/example_design/system_clocks_exdes.ucf" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x4A7E26B7"></File>
+        <File name="./system_clocks/example_design/system_clocks_exdes.v" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x9D23F63A"></File>
+        <File name="./system_clocks/example_design/system_clocks_exdes.xdc" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x9C4684A1"></File>
+        <File name="./system_clocks/implement/implement.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xCFBC35E5"></File>
+        <File name="./system_clocks/implement/implement.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x0B63ED72"></File>
+        <File name="./system_clocks/implement/planAhead_ise.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x6966A508"></File>
+        <File name="./system_clocks/implement/planAhead_ise.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x7F8B5943"></File>
+        <File name="./system_clocks/implement/planAhead_ise.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xFE11E5B0"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xB9373CFA"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xDCE9D96C"></File>
+        <File name="./system_clocks/implement/planAhead_rdn.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xEB4A4BDC"></File>
+        <File name="./system_clocks/implement/xst.prj" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x5B1B5FB6"></File>
+        <File name="./system_clocks/implement/xst.scr" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xA1E593C9"></File>
+        <File name="./system_clocks/simulation/functional/simcmds.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x37E4D469"></File>
+        <File name="./system_clocks/simulation/functional/simulate_isim.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x90DB1541"></File>
+        <File name="./system_clocks/simulation/functional/simulate_isim.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xB01BC7E0"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x2406C287"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.do" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xDA695686"></File>
+        <File name="./system_clocks/simulation/functional/simulate_mti.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x37C85DEC"></File>
+        <File name="./system_clocks/simulation/functional/simulate_ncsim.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x8EE89BA2"></File>
+        <File name="./system_clocks/simulation/functional/simulate_vcs.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x18D5CEB8"></File>
+        <File name="./system_clocks/simulation/functional/ucli_commands.key" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xE5464195"></File>
+        <File name="./system_clocks/simulation/functional/vcs_session.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x77CA230F"></File>
+        <File name="./system_clocks/simulation/functional/wave.do" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x50CE6747"></File>
+        <File name="./system_clocks/simulation/functional/wave.sv" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x6C525211"></File>
+        <File name="./system_clocks/simulation/system_clocks_tb.v" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x900AC1F8"></File>
+        <File name="./system_clocks/simulation/timing/sdf_cmd_file" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xC1A09F46"></File>
+        <File name="./system_clocks/simulation/timing/simcmds.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xA29228D0"></File>
+        <File name="./system_clocks/simulation/timing/simulate_isim.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x7C73ACBE"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.bat" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x66B46D61"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.do" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x99E0F8C0"></File>
+        <File name="./system_clocks/simulation/timing/simulate_mti.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x1154C493"></File>
+        <File name="./system_clocks/simulation/timing/simulate_ncsim.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x762A162D"></File>
+        <File name="./system_clocks/simulation/timing/simulate_vcs.sh" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x28D0E753"></File>
+        <File name="./system_clocks/simulation/timing/system_clocks_tb.v" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xF5C77231"></File>
+        <File name="./system_clocks/simulation/timing/ucli_commands.key" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x9DC0E037"></File>
+        <File name="./system_clocks/simulation/timing/vcs_session.tcl" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x28340249"></File>
+        <File name="./system_clocks/simulation/timing/wave.do" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xAFE248C4"></File>
+        <File name="./system_clocks.ucf" type="ucf" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x3E9DC1BF"></File>
+        <File name="./system_clocks.v" type="verilog" timestamp="Mon Jul 29 06:58:28 GMT 2019" checksum="0x2343BBBA"></File>
+        <File name="./system_clocks.veo" type="veo" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xCCBBABCD"></File>
+        <File name="./system_clocks.xdc" type="ignore" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0x5A1D7EEF"></File>
+        <File name="./system_clocks_xmdf.tcl" type="tcl" timestamp="Mon Jul 29 06:58:29 GMT 2019" checksum="0xB31B58CE"></File>
+      </FileSet>
+      <FileSet generator="all_documents_generator">
+        <File name="./system_clocks/doc/clk_wiz_v3_6_readme.txt" type="ignore" timestamp="Mon Jul 29 06:58:34 GMT 2019" checksum="0x5B63DA78"></File>
+        <File name="./system_clocks/doc/clk_wiz_v3_6_vinfo.html" type="ignore" timestamp="Mon Jul 29 06:58:34 GMT 2019" checksum="0xF2E77607"></File>
+        <File name="./system_clocks/doc/pg065_clk_wiz.pdf" type="ignore" timestamp="Mon Jul 29 06:58:34 GMT 2019" checksum="0x2F883891"></File>
+      </FileSet>
+      <FileSet generator="readme_documents_generator">
+        <File name="./readme_documents_generator.xlog" type="ignore" timestamp="Mon Jul 29 06:58:39 GMT 2019" checksum="0xFFFFFFFF"></File>
+      </FileSet>
+      <FileSet generator="asy_generator">
+        <File name="./system_clocks.asy" type="asy" timestamp="Mon Jul 29 06:58:37 GMT 2019" checksum="0xFCEFF301"></File>
+      </FileSet>
+      <FileSet generator="ise_generator">
+        <File name="./system_clocks.gise" type="ignore" timestamp="Mon Jul 29 06:58:38 GMT 2019" checksum="0xCB56C9F7"></File>
+        <File name="./system_clocks.xise" type="ignore" timestamp="Mon Jul 29 06:58:38 GMT 2019" checksum="0xD193F07F"></File>
+      </FileSet>
+      <FileSet generator="deliver_readme_generator">
+        <File name="./deliver_readme_generator.xlog" type="ignore" timestamp="Mon Jul 29 06:58:39 GMT 2019" checksum="0xFFFFFFFF"></File>
+      </FileSet>
+      <FileSet generator="flist_generator">
+        <File name="./system_clocks_flist.txt" type="ignore" timestamp="Mon Jul 29 06:58:38 GMT 2019" checksum="0x319444BA"></File>
+      </FileSet>
+    </FileSets>
+  </IPInstance>
+</BillOfMaterials>

@@ -17,7 +17,7 @@ end entity pll_wrapper;
 
 architecture rtl of pll_wrapper is
 
-component s6_core_clocks
+component system_clocks
 port
  (
       -- Clock in ports
@@ -36,6 +36,6 @@ begin
     modulator_clk2 <= r_modulator_clk;
     modulator_clk <= r_modulator_clk;
 
-    core_clocks : s6_core_clocks
+    core_clocks : system_clocks
     port map(xclk, r_modulator_clk, core_clk, pll_lock);
 end rtl;
