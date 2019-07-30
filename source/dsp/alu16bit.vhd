@@ -26,42 +26,33 @@ end entity alu16bit;
 
 architecture rtl of alu16bit is
 
-    component combi_mult_18x18 is 
-        port (
-            CLK : in std_logic;
-            A : in std_logic_vector(17 downto 0);
-            B : in std_logic_vector(17 downto 0);
-            P : out std_logic_vector(35 downto 0)
-        );
-    end component;
+   signal mpy1_a : std_logic_vector(17 downto 0); 
+   signal mpy1_b : std_logic_vector(17 downto 0); 
+   signal mpy1_result : std_logic_vector(35 downto 0); 
 
-    signal mpy1_a : std_logic_vector(17 downto 0); 
-    signal mpy1_b : std_logic_vector(17 downto 0); 
-    signal mpy1_result : std_logic_vector(35 downto 0); 
+   signal alu_mpy1_a : std_logic_vector(17 downto 0); 
+   signal alu_mpy1_b : std_logic_vector(17 downto 0); 
 
-    signal alu_mpy1_a : std_logic_vector(17 downto 0); 
-    signal alu_mpy1_b : std_logic_vector(17 downto 0); 
+   signal div_mpy1_a : std_logic_vector(17 downto 0); 
+   signal div_mpy1_b : std_logic_vector(17 downto 0); 
 
-    signal div_mpy1_a : std_logic_vector(17 downto 0); 
-    signal div_mpy1_b : std_logic_vector(17 downto 0); 
+   signal div_mpy2_a : std_logic_vector(17 downto 0); 
+   signal div_mpy2_b : std_logic_vector(17 downto 0); 
 
-    signal div_mpy2_a : std_logic_vector(17 downto 0); 
-    signal div_mpy2_b : std_logic_vector(17 downto 0); 
+   signal mpy2_a : std_logic_vector(17 downto 0); 
+   signal mpy2_b : std_logic_vector(17 downto 0); 
+   signal mpy2_result : std_logic_vector(35 downto 0); 
+   signal r1_si_start_alu : std_logic;  
+   signal busy : std_logic;
 
-    signal mpy2_a : std_logic_vector(17 downto 0); 
-    signal mpy2_b : std_logic_vector(17 downto 0); 
-    signal mpy2_result : std_logic_vector(35 downto 0); 
-    signal r1_si_start_alu : std_logic;  
-    signal busy : std_logic;
+   signal mult1_rdy : std_logic;
+   signal start_mpy : std_logic; 
 
-    signal mult1_rdy : std_logic;
-    signal start_mpy : std_logic; 
-
-    signal start_div : std_logic; 
-    signal div_rdy : std_logic; 
-    signal div_out : std_logic_vector(17 downto 0); 
-    signal div_start_mpy : std_logic; 
-    signal alu_start_mpy : std_logic; 
+   signal start_div : std_logic; 
+   signal div_rdy : std_logic; 
+   signal div_out : std_logic_vector(17 downto 0); 
+   signal div_start_mpy : std_logic; 
+   signal alu_start_mpy : std_logic; 
 
    signal r_si_start_alu : std_logic;
    signal r_alu_command : t_alu_commands;
