@@ -78,7 +78,7 @@ mpy2 : combi_mult_18x18
     port map(core_clk, mpy2_a, mpy2_b, mpy2_result);
 
 alu_commands : process(core_clk)
-        type t_alu_states is (idle,mult,div,sqrt);
+        type t_alu_states is (idle,add, sub, mult,div,sqrt);
         variable st_alu_states : t_alu_states;
     begin
         if rising_edge(core_clk) then
@@ -98,7 +98,17 @@ alu_commands : process(core_clk)
                         if r1_si_start_alu = not si_start_alu then
                             CASE alu_command is
                                 WHEN add =>
+                                    so_alu_busy <= '1';
+                                    alu_start_mpy <= '0';
+                                    start_div <= '0';
+
+                                    st_alu_states := add;
                                 WHEN sub =>
+                                    so_alu_busy <= '1';
+                                    alu_start_mpy <= '0';
+                                    start_div <= '0';
+
+                                    st_alu_states := sub;
                                 WHEN a_mpy_b =>
                                     alu_mpy1_a <= std_logic_vector(data1);
                                     alu_mpy1_b <= std_logic_vector(data2);
@@ -113,6 +123,7 @@ alu_commands : process(core_clk)
                                     alu_start_mpy <= '0';
                                     so_alu_busy <= '1';
                                     start_div <= '1';
+
                                     st_alu_states := div;
                                 WHEN sqrt_a =>
                                 WHEN others =>
@@ -126,6 +137,12 @@ alu_commands : process(core_clk)
                             alu_mpy1_a <= (others => '0');
                             alu_mpy1_b <= (others => '0');
                         end if;
+                    WHEN add =>
+                            so18_alu_data <= data1 + data2;
+                            so_alu_rdy <= '1';
+                    WHEN sub =>
+                            so18_alu_data <= data1 - data2;
+                            so_alu_rdy <= '1';
                     WHEN mult =>
                         alu_start_mpy <= '0';
                         if mult1_rdy = '1' then
