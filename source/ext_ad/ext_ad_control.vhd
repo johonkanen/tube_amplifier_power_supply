@@ -42,7 +42,7 @@ architecture rtl of ext_ad_control is
 begin
 
 heater_ad_driver : ext_ad_spi3w 
-    generic map(to_unsigned(8,8),to_unsigned(14,8),to_unsigned(17,8))
+    generic map(8,14,17)
     port map( 
 	    si_spi_clk => ad_clock,
         si_rstn => si_rstn,
@@ -62,7 +62,7 @@ heater_ad_driver : ext_ad_spi3w
 	);
 
 dhb_ad_driver : ext_ad_spi3w 
-    generic map(to_unsigned(8,8),to_unsigned(14,8),to_unsigned(17,8))
+    generic map(8,14,17)
     port map( 
 	    si_spi_clk => ad_clock,
         si_rstn => si_rstn,

@@ -29,9 +29,9 @@ architecture rtl of adc_wrapper is
 
 component ext_ad_spi3w is
 	generic(
-				g_u8_clk_cnt : unsigned(7 downto 0);
-				g_u8_clks_per_conversion : unsigned(7 downto 0);
-				g_sh_counter_latch : unsigned(7 downto 0)
+				g_u8_clk_cnt : integer;
+				g_u8_clks_per_conversion : integer;
+				g_sh_counter_latch : integer
 			);
 	port( 
 		si_spi_clk 	 : in std_logic; 
@@ -90,7 +90,7 @@ signal s16_spi_data : std_logic_vector(15 downto 0);
 begin
 
 onboard_adc : ext_ad_spi3w
-    generic map(to_unsigned(4,8),to_unsigned(16,8),to_unsigned(9,8))
+    generic map(4,16,9)
     port map(
 			si_spi_clk,
             si_pll_lock,
