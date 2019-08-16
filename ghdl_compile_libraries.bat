@@ -1,15 +1,15 @@
-ghdl -a --std=08 --ieee=synopsys source/ext_ad/ad_bus_pkg.vhd 
-ghdl -a --std=08 --ieee=synopsys source/system_control/sys_ctrl_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/dhb/dhb_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/led_driver/led_driver_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/spartan_7/s7_specifics.vhd
-ghdl -a --std=08 --ieee=synopsys source/spartan_7/s7_adc_wrapper.vhd
-ghdl -a --std=08 --ieee=synopsys source/top/top_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/heater_ctrl/llc_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/pfc_ctrl/pfc_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/uart/tubepsu_commands_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd
-ghdl -a --std=08 --ieee=synopsys source/dsp/alu16bit_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/dsp/alu_routines_pkg.vhd
-ghdl -a --std=08 --ieee=synopsys source/dsp/rad4_inv16bit_pkg.vhd
+ghdl -a --ieee=synopsys source/ext_ad/ad_bus_pkg.vhd 
+ghdl -a --ieee=synopsys source/system_control/sys_ctrl_pkg.vhd
+ghdl -a --ieee=synopsys source/dhb/dhb_pkg.vhd
+ghdl -a --ieee=synopsys source/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
+ghdl -a --ieee=synopsys source/led_driver/led_driver_pkg.vhd
+ghdl -a --ieee=synopsys source/spartan_7/s7_specifics.vhd
+ghdl -a --ieee=synopsys source/spartan_7/s7_adc_wrapper.vhd
+ghdl -a --ieee=synopsys source/top/top_pkg.vhd
+ghdl -a --ieee=synopsys source/heater_ctrl/llc_pkg.vhd
+ghdl -a --ieee=synopsys source/pfc_ctrl/pfc_pkg.vhd
+ghdl -a --ieee=synopsys source/uart/tubepsu_commands_pkg.vhd
+ghdl -a --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd
+ghdl -a --ieee=synopsys source/dsp/alu16bit_pkg.vhd
+ghdl -a --ieee=synopsys source/dsp/alu_routines_pkg.vhd
+ghdl -a --ieee=synopsys source/dsp/rad4_inv16bit_pkg.vhd

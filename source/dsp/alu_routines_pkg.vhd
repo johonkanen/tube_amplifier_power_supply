@@ -74,7 +74,6 @@ package body alu_routines_pkg is
         variable st_mult_wait : t_mult_wait;
     begin
         if mult_rdy then
-            /* result <= */ 
         end if;
     end alu_mult;
 

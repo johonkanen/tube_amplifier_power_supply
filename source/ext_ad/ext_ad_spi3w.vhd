@@ -5,9 +5,9 @@ library IEEE;
 
 entity ext_ad_spi3w is
 	generic(
-				g_u8_clk_cnt : unsigned(7 downto 0);
-				g_u8_clks_per_conversion : unsigned(7 downto 0);
-				g_sh_counter_latch : unsigned(7 downto 0)
+				g_u8_clk_cnt : integer;
+				g_u8_clks_per_conversion : integer;
+				g_sh_counter_latch : integer
 			);
 	port( 
 			si_spi_clk 	 : in std_logic; 
@@ -60,7 +60,7 @@ begin
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
-                        i <= to_integer(g_u8_clks_per_conversion)+1;
+                        i <= (g_u8_clks_per_conversion)+1;
                         b_spi_rx <= (others => '0');  
 
                         if si_spi_start = '1' then

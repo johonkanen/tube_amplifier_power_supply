@@ -5,9 +5,9 @@ library IEEE;
 
 entity spi3w_ads7056_driver is
 	generic(
-				g_u8_clk_cnt : unsigned(7 downto 0);
-				g_u8_clks_per_conversion : unsigned(7 downto 0);
-				g_sh_counter_latch : unsigned(7 downto 0)
+				g_u8_clk_cnt : integer;
+				g_u8_clks_per_conversion : integer;
+				g_sh_counter_latch : integer
 			);
 	port( 
 			si_spi_clk 	 : in std_logic; 
@@ -44,6 +44,8 @@ architecture synth of spi3w_ads7056_driver is
     constant t_calibrate : t_ad_states := "11";
     constant t_convert : t_ad_states := "10";
     signal st_ad_states : t_ad_states;
+    signal r_po_spi_clk_out : std_logic; 
+    signal r_po_spi_cs : std_logic; 
 
     type ctrl_ad_spi3w is record
 			-- ext spi control signals
@@ -73,13 +75,13 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt-1 then
                             spi_clk_div := (others => '0');
-                            po_spi_clk_out <= not po_spi_clk_out;
+                            r_po_spi_clk_out <= not r_po_spi_clk_out;
                         else
                             spi_clk_div := spi_clk_div + 1;
                         end if;
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
-                            po_spi_clk_out <= not po_spi_clk_out;
+                            r_po_spi_clk_out <= not r_po_spi_clk_out;
                             spi_rx_buffer(i-2) <= pi_spi_serial;
                             i <= i - 1;
                         end if;
@@ -96,18 +98,18 @@ begin
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
-                        i <= to_integer(g_u8_clks_per_conversion)+1;
+                        i <= (g_u8_clks_per_conversion)+1;
                         --spi_rx_buffer <= (others => '0');  
                         so_sh_rdy <= '0';
 
                         if si_spi_start = '1' then
                             st_ad_states <= t_convert;
                             --po_spi_cs <= c_convert;
-                            po_spi_clk_out <= '0';
+                            r_po_spi_clk_out <= '0';
                         else
                             st_ad_states <= t_idle;
                             --po_spi_cs <= c_idle;
-                            po_spi_clk_out <= '1';
+                            r_po_spi_clk_out <= '1';
                         end if;
                     WHEN t_convert =>
                         spi_process_count := spi_process_count + 1;
@@ -121,13 +123,13 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt-1 then
                             spi_clk_div := (others => '0');
-                            po_spi_clk_out <= not po_spi_clk_out;
+                            r_po_spi_clk_out <= not r_po_spi_clk_out;
                         else
                             spi_clk_div := spi_clk_div + 1;
                         end if;
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
-                            po_spi_clk_out <= not po_spi_clk_out;
+                            r_po_spi_clk_out <= not r_po_spi_clk_out;
                             spi_rx_buffer(i-2) <= pi_spi_serial;
                             i <= i - 1;
                         end if;
@@ -145,9 +147,9 @@ begin
                     WHEN others =>
                         spi_clk_div := (others => '0');
                         spi_process_count := (others => '0');
-                        i <= to_integer(g_u8_clks_per_conversion)+1;
+                        i <= (g_u8_clks_per_conversion)+1;
                         spi_rx_buffer <= (others => '0');  
-                        po_spi_clk_out <= '1';
+                        r_po_spi_clk_out <= '1';
                         so_sh_rdy <= '0';
                         so_spi_rdy <= '0';
                         st_ad_states <= t_calibrate;
@@ -156,9 +158,9 @@ begin
             else
                 spi_clk_div := (others => '0');
                 spi_process_count := (others => '0');
-                i <= to_integer(g_u8_clks_per_conversion)+1;
+                i <= (g_u8_clks_per_conversion)+1;
                 spi_rx_buffer <= (others => '0');  
-                po_spi_clk_out <= '1';
+                r_po_spi_clk_out <= '1';
                 so_sh_rdy <= '0';
                 so_spi_rdy <= '0';
                 st_ad_states <= t_calibrate;
@@ -166,8 +168,8 @@ begin
             end if;
         end if; --rising_edge
     end process spi_control;	
-
+po_spi_clk_out <= r_po_spi_clk_out;
 b_spi_rx <= spi_rx_buffer(17 downto 2);
-s_spi_busy <= not po_spi_cs;
+s_spi_busy <= st_ad_states(1);
 po_spi_cs <= NOT st_ad_states(1);
 end synth; --architecture

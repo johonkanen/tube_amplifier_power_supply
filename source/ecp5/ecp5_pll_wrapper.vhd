@@ -2,9 +2,6 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    /* library work; */
-    /*     use work.vendor_specifics_pkg.all; */
-
 entity pll_wrapper is
     port (
         xclk : in std_logic;
