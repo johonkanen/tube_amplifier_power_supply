@@ -33,12 +33,8 @@ end entity rad4_inv16bit;
 
 architecture rtl of rad4_inv16bit is
 
-    constant inv_magic_number : integer := 21750;
+    constant sqrt_magic_number : integer := 23232;
     -- constants optimized for max error of 10 units for 10bit sqrt using multiplicative normalized method
-    type u15_array is array (0 to 15) of integer;
-    constant sqrt_range : u15_array := (34275, 35913, 37617, 39387, 41182, 43181, 45186, 47251, 49400, 51615, 53903, 56262, 58706, 61210, 63798, 65535);
-    constant sqrt_init_range : u15_array := (45808, 44760, 43744, 42761, 41778, 40828, 39907, 39016, 38157, 37322, 36519, 35739, 34985, 34095, 33550, 32865);
-
 
     function rounded_mpy
     (
@@ -56,9 +52,19 @@ architecture rtl of rad4_inv16bit is
 
 begin
 
-div : process(core_clk)
-    type t_division_states is (idle,m1,m2,m3, m4,rdy);
+mnm_sqrt : process(core_clk)
+    type t_division_states is (idle,m1,m2,m3,m4,rdy);
     variable st_division_states : t_division_states;
+
+    function int_to_std_logic
+    (
+        data_A : integer
+    )
+    return std_logic_vector
+    is
+    begin
+        return std_logic_vector(to_unsigned(data_A,18));
+    end int_to_std_logic;
 begin
     if rising_edge(core_clk) then
         if rstn = '0' then
@@ -83,8 +89,8 @@ begin
                     so18_div_mpy2_b <= (others => '0');
                     if si_start_div = '1' then
                         st_division_states := m1;
-                        so18_div_mpy1_a <= std_logic_vector(to_unsigned(inv_magic_number,18)); -- magic constant, tested to be optimal
-                        so18_div_mpy1_b <= std_logic_vector(data_to_invert);
+                        so18_div_mpy1_a <= int_to_std_logic(sqrt_magic_number); -- magic constant, tested to be optimal
+                        so18_div_mpy1_b <= int_to_std_logic(to_integer(data_to_invert));
                         so_div_start_mpy <= '1';
                     else
                         st_division_states := idle;
@@ -100,7 +106,7 @@ begin
                         so18_div_mpy1_b <= "00"& not (rounded_mpy(si36_mpy1_result));
 
                         so18_div_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
-                        so18_div_mpy2_b <= std_logic_vector(to_unsigned(inv_magic_number,18));
+                        so18_div_mpy2_b <= int_to_std_logic(sqrt_magic_number); -- magic constant, tested to be optimal
                         so_div_start_mpy <= '1';
                         st_division_states := m2;
                     else
@@ -152,6 +158,6 @@ begin
             end CASE;
         end if; -- rstn
     end if; --rising_edge
-end process div;	
+end process mnm_sqrt;	
 
 end rtl;
