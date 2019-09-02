@@ -31,13 +31,13 @@ architecture rtl of freq_modulator is
 
 
     signal u12_carrier: unsigned(11 downto 0);
-    signal u12_deadtime : unsigned(11 downto 0);
-    signal r1_u12_deadtime : unsigned(11 downto 0);
+    signal u12_deadtime : integer range 0 to 2**15-1;
+    signal r1_u12_deadtime : integer range 0 to 2**15-1;
     signal s_pulse : std_logic;
     signal s1_pulse : std_logic;
     signal u12_period : unsigned(11 downto 0);
 
-    signal dly_cntr : unsigned(13 downto 0);
+    signal dly_cntr : integer range 0 to 2**15-1;
 
     signal u12_dt_dly : unsigned(11 downto 0);
     signal u12_reset_carrier : unsigned(11 downto 0);
@@ -47,6 +47,8 @@ architecture rtl of freq_modulator is
 
     signal reset_dly_cntr : std_logic;
     signal r_po4_ht_pwm : hb_llc_pwm;
+    signal dt_counter_ready : std_logic;
+    signal start_dt_counter : std_logic;
 
 begin
 
@@ -57,9 +59,9 @@ begin
         r1_u12_deadtime <= u12_deadtime;
         if rstn = '0' then
             st_startup <= rampup;
-            dly_cntr <= (others => '0');
+            dly_cntr <= 0;
             u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
-            u12_deadtime <= to_unsigned(461,12); -- 883/2-13 cycle initial pulse width
+            u12_deadtime <= 461; -- 883/2-13 cycle initial pulse width
         else
             CASE st_startup is
                 WHEN rampup => 
@@ -72,7 +74,7 @@ begin
                     end if;
 
                     if reset_dly_cntr = '1' then
-                        dly_cntr <= (others => '0');
+                        dly_cntr <= 0;
                         u12_deadtime <= u12_deadtime - 1;
                     end if;
 
@@ -90,9 +92,9 @@ begin
 
                 WHEN others =>
                     st_startup <= rampup;
-                    dly_cntr <= (others => '0');
+                    dly_cntr <= 0;
                     u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
-                    u12_deadtime <= to_unsigned(461,12); -- 883/2-13 cycle initial pulse width
+                    u12_deadtime <= 461; -- 883/2-13 cycle initial pulse width
             end CASE;
 
         end if;
@@ -114,6 +116,7 @@ begin
             else
                 u12_carrier <= u12_carrier + 1;
             end if;
+
         end if;
 	end if;
     end process freq_synth;
@@ -132,6 +135,7 @@ begin
             sec_pwm_cntr := (others => '0');
             u12_dt_dly <= (others => '0');
             st_dt_states := deadtime;
+            start_dt_counter <= '0';
         else
             po4_ht_pwm <= r_po4_ht_pwm;
             CASE st_dt_states is
@@ -152,19 +156,21 @@ begin
 
                     if s1_pulse = s_pulse then
                         st_dt_states := active_pulse;
+                        start_dt_counter <= '0';
                     else
                         st_dt_states := deadtime;
+                        start_dt_counter <= '1';
                     end if;
                 WHEN deadtime => 
+                    if dt_counter_ready = '1' then
+                        st_dt_states := active_pulse;
+                        start_dt_counter <= '0';
+                    else
+                        st_dt_states := deadtime;
+                        start_dt_counter <= '1';
+                    end if;
                     r_po4_ht_pwm <= (others => '0');
                     sec_pwm_cntr := (others => '0');
-                    if u12_dt_dly < r1_u12_deadtime then
-                        u12_dt_dly <= u12_dt_dly + 1;
-                        st_dt_states := deadtime;
-                    else
-                        u12_dt_dly <= (others => '0');
-                        st_dt_states := active_pulse;
-                    end if;
                 WHEN others => 
                     r_po4_ht_pwm <= (others => '0');
                     po4_ht_pwm <= (others => '0');
@@ -175,4 +181,25 @@ begin
         end if;
 	end if;
     end process pri_gate_ctrl;
+
+deadtime_counter : process(modulator_clk)
+    variable dt_count : integer range 0 to 2**15-1;
+begin
+    if rising_edge(modulator_clk) then
+        if rstn = '0' then
+        -- reset state
+            dt_count := 0;
+            dt_counter_ready <= '0';
+        else
+            if dt_count < r1_u12_deadtime AND start_dt_counter = '1' then
+                dt_count := dt_count + 1;
+                dt_counter_ready <= '0';
+            else
+                dt_count := 0;
+                dt_counter_ready <= '1';
+            end if;
+        end if; -- rstn
+    end if; --rising_edge
+end process deadtime_counter;	
+
 end rtl;
