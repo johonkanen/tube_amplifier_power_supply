@@ -80,7 +80,7 @@ r_si_sign18_meas <= resize(signed(dhb_adc_control.std16_ad_bus),18);
 jihuu.u12_dhb_half_period <= to_unsigned(472,12);
 
 dhb_modulator : phase_modulator
-generic map(to_unsigned(80,8))
+generic map(to_unsigned(155,8))
 port map(modulator_clk, jihuu, po4_dhb_pwm);
 
 jihuu.s16_phase <= (resize(r_so_sign18_pi_out,16));
