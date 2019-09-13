@@ -11,4 +11,16 @@ package llc_pkg is
         sync2 : std_logic;
     end record;
 
+    component freq_modulator is
+        port(
+            modulator_clk : in std_logic;
+            dsp_clk : in std_logic;
+            rstn : in std_logic;
+
+            so_startup_ready : out std_logic;
+            piu12_per_ctrl : in unsigned(11 downto 0);
+            po4_ht_pwm : out hb_llc_pwm
+
+        );
+    end component;
 end llc_pkg;

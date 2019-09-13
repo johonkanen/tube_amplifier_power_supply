@@ -36,18 +36,6 @@ end heater_ctrl;
 
 architecture behavioral of heater_ctrl is
 
-component freq_modulator is
-    port(
-	    modulator_clk : in std_logic;
-	    dsp_clk : in std_logic;
-	    rstn : in std_logic;
-
-	    piu12_per_ctrl : in unsigned(11 downto 0);
--- heater pwm
-        po4_ht_pwm : out hb_llc_pwm
-	);
-end component;
-
 component seq_pi_control is 
 	generic(
 				gen_pi_sat_high : integer; 
@@ -78,18 +66,22 @@ signal voltage_ctrl_rdy : std_logic;
 signal r_piu12_per_ctrl  : unsigned(11 downto 0); 
 signal r_so_sign18_pi_out : signed(17 downto 0);
 signal r_si_sign18_meas : signed(17 downto 0);
+signal r_so_startup_rdy : std_logic; 
+signal start_pi_ctrl : std_logic;
 
 begin
 
 heater_voltage_control : seq_pi_control
 	generic map(850,474,0,0)
-port map(core_clk, r_si_rstn, ht_adc_control.ad_rdy_trigger,so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, to_signed(13600,18), r_si_sign18_meas, to_signed(1500,18), to_signed(50,18));
+port map(core_clk, r_si_rstn, start_pi_ctrl, so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, to_signed(13600,18), r_si_sign18_meas, to_signed(1500,18), to_signed(50,18));
 
 so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
 r_si_sign18_meas <= resize(signed(ht_adc_control.std16_ad_bus),18);
 
 llc_modulator : freq_modulator
-    port map(modulator_clk, modulator_clk, r_si_rstn, r_piu12_per_ctrl, po4_ht_pwm);
+    port map(modulator_clk, modulator_clk, r_si_rstn, r_so_startup_rdy, r_piu12_per_ctrl, po4_ht_pwm);
+
+start_pi_ctrl <= r_so_startup_rdy AND ht_adc_control.ad_rdy_trigger;    
 
 r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(11 downto 0));
 
