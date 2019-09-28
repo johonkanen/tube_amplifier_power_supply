@@ -30,11 +30,39 @@ package alu_routines_pkg is
             variable result : out signed;
             variable increment_counter : inout integer
         );
-    end; 
 
+    procedure alu_mult
+        (
+            a : in signed;
+            b : in integer;
+            signal alu_control : inout alu_control_signals;
+            variable result : out signed;
+            variable increment_counter : inout integer
+        );
+
+    function std_to_bool
+    (
+        logic_in : std_logic
+    )
+    return boolean;
+
+end alu_routines_pkg; 
 
 package body alu_routines_pkg is
 
+    function std_to_bool
+    (
+        logic_in : std_logic
+    )
+    return boolean
+    is
+    begin
+        if logic_in = '1' then
+           return true;
+        else
+          return false;
+        end if; 
+    end std_to_bool;
 
     procedure alu_mult
     (

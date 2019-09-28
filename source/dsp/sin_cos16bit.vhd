@@ -63,36 +63,10 @@ architecture rtl of sin_cos16bit is
     end record;
     constant cos_factors : cos_chebyshev18bit := (c0 => 16384, c2=> 80805, c4=> 64473);
 
-    function rounded_mpy
-    (
-        mpy_out : std_logic_vector(35 downto 0)
-    )
-    return std_logic_vector
-    is
-    begin
-        if mpy_out(14) = '1' then
-            return std_logic_vector((unsigned(mpy_out(30 downto 15)) + 1));
-        else
-            return mpy_out(30 downto 15);
-        end if;
-    end rounded_mpy;
 
-    signal alu_ctrl : alu_control_signals;
-
-    function std_to_bool
-    (
-        logic_in : std_logic
-    )
-    return boolean
-    is
-    begin
-        if logic_in = '1' then
-           return true;
-        else
-          return false;
-        end if; 
-    end std_to_bool;
     signal input_angle : int18;
+    signal alu_ctrl : alu_control_signals;
+    signal alu_ctrl2 : alu_control_signals;
 
 begin
         input_angle <= to_integer(s16_angle);
@@ -114,6 +88,11 @@ sin_cos : process(core_clk)
     impure function "*"(a : integer := 0; b : integer := 0) return signed is
     begin
        alu_mult(a, b, alu_ctrl, mult1_result, program_counter);
+    end function;
+
+    impure function "*"(a : signed; b : integer := 0) return signed is
+    begin
+       alu_mult(to_integer(a), b, alu_ctrl, mult1_result, program_counter);
     end function;
 
 begin
