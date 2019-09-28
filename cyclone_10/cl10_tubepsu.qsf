@@ -301,6 +301,7 @@ set_global_assignment -name SAFE_STATE_MACHINE ON
 
 # cyclone 10 lp specific files
 
+set_global_assignment -name VHDL_FILE ../source/dsp/sin_cos16bit_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/sin_cos16bit.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/rad4_inv16bit_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/dsp/rad4_inv16bit.vhd

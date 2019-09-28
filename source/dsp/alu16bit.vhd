@@ -7,6 +7,7 @@ library work;
     use work.alu16bit_pkg.all;
     use work.alu_routines_pkg.all;
     use work.rad4_inv16bit_pkg.all;
+    use work.sin_cos16bit_pkg.all;
 
 entity alu16bit is
     port (
@@ -203,7 +204,7 @@ begin
                     mult1_rdy <= '0';
                 WHEN mult =>
                     mult_dly := (others => '0');
-                    if mult_dly = to_unsigned(0,3) then
+                    if mult_dly = 0 then
                         mult1_rdy <= '1';
                         st_multiplier_states := idle;
                     else
