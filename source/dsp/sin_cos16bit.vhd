@@ -81,101 +81,62 @@ architecture rtl of sin_cos16bit is
         end if;
     end rounded_mpy;
 
+
+    procedure alu_mult
+    (
+        signal a : in integer;
+        signal b : in integer;
+        signal start_alu_mpy : out std_logic;
+        signal mult_a : out std_logic_vector(17 downto 0);
+        signal mult_b : out std_logic_vector(17 downto 0);
+        signal mult_result : in std_logic_vector(35 downto 0);
+        signal mult_is_ready : in boolean;
+        signal result : out integer;
+        signal increment_counter : inout integer
+    ) is
+    begin
+        mult_a <= std_logic_vector(to_signed(a,18));
+        mult_b <= std_logic_vector(to_signed(b,18));
+        start_alu_mpy <= '1';
+        if mult_is_ready then
+            increment_counter <= increment_counter + 1;
+            result <= to_integer(signed(mult_result));
+            start_alu_mpy <= '0';
+        end if;
+    end alu_mult;
+
 begin
 
 div : process(core_clk)
-    type t_sincos_states is (idle,m1,m2,m3, m4,rdy);
-    variable st_sincos_states : t_sincos_states;
+    variable program_counter : integer range 0 to 7;
 begin
     if rising_edge(core_clk) then
         if rstn = '0' then
-        -- reset state
-            st_sincos_states := idle;
-            so_sincos_rdy <= '0';
-            so_sincos_busy <= '0';
-            so18_sincos_out <= (others => '0');
-            so_sincos_start_mpy <= '0';
-            so18_sincos_mpy1_a <= (others => '0');
-            so18_sincos_mpy1_b <= (others => '0');
-            so18_sincos_mpy2_a <= (others => '0');
-            so18_sincos_mpy2_b <= (others => '0');
+            program_counter := 0;
         else
-            CASE st_sincos_states is 
-                WHEN idle =>
+            CASE program_counter is 
+                WHEN 0 =>
                     so_sincos_rdy <= '0';
                     so18_sincos_out <= (others => '0');
 
                     so18_sincos_mpy2_a <= (others => '0');
                     so18_sincos_mpy2_b <= (others => '0');
                     if si_start_sin_cos = '1' then
-                        st_sincos_states := m1;
+                        program_counter := program_counter + 1;
                         -- calculate square of the input angle
                         so18_sincos_mpy1_a <= std_logic_vector(s16_angle);
                         so18_sincos_mpy1_b <= std_logic_vector(s16_angle);
                         so_sincos_start_mpy <= '1';
                     else
-                        st_sincos_states := idle;
+                        program_counter := 0;
                         so18_sincos_mpy1_a <= (others => '0');
                         so18_sincos_mpy1_b <= (others => '0');
                         so_sincos_start_mpy <= '0';
                     end if;
-                WHEN m1 =>
-                    so_sincos_rdy <= '0';
-                    so18_sincos_out <= (others => '0');
-                    if si_mult_rdy = '1' then
-                        so18_sincos_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
-                        so18_sincos_mpy1_b <= "00"& not (rounded_mpy(si36_mpy1_result));
-
-                        so18_sincos_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
-                        --so18_sincos_mpy2_b <= inv_magic_number;
-                        so_sincos_start_mpy <= '1';
-                        st_sincos_states := m2;
-                    else
-                        so_sincos_start_mpy <= '0';
-                        st_sincos_states := m1;
-                    end if;
-                WHEN m2 =>
-                    so_sincos_rdy <= '0';
-                    so18_sincos_out <= (others => '0');
-                    if si_mult_rdy = '1' then
-                        so18_sincos_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
-                        so18_sincos_mpy1_b <= "00"&(not rounded_mpy(si36_mpy1_result));
-
-                        so18_sincos_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
-                        so18_sincos_mpy2_b <= "00"&rounded_mpy(si36_mpy2_result);
-                        st_sincos_states := m3;
-                        so_sincos_start_mpy <= '1';
-                    else
-                        st_sincos_states := m2;
-                        so_sincos_start_mpy <= '0';
-                    end if;
-                WHEN m3 =>
-                    so_sincos_rdy <= '0';
-                    so18_sincos_out <= (others => '0');
-                    if si_mult_rdy = '1' then
-                        so18_sincos_mpy1_a <= "00"&rounded_mpy(si36_mpy1_result);
-                        so18_sincos_mpy1_b <= "00"&(not rounded_mpy(si36_mpy1_result));
-
-                        so18_sincos_mpy2_a <= "00"&(not rounded_mpy(si36_mpy1_result));
-                        so18_sincos_mpy2_b <= "00"&rounded_mpy(si36_mpy2_result);
-                        st_sincos_states := rdy;
-                        so_sincos_start_mpy <= '1';
-                    else
-                        st_sincos_states := m3;
-                        so_sincos_start_mpy <= '0';
-                    end if;
-                WHEN rdy =>
-                    so_sincos_start_mpy <= '0';
-                    if si_mult_rdy = '1' then
-                        so18_sincos_out <= "00"&rounded_mpy(si36_mpy2_result);
-                        so_sincos_rdy <= '1';
-                        st_sincos_states := idle;
-                    else
-                        st_sincos_states := rdy;
-                        so_sincos_rdy <= '0';
-                    end if;
+                WHEN 1 =>
+                    program_counter := program_counter + 1;
                 WHEN others => 
-                    st_sincos_states := idle;
+                    program_counter := 0;
             end CASE;
         end if; -- rstn
     end if; --rising_edge
