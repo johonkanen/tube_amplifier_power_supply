@@ -36,7 +36,7 @@ architecture rtl of sin_cos16bit is
 -- sin constants s1 51472 s3 84635 s5 40720
 -- cos constants c0 16384 c2 80805 c4 64473
 
-
+-- +/- pi/4 range sine and cosine approximation
 --   z = angle^2;
 --
 --   prod = (z*s5);
@@ -82,10 +82,42 @@ architecture rtl of sin_cos16bit is
 
     signal alu_ctrl : alu_control_signals;
 
+    function std_to_bool
+    (
+        logic_in : std_logic
+    )
+    return boolean
+    is
+    begin
+        if logic_in = '1' then
+           return true;
+        else
+          return false;
+        end if; 
+    end std_to_bool;
+    signal input_angle : int18;
+
 begin
+        input_angle <= to_integer(s16_angle);
+
+        alu_ctrl.mult_result <= si36_mpy1_result;
+  --      si36_mpy2_result;
+        alu_ctrl.mult_is_ready <= std_to_bool(si_mult_rdy);
+        so18_sincos_mpy1_a  <= alu_ctrl.mult_a;
+        so18_sincos_mpy1_b  <= alu_ctrl.mult_b;
+        --so18_sincos_mpy2_a  <= 
+        --so18_sincos_mpy2_b  <= alu_ctrl.mult
+        so_sincos_start_mpy <= alu_ctrl.start_alu_mpy;
 
 sin_cos : process(core_clk)
     variable program_counter : integer range 0 to 7;
+    variable mult1_result : sign36;
+
+    impure function "*"(a : integer := 0; b : integer := 0) return signed is
+    begin
+       alu_mult(a, b, alu_ctrl, mult1_result, program_counter);
+    end function;
+
 begin
     if rising_edge(core_clk) then
         CASE program_counter is 
@@ -93,19 +125,17 @@ begin
                 so_sincos_rdy <= '0';
                 so18_sincos_out <= (others => '0');
 
+                so18_sincos_mpy1_a <= (others => '0');
+                so18_sincos_mpy1_b <= (others => '0');
                 so18_sincos_mpy2_a <= (others => '0');
                 so18_sincos_mpy2_b <= (others => '0');
+                so_sincos_start_mpy <= '0';
+
                 if si_start_sin_cos = '1' then
-                    program_counter := program_counter + 1;
-                    -- calculate square of the input angle
-                    so18_sincos_mpy1_a <= std_logic_vector(s16_angle);
-                    so18_sincos_mpy1_b <= std_logic_vector(s16_angle);
-                    so_sincos_start_mpy <= '1';
+                    -- square input
+                    mult1_result := input_angle * input_angle;
                 else
                     program_counter := 0;
-                    so18_sincos_mpy1_a <= (others => '0');
-                    so18_sincos_mpy1_b <= (others => '0');
-                    so_sincos_start_mpy <= '0';
                 end if;
             WHEN 1 =>
                 program_counter := program_counter + 1;
