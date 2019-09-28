@@ -11,7 +11,7 @@ entity sin_cos16bit is
         rstn : in std_logic;
 
         si_start_sin_cos : in std_logic;
-        data_to_invert : in signed(17 downto 0);
+        s16_angle : in signed(17 downto 0);
 
         si36_mpy1_result : in std_logic_vector(35 downto 0); 
         si36_mpy2_result : in std_logic_vector(35 downto 0); 
@@ -36,6 +36,23 @@ architecture rtl of sin_cos16bit is
     subtype int18 is integer range -2**17 to 2**17-1;
 -- sin constants s1 51472 s3 84635 s5 40720
 -- cos constants c0 16384 c2 80805 c4 64473
+
+
+--   z = angle^2;
+--
+--   prod = (z*s5);
+--   summ = s3 - prod;
+--   prod = (z*summ);
+--   summ = s1-prod;
+--
+--   sin16 = summ*angle;
+--
+--   prod = (z*c4);
+--   summ = c2-prod;
+--   prod = z*summ;
+--
+--   cos16 = c0-prod;
+
     type sin_chebyshev18bit is record
         s1 : int18;
         s3 : int18;
@@ -92,8 +109,9 @@ begin
                     so18_sincos_mpy2_b <= (others => '0');
                     if si_start_sin_cos = '1' then
                         st_sincos_states := m1;
-                        --so18_sincos_mpy1_a <= inv_magic_number; -- magic constant, tested to be optimal
-                        so18_sincos_mpy1_b <= std_logic_vector(data_to_invert);
+                        -- calculate square of the input angle
+                        so18_sincos_mpy1_a <= std_logic_vector(s16_angle);
+                        so18_sincos_mpy1_b <= std_logic_vector(s16_angle);
                         so_sincos_start_mpy <= '1';
                     else
                         st_sincos_states := idle;
