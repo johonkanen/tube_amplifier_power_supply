@@ -27,7 +27,7 @@ entity sin_cos16bit is
 
         so_sincos_busy : out std_logic;
         so_sincos_rdy : out std_logic;
-        so18_sincos_out : out std_logic_vector(17 downto 0)
+        so18_sincos_out : out signed(17 downto 0)
     );
 end entity sin_cos16bit;
 
@@ -39,12 +39,9 @@ architecture rtl of sin_cos16bit is
 -- +/- pi/4 range sine and cosine approximation
 --   z = angle^2;
 --
---   prod = (z*s5);
---   summ = s3 - prod;
---   prod = (z*summ);
---   summ = s1-prod;
---
---   sin16 = summ*angle;
+--   prod = z*s5;
+--   prod = z*(s3) - prod);
+--   sin16 = (s1-prod)*angle;
 --
 --   prod = (z*c4);
 --   summ = c2-prod;
@@ -112,6 +109,7 @@ begin
 sin_cos : process(core_clk)
     variable program_counter : integer range 0 to 7;
     variable mult1_result : sign36;
+    variable angle2 : sign36;
 
     impure function "*"(a : integer := 0; b : integer := 0) return signed is
     begin
@@ -133,12 +131,23 @@ begin
 
                 if si_start_sin_cos = '1' then
                     -- square input
-                    mult1_result := input_angle * input_angle;
+                    angle2 := input_angle * input_angle;
                 else
                     program_counter := 0;
                 end if;
+                so_sincos_rdy <= '0';
             WHEN 1 =>
-                program_counter := program_counter + 1;
+                mult1_result := angle2(33 downto 16) * sin_factors.s5; 
+                so_sincos_rdy <= '0';
+            WHEN 2 =>
+                mult1_result := angle2(33 downto 16) * (sin_factors.s3 - (mult1_result(30 downto 13))); 
+                so_sincos_rdy <= '0';
+            WHEN 3 =>
+                mult1_result := (sin_factors.s1 - mult1_result(30 downto 13)) * input_angle; 
+                so_sincos_rdy <= '0';
+            WHEN 4 =>
+                so18_sincos_out <= mult1_result(30 downto 13);
+                so_sincos_rdy <= '1';
             WHEN others => 
                 program_counter := 0;
         end CASE;
