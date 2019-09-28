@@ -4,76 +4,52 @@ library ieee;
 
 package alu_routines_pkg is
 
-type int16 is record
-    data : integer range -32768 to 32767;
-end record;
-
-type uint16 is record
-    data : integer range 0 to 65535;
-end record;
  
-subtype int18 is 
-    integer range -131072 to 131071;
+    -- TODO move these to common datatypes package
 
-subtype uint18 is 
-    integer range 0 to 262143;
+    subtype int16 is integer range -2**15 to 2**15-1;
+    subtype int18 is integer range -2**17 to 2**17-1;
 
+    subtype uint16 is integer range 0 to 2**16-1;
+    subtype uint18 is integer range 0 to 2**18-1;
 
-    procedure sum_a_b
-    (
-        signal data_a : in signed(17 downto 0); 
-        signal data_b : in signed(17 downto 0); 
-        signal result : out signed(17 downto 0)
-    );
-end;
+    type alu_control_signals is record
+        start_alu_mpy : std_logic;
+        mult_a : std_logic_vector(17 downto 0);
+        mult_b : std_logic_vector(17 downto 0);
+        mult_result : std_logic_vector(35 downto 0);
+        mult_is_ready : boolean;
+    end record;
+
+    procedure alu_mult
+        (
+            signal a : in integer;
+            signal b : in integer;
+            signal alu_control : inout alu_control_signals;
+            signal result : out integer;
+            variable increment_counter : inout integer
+        );
+    end; 
 
 package body alu_routines_pkg is
 
-    procedure sum_a_b
-    (
-        signal data_a : in signed(17 downto 0); 
-        signal data_b : in signed(17 downto 0); 
-        signal result : out signed(17 downto 0)
-    ) is
-    begin
-        result <= data_a + data_b;
-    end sum_a_b;
-
-    function sum_a_b
-    (
-        data_a : in signed(17 downto 0); 
-        data_b : in signed(17 downto 0)
-    )
-    return signed
-    is
-    begin
-        return data_a + data_b;
-    end sum_a_b;
-
-    function sub_a_b
-    (
-        data_a : in signed(17 downto 0); 
-        data_b : in signed(17 downto 0)
-    )
-    return signed
-    is
-    begin
-        return data_a - data_b;
-    end sub_a_b;
-
     procedure alu_mult
     (
-        rstn : in boolean;
-        data1 : in int18;
-        data2 : in int18;
-        start_mult : out boolean;
-        mult_rdy : in boolean;
-        result : inout int18
+        signal a : in integer;
+        signal b : in integer;
+        signal alu_control : inout alu_control_signals;
+        signal result : out integer;
+        variable increment_counter : inout integer
     ) is
-        type t_mult_wait is (idle,done);
-        variable st_mult_wait : t_mult_wait;
     begin
-        if mult_rdy then
+        alu_control.mult_a <= std_logic_vector(to_signed(a,18));
+        alu_control.mult_b <= std_logic_vector(to_signed(b,18));
+        result <= to_integer(signed(alu_control.mult_result));
+        if alu_control.mult_is_ready then
+            increment_counter := increment_counter + 1;
+            alu_control.start_alu_mpy <= '0';
+        else
+            alu_control.start_alu_mpy <= '1';
         end if;
     end alu_mult;
 
