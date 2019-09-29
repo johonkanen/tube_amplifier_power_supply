@@ -2,13 +2,14 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
+
 package sin_cos16bit_pkg is
 
     type mpy_control_group is record
-        mpy1_a : std_logic_vector(17 downto 0);
-        mpy1_b : std_logic_vector(17 downto 0);
-        si36_mpy1_result : std_logic_vector(35 downto 0);
-        start_mpy : std_logic;
+        mpy_a : std_logic_vector(17 downto 0);
+        mpy_b : std_logic_vector(17 downto 0);
+        s36_result : std_logic_vector(35 downto 0);
+        start_mpy : boolean;
         mult_is_ready : boolean;
     end record;
 
@@ -20,8 +21,8 @@ package sin_cos16bit_pkg is
         si_start_sin_cos : in boolean;
         s16_angle : in signed(17 downto 0);
 
-        mpy1_control : inout mpy_control_group;
-        mpy2_control : inout mpy_control_group;
+        mpy1_control : inout work.alu_routines_pkg.alu_control_signals;
+        mpy2_control : inout work.alu_routines_pkg.alu_control_signals;
 
         so_sincos_busy : out std_logic;
         so_sincos_rdy : out std_logic;
@@ -29,5 +30,20 @@ package sin_cos16bit_pkg is
     );
     end component;
 
+    procedure idle_mpy (signal mpy : out mpy_control_group);
 
-end package;
+end package sin_cos16bit_pkg;
+
+package body sin_cos16bit_pkg is
+
+procedure idle_mpy
+(
+    signal mpy : out mpy_control_group
+) is
+begin
+    mpy.mpy_a <= (others => '0');
+    mpy.mpy_b <= (others => '0');
+    mpy.start_mpy <= false;
+end idle_mpy;
+
+end package body;
