@@ -1,3 +1,5 @@
+add_files -norecurse ../../source/dsp/sin_cos16bit_pkg.vhd
+add_files -norecurse ../../source/dsp/sin_cos16bit.vhd
 add_files -norecurse ../../source/dsp/alu16bit_pkg.vhd
 add_files -norecurse ../../source/system_control/sys_ctrl_pkg.vhd
 add_files -norecurse ../../source/spartan_6/s6_specifics.vhd

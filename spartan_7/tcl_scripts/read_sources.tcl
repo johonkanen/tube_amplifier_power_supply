@@ -36,6 +36,8 @@ read_vhdl -vhdl2008 [ glob ../source/dsp/rad4_inv16bit_pkg.vhd]
 read_vhdl -vhdl2008 [ glob ../source/dsp/rad4_inv16bit.vhd]
 read_vhdl -vhdl2008 [ glob ../source/dsp/alu_routines_pkg.vhd]
 read_vhdl -vhdl2008 [ glob ../source/dsp/seq_pi_control.vhd]
+read_vhdl -vhdl2008 [ glob ../source/dsp/sin_cos16bit_pkg.vhd]
+read_vhdl -vhdl2008 [ glob ../source/dsp/sin_cos16bit.vhd]
 
 read_vhdl -vhdl2008 [ glob ../source/led_driver/*.vhd ]
 read_vhdl -vhdl2008 [ glob ../source/onboard_ad_control/*.vhd ]

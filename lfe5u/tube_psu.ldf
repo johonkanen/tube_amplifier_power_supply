@@ -4,7 +4,7 @@
         <Option name="HDL type" value="VHDL"/>
     </Options>
     <Implementation title="rtl" dir="rtl" description="rtl" synthesis="synplify" default_strategy="Strategy1">
-        <Options def_top="pipelined_multiplier" top="top"/>
+        <Options def_top="sin_cos16bit" top="top"/>
         <Source name="../source/top/top.vhd" type="VHDL" type_short="VHDL">
             <Options top_module="top"/>
         </Source>
@@ -129,6 +129,12 @@
             <Options/>
         </Source>
         <Source name="ecp5u_specifics/ecp5_ip_components/ecp5_ip_components.sbx" type="sbx" type_short="SBX">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/sin_cos16bit_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options/>
+        </Source>
+        <Source name="../source/dsp/sin_cos16bit.vhd" type="VHDL" type_short="VHDL">
             <Options/>
         </Source>
         <Source name="refresh_flash.xcf" type="Programming Project File" type_short="Programming">

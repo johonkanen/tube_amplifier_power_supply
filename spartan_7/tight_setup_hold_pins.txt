@@ -2,7 +2,5 @@
 |       Launch Clock       |      Capture Clock       |                                                 Pin                                                      |
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
 |    clk_out2_pll_1x256mhz |    clk_out1_pll_1x256mhz |  main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_reg[13]/D|
-|    clk_out2_pll_1x256mhz |    clk_out1_pll_1x256mhz |  main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_reg[10]/D|
 |    clk_out2_pll_1x256mhz |    clk_out1_pll_1x256mhz |   main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_reg[6]/D|
-|    clk_out2_pll_1x256mhz |    clk_out1_pll_1x256mhz |  main_system_control/system_data_control/supply_ctrl_layer/dhb_ctrl/dhb_modulator/s16_sec_phase_reg[11]/D|
 +--------------------------+--------------------------+----------------------------------------------------------------------------------------------------------+
