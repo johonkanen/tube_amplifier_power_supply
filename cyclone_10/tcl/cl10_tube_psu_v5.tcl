@@ -286,7 +286,7 @@ if {$make_assignments} {
 
 #compile flow
 #
-# execute_flow -compile
+execute_flow -compile
 
 #call external executables to generate flash image and program cfi flash
 exec quartus_cpf -c $tcl_scripts/generate_flash_image.cof
