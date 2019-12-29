@@ -284,6 +284,8 @@ if {$make_assignments} {
 	#}
 }
 
+set_global_assignment -name SDC_FILE $tcl_scripts/cl10_tubepsu_constraints.sdc
+
 #compile flow
 #
 execute_flow -compile
