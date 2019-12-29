@@ -286,6 +286,14 @@ if {$make_assignments} {
 
 #compile flow
 #
-execute_flow -compile
+# execute_flow -compile
+
+#call external executables to generate flash image and program cfi flash
+exec quartus_cpf -c $tcl_scripts/generate_flash_image.cof
+
+# program fpga ram
+exec quartus_pgm -c "USB-Blaster \[USB-0\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
+# program fpga flash
+# exec quartus_pgm -i -c "USB-Blaster \[USB-0\]" -m JTAG -o "ipv;./output_files/output_file.jic"
 
 
