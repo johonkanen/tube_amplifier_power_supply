@@ -20,6 +20,138 @@
             <spirit:views/>
             <spirit:ports>
                 <spirit:port>
+                    <spirit:name>dsp_slice_CE0</spirit:name>
+                    <spirit:displayName>dsp_slice_CE0</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.CE0</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_CLK0</spirit:name>
+                    <spirit:displayName>dsp_slice_CLK0</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.CLK0</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_EQOM</spirit:name>
+                    <spirit:displayName>dsp_slice_EQOM</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.EQOM</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_EQPAT</spirit:name>
+                    <spirit:displayName>dsp_slice_EQPAT</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.EQPAT</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_EQPATB</spirit:name>
+                    <spirit:displayName>dsp_slice_EQPATB</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.EQPATB</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_EQZ</spirit:name>
+                    <spirit:displayName>dsp_slice_EQZ</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.EQZ</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_EQZM</spirit:name>
+                    <spirit:displayName>dsp_slice_EQZM</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.EQZM</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_OVER</spirit:name>
+                    <spirit:displayName>dsp_slice_OVER</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.OVER</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_RST0</spirit:name>
+                    <spirit:displayName>dsp_slice_RST0</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.RST0</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_SignR</spirit:name>
+                    <spirit:displayName>dsp_slice_SignR</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.SignR</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_UNDER</spirit:name>
+                    <spirit:displayName>dsp_slice_UNDER</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.UNDER</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
                     <spirit:name>main_pll_CLKI</spirit:name>
                     <spirit:displayName>main_pll_CLKI</spirit:displayName>
                     <spirit:wire>
@@ -112,6 +244,118 @@
                     <spirit:vendorExtensions>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="exportFrom">pipelined_multiplier.Clock</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_AA</spirit:name>
+                    <spirit:displayName>dsp_slice_AA</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.AA</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_AB</spirit:name>
+                    <spirit:displayName>dsp_slice_AB</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.AB</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_BA</spirit:name>
+                    <spirit:displayName>dsp_slice_BA</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.BA</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_BB</spirit:name>
+                    <spirit:displayName>dsp_slice_BB</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>17</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.BB</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_C</spirit:name>
+                    <spirit:displayName>dsp_slice_C</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>53</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.C</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_Opcode</spirit:name>
+                    <spirit:displayName>dsp_slice_Opcode</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>in</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>3</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.Opcode</lattice:attribute>
+                        </lattice:attributes>
+                    </spirit:vendorExtensions>
+                </spirit:port>
+                <spirit:port>
+                    <spirit:name>dsp_slice_Result</spirit:name>
+                    <spirit:displayName>dsp_slice_Result</spirit:displayName>
+                    <spirit:wire>
+                        <spirit:direction>out</spirit:direction>
+                        <spirit:vector>
+                            <spirit:left>53</spirit:left>
+                            <spirit:right>0</spirit:right>
+                        </spirit:vector>
+                    </spirit:wire>
+                    <spirit:vendorExtensions>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="exportFrom">dsp_slice.Result</lattice:attribute>
                         </lattice:attributes>
                     </spirit:vendorExtensions>
                 </spirit:port>
@@ -217,8 +461,8 @@
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
             <lattice:synthesis>synplify</lattice:synthesis>
             <lattice:date>2019-05-18.08:54:51</lattice:date>
-            <lattice:modified>2019-07-22.08:12:24</lattice:modified>
-            <lattice:diamond>3.11.0.396.4</lattice:diamond>
+            <lattice:modified>2019-10-25.09:05:54</lattice:modified>
+            <lattice:diamond>3.11.1.441</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
                 <lattice:attribute lattice:name="AddComponent">true</lattice:attribute>
@@ -244,6 +488,663 @@
         <spirit:name>ecp5_ip_components</spirit:name>
         <spirit:version>1.0</spirit:version>
         <spirit:componentInstances>
+            <spirit:componentInstance>
+                <spirit:instanceName>dsp_slice</spirit:instanceName>
+                <spirit:componentRef>
+                    <spirit:vendor>Lattice Semiconductor Corporation</spirit:vendor>
+                    <spirit:library>LEGACY</spirit:library>
+                    <spirit:name>SLICE</spirit:name>
+                    <spirit:version>1.6</spirit:version>
+                    <spirit:fileSets>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Simulation</spirit:name>
+                            <spirit:group>simulation</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./dsp_slice/dsp_slice.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                        <spirit:fileset>
+                            <spirit:name>Diamond_Synthesis</spirit:name>
+                            <spirit:group>synthesis</spirit:group>
+                            <spirit:file>
+                                <spirit:name>./dsp_slice/dsp_slice.vhd</spirit:name>
+                                <spirit:fileType>vhdlSource</spirit:fileType>
+                            </spirit:file>
+                        </spirit:fileset>
+                    </spirit:fileSets>
+                    <spirit:componentGenerators>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>Configuration</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_core.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                        <spirit:componentGenerator spirit:hidden="true" spirit:scope="instance">
+                            <spirit:name>CreateNGD</spirit:name>
+                            <spirit:apiType>none</spirit:apiType>
+                            <spirit:generatorExe>${sbp_path}/${instance}/generate_ngd.tcl</spirit:generatorExe>
+                            <spirit:group>CONFIG</spirit:group>
+                        </spirit:componentGenerator>
+                    </spirit:componentGenerators>
+                    <spirit:model>
+                        <spirit:views/>
+                        <spirit:ports>
+                            <spirit:port>
+                                <spirit:name>CE0</spirit:name>
+                                <spirit:displayName>CE0</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>CLK0</spirit:name>
+                                <spirit:displayName>CLK0</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>EQOM</spirit:name>
+                                <spirit:displayName>EQOM</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>EQPAT</spirit:name>
+                                <spirit:displayName>EQPAT</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>EQPATB</spirit:name>
+                                <spirit:displayName>EQPATB</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>EQZ</spirit:name>
+                                <spirit:displayName>EQZ</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>EQZM</spirit:name>
+                                <spirit:displayName>EQZM</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>OVER</spirit:name>
+                                <spirit:displayName>OVER</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>RST0</spirit:name>
+                                <spirit:displayName>RST0</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>SignR</spirit:name>
+                                <spirit:displayName>SignR</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>UNDER</spirit:name>
+                                <spirit:displayName>UNDER</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>AA</spirit:name>
+                                <spirit:displayName>AA</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>AB</spirit:name>
+                                <spirit:displayName>AB</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>BA</spirit:name>
+                                <spirit:displayName>BA</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>BB</spirit:name>
+                                <spirit:displayName>BB</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>17</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>C</spirit:name>
+                                <spirit:displayName>C</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>53</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>Opcode</spirit:name>
+                                <spirit:displayName>Opcode</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>in</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>3</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                            <spirit:port>
+                                <spirit:name>Result</spirit:name>
+                                <spirit:displayName>Result</spirit:displayName>
+                                <spirit:wire>
+                                    <spirit:direction>out</spirit:direction>
+                                    <spirit:vector>
+                                        <spirit:left>53</spirit:left>
+                                        <spirit:right>0</spirit:right>
+                                    </spirit:vector>
+                                </spirit:wire>
+                            </spirit:port>
+                        </spirit:ports>
+                    </spirit:model>
+                    <spirit:vendorExtensions>
+                        <lattice:synthesis>synplify</lattice:synthesis>
+                        <lattice:modified>2019-10-25.09:05:54</lattice:modified>
+                        <lattice:attributes>
+                            <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
+                            <lattice:attribute lattice:name="BBox">false</lattice:attribute>
+                            <lattice:attribute lattice:name="Change4to5">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConfig">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeConnect">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeDevice">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeLocate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePack">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangePart">false</lattice:attribute>
+                            <lattice:attribute lattice:name="ChangeSynthesis">false</lattice:attribute>
+                            <lattice:attribute lattice:name="CoreType">LPM</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_RXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="DCU_TXREFCLK">PRIMARY</lattice:attribute>
+                            <lattice:attribute lattice:name="Migrate">false</lattice:attribute>
+                            <lattice:attribute lattice:name="RemovedComponent">false</lattice:attribute>
+                        </lattice:attributes>
+                        <lattice:elements/>
+                        <lattice:lpc>
+                            <lattice:lpcsection lattice:name="Device"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Family</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ecp5u</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>OperatingCondition</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">COM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Package</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CABGA381</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F-8BG381C</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>PartType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LFE5U-12F</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SpeedGrade</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">8</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Status</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">S</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="IP"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">SLICE</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreRevision</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1.6</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreStatus</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Demo</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>CoreType</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">LPM</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Date</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">10/25/2019</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ModuleName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">dsp_slice</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>ParameterFileVersion</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1.0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceFormat</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">vhdl</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Time</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">09:05:20</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VendorName</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Lattice Semiconductor Corporation</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Parameters"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Destination</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Synplicity</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EDIF</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnALU</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOFR</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOFRCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOFRClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOFRRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOPR</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOPRCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOPRClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOPRRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAOR</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAORCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAORClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnAORRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAACE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAAClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAARST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRAB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRABCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRABClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRABRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBACE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBAClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBARST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBBCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBBClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRBBRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRC</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRCCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRCClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnIRCRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnInReg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnMatchReg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DISABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnMultA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnMultB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DISABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORACE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORAClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORARST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DISABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORBCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORBClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnORBRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnOutReg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRACE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRAClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRARST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRBCE</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CE0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRBClk</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">CLK0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPRBRST</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">RST0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>EnPipeReg</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Expression</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">BusA(0 to 7)</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>IO</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>InputA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">MultA</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>InputB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">MultB</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>InputC</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>MASKPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DYNAMIC</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>MCPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">STATIC</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Operation</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DYNAMIC</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Order</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Big Endian [MSB:LSB]</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignAA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignAB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignBA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SignBB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Signed</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceAA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceAB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceBA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>SourceBB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">Parallel</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>VHDL</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>Verilog</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>WidthAA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>WidthAB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>WidthBA</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>WidthBB</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">18</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>WidthC</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">36</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>gsr</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">ENABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>nRNDPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">1</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>reset</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">SYNC</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>shiftoutb</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">DISABLED</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>xMASK01</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">00000000000000</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>xMASKPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">00000000000000</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>xMCPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">00000000000000</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>xRNDPAT</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">00000000000000</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                            <lattice:lpcsection lattice:name="Command"/>
+                            <lattice:lpcentry>
+                                <lattice:lpckey>cmd_line</lattice:lpckey>
+                                <lattice:lpcvalue lattice:resolve="constant">-w -n dsp_slice -lang vhdl -synth synplify -bus_exp 7 -bb -arch sa5p00 -type dspslice -enable_multa -enable_multb -enable_sync -enable_alu -opcode_alu 10 -opcode_muxa 1 -opcode_muxb 1 -opcode_muxc 0 -mcpat 0x00000000000000 -maskpat_source -mask01 0x00000000000000 -rndpat 0x00000000000000 -nrndpat 1 -widtha 18 -widthb 18 -signed -width_ba 18 -width_bb 18 -signed_b -widthc 36 -rega0 -rega0clk CLK0 -rega0ce CE0 -rega0rst RST0 -regb0 -regb0clk CLK0 -regb0ce CE0 -regb0rst RST0 -rega1 -rega1clk CLK0 -rega1ce CE0 -rega1rst RST0 -regb1 -regb1clk CLK0 -regb1ce CE0 -regb1rst RST0 -regc -regcclk CLK0 -regcce CE0 -regcrst RST0 -regp0 -regp0clk CLK0 -regp0ce CE0 -regp0rst RST0 -regp1 -regp1clk CLK0 -regp1ce CE0 -regp1rst RST0 -regas0 -regas0clk CLK0 -regas0ce CE0 -regas0rst RST0 -regas1 -regas1clk CLK0 -regas1ce CE0 -regas1rst RST0 -rego -regoclk CLK0 -regoce CE0 -regorst RST0 -clk0 -ce0 -rst0</lattice:lpcvalue>
+                            </lattice:lpcentry>
+                        </lattice:lpc>
+                        <lattice:groups/>
+                    </spirit:vendorExtensions>
+                </spirit:componentRef>
+            </spirit:componentInstance>
             <spirit:componentInstance>
                 <spirit:instanceName>main_pll</spirit:instanceName>
                 <spirit:componentRef>
@@ -331,7 +1232,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
+                        <lattice:modified>2019-10-25.09:05:54</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -783,7 +1684,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
+                        <lattice:modified>2019-10-25.09:05:54</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -1136,7 +2037,7 @@
                     </spirit:model>
                     <spirit:vendorExtensions>
                         <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2019-07-22.08:12:24</lattice:modified>
+                        <lattice:modified>2019-10-25.09:05:54</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -1316,6 +2217,72 @@
         </spirit:componentInstances>
         <spirit:adHocConnections>
             <spirit:adHocConnection>
+                <spirit:name>dsp_slice_CE0</spirit:name>
+                <spirit:displayName>dsp_slice_CE0</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="CE0" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_CE0"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_CLK0</spirit:name>
+                <spirit:displayName>dsp_slice_CLK0</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="CLK0" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_CLK0"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_EQOM</spirit:name>
+                <spirit:displayName>dsp_slice_EQOM</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="EQOM" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_EQOM"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_EQPAT</spirit:name>
+                <spirit:displayName>dsp_slice_EQPAT</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="EQPAT" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_EQPAT"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_EQPATB</spirit:name>
+                <spirit:displayName>dsp_slice_EQPATB</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="EQPATB" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_EQPATB"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_EQZ</spirit:name>
+                <spirit:displayName>dsp_slice_EQZ</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="EQZ" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_EQZ"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_EQZM</spirit:name>
+                <spirit:displayName>dsp_slice_EQZM</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="EQZM" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_EQZM"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_OVER</spirit:name>
+                <spirit:displayName>dsp_slice_OVER</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="OVER" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_OVER"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_RST0</spirit:name>
+                <spirit:displayName>dsp_slice_RST0</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="RST0" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_RST0"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_SignR</spirit:name>
+                <spirit:displayName>dsp_slice_SignR</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="SignR" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_SignR"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_UNDER</spirit:name>
+                <spirit:displayName>dsp_slice_UNDER</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="UNDER" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_UNDER"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
                 <spirit:name>main_pll_CLKI</spirit:name>
                 <spirit:displayName>main_pll_CLKI</spirit:displayName>
                 <spirit:internalPortReference spirit:portRef="CLKI" spirit:componentRef="main_pll"/>
@@ -1362,6 +2329,1152 @@
                 <spirit:displayName>pipelined_multiplier_Clock</spirit:displayName>
                 <spirit:internalPortReference spirit:portRef="Clock" spirit:componentRef="pipelined_multiplier"/>
                 <spirit:externalPortReference spirit:portRef="pipelined_multiplier_Clock"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA</spirit:name>
+                <spirit:displayName>dsp_slice_AA</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="AA" spirit:componentRef="dsp_slice" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_AA" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[0]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[0]"/>
+                <spirit:internalPortReference spirit:portRef="AA[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[10]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[10]"/>
+                <spirit:internalPortReference spirit:portRef="AA[10]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[11]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[11]"/>
+                <spirit:internalPortReference spirit:portRef="AA[11]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[12]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[12]"/>
+                <spirit:internalPortReference spirit:portRef="AA[12]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[13]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[13]"/>
+                <spirit:internalPortReference spirit:portRef="AA[13]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[14]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[14]"/>
+                <spirit:internalPortReference spirit:portRef="AA[14]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[15]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[15]"/>
+                <spirit:internalPortReference spirit:portRef="AA[15]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[16]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[16]"/>
+                <spirit:internalPortReference spirit:portRef="AA[16]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[17]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[17]"/>
+                <spirit:internalPortReference spirit:portRef="AA[17]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[1]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[1]"/>
+                <spirit:internalPortReference spirit:portRef="AA[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[2]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[2]"/>
+                <spirit:internalPortReference spirit:portRef="AA[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[3]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[3]"/>
+                <spirit:internalPortReference spirit:portRef="AA[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[4]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[4]"/>
+                <spirit:internalPortReference spirit:portRef="AA[4]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[5]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[5]"/>
+                <spirit:internalPortReference spirit:portRef="AA[5]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[6]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[6]"/>
+                <spirit:internalPortReference spirit:portRef="AA[6]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[7]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[7]"/>
+                <spirit:internalPortReference spirit:portRef="AA[7]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[8]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[8]"/>
+                <spirit:internalPortReference spirit:portRef="AA[8]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AA[9]</spirit:name>
+                <spirit:displayName>dsp_slice_AA[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AA[9]"/>
+                <spirit:internalPortReference spirit:portRef="AA[9]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB</spirit:name>
+                <spirit:displayName>dsp_slice_AB</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="AB" spirit:componentRef="dsp_slice" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_AB" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[0]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[0]"/>
+                <spirit:internalPortReference spirit:portRef="AB[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[10]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[10]"/>
+                <spirit:internalPortReference spirit:portRef="AB[10]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[11]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[11]"/>
+                <spirit:internalPortReference spirit:portRef="AB[11]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[12]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[12]"/>
+                <spirit:internalPortReference spirit:portRef="AB[12]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[13]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[13]"/>
+                <spirit:internalPortReference spirit:portRef="AB[13]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[14]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[14]"/>
+                <spirit:internalPortReference spirit:portRef="AB[14]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[15]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[15]"/>
+                <spirit:internalPortReference spirit:portRef="AB[15]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[16]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[16]"/>
+                <spirit:internalPortReference spirit:portRef="AB[16]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[17]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[17]"/>
+                <spirit:internalPortReference spirit:portRef="AB[17]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[1]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[1]"/>
+                <spirit:internalPortReference spirit:portRef="AB[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[2]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[2]"/>
+                <spirit:internalPortReference spirit:portRef="AB[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[3]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[3]"/>
+                <spirit:internalPortReference spirit:portRef="AB[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[4]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[4]"/>
+                <spirit:internalPortReference spirit:portRef="AB[4]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[5]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[5]"/>
+                <spirit:internalPortReference spirit:portRef="AB[5]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[6]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[6]"/>
+                <spirit:internalPortReference spirit:portRef="AB[6]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[7]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[7]"/>
+                <spirit:internalPortReference spirit:portRef="AB[7]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[8]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[8]"/>
+                <spirit:internalPortReference spirit:portRef="AB[8]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_AB[9]</spirit:name>
+                <spirit:displayName>dsp_slice_AB[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_AB[9]"/>
+                <spirit:internalPortReference spirit:portRef="AB[9]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA</spirit:name>
+                <spirit:displayName>dsp_slice_BA</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="BA" spirit:componentRef="dsp_slice" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_BA" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[0]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[0]"/>
+                <spirit:internalPortReference spirit:portRef="BA[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[10]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[10]"/>
+                <spirit:internalPortReference spirit:portRef="BA[10]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[11]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[11]"/>
+                <spirit:internalPortReference spirit:portRef="BA[11]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[12]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[12]"/>
+                <spirit:internalPortReference spirit:portRef="BA[12]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[13]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[13]"/>
+                <spirit:internalPortReference spirit:portRef="BA[13]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[14]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[14]"/>
+                <spirit:internalPortReference spirit:portRef="BA[14]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[15]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[15]"/>
+                <spirit:internalPortReference spirit:portRef="BA[15]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[16]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[16]"/>
+                <spirit:internalPortReference spirit:portRef="BA[16]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[17]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[17]"/>
+                <spirit:internalPortReference spirit:portRef="BA[17]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[1]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[1]"/>
+                <spirit:internalPortReference spirit:portRef="BA[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[2]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[2]"/>
+                <spirit:internalPortReference spirit:portRef="BA[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[3]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[3]"/>
+                <spirit:internalPortReference spirit:portRef="BA[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[4]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[4]"/>
+                <spirit:internalPortReference spirit:portRef="BA[4]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[5]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[5]"/>
+                <spirit:internalPortReference spirit:portRef="BA[5]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[6]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[6]"/>
+                <spirit:internalPortReference spirit:portRef="BA[6]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[7]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[7]"/>
+                <spirit:internalPortReference spirit:portRef="BA[7]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[8]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[8]"/>
+                <spirit:internalPortReference spirit:portRef="BA[8]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BA[9]</spirit:name>
+                <spirit:displayName>dsp_slice_BA[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BA[9]"/>
+                <spirit:internalPortReference spirit:portRef="BA[9]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB</spirit:name>
+                <spirit:displayName>dsp_slice_BB</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="BB" spirit:componentRef="dsp_slice" spirit:left="17"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_BB" spirit:left="17"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[0]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[0]"/>
+                <spirit:internalPortReference spirit:portRef="BB[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[10]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[10]"/>
+                <spirit:internalPortReference spirit:portRef="BB[10]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[11]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[11]"/>
+                <spirit:internalPortReference spirit:portRef="BB[11]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[12]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[12]"/>
+                <spirit:internalPortReference spirit:portRef="BB[12]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[13]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[13]"/>
+                <spirit:internalPortReference spirit:portRef="BB[13]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[14]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[14]"/>
+                <spirit:internalPortReference spirit:portRef="BB[14]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[15]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[15]"/>
+                <spirit:internalPortReference spirit:portRef="BB[15]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[16]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[16]"/>
+                <spirit:internalPortReference spirit:portRef="BB[16]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[17]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[17]"/>
+                <spirit:internalPortReference spirit:portRef="BB[17]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[1]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[1]"/>
+                <spirit:internalPortReference spirit:portRef="BB[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[2]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[2]"/>
+                <spirit:internalPortReference spirit:portRef="BB[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[3]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[3]"/>
+                <spirit:internalPortReference spirit:portRef="BB[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[4]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[4]"/>
+                <spirit:internalPortReference spirit:portRef="BB[4]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[5]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[5]"/>
+                <spirit:internalPortReference spirit:portRef="BB[5]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[6]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[6]"/>
+                <spirit:internalPortReference spirit:portRef="BB[6]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[7]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[7]"/>
+                <spirit:internalPortReference spirit:portRef="BB[7]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[8]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[8]"/>
+                <spirit:internalPortReference spirit:portRef="BB[8]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_BB[9]</spirit:name>
+                <spirit:displayName>dsp_slice_BB[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_BB[9]"/>
+                <spirit:internalPortReference spirit:portRef="BB[9]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C</spirit:name>
+                <spirit:displayName>dsp_slice_C</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="C" spirit:componentRef="dsp_slice" spirit:left="53"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_C" spirit:left="53"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[0]</spirit:name>
+                <spirit:displayName>dsp_slice_C[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[0]"/>
+                <spirit:internalPortReference spirit:portRef="C[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[10]</spirit:name>
+                <spirit:displayName>dsp_slice_C[10]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[10]"/>
+                <spirit:internalPortReference spirit:portRef="C[10]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[11]</spirit:name>
+                <spirit:displayName>dsp_slice_C[11]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[11]"/>
+                <spirit:internalPortReference spirit:portRef="C[11]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[12]</spirit:name>
+                <spirit:displayName>dsp_slice_C[12]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[12]"/>
+                <spirit:internalPortReference spirit:portRef="C[12]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[13]</spirit:name>
+                <spirit:displayName>dsp_slice_C[13]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[13]"/>
+                <spirit:internalPortReference spirit:portRef="C[13]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[14]</spirit:name>
+                <spirit:displayName>dsp_slice_C[14]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[14]"/>
+                <spirit:internalPortReference spirit:portRef="C[14]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[15]</spirit:name>
+                <spirit:displayName>dsp_slice_C[15]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[15]"/>
+                <spirit:internalPortReference spirit:portRef="C[15]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[16]</spirit:name>
+                <spirit:displayName>dsp_slice_C[16]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[16]"/>
+                <spirit:internalPortReference spirit:portRef="C[16]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[17]</spirit:name>
+                <spirit:displayName>dsp_slice_C[17]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[17]"/>
+                <spirit:internalPortReference spirit:portRef="C[17]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[18]</spirit:name>
+                <spirit:displayName>dsp_slice_C[18]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[18]"/>
+                <spirit:internalPortReference spirit:portRef="C[18]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[19]</spirit:name>
+                <spirit:displayName>dsp_slice_C[19]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[19]"/>
+                <spirit:internalPortReference spirit:portRef="C[19]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[1]</spirit:name>
+                <spirit:displayName>dsp_slice_C[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[1]"/>
+                <spirit:internalPortReference spirit:portRef="C[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[20]</spirit:name>
+                <spirit:displayName>dsp_slice_C[20]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[20]"/>
+                <spirit:internalPortReference spirit:portRef="C[20]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[21]</spirit:name>
+                <spirit:displayName>dsp_slice_C[21]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[21]"/>
+                <spirit:internalPortReference spirit:portRef="C[21]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[22]</spirit:name>
+                <spirit:displayName>dsp_slice_C[22]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[22]"/>
+                <spirit:internalPortReference spirit:portRef="C[22]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[23]</spirit:name>
+                <spirit:displayName>dsp_slice_C[23]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[23]"/>
+                <spirit:internalPortReference spirit:portRef="C[23]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[24]</spirit:name>
+                <spirit:displayName>dsp_slice_C[24]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[24]"/>
+                <spirit:internalPortReference spirit:portRef="C[24]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[25]</spirit:name>
+                <spirit:displayName>dsp_slice_C[25]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[25]"/>
+                <spirit:internalPortReference spirit:portRef="C[25]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[26]</spirit:name>
+                <spirit:displayName>dsp_slice_C[26]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[26]"/>
+                <spirit:internalPortReference spirit:portRef="C[26]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[27]</spirit:name>
+                <spirit:displayName>dsp_slice_C[27]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[27]"/>
+                <spirit:internalPortReference spirit:portRef="C[27]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[28]</spirit:name>
+                <spirit:displayName>dsp_slice_C[28]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[28]"/>
+                <spirit:internalPortReference spirit:portRef="C[28]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[29]</spirit:name>
+                <spirit:displayName>dsp_slice_C[29]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[29]"/>
+                <spirit:internalPortReference spirit:portRef="C[29]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[2]</spirit:name>
+                <spirit:displayName>dsp_slice_C[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[2]"/>
+                <spirit:internalPortReference spirit:portRef="C[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[30]</spirit:name>
+                <spirit:displayName>dsp_slice_C[30]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[30]"/>
+                <spirit:internalPortReference spirit:portRef="C[30]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[31]</spirit:name>
+                <spirit:displayName>dsp_slice_C[31]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[31]"/>
+                <spirit:internalPortReference spirit:portRef="C[31]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[32]</spirit:name>
+                <spirit:displayName>dsp_slice_C[32]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[32]"/>
+                <spirit:internalPortReference spirit:portRef="C[32]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[33]</spirit:name>
+                <spirit:displayName>dsp_slice_C[33]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[33]"/>
+                <spirit:internalPortReference spirit:portRef="C[33]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[34]</spirit:name>
+                <spirit:displayName>dsp_slice_C[34]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[34]"/>
+                <spirit:internalPortReference spirit:portRef="C[34]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[35]</spirit:name>
+                <spirit:displayName>dsp_slice_C[35]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[35]"/>
+                <spirit:internalPortReference spirit:portRef="C[35]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[36]</spirit:name>
+                <spirit:displayName>dsp_slice_C[36]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[36]"/>
+                <spirit:internalPortReference spirit:portRef="C[36]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[37]</spirit:name>
+                <spirit:displayName>dsp_slice_C[37]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[37]"/>
+                <spirit:internalPortReference spirit:portRef="C[37]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[38]</spirit:name>
+                <spirit:displayName>dsp_slice_C[38]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[38]"/>
+                <spirit:internalPortReference spirit:portRef="C[38]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[39]</spirit:name>
+                <spirit:displayName>dsp_slice_C[39]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[39]"/>
+                <spirit:internalPortReference spirit:portRef="C[39]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[3]</spirit:name>
+                <spirit:displayName>dsp_slice_C[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[3]"/>
+                <spirit:internalPortReference spirit:portRef="C[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[40]</spirit:name>
+                <spirit:displayName>dsp_slice_C[40]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[40]"/>
+                <spirit:internalPortReference spirit:portRef="C[40]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[41]</spirit:name>
+                <spirit:displayName>dsp_slice_C[41]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[41]"/>
+                <spirit:internalPortReference spirit:portRef="C[41]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[42]</spirit:name>
+                <spirit:displayName>dsp_slice_C[42]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[42]"/>
+                <spirit:internalPortReference spirit:portRef="C[42]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[43]</spirit:name>
+                <spirit:displayName>dsp_slice_C[43]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[43]"/>
+                <spirit:internalPortReference spirit:portRef="C[43]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[44]</spirit:name>
+                <spirit:displayName>dsp_slice_C[44]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[44]"/>
+                <spirit:internalPortReference spirit:portRef="C[44]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[45]</spirit:name>
+                <spirit:displayName>dsp_slice_C[45]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[45]"/>
+                <spirit:internalPortReference spirit:portRef="C[45]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[46]</spirit:name>
+                <spirit:displayName>dsp_slice_C[46]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[46]"/>
+                <spirit:internalPortReference spirit:portRef="C[46]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[47]</spirit:name>
+                <spirit:displayName>dsp_slice_C[47]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[47]"/>
+                <spirit:internalPortReference spirit:portRef="C[47]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[48]</spirit:name>
+                <spirit:displayName>dsp_slice_C[48]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[48]"/>
+                <spirit:internalPortReference spirit:portRef="C[48]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[49]</spirit:name>
+                <spirit:displayName>dsp_slice_C[49]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[49]"/>
+                <spirit:internalPortReference spirit:portRef="C[49]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[4]</spirit:name>
+                <spirit:displayName>dsp_slice_C[4]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[4]"/>
+                <spirit:internalPortReference spirit:portRef="C[4]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[50]</spirit:name>
+                <spirit:displayName>dsp_slice_C[50]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[50]"/>
+                <spirit:internalPortReference spirit:portRef="C[50]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[51]</spirit:name>
+                <spirit:displayName>dsp_slice_C[51]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[51]"/>
+                <spirit:internalPortReference spirit:portRef="C[51]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[52]</spirit:name>
+                <spirit:displayName>dsp_slice_C[52]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[52]"/>
+                <spirit:internalPortReference spirit:portRef="C[52]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[53]</spirit:name>
+                <spirit:displayName>dsp_slice_C[53]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[53]"/>
+                <spirit:internalPortReference spirit:portRef="C[53]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[5]</spirit:name>
+                <spirit:displayName>dsp_slice_C[5]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[5]"/>
+                <spirit:internalPortReference spirit:portRef="C[5]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[6]</spirit:name>
+                <spirit:displayName>dsp_slice_C[6]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[6]"/>
+                <spirit:internalPortReference spirit:portRef="C[6]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[7]</spirit:name>
+                <spirit:displayName>dsp_slice_C[7]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[7]"/>
+                <spirit:internalPortReference spirit:portRef="C[7]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[8]</spirit:name>
+                <spirit:displayName>dsp_slice_C[8]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[8]"/>
+                <spirit:internalPortReference spirit:portRef="C[8]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_C[9]</spirit:name>
+                <spirit:displayName>dsp_slice_C[9]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_C[9]"/>
+                <spirit:internalPortReference spirit:portRef="C[9]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Opcode</spirit:name>
+                <spirit:displayName>dsp_slice_Opcode</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="Opcode" spirit:componentRef="dsp_slice" spirit:left="3"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_Opcode" spirit:left="3"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Opcode[0]</spirit:name>
+                <spirit:displayName>dsp_slice_Opcode[0]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Opcode[0]"/>
+                <spirit:internalPortReference spirit:portRef="Opcode[0]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Opcode[1]</spirit:name>
+                <spirit:displayName>dsp_slice_Opcode[1]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Opcode[1]"/>
+                <spirit:internalPortReference spirit:portRef="Opcode[1]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Opcode[2]</spirit:name>
+                <spirit:displayName>dsp_slice_Opcode[2]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Opcode[2]"/>
+                <spirit:internalPortReference spirit:portRef="Opcode[2]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Opcode[3]</spirit:name>
+                <spirit:displayName>dsp_slice_Opcode[3]</spirit:displayName>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Opcode[3]"/>
+                <spirit:internalPortReference spirit:portRef="Opcode[3]" spirit:componentRef="dsp_slice"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result</spirit:name>
+                <spirit:displayName>dsp_slice_Result</spirit:displayName>
+                <spirit:internalPortReference spirit:right="0" spirit:portRef="Result" spirit:componentRef="dsp_slice" spirit:left="53"/>
+                <spirit:externalPortReference spirit:right="0" spirit:portRef="dsp_slice_Result" spirit:left="53"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[0]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[0]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[0]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[0]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[10]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[10]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[10]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[10]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[11]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[11]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[11]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[11]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[12]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[12]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[12]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[12]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[13]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[13]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[13]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[13]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[14]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[14]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[14]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[14]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[15]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[15]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[15]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[15]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[16]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[16]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[16]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[16]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[17]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[17]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[17]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[17]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[18]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[18]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[18]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[18]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[19]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[19]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[19]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[19]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[1]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[1]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[1]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[1]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[20]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[20]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[20]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[20]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[21]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[21]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[21]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[21]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[22]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[22]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[22]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[22]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[23]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[23]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[23]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[23]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[24]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[24]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[24]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[24]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[25]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[25]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[25]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[25]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[26]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[26]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[26]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[26]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[27]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[27]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[27]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[27]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[28]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[28]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[28]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[28]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[29]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[29]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[29]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[29]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[2]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[2]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[2]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[2]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[30]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[30]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[30]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[30]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[31]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[31]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[31]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[31]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[32]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[32]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[32]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[32]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[33]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[33]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[33]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[33]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[34]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[34]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[34]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[34]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[35]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[35]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[35]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[35]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[36]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[36]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[36]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[36]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[37]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[37]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[37]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[37]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[38]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[38]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[38]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[38]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[39]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[39]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[39]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[39]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[3]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[3]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[3]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[3]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[40]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[40]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[40]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[40]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[41]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[41]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[41]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[41]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[42]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[42]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[42]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[42]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[43]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[43]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[43]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[43]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[44]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[44]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[44]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[44]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[45]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[45]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[45]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[45]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[46]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[46]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[46]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[46]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[47]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[47]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[47]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[47]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[48]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[48]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[48]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[48]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[49]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[49]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[49]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[49]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[4]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[4]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[4]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[4]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[50]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[50]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[50]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[50]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[51]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[51]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[51]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[51]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[52]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[52]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[52]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[52]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[53]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[53]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[53]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[53]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[5]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[5]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[5]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[5]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[6]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[6]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[6]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[6]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[7]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[7]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[7]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[7]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[8]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[8]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[8]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[8]"/>
+            </spirit:adHocConnection>
+            <spirit:adHocConnection>
+                <spirit:name>dsp_slice_Result[9]</spirit:name>
+                <spirit:displayName>dsp_slice_Result[9]</spirit:displayName>
+                <spirit:internalPortReference spirit:portRef="Result[9]" spirit:componentRef="dsp_slice"/>
+                <spirit:externalPortReference spirit:portRef="dsp_slice_Result[9]"/>
             </spirit:adHocConnection>
             <spirit:adHocConnection>
                 <spirit:name>mpy18x18_A</spirit:name>
