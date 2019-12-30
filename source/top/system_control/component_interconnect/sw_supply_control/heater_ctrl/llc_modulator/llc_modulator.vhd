@@ -18,17 +18,17 @@ end entity llc_modulator;
 
 architecture rtl of llc_modulator is
 
-    signal u12_carrier: unsigned(11 downto 0);
-    signal u12_deadtime : integer range 0 to 2**15-1;
-    signal r1_u12_deadtime : integer range 0 to 2**15-1;
+    signal carrier: integer;
+    signal deadtime : integer range 0 to 2**15-1;
+    signal r1_deadtime : integer range 0 to 2**15-1;
     signal s_pulse : std_logic;
     signal s1_pulse : std_logic;
-    signal u12_period : unsigned(11 downto 0);
+    signal period : integer;
 
     signal dly_cntr : integer range 0 to 2**15-1;
 
-    signal u12_dt_dly : unsigned(11 downto 0);
-    signal u12_reset_carrier : unsigned(11 downto 0);
+    signal dt_dly : integer;
+    signal reset_carrier : integer;
 
     type t_startup_states is (init, rampup, ready);
     signal st_startup : t_startup_states; 
@@ -45,12 +45,12 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
-        r1_u12_deadtime <= u12_deadtime;
+        r1_deadtime <= deadtime;
         if rstn = '0' then
             st_startup <= rampup;
             dly_cntr <= 0;
-            u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
-            u12_deadtime <= 461; -- 883/2-13 cycle initial pulse width
+            period <= 474; -- 290kHz initial frequency
+            deadtime <= 461; -- 883/2-13 cycle initial pulse width
         else
             CASE st_startup is
                 WHEN rampup => 
@@ -64,11 +64,11 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
                     if reset_dly_cntr = '1' then
                         dly_cntr <= 0;
-                        u12_deadtime <= u12_deadtime - 1;
+                        deadtime <= deadtime - 1;
                     end if;
 
 
-                    if r1_u12_deadtime = 64 then
+                    if r1_deadtime = 64 then
                         st_startup <= ready;
                     else
                         st_startup <= rampup;
@@ -77,13 +77,13 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
                 WHEN ready =>
 
-                    u12_period <= piu12_per_ctrl;
+                    period <= llc_modulator_data_in.period;
 
                 WHEN others =>
                     st_startup <= rampup;
                     dly_cntr <= 0;
-                    u12_period <= to_unsigned(474,12); -- 290kHz initial frequency
-                    u12_deadtime <= 461; -- 883/2-13 cycle initial pulse width
+                    period <= 474; -- 290kHz initial frequency
+                    deadtime <= 461; -- 883/2-13 cycle initial pulse width
             end CASE;
 
         end if;
@@ -96,14 +96,14 @@ startup : process(llc_modulator_clocks.modulator_clock)
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
         if rstn = '0' then
             s_pulse <= '0';
-            u12_reset_carrier <= to_unsigned(474,12);
+            reset_carrier <= 474;
         else
-            u12_reset_carrier <= u12_period;
-            if u12_carrier > u12_reset_carrier then
-               u12_carrier <= (others => '0');
+            reset_carrier <= period;
+            if carrier > reset_carrier then
+               carrier <= 0;
                s_pulse <= NOT s_pulse;
             else
-                u12_carrier <= u12_carrier + 1;
+                carrier <= carrier + 1;
             end if;
 
         end if;
@@ -112,35 +112,32 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
 
     pri_gate_ctrl : process(llc_modulator_clocks.modulator_clock)
-        variable sec_pwm_cntr : unsigned(11 downto 0);
+        variable sec_pwm_cntr : integer;
         type t_dt_states is (active_pulse,deadtime);
         variable st_dt_states : t_dt_states;
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
             s1_pulse <= s_pulse;
         if rstn = '0' then
-            r_po4_ht_pwm <= (others => '0');
-            po4_ht_pwm <= (others => '0');
-            sec_pwm_cntr := (others => '0');
-            u12_dt_dly <= (others => '0');
+            llc_modulator_FPGA_out.llc_gates <= (others => '0');
+            dt_dly <= 0;
             st_dt_states := deadtime;
             start_dt_counter <= '0';
         else
-            po4_ht_pwm <= r_po4_ht_pwm;
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
-                    u12_dt_dly <= (others => '0');
-                    r_po4_ht_pwm.pri_high <= s1_pulse;
-                    r_po4_ht_pwm.pri_low <= not s1_pulse;
+                    dt_dly <= 0;
+                    llc_modulator_FPGA_out.llc_gates.pri_high <= s1_pulse;
+                    llc_modulator_FPGA_out.llc_gates.pri_low <= not s1_pulse;
 
-                    if sec_pwm_cntr > to_unsigned(614,12) then
-                        r_po4_ht_pwm.sync1 <= '0';
-                        r_po4_ht_pwm.sync2 <= '0';
+                    if sec_pwm_cntr > 614 then
+                        llc_modulator_FPGA_out.llc_gates.sync1 <= '0';
+                        llc_modulator_FPGA_out.llc_gates.sync2 <= '0';
                     else
                         sec_pwm_cntr := sec_pwm_cntr + 1;
-                        r_po4_ht_pwm.sync1 <= s1_pulse;
-                        r_po4_ht_pwm.sync2 <= not s1_pulse;
+                        llc_modulator_FPGA_out.llc_gates.sync1 <= s1_pulse;
+                        llc_modulator_FPGA_out.llc_gates.sync2 <= not s1_pulse;
                     end if;
 
                     if s1_pulse = s_pulse then
@@ -158,13 +155,12 @@ startup : process(llc_modulator_clocks.modulator_clock)
                         st_dt_states := deadtime;
                         start_dt_counter <= '1';
                     end if;
-                    r_po4_ht_pwm <= (others => '0');
+                    llc_modulator_FPGA_out.llc_gates <= (others => '0');
                     sec_pwm_cntr := (others => '0');
                 WHEN others => 
-                    r_po4_ht_pwm <= (others => '0');
-                    po4_ht_pwm <= (others => '0');
-                    sec_pwm_cntr := (others => '0');
-                    u12_dt_dly <= (others => '0');
+                    llc_modulator_FPGA_out.llc_gates <= (others => '0');
+                    sec_pwm_cntr := 0;
+                    dt_dly <= 0;
                     st_dt_states := active_pulse;
             end CASE;
         end if;
@@ -180,7 +176,7 @@ begin
             dt_count := 0;
             dt_counter_ready <= '0';
         else
-            if dt_count < r1_u12_deadtime AND start_dt_counter = '1' then
+            if dt_count < r1_deadtime AND start_dt_counter = '1' then
                 dt_count := dt_count + 1;
                 dt_counter_ready <= '0';
             else
