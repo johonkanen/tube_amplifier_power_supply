@@ -22,10 +22,8 @@ entity data_control is
 
 -- PFC pwm
 	    po2_pfc_pwm : out bridgeless_pfc_pwm;
-
 -- heater pwm
         po4_ht_pwm : out hb_llc_pwm;
-
 -- DBH pwm
         po4_dhb_pwm : out dhb_pwm;
 			

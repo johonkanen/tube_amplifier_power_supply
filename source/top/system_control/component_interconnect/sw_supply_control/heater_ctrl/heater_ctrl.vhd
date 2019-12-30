@@ -61,29 +61,18 @@ component seq_pi_control is
 	);
 end component;
  
-signal r_si_rstn : std_logic;
-signal voltage_ctrl_rdy : std_logic;
-signal r_piu12_per_ctrl  : unsigned(11 downto 0); 
-signal r_so_sign18_pi_out : signed(17 downto 0);
-signal r_si_sign18_meas : signed(17 downto 0);
-signal r_so_startup_rdy : std_logic; 
-signal start_pi_ctrl : std_logic;
+    signal r_si_rstn : std_logic;
+    signal voltage_ctrl_rdy : std_logic;
+    signal r_piu12_per_ctrl  : unsigned(11 downto 0); 
+    signal r_so_sign18_pi_out : signed(17 downto 0);
+    signal r_si_sign18_meas : signed(17 downto 0);
+    signal r_so_startup_rdy : std_logic; 
+    signal start_pi_ctrl : std_logic;
 
 begin
 
-heater_voltage_control : seq_pi_control
-	generic map(850,474,0,0)
-port map(core_clk, r_si_rstn, start_pi_ctrl, so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, to_signed(13600,18), r_si_sign18_meas, to_signed(1500,18), to_signed(50,18));
-
-so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
-r_si_sign18_meas <= resize(signed(ht_adc_control.std16_ad_bus),18);
-
-llc_modulator : freq_modulator
-    port map(modulator_clk, modulator_clk, r_si_rstn, r_so_startup_rdy, r_piu12_per_ctrl, po4_ht_pwm);
-
-start_pi_ctrl <= r_so_startup_rdy AND ht_adc_control.ad_rdy_trigger;    
-
-r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(11 downto 0));
+    so_std18_test_data <= std_logic_vector(r_so_sign18_pi_out);
+    r_si_sign18_meas <= resize(signed(ht_adc_control.std16_ad_bus),18);
 
 test_heater_pwm : process(core_clk)
     begin
@@ -95,26 +84,37 @@ test_heater_pwm : process(core_clk)
             if si_uart_ready_event = '1' then
             CASE si16_uart_rx_data(15 downto 12) is
                 WHEN x"0" =>
-                CASE si16_uart_rx_data(11 downto 0) is
-                    WHEN c_llc_start =>
-                    r_si_rstn <= '1';
-                    WHEN c_llc_stop =>
-                    r_si_rstn <= '0';
-                    WHEN others =>
-                    -- do nothing
-                end CASE;
-
+                    CASE si16_uart_rx_data(11 downto 0) is
+                        WHEN c_llc_start =>
+                            r_si_rstn <= '1';
+                        WHEN c_llc_stop =>
+                            r_si_rstn <= '0';
+                        WHEN others =>
+                        -- do nothing
+                    end CASE;
                 WHEN c_llc_freq =>
-                --/* r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
+                    --/* r_piu12_per_ctrl  <= unsigned(si16_uart_rx_data(11 downto 0)); */ 
                 WHEN others =>
-                -- do nothing
+                    -- do nothing
             end CASE;
         end if;
 
 	    end if;
 	end if;
-    end process test_heater_pwm;
+end process test_heater_pwm;
 
 
+------------------------------------------------------------------------------------------
+    start_pi_ctrl <= r_so_startup_rdy AND ht_adc_control.ad_rdy_trigger;    
+
+heater_voltage_control : seq_pi_control
+	generic map(850,474,0,0)
+port map(core_clk, r_si_rstn, start_pi_ctrl, so_test_data_rdy, voltage_ctrl_rdy, r_so_sign18_pi_out, to_signed(13600,18), r_si_sign18_meas, to_signed(1500,18), to_signed(50,18));
+------------------------------------------------------------------------------------------
+    r_piu12_per_ctrl  <= unsigned(r_so_sign18_pi_out(11 downto 0));
+
+llc_modulator : freq_modulator
+    port map(modulator_clk, modulator_clk, r_si_rstn, r_so_startup_rdy, r_piu12_per_ctrl, po4_ht_pwm);
+------------------------------------------------------------------------------------------
 
 end behavioral;

@@ -10,7 +10,6 @@ library work;
     use work.llc_pkg.all;
     use work.pfc_pkg.all;
 
-
 entity system_control is
     port(
 	    core_clk : in std_logic;
@@ -115,12 +114,11 @@ component data_control is
 	    so16_uart_rx_data	: out std_logic_vector(15 downto 0);
 
 	    si_tcmd_system_cmd : in tcmd_system_commands
-
 );
 end component;
 
 signal start_dly : std_logic;
-signal dly_complete : std_logic;
+signal delay_is_complete : boolean;
 							
 signal r_so_uart_ready_event : std_logic;
 signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
@@ -139,104 +137,43 @@ signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
 begin
 
-burn_leds : led_driver
-port map(core_clk, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
-
-system_data_control : data_control
-    port map(
-	    core_clk =>  core_clk,
-	    modulator_clk => modulator_clk,
-	    modulator_clk2 => modulator_clk2,
-	    si_pll_lock =>si_pll_lock,
-
--- PFC pwm
-	    po2_pfc_pwm => po2_pfc_pwm,
-
--- heater pwm
-        po4_ht_pwm => po4_ht_pwm,
-
--- DBH pwm
-        po4_dhb_pwm => po4_dhb_pwm,
-			
--- uart rx and tx
-	    pi_uart_rx => pi_uart_rx,
-	    po_uart_tx => po_uart_tx,
-
--- ad converter A signals
-	    po_ada_cs => po_ada_cs,
-	    po_ada_clk => po_ada_clk,
-	    pi_ada_sdata => pi_ada_sdata,
-	    po3_ada_muxsel => po3_ada_muxsel, 
-
--- ad converter B signals
-	    po_adb_cs => po_adb_cs,
-	    po_adb_clk => po_adb_clk,
-	    pi_adb_sdata => pi_adb_sdata,
-	    po3_adb_muxsel => po3_adb_muxsel,
-
--- ext ad converter 1 signals
-	    po_ext_ad1_cs => po_ext_ad1_cs,
-	    po_ext_ad1_clk => po_ext_ad1_clk,
-	    pi_ext_ad1_sdata => pi_ext_ad1_sdata,
-
--- ext ad converter 2 signals
-	    po_ext_ad2_cs => po_ext_ad2_cs,
-	    po_ext_ad2_clk => po_ext_ad2_clk,
-	    pi_ext_ad2_sdata => pi_ext_ad2_sdata,
-
-
-
-        so_ada_ctrl => r_so_ada_ctrl,
-        so_adb_ctrl => r_so_adb_ctrl,
-
-	    so_uart_ready_event	=> r_so_uart_ready_event,
-	    so16_uart_rx_data => r_so16_uart_rx_data,
-	    
-	    si_tcmd_system_cmd => r_si_tcmd_system_cmd
-	);
-
     delay_20ms : process(core_clk)
-	variable u22_init_dly_cnt : unsigned(21 downto 0);
-	variable v_u10_dly_cnt : unsigned(21 downto 0);
+        variable u22_init_dly_cnt : integer; 
+        variable v_u10_dly_cnt : integer;
     begin
 	if rising_edge(core_clk) then
+
+        delay_is_complete <= false;
 	    if start_dly = '1' then
+            u22_init_dly_cnt := u22_init_dly_cnt +1;
+
 			if u22_init_dly_cnt = 2560000 then
-				u22_init_dly_cnt := (others=>'0');
+				u22_init_dly_cnt := 0;
 				v_u10_dly_cnt := v_u10_dly_cnt + 1;
 
 				if v_u10_dly_cnt = u10_dly_cnt then
-				    dly_complete <= '1';
-				else
-				    dly_complete <= '0';
+				    delay_is_complete <= true;
 				end if;
-			else
-				u22_init_dly_cnt := u22_init_dly_cnt +1;
-				dly_complete <= '0';
+
 			end if;
 	    else
-			v_u10_dly_cnt := (others=>'0');
-			u22_init_dly_cnt := (others=>'0');
-			dly_complete <= '0';
+			v_u10_dly_cnt := 0;
+			u22_init_dly_cnt := 0;
 	    end if;
 	end if;
     end process delay_20ms;
 
-
     system_main : process(core_clk) is
-
-	type t_system_states is (init,
-				    charge_dc_link,
-				    bypass_relay, 
-				    start_aux, 
-				    start_pfc, 
-				    start_heaters, 
-				    start_dhb, 
-				    system_running,
-				    stop);
-
+        type t_system_states is (init,
+                        charge_dc_link,
+                        bypass_relay, 
+                        start_aux, 
+                        start_pfc, 
+                        start_heaters, 
+                        start_dhb, 
+                        system_running,
+                        stop);
 		variable st_main_states : t_system_states;
-		variable u21_init_dly_cnt : unsigned(20 downto 0);
 
     begin
 
@@ -301,7 +238,7 @@ system_data_control : data_control
 				u10_dly_cnt <= to_unsigned(6,10);
 				po_bypass_relay <= '0';
 
-				if dly_complete = '1' then
+				if delay_is_complete then
 				    st_main_states := start_aux;
 				    start_dly <= '0';
 				else
@@ -318,7 +255,7 @@ system_data_control : data_control
 				u10_dly_cnt <= to_unsigned(50,10);
 				po_bypass_relay <= '0';
 				
-				if dly_complete = '1' OR  zero_cross_event = '1' then
+				if delay_is_complete OR zero_cross_event = '1' then
 				    st_main_states := system_running;
 				    start_dly <= '0';
 				else
@@ -358,6 +295,61 @@ system_data_control : data_control
 
 	end if;
     end process system_main;
+
+burn_leds : led_driver
+port map(core_clk, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
+
+system_data_control : data_control
+    port map(
+	    core_clk =>  core_clk,
+	    modulator_clk => modulator_clk,
+	    modulator_clk2 => modulator_clk2,
+	    si_pll_lock =>si_pll_lock,
+
+-- PFC pwm
+	    po2_pfc_pwm => po2_pfc_pwm,
+
+-- heater pwm
+        po4_ht_pwm => po4_ht_pwm,
+
+-- DBH pwm
+        po4_dhb_pwm => po4_dhb_pwm,
+			
+-- uart rx and tx
+	    pi_uart_rx => pi_uart_rx,
+	    po_uart_tx => po_uart_tx,
+
+-- ad converter A signals
+	    po_ada_cs => po_ada_cs,
+	    po_ada_clk => po_ada_clk,
+	    pi_ada_sdata => pi_ada_sdata,
+	    po3_ada_muxsel => po3_ada_muxsel, 
+
+-- ad converter B signals
+	    po_adb_cs => po_adb_cs,
+	    po_adb_clk => po_adb_clk,
+	    pi_adb_sdata => pi_adb_sdata,
+	    po3_adb_muxsel => po3_adb_muxsel,
+
+-- ext ad converter 1 signals
+	    po_ext_ad1_cs => po_ext_ad1_cs,
+	    po_ext_ad1_clk => po_ext_ad1_clk,
+	    pi_ext_ad1_sdata => pi_ext_ad1_sdata,
+
+-- ext ad converter 2 signals
+	    po_ext_ad2_cs => po_ext_ad2_cs,
+	    po_ext_ad2_clk => po_ext_ad2_clk,
+	    pi_ext_ad2_sdata => pi_ext_ad2_sdata,
+
+        so_ada_ctrl => r_so_ada_ctrl,
+        so_adb_ctrl => r_so_adb_ctrl,
+
+	    so_uart_ready_event	=> r_so_uart_ready_event,
+	    so16_uart_rx_data => r_so16_uart_rx_data,
+	    
+	    si_tcmd_system_cmd => r_si_tcmd_system_cmd
+	);
+
 
 
 end rtl;
