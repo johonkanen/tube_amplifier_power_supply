@@ -21,6 +21,7 @@ package llc_modulator_pkg is
     end record;
     
     type llc_modulator_data_input_group is record
+        period : integer;
         clock : std_logic;
         reset_n : std_logic;
     end record;
@@ -33,7 +34,7 @@ package llc_modulator_pkg is
         port (
             llc_modulator_clocks : in llc_modulator_clock_group;
     
-            llc_modulator_FPGA_in : in llc_modulator_FPGA_input_group;
+            -- llc_modulator_FPGA_in : in llc_modulator_FPGA_input_group;
             llc_modulator_FPGA_out : out llc_modulator_FPGA_output_group;
     
             llc_modulator_data_in : in llc_modulator_data_input_group;
