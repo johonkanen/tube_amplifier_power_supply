@@ -141,52 +141,55 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_adc_wrapper.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_multiplier_wrapper.vhd
 
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/seq_pi_control.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/dc_link_ctrl.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/seq_pi_control.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/dc_link_ctrl.vhd
 
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/sin_cos16bit_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/sin_cos16bit.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/rad4_inv16bit_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/rad4_inv16bit.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/alu16bit_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/alu16bit.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/dsp/alu_routines_pkg.vhd
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/llc_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/heater_ctrl.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/freq_modulator.vhd
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/phase_modulator.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_control.vhd
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_control.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_modulator.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl.vhd
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/command_shell.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_tx.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_rx.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_event_ctrl.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart.vhd
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_onboard_ad_bus_driver.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_bus_driver.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_control.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_ctrl.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/sin_cos16bit_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/sin_cos16bit.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/rad4_inv16bit_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/rad4_inv16bit.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/alu16bit_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/alu16bit.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/dsp/alu_routines_pkg.vhd
+    #
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_onboard_ad_bus_driver.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_bus_driver.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_control.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_ctrl.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd
+
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/llc_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/heater_ctrl.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/heater_ctrl/freq_modulator.vhd
+    #
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/phase_modulator.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_control.vhd
+    #
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_control.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_modulator.vhd
+    #
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl.vhd
+
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/command_shell.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_tx.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_rx.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_event_ctrl.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart.vhd
+
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver.vhd
 
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/data_control.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/data_control.vhd
 
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/sys_ctrl_pkg.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/top.vhd
 

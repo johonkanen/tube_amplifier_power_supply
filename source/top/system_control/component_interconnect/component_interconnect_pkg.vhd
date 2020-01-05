@@ -9,7 +9,8 @@ type component_interconnect_FPGA_input_group is record
 end record;
 
 type component_interconnect_FPGA_output_group is record
-    sw_supply_control_FPGA_out : work.sw_supply_ctrl_pkg.sw_supply_control_FPGA_output_group;
+    dummy : std_logic;
+    -- sw_supply_control_FPGA_out : work.sw_supply_ctrl_pkg.sw_supply_control_FPGA_output_group;
 end record;
 
 type component_interconnect_data_input_group is record
