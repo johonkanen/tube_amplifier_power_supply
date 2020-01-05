@@ -211,20 +211,22 @@ if {$make_assignments} {
 	set_location_assignment PIN_R3 -to system_control_FPGA_out.po3_led3.green
 	set_location_assignment PIN_R4 -to system_control_FPGA_out.po3_led3.blue
 
-	# set_location_assignment PIN_R10 -to po_ada_clk
-	# set_location_assignment PIN_R9 -to po_ada_cs
-	# set_location_assignment PIN_T4 -to po_adb_cs
-	# set_location_assignment PIN_T5 -to po_adb_clk
+	set_location_assignment PIN_T9  -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.ada_data
+	set_location_assignment PIN_R10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_clock
+    set_location_assignment PIN_R9  -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_cs
+	set_location_assignment PIN_T10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[0]
+	set_location_assignment PIN_R11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[1]
+	set_location_assignment PIN_T11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[2]
+
+	set_location_assignment PIN_R5 -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.adb_data
+	set_location_assignment PIN_T4 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_cs
+	set_location_assignment PIN_T5 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_clock
+	set_location_assignment PIN_R12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[0]
+	set_location_assignment PIN_R13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
+	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
+
 	# set_location_assignment PIN_K15 -to pi_uart_rx
 	# set_location_assignment PIN_L15 -to po_uart_tx
-	# set_location_assignment PIN_R11 -to po3_ada_muxsel[1]
-	# set_location_assignment PIN_T11 -to po3_ada_muxsel[2]
-	# set_location_assignment PIN_T10 -to po3_ada_muxsel[0]
-	# set_location_assignment PIN_T9 -to pi_ada_sdata
-	# set_location_assignment PIN_R12 -to po3_adb_muxsel[0]
-	# set_location_assignment PIN_R13 -to po3_adb_muxsel[1]
-	# set_location_assignment PIN_T12 -to po3_adb_muxsel[2]
-	# set_location_assignment PIN_R5 -to pi_adb_sdata
 	# set_location_assignment PIN_F15 -to po_ext_ad1_clk
 	# set_location_assignment PIN_A14 -to po_ext_ad1_cs
 	# set_location_assignment PIN_C16 -to po_ext_ad2_clk
