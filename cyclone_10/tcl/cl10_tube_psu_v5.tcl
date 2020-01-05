@@ -154,7 +154,7 @@ if {$make_assignments} {
     #
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_onboard_ad_bus_driver.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_bus_driver.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_control.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_ctrl.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd

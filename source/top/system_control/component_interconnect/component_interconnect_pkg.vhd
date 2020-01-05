@@ -5,12 +5,11 @@ library ieee;
 package component_interconnect_pkg is
 
 type component_interconnect_FPGA_input_group is record
-    clock : std_logic;
+    onboard_ad_control_FPGA_in : work.onboard_ad_control_pkg.onboard_ad_control_FPGA_input_group;
 end record;
 
 type component_interconnect_FPGA_output_group is record
-    dummy : std_logic;
-    -- sw_supply_control_FPGA_out : work.sw_supply_ctrl_pkg.sw_supply_control_FPGA_output_group;
+    onboard_ad_control_FPGA_out : work.onboard_ad_control_pkg.onboard_ad_control_FPGA_output_group;
 end record;
 
 type component_interconnect_data_input_group is record
@@ -18,7 +17,7 @@ type component_interconnect_data_input_group is record
 end record;
 
 type component_interconnect_data_output_group is record
-    clock : std_logic;
+    onboard_ad_control_data_out : work.onboard_ad_control_pkg.onboard_ad_control_data_output_group;
 end record;
 
 component component_interconnect is

@@ -4,6 +4,7 @@ library ieee;
 
 library work;
     use work.system_control_pkg.all;
+    use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
 
 entity system_control is
@@ -20,23 +21,32 @@ end entity system_control;
 
 architecture rtl of system_control is
 
-signal start_dly : std_logic;
-signal delay_is_complete : boolean;
-							
-signal r_so_uart_ready_event : std_logic;
-signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
+    signal start_dly : std_logic;
+    signal delay_is_complete : boolean;
+                                
+    signal r_so_uart_ready_event : std_logic;
+    signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
 
-signal zero_cross_event : std_logic;
+    signal zero_cross_event : std_logic;
 
-signal number_of_delays : integer;
+    signal number_of_delays : integer;
 
-signal led1_color : led_counters;
-signal led2_color : led_counters;
-signal led3_color : led_counters;
+    signal led1_color : led_counters;
+    signal led2_color : led_counters;
+    signal led3_color : led_counters;
 
+    signal component_interconnect_FPGA_in  : component_interconnect_FPGA_input_group;
+    signal component_interconnect_FPGA_out : component_interconnect_FPGA_output_group;
 
+    signal component_interconnect_data_in  : component_interconnect_data_input_group;
+    signal component_interconnect_data_out : component_interconnect_data_output_group;
+
+        -- ada_conversion_data : integer range 0 to 2**16-1;
+        -- ada_data_is_ready : boolean;
+        -- ada_channel : integer;
 -- signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 -- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
+-- alias ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
 
 begin
 
@@ -197,6 +207,16 @@ begin
 
 	end if;
     end process system_main;
+
+u_component_interconnect : component_interconnect
+port map(
+        system_clocks,
+        component_interconnect_FPGA_in,
+        component_interconnect_FPGA_out,
+
+        component_interconnect_data_in,
+        component_interconnect_data_out
+    );
 
 burn_leds : led_driver
 port map(system_clocks.core_clock, system_control_FPGA_out.po3_led1, system_control_FPGA_out.po3_led2, system_control_FPGA_out.po3_led3, led1_color, led2_color, led3_color);

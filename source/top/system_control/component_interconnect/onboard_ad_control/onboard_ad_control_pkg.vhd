@@ -54,4 +54,21 @@ package onboard_ad_control_pkg is
         );
     end component onboard_ad_control;
 
+------------------------------------------------------------------------
+    function trigger_adc ( next_ad_channel : integer) return onboard_ad_control_data_input_group;
+------------------------------------------------------------------------
 end package onboard_ad_control_pkg;
+
+package body onboard_ad_control_pkg is
+    function trigger_adc
+    (
+        next_ad_channel : integer
+    )
+    return onboard_ad_control_data_input_group
+    is
+        variable jee : onboard_ad_control_data_input_group;
+    begin
+        return (true, next_ad_channel, true, next_ad_channel);
+    end trigger_adc;
+
+end package body onboard_ad_control_pkg;

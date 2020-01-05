@@ -64,10 +64,8 @@ begin
         if rising_edge(onboard_ad_control_clocks.core_clock) then
 
             onboard_ad_control_data_out.ada_data_is_ready <= false;
-
             if onboard_ad_control_clocks.reset_n = '0' then
             -- reset state
-                onboard_ad_control_FPGA_out.ada_mux <= (others => '0');
                 ad_mux_io <= (others => '0');
             else
                 if ada_sh_ready = '1' then
