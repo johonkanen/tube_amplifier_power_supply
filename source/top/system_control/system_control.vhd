@@ -46,7 +46,9 @@ architecture rtl of system_control is
         -- ada_channel : integer;
 -- signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 -- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
--- alias ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
+    alias aka_ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
+    alias aka_ada_data : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data;
+    alias aka_ada_is_ready : boolean is component_interconnect_data_out.onboard_ad_control_data_out.ada_data_is_ready;
 
 begin
 
@@ -132,14 +134,11 @@ begin
 				start_dly <= '1';
 				-- wait until DC link above 100V
 
-                    -- if r_so_adb_ctrl.std3_ad_address= 4 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                    --     if unsigned(r_so_adb_ctrl.std16_ad_bus) > 4936 then
-                    --         st_main_states := bypass_relay;
-                    --     else
-                    --         st_main_states := charge_dc_link; 
-                    --     end if;
-                    -- end if;
-                    --
+                st_main_states := charge_dc_link; 
+                if aka_ada_channel = 4 AND aka_ada_is_ready AND aka_ada_data = 0 then
+                        st_main_states := bypass_relay;
+                end if;
+
 			WHEN bypass_relay=> 
 
                 led1_color <= led_color_pink; 
