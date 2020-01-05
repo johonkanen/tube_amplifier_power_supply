@@ -10,6 +10,10 @@ package system_control_pkg is
     
     type system_control_FPGA_output_group is record
         component_interconnect_FPGA_out : work.component_interconnect_pkg.component_interconnect_FPGA_output_group;
+        bypass_relay : std_logic;
+        po3_led1 : work.led_driver_pkg.rgb_led;
+        po3_led2 : work.led_driver_pkg.rgb_led;
+        po3_led3 : work.led_driver_pkg.rgb_led;
     end record;
     
     type system_control_data_input_group is record

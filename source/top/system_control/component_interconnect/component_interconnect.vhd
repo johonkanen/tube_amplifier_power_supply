@@ -8,7 +8,7 @@ library work;
 
 entity component_interconnect is
     port (
-        component_interconnect_clocks : in component_interconnect_clock_group;
+        system_clocks : in work.vendor_specifics_pkg.system_clock_group;    
 
         component_interconnect_FPGA_in : in component_interconnect_FPGA_input_group;
         component_interconnect_FPGA_out : out component_interconnect_FPGA_output_group;

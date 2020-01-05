@@ -81,11 +81,10 @@ begin
     begin
 
 	if rising_edge(system_clocks.core_clock) then
-        if si_pll_lock = '0' then
+        if system_clocks.pll_lock = '0' then
             led1_color <= led_color_red; 
             led2_color <= led_color_red;
             led3_color <= led_color_red;
-            r_si_tcmd_system_cmd <= init;
             start_dly <= '0';
             u10_dly_cnt <= (others => '0');
             st_main_states := init;
@@ -99,12 +98,12 @@ begin
                 led3_color <= led_color_red;
 
 				u10_dly_cnt <= (others => '0');
-				po_bypass_relay <= '0';
+				system_control_FPGA_out.bypass_relay <= '0';
 
 				start_dly <= '0';
-				r_si_tcmd_system_cmd <= init;
+				-- r_si_tcmd_system_cmd <= init;
 
-				if si_pll_lock = '1' then
+				if system_clocks.pll_lock = '1' then
 				    st_main_states := charge_dc_link;
 				else
 				    st_main_states := init;
@@ -118,28 +117,28 @@ begin
 
 
 				u10_dly_cnt <= (others => '0');
-				po_bypass_relay <= '0';
-				r_si_tcmd_system_cmd <= charge_dc_link;
+				system_control_FPGA_out.bypass_relay <= '0';
+				-- r_si_tcmd_system_cmd <= charge_dc_link;
 				start_dly <= '0';
 				-- wait until DC link above 100V
 
-                    if r_so_adb_ctrl.std3_ad_address= 4 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                        if unsigned(r_so_adb_ctrl.std16_ad_bus) > 4936 then
-                            st_main_states := bypass_relay;
-                        else
-                            st_main_states := charge_dc_link; 
-                        end if;
-                    end if;
-
+                    -- if r_so_adb_ctrl.std3_ad_address= 4 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                    --     if unsigned(r_so_adb_ctrl.std16_ad_bus) > 4936 then
+                    --         st_main_states := bypass_relay;
+                    --     else
+                    --         st_main_states := charge_dc_link; 
+                    --     end if;
+                    -- end if;
+                    --
 			WHEN bypass_relay=> 
 
                 led1_color <= led_color_pink; 
                 led2_color <= led_color_pink;
                 led3_color <= led_color_pink;
 
-				r_si_tcmd_system_cmd <= bypass_relay;
+				-- r_si_tcmd_system_cmd <= bypass_relay;
 				u10_dly_cnt <= to_unsigned(6,10);
-				po_bypass_relay <= '0';
+				system_control_FPGA_out.bypass_relay <= '0';
 
 				if delay_is_complete then
 				    st_main_states := start_aux;
@@ -156,7 +155,7 @@ begin
                 led3_color <= led_color_purple;
 
 				u10_dly_cnt <= to_unsigned(50,10);
-				po_bypass_relay <= '0';
+				system_control_FPGA_out.bypass_relay <= '0';
 				
 				if delay_is_complete OR zero_cross_event = '1' then
 				    st_main_states := system_running;
@@ -166,16 +165,16 @@ begin
 				    start_dly <= '1';
 				end if;
 				
-                if r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                    if  r_so_adb_ctrl.std3_ad_address = 2 then -- if bypass released at 0V, vac meas = 2088
-                        if unsigned(r_so_adb_ctrl.std16_ad_bus) > 16504 AND unsigned(r_so_adb_ctrl.std16_ad_bus) < 16904 then
-                            zero_cross_event <= '1';
-                        else
-                            zero_cross_event <= '0';
-                        end if;
-                    end if;
-                end if;
-				r_si_tcmd_system_cmd <= start_aux;
+                -- if r_so_adb_ctrl.ad_rdy_trigger = '1' then
+                --     if  r_so_adb_ctrl.std3_ad_address = 2 then -- if bypass released at 0V, vac meas = 2088
+                --         if unsigned(r_so_adb_ctrl.std16_ad_bus) > 16504 AND unsigned(r_so_adb_ctrl.std16_ad_bus) < 16904 then
+                --             zero_cross_event <= '1';
+                --         else
+                --             zero_cross_event <= '0';
+                --         end if;
+                --     end if;
+                -- end if;
+				-- r_si_tcmd_system_cmd <= start_aux;
 
 
 			WHEN system_running =>
@@ -185,7 +184,7 @@ begin
                 led3_color <= led_color_blu;
 
 				start_dly <= '0';
-				po_bypass_relay <= '1';
+				system_control_FPGA_out.bypass_relay <= '1';
 				u10_dly_cnt <= (others => '0');
 				st_main_states := system_running; 
 
@@ -200,7 +199,7 @@ begin
     end process system_main;
 
 burn_leds : led_driver
-port map(system_clocks.core_clock, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
+port map(system_clocks.core_clock, system_control_FPGA_out.po3_led1, system_control_FPGA_out.po3_led2, system_control_FPGA_out.po3_led3, led1_color, led2_color, led3_color);
 
 
 end rtl;
