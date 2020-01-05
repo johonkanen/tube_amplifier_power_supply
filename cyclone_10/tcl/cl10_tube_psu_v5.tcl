@@ -195,100 +195,55 @@ if {$make_assignments} {
 
 	# set_global_assignment -name SDC_FILE $tcl_scripts/../cl10_tubepsu.out.sdc
 	set_location_assignment PIN_M1 -to xclk32mhz
-	set_location_assignment PIN_R10 -to po_ada_clk
-	set_location_assignment PIN_R9 -to po_ada_cs
-	set_location_assignment PIN_T4 -to po_adb_cs
-	set_location_assignment PIN_T5 -to po_adb_clk
-	set_location_assignment PIN_K15 -to pi_uart_rx
-	set_location_assignment PIN_L15 -to po_uart_tx
-	set_location_assignment PIN_R11 -to po3_ada_muxsel[1]
-	set_location_assignment PIN_T11 -to po3_ada_muxsel[2]
-	set_location_assignment PIN_T10 -to po3_ada_muxsel[0]
-	set_location_assignment PIN_T9 -to pi_ada_sdata
-	set_location_assignment PIN_R12 -to po3_adb_muxsel[0]
-	set_location_assignment PIN_R13 -to po3_adb_muxsel[1]
-	set_location_assignment PIN_T12 -to po3_adb_muxsel[2]
-	set_location_assignment PIN_R5 -to pi_adb_sdata
-	set_location_assignment PIN_G16 -to po_bypass_relay
-	set_location_assignment PIN_F15 -to po_ext_ad1_clk
-	set_location_assignment PIN_A14 -to po_ext_ad1_cs
-	set_location_assignment PIN_C16 -to po_ext_ad2_clk
-	set_location_assignment PIN_B13 -to po_ext_ad2_cs
-	set_location_assignment PIN_C15 -to pi_ext_ad1_sdata
-	set_location_assignment PIN_D15 -to pi_ext_ad2_sdata
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to xclk32mhz
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_adb_cs
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_adb_clk
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ada_cs
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ada_clk
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_uart_tx
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to pi_uart_rx
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led3[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led1[2]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led1[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led1[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led1
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led2[2]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led2[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led2[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led2
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led3[2]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led3[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_led3
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_ada_muxsel[2]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_ada_muxsel[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_ada_muxsel[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_ada_muxsel
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to pi_ada_sdata
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_adb_muxsel[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_adb_muxsel[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po3_adb_muxsel[2]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to pi_adb_sdata
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_pfc_pwm[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_pfc_pwm[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_pfc_pwm
-	set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to po_bypass_relay
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_aux_pwm
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to pi_ext_ad1_sdata
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to pi_ext_ad2_sdata
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ext_ad2_cs
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ext_ad1_clk
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ext_ad1_cs
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po_ext_ad2_clk
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_pri_pwm[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_pri_pwm[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_pri_pwm
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_sec_pwm[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_pri_pwm[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_pri_pwm[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_pri_pwm
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_sec_pwm[1]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_sec_pwm[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_ht_sec_pwm
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_sec_pwm[0]
-	set_instance_assignment -name IO_STANDARD "3.3-V LVCMOS" -to po2_DHB_sec_pwm
+	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
+
+	set_location_assignment PIN_R8 -to system_control_FPGA_out.po3_led1.red
+	set_location_assignment PIN_T7 -to system_control_FPGA_out.po3_led1.green
+	set_location_assignment PIN_T8 -to system_control_FPGA_out.po3_led1.blue
+
+	set_location_assignment PIN_T6 -to system_control_FPGA_out.po3_led2.red
+	set_location_assignment PIN_R6 -to system_control_FPGA_out.po3_led2.green
+	set_location_assignment PIN_R7 -to system_control_FPGA_out.po3_led2.blue
+
+    set_location_assignment PIN_T3 -to system_control_FPGA_out.po3_led3.red
+	set_location_assignment PIN_R3 -to system_control_FPGA_out.po3_led3.green
+	set_location_assignment PIN_R4 -to system_control_FPGA_out.po3_led3.blue
+
+	# set_location_assignment PIN_R10 -to po_ada_clk
+	# set_location_assignment PIN_R9 -to po_ada_cs
+	# set_location_assignment PIN_T4 -to po_adb_cs
+	# set_location_assignment PIN_T5 -to po_adb_clk
+	# set_location_assignment PIN_K15 -to pi_uart_rx
+	# set_location_assignment PIN_L15 -to po_uart_tx
+	# set_location_assignment PIN_R11 -to po3_ada_muxsel[1]
+	# set_location_assignment PIN_T11 -to po3_ada_muxsel[2]
+	# set_location_assignment PIN_T10 -to po3_ada_muxsel[0]
+	# set_location_assignment PIN_T9 -to pi_ada_sdata
+	# set_location_assignment PIN_R12 -to po3_adb_muxsel[0]
+	# set_location_assignment PIN_R13 -to po3_adb_muxsel[1]
+	# set_location_assignment PIN_T12 -to po3_adb_muxsel[2]
+	# set_location_assignment PIN_R5 -to pi_adb_sdata
+	# set_location_assignment PIN_F15 -to po_ext_ad1_clk
+	# set_location_assignment PIN_A14 -to po_ext_ad1_cs
+	# set_location_assignment PIN_C16 -to po_ext_ad2_clk
+	# set_location_assignment PIN_B13 -to po_ext_ad2_cs
+	# set_location_assignment PIN_C15 -to pi_ext_ad1_sdata
+	# set_location_assignment PIN_D15 -to pi_ext_ad2_sdata
+    #
+	# set_location_assignment PIN_J15 -to po2_pfc_pwm.ac1
+	# set_location_assignment PIN_T13 -to po2_pfc_pwm.ac2
+	# set_location_assignment PIN_A11 -to po4_dhb_pwm.pri_high
+	# set_location_assignment PIN_B12 -to po4_dhb_pwm.pri_low
+	# set_location_assignment PIN_B14 -to po4_dhb_pwm.sec_high
+	# set_location_assignment PIN_B16 -to po4_dhb_pwm.sec_low
+	# set_location_assignment PIN_A13 -to po4_ht_pwm.pri_high
+	# set_location_assignment PIN_A12 -to po4_ht_pwm.pri_low
+	# set_location_assignment PIN_A15 -to po4_ht_pwm.sync1
+	# set_location_assignment PIN_D16 -to po4_ht_pwm.sync2
+    #
 	set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "main_pll:core_clocks|altpll:altpll_component|main_pll_altpll:auto_generated|wire_pll1_clk[2]"
 	set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "main_pll:core_clocks|altpll:altpll_component|main_pll_altpll:auto_generated|wire_pll1_clk[0]"
 	set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "main_pll:core_clocks|altpll:altpll_component|main_pll_altpll:auto_generated|wire_pll1_clk[1]"
-	set_location_assignment PIN_R8 -to po3_led1.red
-	set_location_assignment PIN_T7 -to po3_led1.green
-	set_location_assignment PIN_R7 -to po3_led2.blue
-	set_location_assignment PIN_T8 -to po3_led1.blue
-	set_location_assignment PIN_T3 -to po3_led3.red
-	set_location_assignment PIN_R3 -to po3_led3.green
-	set_location_assignment PIN_R4 -to po3_led3.blue
-	set_location_assignment PIN_T6 -to po3_led2.red
-	set_location_assignment PIN_R6 -to po3_led2.green
-	set_location_assignment PIN_J15 -to po2_pfc_pwm.ac1
-	set_location_assignment PIN_T13 -to po2_pfc_pwm.ac2
-	set_location_assignment PIN_A11 -to po4_dhb_pwm.pri_high
-	set_location_assignment PIN_B12 -to po4_dhb_pwm.pri_low
-	set_location_assignment PIN_B14 -to po4_dhb_pwm.sec_high
-	set_location_assignment PIN_B16 -to po4_dhb_pwm.sec_low
-	set_location_assignment PIN_A13 -to po4_ht_pwm.pri_high
-	set_location_assignment PIN_A12 -to po4_ht_pwm.pri_low
-	set_location_assignment PIN_A15 -to po4_ht_pwm.sync1
-	set_location_assignment PIN_D16 -to po4_ht_pwm.sync2
 	set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
 	# Commit assignments
