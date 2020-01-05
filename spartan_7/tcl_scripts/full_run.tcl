@@ -1,5 +1,6 @@
 #Define target part and create output directory
 set outputDir ./output
+set source_dir $argv
 file mkdir $outputDir
 set files [glob -nocomplain "$outputDir/*"]
 if {[llength $files] != 0} {
