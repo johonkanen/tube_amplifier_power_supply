@@ -9,48 +9,21 @@ library work;
 	use work.dhb_pkg.all;
     use work.llc_pkg.all;
     use work.pfc_pkg.all;
-
-entity sw_supply_ctrl is
-    port(
-	    core_clk : in std_logic;
-	    modulator_clk : in std_logic;
-	    modulator_clk2 : in std_logic;
-        si_rstn : in std_logic;
-
--- PFC pwm
-	    po2_pfc_pwm : out bridgeless_pfc_pwm;
-
--- heater pwm
-        po4_ht_pwm : out hb_llc_pwm;
-
--- DBH pwm
-        po4_dhb_pwm : out dhb_pwm;
-
--- onboard ad data in
-        si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
-        si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
--- ext ad converter data, in ad bus clock domain
-        ht_adc_control : in rec_ext_ad_ctrl;
-        dhb_adc_control : in rec_ext_ad_ctrl;
--- ad trigger signals
-	    to_ada_triggers : out t_ad_triggers;
-	    to_adb_triggers : out t_ad_triggers;
--- ext ad trigger signals, clocked in modulator_clk2 domain    
-	    so_ext_ad1_start : out std_logic;
-	    so_ext_ad2_start : out std_logic;
--- test data out 
-	    so_std18_test_data : out std_logic_vector(17 downto 0);
-        so_test_data_rdy : out std_logic;
--- uart rx for testing 
-	    si_uart_ready_event	: in std_logic;
-	    si16_uart_rx_data	: in std_logic_vector(15 downto 0);
--- system command signals from main state machine
-	    si_tcmd_system_cmd : in tcmd_system_commands
-	);
-end sw_supply_ctrl;
+    use work.sw_supply_ctrl_pkg.all;
 
 
-architecture behavioral of sw_supply_ctrl is
+entity sw_supply_control is
+    port (
+        sw_supply_control_clocks : in sw_supply_control_clock_group;
+
+        sw_supply_control_FPGA_out : out sw_supply_control_FPGA_output_group;
+
+        sw_supply_control_data_in : in sw_supply_control_data_input_group;
+        sw_supply_control_data_out : out sw_supply_control_data_output_group
+    );
+end entity sw_supply_control;
+
+architecture behavioral of sw_supply_control is
 
 component pfc_control is
     port(
@@ -144,38 +117,40 @@ end component;
         end if;
     end pr_count_up_and_wrap;
 
+    signal si_tcmd_system_cmd : tcmd_system_commands;
+
 begin
 
-dhb_ctrl : dhb_control
-    port map(core_clk, modulator_clk, si_rstn, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, so_std18_test_data, so_test_data_rdy, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+-- dhb_ctrl : dhb_control
+--     port map(sw_supply_control_clocks.core_clock, sw_supply_control_clocks.modulator_clock, sw_supply_control_clocks.reset_n, po4_dhb_pwm, si_ada_ctrl, si_adb_ctrl, dhb_adc_control, so_std18_test_data, so_test_data_rdy, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+--
+-- heater_control : heater_ctrl 
+--     port map( sw_supply_control_clocks.core_clock, sw_supply_control_clocks.modulator_clock, sw_supply_control_clocks.reset_n,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
+--
+-- pfc_control_ins : pfc_control
+--     port map(sw_supply_control_clocks.core_clock, sw_supply_control_clocks.modulator_clock, sw_supply_control_clocks.reset_n, po2_pfc_pwm, si_ada_ctrl, si_adb_ctrl, open, open, u12_carrier, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
-heater_control : heater_ctrl 
-    port map( core_clk, modulator_clk, si_rstn,  po4_ht_pwm, si_ada_ctrl, si_adb_ctrl, ht_adc_control, open, open, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
 
-pfc_control_ins : pfc_control
-    port map(core_clk, modulator_clk, si_rstn, po2_pfc_pwm, si_ada_ctrl, si_adb_ctrl, open, open, u12_carrier, si_uart_ready_event, si16_uart_rx_data, si_tcmd_system_cmd);
-
-
-    sym_carrier : process(modulator_clk)
+    sym_carrier : process(sw_supply_control_clocks.modulator_clock)
         type t_carrier_states is (up, down);
         variable dir : t_carrier_states;
     begin
-	if rising_edge(modulator_clk) then
+	if rising_edge(sw_supply_control_clocks.modulator_clock) then
 	    -- carrier generation, 948*2 @ 256mhz = 135kHz
-	    if si_rstn = '0' then
+	    if sw_supply_control_clocks.reset_n = '0' then
 		    u12_carrier <= (others=>'0');
             dir := up;
             r1_to_ada_triggers <= (others => '0');
             r_to_ada_triggers <= (others => '0');
             r1_to_adb_triggers <= (others => '0');
             r_to_adb_triggers <= (others => '0');
-            to_ada_triggers <= (others => '0');
-            to_adb_triggers <= (others => '0');
+            sw_supply_control_data_out.ada_triggers <= (others => '0');
+            sw_supply_control_data_out.adb_triggers <= (others => '0');
 		else -- rstn = '1'
             r_to_ada_triggers <= r1_to_ada_triggers; 
             r_to_adb_triggers <= r1_to_adb_triggers; 
-            to_ada_triggers <= r_to_ada_triggers OR r1_to_ada_triggers;
-            to_adb_triggers <= r_to_adb_triggers OR r1_to_adb_triggers;
+            sw_supply_control_data_out.ada_triggers <= r_to_ada_triggers OR r1_to_ada_triggers;
+            sw_supply_control_data_out.adb_triggers <= r_to_adb_triggers OR r1_to_adb_triggers;
             CASE dir is
                 WHEN up =>
                     u12_carrier <= u12_carrier + 1;
@@ -228,19 +203,19 @@ pfc_control_ins : pfc_control
 	end if;
     end process sym_carrier;
 
-    heater_ad_trigger : process(core_clk)
+    heater_ad_trigger : process(sw_supply_control_clocks.core_clock)
         variable heater_cntr : unsigned(11 downto 0);
     begin
         -- 200khz sampling for both, llc and dhb
-        if rising_edge(core_clk) then
+        if rising_edge(sw_supply_control_clocks.core_clock) then
             if heater_cntr > 640 then
                 heater_cntr := (others => '0');
-                so_ext_ad1_start <= '1';
-                so_ext_ad2_start <= '1';
+                sw_supply_control_data_out.ext_ad1_start <= '1';
+                sw_supply_control_data_out.ext_ad2_start <= '1';
             else
                 heater_cntr := heater_cntr + 1;
-                so_ext_ad1_start <= '0';
-                so_ext_ad2_start <= '0';
+                sw_supply_control_data_out.ext_ad1_start <= '0';
+                sw_supply_control_data_out.ext_ad2_start <= '0';
             end if;
 
         end if;
