@@ -28,7 +28,7 @@ signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
 
 signal zero_cross_event : std_logic;
 
-signal u10_dly_cnt : unsigned(9 downto 0);
+signal number_of_delays : integer;
 
 signal led1_color : led_counters;
 signal led2_color : led_counters;
@@ -42,7 +42,7 @@ begin
 
     delay_20ms : process(system_clocks.core_clock)
         variable u22_init_dly_cnt : integer; 
-        variable v_u10_dly_cnt : integer;
+        variable v_number_of_delays : integer;
     begin
 	if rising_edge(system_clocks.core_clock) then
 
@@ -52,15 +52,15 @@ begin
 
 			if u22_init_dly_cnt = 2560000 then
 				u22_init_dly_cnt := 0;
-				v_u10_dly_cnt := v_u10_dly_cnt + 1;
+				v_number_of_delays := v_number_of_delays + 1;
 
-				if v_u10_dly_cnt = u10_dly_cnt then
+				if v_number_of_delays = number_of_delays then
 				    delay_is_complete <= true;
 				end if;
 
 			end if;
 	    else
-			v_u10_dly_cnt := 0;
+			v_number_of_delays := 0;
 			u22_init_dly_cnt := 0;
 	    end if;
 	end if;
@@ -86,7 +86,7 @@ begin
             led2_color <= led_color_red;
             led3_color <= led_color_red;
             start_dly <= '0';
-            u10_dly_cnt <= (others => '0');
+            number_of_delays <= 0;
             st_main_states := init;
         else
 
@@ -97,7 +97,7 @@ begin
                 led2_color <= led_color_red;
                 led3_color <= led_color_red;
 
-				u10_dly_cnt <= (others => '0');
+				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
 
 				start_dly <= '0';
@@ -116,10 +116,10 @@ begin
                 led3_color <= led_color_yellow;
 
 
-				u10_dly_cnt <= (others => '0');
+				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
 				-- r_si_tcmd_system_cmd <= charge_dc_link;
-				start_dly <= '0';
+				start_dly <= '1';
 				-- wait until DC link above 100V
 
                     -- if r_so_adb_ctrl.std3_ad_address= 4 AND r_so_adb_ctrl.ad_rdy_trigger = '1' then
@@ -137,7 +137,7 @@ begin
                 led3_color <= led_color_pink;
 
 				-- r_si_tcmd_system_cmd <= bypass_relay;
-				u10_dly_cnt <= to_unsigned(6,10);
+				number_of_delays <= 6;
 				system_control_FPGA_out.bypass_relay <= '0';
 
 				if delay_is_complete then
@@ -154,7 +154,7 @@ begin
                 led2_color <= led_color_purple;
                 led3_color <= led_color_purple;
 
-				u10_dly_cnt <= to_unsigned(50,10);
+				number_of_delays <= 50;
 				system_control_FPGA_out.bypass_relay <= '0';
 				
 				if delay_is_complete OR zero_cross_event = '1' then
@@ -185,12 +185,12 @@ begin
 
 				start_dly <= '0';
 				system_control_FPGA_out.bypass_relay <= '1';
-				u10_dly_cnt <= (others => '0');
+				number_of_delays <= 0;
 				st_main_states := system_running; 
 
 			WHEN others=>
 				start_dly <= '0';
-				u10_dly_cnt <= (others => '0');
+				number_of_delays <= 0;
 				st_main_states := init;
 	    end CASE;
     end if;

@@ -187,7 +187,7 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/data_control.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control.vhd
