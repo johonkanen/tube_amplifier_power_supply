@@ -152,7 +152,6 @@ if {$make_assignments} {
 	# set_global_assignment -name VHDL_FILE $source_folder/dsp/alu16bit.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/dsp/alu_routines_pkg.vhd
     #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_ctrl_pkg.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_onboard_ad_bus_driver.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/cdc_bus_driver.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
@@ -182,18 +181,21 @@ if {$make_assignments} {
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart_event_ctrl.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/uart.vhd
 
-
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect.vhd
+
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver_pkg.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/top.vhd
 
-	# set_global_assignment -name SDC_FILE $tcl_scripts/../cl10_tubepsu.out.sdc
+	# pin assignments
 	set_location_assignment PIN_M1 -to xclk32mhz
 	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
 
