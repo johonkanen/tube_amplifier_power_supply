@@ -33,7 +33,7 @@ package onboard_ad_control_pkg is
     end record;
 
     type onboard_ad_control_data_output_group is record
-        ada_conversion_data : integer;
+        ada_conversion_data : integer range 0 to 2**16-1;
         ada_data_is_ready : boolean;
         ada_channel : integer;
 

@@ -27,8 +27,6 @@ architecture rtl of component_interconnect is
     -- signal sw_supply_control_data_out : sw_supply_control_data_output_group;
 
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
-    -- signal onboard_ad_control_FPGA_in  : onboard_ad_control_FPGA_input_group;
-    -- signal onboard_ad_control_FPGA_out : onboard_ad_control_FPGA_output_group;
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
 begin
@@ -62,6 +60,8 @@ begin
                         onboard_ad_control_data_in <= trigger_adc(5);
                     WHEN 5688 =>
                         onboard_ad_control_data_in <= trigger_adc(6);
+                    WHEN 6636 =>
+                        onboard_ad_control_data_in <= trigger_adc(0);
                     WHEN others =>
                 end CASE;
     

@@ -46,8 +46,9 @@ architecture rtl of system_control is
         -- ada_channel : integer;
 -- signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
 -- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
+
     alias aka_ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
-    alias aka_ada_data : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data;
+    -- alias aka_ada_data : integer range 0 to 2**16-1 is component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data;
     alias aka_ada_is_ready : boolean is component_interconnect_data_out.onboard_ad_control_data_out.ada_data_is_ready;
 
 begin
@@ -135,9 +136,12 @@ begin
 				-- wait until DC link above 100V
 
                 st_main_states := charge_dc_link; 
-                if aka_ada_channel = 4 AND aka_ada_is_ready AND aka_ada_data = 0 then
+                if aka_ada_channel = 5 AND aka_ada_is_ready then
                         st_main_states := bypass_relay;
                 end if;
+                -- if component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data = 0 then
+                --         st_main_states := bypass_relay;
+                -- end if;
 
 			WHEN bypass_relay=> 
 
@@ -151,6 +155,7 @@ begin
 
 				if delay_is_complete then
 				    st_main_states := start_aux;
+				system_control_FPGA_out.bypass_relay <= '1';
 				    start_dly <= '0';
 				else
 				    st_main_states := bypass_relay; 
@@ -164,7 +169,7 @@ begin
                 led3_color <= led_color_purple;
 
 				number_of_delays <= 50;
-				system_control_FPGA_out.bypass_relay <= '0';
+				system_control_FPGA_out.bypass_relay <= '1';
 				
 				if delay_is_complete OR zero_cross_event = '1' then
 				    st_main_states := system_running;
