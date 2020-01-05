@@ -131,6 +131,11 @@ if {$make_assignments} {
 	set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
 	set_global_assignment -name SAFE_STATE_MACHINE ON
 
+	set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
+	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
+	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
+	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/main_pll.qip
+
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_specifics.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_pll_wrapper.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_adc_wrapper.vhd
@@ -185,10 +190,6 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/top.vhd
 
-	set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/main_pll.qip
 	# set_global_assignment -name SDC_FILE $tcl_scripts/../cl10_tubepsu.out.sdc
 	set_location_assignment PIN_M1 -to xclk32mhz
 	set_location_assignment PIN_R10 -to po_ada_clk

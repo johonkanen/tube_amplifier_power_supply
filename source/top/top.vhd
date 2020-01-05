@@ -3,6 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
+    use work.vendor_specifics_pkg.all;
     use work.system_control_pkg.all;
 
 entity top is
@@ -33,7 +34,7 @@ end component;
     signal r_po_ada_cs : std_logic;
     signal r_po_adb_cs: std_logic;
 
-    signal system_control_clocks   : system_control_clock_group;
+    signal system_clocks : system_clock_group;    
     signal system_control_data_in  : system_control_data_input_group;
     signal system_control_data_out : system_control_data_output_group;
 
@@ -48,9 +49,11 @@ core_clocks : pll_wrapper
         clk2_256mhz,
 		std_pll_lock
 	);
+
+    system_clocks <= (clk_128mhz,  clk_256mhz, clk2_256mhz, std_pll_lock);
     u_system_control : system_control
         port map(
-            system_control_clocks,
+            system_clocks,
             system_control_FPGA_in,
             system_control_FPGA_out,
             system_control_data_in,

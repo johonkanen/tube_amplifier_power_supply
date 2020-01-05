@@ -3,119 +3,22 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
-	use work.sys_ctrl_pkg.all;
-    use work.onboard_ad_ctrl_pkg.all;
+    use work.system_control_pkg.all;
     use work.led_driver_pkg.all;
-    use work.dhb_pkg.all;
-    use work.llc_pkg.all;
-    use work.pfc_pkg.all;
 
 entity system_control is
-    port(
-	    core_clk : in std_logic;
-	    modulator_clk : in std_logic;
-	    modulator_clk2 : in std_logic;
+    port (
+        system_clocks : in work.vendor_specifics_pkg.system_clock_group;    
 
-	    si_pll_lock : in std_logic;
-	    
--- relay bypass
-	    po_bypass_relay : out std_logic;	
+        system_control_FPGA_in : in system_control_FPGA_input_group;
+        system_control_FPGA_out : out system_control_FPGA_output_group;
 
--- PFC pwm
-	    po2_pfc_pwm : out bridgeless_pfc_pwm;
-
--- heater pwm
-        po4_ht_pwm : out hb_llc_pwm;
-
--- DBH pwm
-        po4_dhb_pwm : out dhb_pwm;
-
--- uart rx and tx
-	    pi_uart_rx : in std_logic;
-	    po_uart_tx : out std_logic;
-
--- ad converter A signals
-	    po_ada_cs : out std_logic;
-	    po_ada_clk : out std_logic;
-	    pi_ada_sdata : in std_logic;
-	    po3_ada_muxsel : out std_logic_vector(2 downto 0);
-
--- ad converter B signals
-	    po_adb_cs : out std_logic;
-	    po_adb_clk : out std_logic;
-	    pi_adb_sdata : in std_logic;
-	    po3_adb_muxsel : out std_logic_vector(2 downto 0);
-
--- ext ad converter 1 signals
-	    po_ext_ad1_cs : out std_logic;
-	    po_ext_ad1_clk : out std_logic;
-	    pi_ext_ad1_sdata : in std_logic;
-
--- ext ad converter 2 signals
-	    po_ext_ad2_cs : out std_logic;
-	    po_ext_ad2_clk : out std_logic;
-	    pi_ext_ad2_sdata : in std_logic;
-
--- rgb status leds driver signals, active low
-	    po3_led1 : out rgb_led;
-	    po3_led2 : out rgb_led;
-	    po3_led3 : out rgb_led
-         );
-end system_control;
+        system_control_data_in : in system_control_data_input_group;
+        system_control_data_out : out system_control_data_output_group
+    );
+end entity system_control;
 
 architecture rtl of system_control is
-
-component data_control is
-    port(
-	    core_clk : in std_logic;
-	    modulator_clk : in std_logic;
-	    modulator_clk2 : in std_logic;
-	    si_pll_lock : in std_logic;
-
--- PFC pwm
-	    po2_pfc_pwm : out bridgeless_pfc_pwm;
-
--- heater pwm
-        po4_ht_pwm : out hb_llc_pwm;
-
--- DBH pwm
-        po4_dhb_pwm : out dhb_pwm;
-			
--- uart rx and tx
-	    pi_uart_rx : in std_logic;
-	    po_uart_tx : out std_logic;
-
--- ad converter A signals
-	    po_ada_cs : out std_logic;
-	    po_ada_clk : out std_logic;
-	    pi_ada_sdata : in std_logic;
-	    po3_ada_muxsel : out std_logic_vector(2 downto 0);
-
--- ad converter B signals
-	    po_adb_cs : out std_logic;
-	    po_adb_clk : out std_logic;
-	    pi_adb_sdata : in std_logic;
-	    po3_adb_muxsel : out std_logic_vector(2 downto 0);
-
--- ext ad converter 1 signals
-	    po_ext_ad1_cs : out std_logic;
-	    po_ext_ad1_clk : out std_logic;
-	    pi_ext_ad1_sdata : in std_logic;
-
--- ext ad converter 2 signals
-	    po_ext_ad2_cs : out std_logic;
-	    po_ext_ad2_clk : out std_logic;
-	    pi_ext_ad2_sdata : in std_logic;
-
-        so_ada_ctrl : out rec_onboard_ad_ctrl_signals;
-        so_adb_ctrl : out rec_onboard_ad_ctrl_signals;
-	    
-	    so_uart_ready_event	: out std_logic;
-	    so16_uart_rx_data	: out std_logic_vector(15 downto 0);
-
-	    si_tcmd_system_cmd : in tcmd_system_commands
-);
-end component;
 
 signal start_dly : std_logic;
 signal delay_is_complete : boolean;
@@ -132,16 +35,16 @@ signal led2_color : led_counters;
 signal led3_color : led_counters;
 
 
-signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
-signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
+-- signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
+-- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
 begin
 
-    delay_20ms : process(core_clk)
+    delay_20ms : process(system_clocks.core_clock)
         variable u22_init_dly_cnt : integer; 
         variable v_u10_dly_cnt : integer;
     begin
-	if rising_edge(core_clk) then
+	if rising_edge(system_clocks.core_clock) then
 
         delay_is_complete <= false;
 	    if start_dly = '1' then
@@ -163,7 +66,7 @@ begin
 	end if;
     end process delay_20ms;
 
-    system_main : process(core_clk) is
+    system_main : process(system_clocks.core_clock) is
         type t_system_states is (init,
                         charge_dc_link,
                         bypass_relay, 
@@ -177,7 +80,7 @@ begin
 
     begin
 
-	if rising_edge(core_clk) then
+	if rising_edge(system_clocks.core_clock) then
         if si_pll_lock = '0' then
             led1_color <= led_color_red; 
             led2_color <= led_color_red;
@@ -297,59 +200,7 @@ begin
     end process system_main;
 
 burn_leds : led_driver
-port map(core_clk, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
-
-system_data_control : data_control
-    port map(
-	    core_clk =>  core_clk,
-	    modulator_clk => modulator_clk,
-	    modulator_clk2 => modulator_clk2,
-	    si_pll_lock =>si_pll_lock,
-
--- PFC pwm
-	    po2_pfc_pwm => po2_pfc_pwm,
-
--- heater pwm
-        po4_ht_pwm => po4_ht_pwm,
-
--- DBH pwm
-        po4_dhb_pwm => po4_dhb_pwm,
-			
--- uart rx and tx
-	    pi_uart_rx => pi_uart_rx,
-	    po_uart_tx => po_uart_tx,
-
--- ad converter A signals
-	    po_ada_cs => po_ada_cs,
-	    po_ada_clk => po_ada_clk,
-	    pi_ada_sdata => pi_ada_sdata,
-	    po3_ada_muxsel => po3_ada_muxsel, 
-
--- ad converter B signals
-	    po_adb_cs => po_adb_cs,
-	    po_adb_clk => po_adb_clk,
-	    pi_adb_sdata => pi_adb_sdata,
-	    po3_adb_muxsel => po3_adb_muxsel,
-
--- ext ad converter 1 signals
-	    po_ext_ad1_cs => po_ext_ad1_cs,
-	    po_ext_ad1_clk => po_ext_ad1_clk,
-	    pi_ext_ad1_sdata => pi_ext_ad1_sdata,
-
--- ext ad converter 2 signals
-	    po_ext_ad2_cs => po_ext_ad2_cs,
-	    po_ext_ad2_clk => po_ext_ad2_clk,
-	    pi_ext_ad2_sdata => pi_ext_ad2_sdata,
-
-        so_ada_ctrl => r_so_ada_ctrl,
-        so_adb_ctrl => r_so_adb_ctrl,
-
-	    so_uart_ready_event	=> r_so_uart_ready_event,
-	    so16_uart_rx_data => r_so16_uart_rx_data,
-	    
-	    si_tcmd_system_cmd => r_si_tcmd_system_cmd
-	);
-
+port map(system_clocks.core_clock, po3_led1, po3_led2, po3_led3, led1_color, led2_color, led3_color);
 
 
 end rtl;
