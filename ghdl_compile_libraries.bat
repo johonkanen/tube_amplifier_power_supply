@@ -20,7 +20,6 @@ ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supp
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/component_interconnect_pkg.vhd
 
 
-ghdl -a --ieee=synopsys source/top/system_control/uart/tubepsu_commands_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/led_driver/led_driver_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/system_control_pkg.vhd
 

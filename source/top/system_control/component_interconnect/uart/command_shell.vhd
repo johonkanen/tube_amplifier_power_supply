@@ -3,9 +3,6 @@ library IEEE;
 	use IEEE.STD_LOGIC_UNSIGNED.ALL;
 	use IEEE.NUMERIC_STD.all;
 
-library work;
-	use work.sys_ctrl_pkg.all;
-
 entity command_shell is
     port(
 	    core_clk : in std_logic;

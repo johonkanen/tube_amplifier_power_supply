@@ -25,11 +25,57 @@ architecture rtl of component_interconnect is
     -- signal sw_supply_control_FPGA_out : sw_supply_control_FPGA_output_group;
     -- signal sw_supply_control_data_in : sw_supply_control_data_input_group;
     -- signal sw_supply_control_data_out : sw_supply_control_data_output_group;
+    
+    component uart_event_ctrl is
+	generic (
+				g_CLKS_PER_BIT : integer; 
+				g_RX_bytes_in_word : integer;
+				g_TX_bytes_in_word : integer 
+			);
+--- uart interface
+	port(
+				uart_Clk   : in std_logic;
+				
+				po_uart_tx_serial : out std_logic;
+				pi_uart_rx_serial : in std_logic;
+
+				si_uart_start_event	: in std_logic;
+				si16_uart_tx_data	: in std_logic_vector(15 downto 0);
+				
+				so_uart_rx_rdy		: out std_logic;
+				so16_uart_rx_data	: out std_logic_vector(15 downto 0)
+		);
+    end component;		
+
+    signal core_clk            : std_logic;
+    signal po_uart_tx_serial   :  std_logic;
+    signal pi_uart_rx_serial   : std_logic;
+    signal si_uart_start_event : std_logic;
+    signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
+    signal so_uart_ready_event :  std_logic;
+    signal so16_uart_rx_data   :  std_logic_vector(15 downto 0);
+
+
 
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
 begin
+
+    u_command_shell : uart_event_ctrl
+    generic map(25,8,8)
+    port map(
+	    system_clocks.core_clock,
+	    po_uart_tx_serial,
+	    pi_uart_rx_serial,
+	    si_uart_start_event,
+	    si16_uart_tx_data,
+	    so_uart_ready_event,
+	    so16_uart_rx_data
+	);
+    si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = 0 else '0';
+
+    si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
 
     test_adc : process(system_clocks.core_clock)
         variable adc_test_counter : integer;
