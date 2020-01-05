@@ -5,23 +5,23 @@ library ieee;
 package system_control_pkg is
 
     type system_control_clock_group is record
-        clock : std_logic;
+        system_clocks : work.vendor_specifics_pkg.system_clock_group;
     end record;
     
     type system_control_FPGA_input_group is record
-        clock : std_logic;
+    component_interconnect_FPGA_in : work.component_interconnect_pkg.component_interconnect_FPGA_input_group;
     end record;
     
     type system_control_FPGA_output_group is record
-        clock : std_logic;
+        component_interconnect_FPGA_out : work.component_interconnect_pkg.component_interconnect_FPGA_output_group;
     end record;
     
     type system_control_data_input_group is record
-        clock : std_logic;
+        component_interconnect_data_in : work.component_interconnect_pkg.component_interconnect_data_input_group;
     end record;
     
     type system_control_data_output_group is record
-        clock : std_logic;
+        component_interconnect_data_out : work.component_interconnect_pkg.component_interconnect_data_output_group;
     end record;
     
     component system_control is

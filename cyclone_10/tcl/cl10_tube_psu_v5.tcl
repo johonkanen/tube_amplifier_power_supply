@@ -158,6 +158,7 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_control.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_modulator.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd

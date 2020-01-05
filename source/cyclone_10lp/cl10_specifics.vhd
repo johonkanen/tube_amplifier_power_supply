@@ -4,6 +4,13 @@ use IEEE.numeric_std.ALL;
 
 package vendor_specifics_pkg is
 
+    type system_clock_group is record
+        core_clk       : std_logic;
+        modulator_clk  : std_logic;
+        modulator_clk2 : std_logic;
+        pll_lock       : std_logic;
+    end record;
+
     component main_pll IS
 	PORT
 	(

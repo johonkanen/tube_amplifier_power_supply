@@ -12,14 +12,7 @@ type component_interconnect_FPGA_input_group is record
 end record;
 
 type component_interconnect_FPGA_output_group is record
--- heater pwm
-        po4_ht_pwm : work.llc_pkg.hb_llc_pwm;
--- DBH pwm
-        po4_dhb_pwm : work.dhb_pkg.dhb_pwm;
--- PFC pwm
-	    po2_pfc_pwm : work.pfc_pkg.bridgeless_pfc_pwm;
-
-	    po_uart_tx : std_logic;
+    sw_supply_control_FPGA_out : work.sw_supply_ctrl_pkg.sw_supply_control_FPGA_output_group;
 end record;
 
 type component_interconnect_data_input_group is record

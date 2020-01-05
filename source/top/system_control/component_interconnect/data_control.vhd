@@ -140,44 +140,6 @@ component ext_ad_control is
 	);
 end component;
 
-component sw_supply_ctrl is
-    port(
-	    core_clk : in std_logic;
-	    modulator_clk : in std_logic;
-	    modulator_clk2 : in std_logic;
-        si_rstn : in std_logic;
--- PFC pwm
-	    po2_pfc_pwm : out bridgeless_pfc_pwm;
-
--- heater pwm
-        po4_ht_pwm : out hb_llc_pwm;
-
--- DBH pwm
-        po4_dhb_pwm : out dhb_pwm;
-
--- onboard ad data in
-        si_ada_ctrl : in rec_onboard_ad_ctrl_signals;
-        si_adb_ctrl : in rec_onboard_ad_ctrl_signals;
--- ext ad converter data, in ad bus clock domain
-        ht_adc_control : in rec_ext_ad_ctrl;
-        dhb_adc_control : in rec_ext_ad_ctrl;
--- ad trigger signals
-	    to_ada_triggers : out t_ad_triggers;
-	    to_adb_triggers : out t_ad_triggers;
--- ext ad trigger signals, clocked in modulator_clk2 domain    
-	    so_ext_ad1_start : out std_logic;
-	    so_ext_ad2_start : out std_logic;
--- test data out 
-	    so_std18_test_data : out std_logic_vector(17 downto 0);
-        so_test_data_rdy : out std_logic;
--- uart rx for testing 
-	    si_uart_ready_event	: in std_logic;
-	    si16_uart_rx_data	: in std_logic_vector(15 downto 0);
--- system command signals from main state machine
-	    si_tcmd_system_cmd : in tcmd_system_commands
-	);
-end component;
-
 signal r_si_uart_start_event : std_logic;
 signal r_so_uart_rx_rdy : std_logic;
 
@@ -305,7 +267,7 @@ ext_adc : ext_ad_control
 
 	);
 
-supply_ctrl_layer : sw_supply_ctrl
+supply_ctrl_layer : sw_supply_control
 port map(core_clk, modulator_clk, modulator_clk2, si_pll_lock, po2_pfc_pwm, po4_ht_pwm, po4_dhb_pwm, r_so_ada_ctrl, r_so_adb_ctrl, ht_adc_control, dhb_adc_control, r_ti_ada_triggers, r_ti_adb_triggers, r_si_ext_ad1_start, r_si_ext_ad2_start, std18_test_data, test_data_rdy, r_so_uart_rx_rdy,r_so16_uart_rx_data, si_tcmd_system_cmd);
 
 test_alu : alu16bit
