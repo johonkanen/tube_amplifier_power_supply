@@ -175,11 +175,11 @@ if {$make_assignments} {
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl.vhd
 
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/command_shell.vhd
+	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/command_shell.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_tx.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_rx.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_event_ctrl.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_event_ctrl.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
@@ -224,9 +224,11 @@ if {$make_assignments} {
 	set_location_assignment PIN_R12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[0]
 	set_location_assignment PIN_R13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
 	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
+# 
 
-	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.po_uart_xx_serial
+	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
 	set_location_assignment PIN_L15 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
+	set_location_assignment PIN_T14 -to system_control_FPGA_out.component_interconnect_FPGA_out.testiout;
 
 	# set_location_assignment PIN_F15 -to po_ext_ad1_clk
 	# set_location_assignment PIN_A14 -to po_ext_ad1_cs
