@@ -44,10 +44,7 @@ create_clock -name {xclk32mhz} -period 31.250 -waveform { 0.000 15.625 } [get_po
 #**************************************************************
 # Create Generated Clock
 #**************************************************************
-
-create_generated_clock -name {core_clocks|core_clocks|altpll_component|auto_generated|pll1|clk[0]} -source [get_pins {core_clocks|core_clocks|altpll_component|auto_generated|pll1|inclk[0]}] -duty_cycle 50/1 -multiply_by 8 -master_clock {xclk32mhz} [get_pins {core_clocks|core_clocks|altpll_component|auto_generated|pll1|clk[0]}] 
-create_generated_clock -name {core_clocks|core_clocks|altpll_component|auto_generated|pll1|clk[1]} -source [get_pins {core_clocks|core_clocks|altpll_component|auto_generated|pll1|inclk[0]}] -duty_cycle 50/1 -multiply_by 4 -master_clock {xclk32mhz} [get_pins {core_clocks|core_clocks|altpll_component|auto_generated|pll1|clk[1]}] 
-
+derive_pll_clocks -create_base_clocks
 
 #**************************************************************
 # Set Clock Latency
@@ -59,7 +56,6 @@ create_generated_clock -name {core_clocks|core_clocks|altpll_component|auto_gene
 # Set Clock Uncertainty
 #**************************************************************
 
-derive_pll_clocks
 derive_clock_uncertainty
 
 
