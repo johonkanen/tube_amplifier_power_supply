@@ -81,13 +81,13 @@ begin
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
 	    si_uart_start_event,
         -- '1',
-	    jihuu,
+	    si16_uart_tx_data,
 	    so_uart_ready_event,
 	    so16_uart_rx_data
 	);
-    -- si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = 0 else '0';
+    si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = 0 else '0';
 
-    -- si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
+    si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
 
     test_adc : process(system_clocks.core_clock)
         variable adc_test_counter : integer;
@@ -96,18 +96,16 @@ begin
             if system_clocks.pll_lock = '0' then
             -- reset state
                 adc_test_counter := 0;
-                si_uart_start_event <= '0';
-                si16_uart_tx_data <= x"ACDC";
     
             else
                 adc_test_counter := adc_test_counter + 1;
                 if adc_test_counter = 7680 then
                     adc_test_counter := 0;
                 end if;
-                if so_uart_ready_event = '1' then
-                    si16_uart_tx_data <= so16_uart_rx_data;
-                end if;
-
+                -- if so_uart_ready_event = '1' then
+                --     si16_uart_tx_data <= so16_uart_rx_data;
+                -- end if;
+                --
                 onboard_ad_control_data_in.ada_start_request <= false;
                 onboard_ad_control_data_in.adb_start_request <= false;
                 CASE adc_test_counter is
@@ -115,7 +113,6 @@ begin
                         onboard_ad_control_data_in <= trigger_adc(1);
                     WHEN 948 =>
                         onboard_ad_control_data_in <= trigger_adc(2);
-                        si_uart_start_event <= '1';
                     WHEN 1896 =>
                         onboard_ad_control_data_in <= trigger_adc(3);
                     WHEN 3792 =>
@@ -127,7 +124,6 @@ begin
                     WHEN 6636 =>
                         onboard_ad_control_data_in <= trigger_adc(0);
                     WHEN others =>
-                        si_uart_start_event <= '0';
                 end CASE;
     
             end if; -- rstn
