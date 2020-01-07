@@ -85,7 +85,7 @@ begin
 	    so_uart_ready_event,
 	    so16_uart_rx_data
 	);
-    si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = 0 else '0';
+    si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
 
     si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
 
@@ -102,10 +102,7 @@ begin
                 if adc_test_counter = 7680 then
                     adc_test_counter := 0;
                 end if;
-                -- if so_uart_ready_event = '1' then
-                --     si16_uart_tx_data <= so16_uart_rx_data;
-                -- end if;
-                --
+
                 onboard_ad_control_data_in.ada_start_request <= false;
                 onboard_ad_control_data_in.adb_start_request <= false;
                 CASE adc_test_counter is
