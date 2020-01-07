@@ -228,7 +228,6 @@ if {$make_assignments} {
 
 	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
 	set_location_assignment PIN_L15 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
-	set_location_assignment PIN_T14 -to system_control_FPGA_out.component_interconnect_FPGA_out.testiout;
 
 	# set_location_assignment PIN_F15 -to po_ext_ad1_clk
 	# set_location_assignment PIN_A14 -to po_ext_ad1_cs

@@ -11,11 +11,13 @@ ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supp
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_pkg.vhd
 
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/onboard_ad_control/ad_mux_control_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd
 
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/uart/uart_pkg.vhd
 
 ghdl -a --ieee=synopsys source/top/system_control/led_driver/led_driver_pkg.vhd
 

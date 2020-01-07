@@ -68,13 +68,14 @@ begin
             -- reset state
                 ad_mux_io <= (others => '0');
             else
+
                 if ada_sh_ready = '1' then
                     ad_mux_io <= drive_ad_mux(onboard_ad_control_data_in.ada_mux_position);
+                    onboard_ad_control_data_out.ada_channel <= read_ad_mux_position(ad_mux_io);
                 end if;
 
                 if std_to_bool(ada_ready) then
                     onboard_ad_control_data_out.ada_data_is_ready <= true;
-                    onboard_ad_control_data_out.ada_channel <= read_ad_mux_position(ad_mux_io);
                     onboard_ad_control_data_out.ada_conversion_data <= read_ad_data(ada_data);
                 end if;
             end if; -- rstn

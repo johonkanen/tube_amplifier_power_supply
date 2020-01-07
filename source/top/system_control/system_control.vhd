@@ -208,7 +208,7 @@ begin
 
 	end if;
     end process system_main;
-
+------------------------------------------------------------------------
 u_component_interconnect : component_interconnect
 port map(
         system_clocks,
@@ -218,6 +218,6 @@ port map(
         component_interconnect_data_in,
         component_interconnect_data_out
     );
-
+------------------------------------------------------------------------
 
 end rtl;
