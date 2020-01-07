@@ -199,17 +199,17 @@ if {$make_assignments} {
 	set_location_assignment PIN_M1 -to xclk32mhz
 	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
 
-	set_location_assignment PIN_R8 -to system_control_FPGA_out.po3_led1.red
-	set_location_assignment PIN_T7 -to system_control_FPGA_out.po3_led1.green
-	set_location_assignment PIN_T8 -to system_control_FPGA_out.po3_led1.blue
+	set_location_assignment PIN_R8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red
+	set_location_assignment PIN_T7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.green
+	set_location_assignment PIN_T8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.blue
 
-	set_location_assignment PIN_T6 -to system_control_FPGA_out.po3_led2.red
-	set_location_assignment PIN_R6 -to system_control_FPGA_out.po3_led2.green
-	set_location_assignment PIN_R7 -to system_control_FPGA_out.po3_led2.blue
+	set_location_assignment PIN_T6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red
+	set_location_assignment PIN_R6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.green
+	set_location_assignment PIN_R7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.blue
 
-    set_location_assignment PIN_T3 -to system_control_FPGA_out.po3_led3.red
-	set_location_assignment PIN_R3 -to system_control_FPGA_out.po3_led3.green
-	set_location_assignment PIN_R4 -to system_control_FPGA_out.po3_led3.blue
+    set_location_assignment PIN_T3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.red
+	set_location_assignment PIN_R3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green
+	set_location_assignment PIN_R4 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue
 
 	set_location_assignment PIN_T9  -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.ada_data
 	set_location_assignment PIN_R10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_clock

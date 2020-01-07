@@ -31,16 +31,13 @@ architecture rtl of system_control is
 
     signal number_of_delays : integer;
 
-    signal led1_color : led_counters;
-    signal led2_color : led_counters;
-    signal led3_color : led_counters;
-
-    signal component_interconnect_FPGA_in  : component_interconnect_FPGA_input_group;
-    signal component_interconnect_FPGA_out : component_interconnect_FPGA_output_group;
 
     signal component_interconnect_data_in  : component_interconnect_data_input_group;
     signal component_interconnect_data_out : component_interconnect_data_output_group;
 
+    alias led1_color : led_counters is component_interconnect_data_in.led1_color;
+    alias led2_color : led_counters is component_interconnect_data_in.led2_color;
+    alias led3_color : led_counters is component_interconnect_data_in.led3_color;
         -- ada_conversion_data : integer range 0 to 2**16-1;
         -- ada_data_is_ready : boolean;
         -- ada_channel : integer;
@@ -215,15 +212,12 @@ begin
 u_component_interconnect : component_interconnect
 port map(
         system_clocks,
-        component_interconnect_FPGA_in,
-        component_interconnect_FPGA_out,
+        system_control_FPGA_in.component_interconnect_FPGA_in,
+        system_control_FPGA_out.component_interconnect_FPGA_out,
 
         component_interconnect_data_in,
         component_interconnect_data_out
     );
-
-burn_leds : led_driver
-port map(system_clocks.core_clock, system_control_FPGA_out.po3_led1, system_control_FPGA_out.po3_led2, system_control_FPGA_out.po3_led3, led1_color, led2_color, led3_color);
 
 
 end rtl;

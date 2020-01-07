@@ -17,10 +17,9 @@ ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/ext_ad/
 
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
 
-ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/component_interconnect_pkg.vhd
-
-
 ghdl -a --ieee=synopsys source/top/system_control/led_driver/led_driver_pkg.vhd
+
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/component_interconnect_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/system_control_pkg.vhd
 
 rem ghdl -a --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd

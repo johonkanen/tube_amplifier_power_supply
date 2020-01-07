@@ -13,10 +13,16 @@ type component_interconnect_FPGA_output_group is record
     onboard_ad_control_FPGA_out : work.onboard_ad_control_pkg.onboard_ad_control_FPGA_output_group;
     po_uart_tx_serial : std_logic;
     testiout : std_logic;
+    po3_led1 : work.led_driver_pkg.rgb_led;
+    po3_led2 : work.led_driver_pkg.rgb_led;
+    po3_led3 : work.led_driver_pkg.rgb_led;
 end record;
 
 type component_interconnect_data_input_group is record
     clock : std_logic;
+    led1_color : work.led_driver_pkg.led_counters;
+    led2_color : work.led_driver_pkg.led_counters;
+    led3_color : work.led_driver_pkg.led_counters;
 end record;
 
 type component_interconnect_data_output_group is record

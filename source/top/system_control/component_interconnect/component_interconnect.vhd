@@ -5,6 +5,8 @@ library ieee;
 library work;
     use work.component_interconnect_pkg.all;
     use work.onboard_ad_control_pkg.all;
+    use work.vendor_specifics_pkg.all;
+    use work.led_driver_pkg.all;
     -- use work.sw_supply_ctrl_pkg.all;
 
 entity component_interconnect is
@@ -68,14 +70,18 @@ begin
 
 
     u_uart_event_ctrl : uart_event_ctrl
-    generic map(25,2,2)
+	generic map(
+				g_CLKS_PER_BIT => g_vendor_specific_uart_clks_per_bit,
+				g_RX_bytes_in_word => g_vendor_specific_RX_bytes_in_word,
+				g_TX_bytes_in_word => g_vendor_specific_TX_bytes_in_word 
+			)
     port map(
 	    system_clocks.core_clock,
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
 	    si_uart_start_event,
         -- '1',
-	    si16_uart_tx_data,
+	    jihuu,
 	    so_uart_ready_event,
 	    so16_uart_rx_data
 	);
@@ -104,7 +110,6 @@ begin
 
                 onboard_ad_control_data_in.ada_start_request <= false;
                 onboard_ad_control_data_in.adb_start_request <= false;
-                si_uart_start_event <= '0';
                 CASE adc_test_counter is
                     WHEN 0 =>
                         onboard_ad_control_data_in <= trigger_adc(1);
@@ -122,6 +127,7 @@ begin
                     WHEN 6636 =>
                         onboard_ad_control_data_in <= trigger_adc(0);
                     WHEN others =>
+                        si_uart_start_event <= '0';
                 end CASE;
     
             end if; -- rstn
@@ -148,5 +154,8 @@ component_interconnect_data_out.onboard_ad_control_data_out <= onboard_ad_contro
     --         sw_supply_control_data_in, 
     --         sw_supply_control_data_out 
     --     );
-    --
+
+burn_leds : led_driver
+port map(system_clocks.core_clock, component_interconnect_FPGA_out.po3_led1, component_interconnect_FPGA_out.po3_led2, component_interconnect_FPGA_out.po3_led3, component_interconnect_data_in.led1_color, component_interconnect_data_in.led2_color, component_interconnect_data_in.led3_color);
+
 end rtl;
