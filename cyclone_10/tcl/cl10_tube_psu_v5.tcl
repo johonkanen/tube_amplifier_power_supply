@@ -176,6 +176,7 @@ if {$make_assignments} {
 
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/command_shell.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_tx.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_rx.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart.vhd
