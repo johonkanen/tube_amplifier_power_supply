@@ -2,9 +2,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-library work;
-    use work.onboard_ad_control_pkg.all;
-    use work.onboard_ad_control_internal_pkg.all;
+library onboard_adc_library;
+    use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.onboard_ad_control_internal_pkg.all;
 
 entity onboard_ad_control is
     port (

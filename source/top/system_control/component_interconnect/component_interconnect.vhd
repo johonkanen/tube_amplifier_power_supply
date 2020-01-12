@@ -4,11 +4,12 @@ library ieee;
 
 library work;
     use work.component_interconnect_pkg.all;
-    use work.onboard_ad_control_pkg.all;
     use work.vendor_specifics_pkg.all;
     use work.led_driver_pkg.all;
     use work.uart_pkg.all;
     -- use work.sw_supply_ctrl_pkg.all;
+library onboard_adc_library;
+    use onboard_adc_library.onboard_ad_control_pkg.all;
 
 entity component_interconnect is
     port (

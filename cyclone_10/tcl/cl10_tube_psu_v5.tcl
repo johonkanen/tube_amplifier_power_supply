@@ -174,17 +174,15 @@ if {$make_assignments} {
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
 	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl.vhd
 
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/uart/tubepsu_commands_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/command_shell.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_tx.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_rx.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_event_ctrl.vhd
 
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
-	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control.vhd
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd          -library onboard_adc_library
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd -library onboard_adc_library
+	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control.vhd              -library onboard_adc_library
 
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect.vhd
