@@ -1,6 +1,6 @@
 set outputDir ./output
 set tube_psu_v5_dir ../
-set source_dir ../source
+set source_folder ../source
 file mkdir $outputDir
 
 set files [glob -nocomplain "$outputDir/*"]
@@ -31,6 +31,16 @@ prj_src add $tube_psu_v5_dir/lfe5u/ip_cores/ip_cores.sbx
 
 source $tube_psu_v5_dir/list_of_sources.tcl
 
-foreach x [read_sources ../source] {prj_src add ../source/$x}
+    foreach x [read_sources ../] \
+    { \
+        if {[lsearch -glob $x *onboard_ad_control*] == 0} \
+        { \
+            prj_src add $source_folder/$x -work onboard_adc_library
+        } \
+        else \
+        { \
+            prj_src add $source_folder/$x \
+        } \
+    }
 
 prj_project save
