@@ -4,7 +4,7 @@ library ieee;
 
 package system_clocks_pkg is
 
-    type system_clocks is record
+    type system_clock_group is record
         core_clock : std_logic;
         modulator_clock : std_logic;
         pll_lock : std_logic;

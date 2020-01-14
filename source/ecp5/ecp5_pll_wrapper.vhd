@@ -8,10 +8,7 @@ library work;
 entity pll_wrapper is
     port (
         xclk : in std_logic;
-        core_clk : out std_logic;
-        modulator_clk : out std_logic;
-        modulator_clk2 : out std_logic;
-        pll_lock : out std_logic
+        system_clocks : out system_clock_group
     );
 end  pll_wrapper;
 
@@ -36,10 +33,10 @@ architecture rtl of pll_wrapper is
 begin
 
     core_clocks : main_pll
-    port map(xclk, core_clk, modulator_clk, pll_lock);
+    port map(xclk, system_clocks.core_clock, system_clocks.modulator_clock, system_clocks.pll_lock);
 
     u_adc_clock : adc_clock
-    port map(xclk, core_clk, adc_pll_lock);
+    port map(xclk, system_clocks.adc_clock, system_clocks.adc_pll_lock);
 
 
 

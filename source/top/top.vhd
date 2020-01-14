@@ -2,8 +2,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
--- library work;
---     use work.vendor_specifics_pkg.all;
+library work;
+    use work.system_clocks_pkg.all;
+    use work.vendor_specifics_pkg.all;
 --     use work.system_control_pkg.all;
 --
 entity top is
@@ -32,19 +33,17 @@ architecture behavioral of top is
     -- signal system_clocks : system_clock_group;    
     -- signal system_control_data_in  : system_control_data_input_group;
     -- signal system_control_data_out : system_control_data_output_group;
+    signal system_clocks : system_clock_group;
 
 begin
 
--- core_clocks : pll_wrapper
--- 	port map
--- 	(
--- 		xclk32mhz,
---         clk_128mhz,
--- 		clk_256mhz,
---         clk2_256mhz,
--- 		std_pll_lock
--- 	);
---
+core_clocks : pll_wrapper
+	port map
+	(
+		xclk,
+        system_clocks
+	);
+
     -- system_clocks <= (clk_128mhz,  clk_256mhz, clk2_256mhz, std_pll_lock);
     -- u_system_control : system_control
     --     port map(
