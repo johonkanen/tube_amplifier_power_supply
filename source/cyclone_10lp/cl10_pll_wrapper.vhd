@@ -2,16 +2,13 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    library work;
-        use work.vendor_specifics_pkg.all;
+library work;
+    use work.system_clocks_pkg.all;
 
 entity pll_wrapper is
     port (
         xclk : in std_logic;
-        core_clk : out std_logic;
-        modulator_clk : out std_logic;
-        modulator_clk2 : out std_logic;
-        pll_lock : out std_logic
+        system_clocks : out system_clock_group
     );
 end entity pll_wrapper;
 
@@ -31,5 +28,5 @@ architecture rtl of pll_wrapper is
 begin
 
     core_clocks : main_pll
-    port map(xclk, modulator_clk, core_clk, modulator_clk2, pll_lock);
+    port map(xclk, system_clocks.modulator_clock, system_clocks.core_clock, system_clocks.adc_clock, system_clocks.pll_lock);
 end rtl;
