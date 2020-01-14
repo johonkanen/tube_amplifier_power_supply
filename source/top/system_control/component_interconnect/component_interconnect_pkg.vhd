@@ -2,6 +2,7 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
+
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg;
 
@@ -33,7 +34,7 @@ end record;
 
 component component_interconnect is
     port (
-        system_clocks : in work.vendor_specifics_pkg.system_clock_group;    
+        system_clocks : in work.system_clocks_pkg.system_clock_group;    
 
         component_interconnect_FPGA_in : in component_interconnect_FPGA_input_group;
         component_interconnect_FPGA_out : out component_interconnect_FPGA_output_group;

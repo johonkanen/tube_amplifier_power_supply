@@ -3,13 +3,14 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
+    use work.system_clocks_pkg.all;
     use work.system_control_pkg.all;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
 
 entity system_control is
     port (
-        system_clocks : in work.vendor_specifics_pkg.system_clock_group;    
+        system_clocks : in system_clock_group;    
 
         system_control_FPGA_in : in system_control_FPGA_input_group;
         system_control_FPGA_out : out system_control_FPGA_output_group;

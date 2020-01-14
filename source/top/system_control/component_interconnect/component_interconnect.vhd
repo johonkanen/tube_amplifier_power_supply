@@ -4,7 +4,6 @@ library ieee;
 
 library work;
     use work.component_interconnect_pkg.all;
-    use work.vendor_specifics_pkg.all;
     use work.led_driver_pkg.all;
     use work.uart_pkg.all;
     -- use work.sw_supply_ctrl_pkg.all;
@@ -13,7 +12,7 @@ library onboard_adc_library;
 
 entity component_interconnect is
     port (
-        system_clocks : in work.vendor_specifics_pkg.system_clock_group;    
+        system_clocks : in work.system_clocks_pkg.system_clock_group;    
 
         component_interconnect_FPGA_in : in component_interconnect_FPGA_input_group;
         component_interconnect_FPGA_out : out component_interconnect_FPGA_output_group;
