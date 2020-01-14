@@ -4,6 +4,7 @@
 *.ip_user_files
 spartan_7/output/
 spartan_6/output/
+ecp5_compile/
 *.Xil
 *.mcs
 *.prm
