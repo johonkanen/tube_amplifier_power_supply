@@ -37,7 +37,6 @@ set source_folder $tcl_scripts/../../source
 set need_to_close_project 0
 set make_assignments 1
 
-source ../list_of_sources.tcl
 
 # Check that the right project is open
 if {[is_project_open]} {
@@ -54,6 +53,9 @@ if {[is_project_open]} {
 	}
 	set need_to_close_project 1
 }
+
+# read sources
+source ../list_of_sources.tcl
 	set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
 	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
 	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
@@ -100,7 +102,6 @@ if {$make_assignments} {
 	set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
 	set_global_assignment -name PROJECT_IP_REGENERATION_POLICY ALWAYS_REGENERATE_IP
     set_global_assignment -name VHDL_INPUT_VERSION VHDL_1993
-	# set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 	set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 	set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 7
 	set_global_assignment -name STATE_MACHINE_PROCESSING "ONE-HOT"
@@ -154,31 +155,6 @@ if {$make_assignments} {
 	set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST ON -section_id eda_simulation
 	set_global_assignment -name SAFE_STATE_MACHINE ON
 
-
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_clocks_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd
-    #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_tx.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_rx.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/uart/uart_event_ctrl.vhd
-    #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd          -library onboard_adc_library
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd -library onboard_adc_library
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control.vhd              -library onboard_adc_library
-    #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/component_interconnect/component_interconnect.vhd
-    #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/led_driver/led_driver.vhd
-    #
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control_pkg.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/system_control/system_control.vhd
-	# set_global_assignment -name VHDL_FILE $source_folder/top/top.vhd
-    #
 	# pin assignments
 	set_location_assignment PIN_M1 -to xclk32mhz
 	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
