@@ -1,0 +1,9 @@
+@N|Running in 64-bit mode
+@N|Running in 64-bit mode
+@N:"C:\Users\Jari\mycodeprojects\tube_power_v5\lfe5u\ip_cores\ip_cores\main_pll\main_pll.vhd":12:7:12:14|Top entity is set to main_pll.
+@N: CD630 :"C:\Users\Jari\mycodeprojects\tube_power_v5\lfe5u\ip_cores\ip_cores\main_pll\main_pll.vhd":12:7:12:14|Synthesizing work.main_pll.structure.
+@N: CD630 :"C:\Programs\diamond\diamond\3.11_x64\synpbase\lib\lucent\ecp5u.vhd":2083:10:2083:16|Synthesizing ecp5u.ehxplll.syn_black_box.
+@N: CD630 :"C:\Programs\diamond\diamond\3.11_x64\synpbase\lib\lucent\ecp5u.vhd":832:10:832:12|Synthesizing ecp5u.vlo.syn_black_box.
+@N: CD630 :"C:\Programs\diamond\diamond\3.11_x64\synpbase\lib\lucent\ecp5u.vhd":825:10:825:12|Synthesizing ecp5u.vhi.syn_black_box.
+@N|Running in 64-bit mode
+

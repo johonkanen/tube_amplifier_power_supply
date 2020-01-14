@@ -1,0 +1,5 @@
+Library, Design Unit, compile Time, Peak Mem Usage
+ecp5u, Entity: VHI Architecture: syn_black_box, 0h:00m:00s,     72 MB
+ecp5u, Entity: VLO Architecture: syn_black_box, 0h:00m:00s,     72 MB
+ecp5u, Entity: EHXPLLL Architecture: syn_black_box, 0h:00m:00s,     72 MB
+work, Entity: main_pll Architecture: structure, 0h:00m:00s,     72 MB

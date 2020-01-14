@@ -1,0 +1,2 @@
+VHDL_ENTITY_ONLY adc_clock DEFIN adc_clock.vhd
+MODULE adc_clock DEFIN adc_clock.vhd

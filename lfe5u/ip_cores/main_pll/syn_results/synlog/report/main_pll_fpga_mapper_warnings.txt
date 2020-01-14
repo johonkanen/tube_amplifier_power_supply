@@ -1,0 +1,1 @@
+@W: MT246 :"c:\users\jari\mycodeprojects\tube_power_v5\lfe5u\ip_cores\ip_cores\main_pll\main_pll.vhd":51:4:51:12|Blackbox EHXPLLL is missing a user supplied timing model. This may have a negative effect on timing analysis and optimizations (Quality of Results)

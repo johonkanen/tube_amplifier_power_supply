@@ -1,0 +1,2 @@
+VHDL_ENTITY_ONLY main_pll DEFIN main_pll.vhd
+MODULE main_pll DEFIN main_pll.vhd

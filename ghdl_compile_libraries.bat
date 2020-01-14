@@ -1,4 +1,5 @@
 ghdl -a --ieee=synopsys source/cyclone_10lp/cl10_specifics.vhd
+ghdl -a --ieee=synopsys source/top/system_clocks_pkg.vhd
 
 ghdl -a --ieee=synopsys source/dsp/alu_routines_pkg.vhd
 ghdl -a --ieee=synopsys source/dsp/rad4_inv16bit_pkg.vhd
