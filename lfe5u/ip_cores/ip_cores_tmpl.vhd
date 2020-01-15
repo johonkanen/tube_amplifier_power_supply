@@ -11,6 +11,6 @@ component ip_cores is
     );
     
 end component ip_cores; -- sbp_module=true 
-_inst: ip_cores port map (main_pll_CLKI => __,main_pll_CLKOP => __,main_pll_CLKOS => __,
-            main_pll_LOCK => __,adc_clock_CLKI => __,adc_clock_CLKOP => __,
-            adc_clock_LOCK => __);
+_inst: ip_cores port map (adc_clock_CLKI => __,adc_clock_CLKOP => __,adc_clock_LOCK => __,
+            main_pll_CLKI => __,main_pll_CLKOP => __,main_pll_CLKOS => __,
+            main_pll_LOCK => __);

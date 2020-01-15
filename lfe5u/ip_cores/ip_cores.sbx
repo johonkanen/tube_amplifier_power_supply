@@ -115,9 +115,9 @@
         </spirit:model>
         <spirit:vendorExtensions>
             <lattice:device>LFE5U-12F-8BG381C</lattice:device>
-            <lattice:synthesis>synplify</lattice:synthesis>
+            <lattice:synthesis>lse</lattice:synthesis>
             <lattice:date>2020-01-14.19:36:20</lattice:date>
-            <lattice:modified>2020-01-14.19:57:20</lattice:modified>
+            <lattice:modified>2020-01-15.19:00:38</lattice:modified>
             <lattice:diamond>3.11.1.441</lattice:diamond>
             <lattice:language>VHDL</lattice:language>
             <lattice:attributes>
@@ -216,8 +216,8 @@
                         </spirit:ports>
                     </spirit:model>
                     <spirit:vendorExtensions>
-                        <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2020-01-14.19:57:20</lattice:modified>
+                        <lattice:synthesis>lse</lattice:synthesis>
+                        <lattice:modified>2020-01-15.19:00:38</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
@@ -669,8 +669,8 @@
                         </spirit:ports>
                     </spirit:model>
                     <spirit:vendorExtensions>
-                        <lattice:synthesis>synplify</lattice:synthesis>
-                        <lattice:modified>2020-01-14.19:57:20</lattice:modified>
+                        <lattice:synthesis>lse</lattice:synthesis>
+                        <lattice:modified>2020-01-15.19:00:38</lattice:modified>
                         <lattice:attributes>
                             <lattice:attribute lattice:name="AddComponent">false</lattice:attribute>
                             <lattice:attribute lattice:name="BBox">false</lattice:attribute>
