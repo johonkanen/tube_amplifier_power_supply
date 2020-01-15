@@ -156,7 +156,7 @@ if {$make_assignments} {
 	set_global_assignment -name SAFE_STATE_MACHINE ON
 
 	# pin assignments
-	set_location_assignment PIN_M1 -to xclk32mhz
+	set_location_assignment PIN_M1 -to xclk
 	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
 
 	set_location_assignment PIN_R8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red
