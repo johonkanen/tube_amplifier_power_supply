@@ -53,3 +53,6 @@ BLOCK NET "system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.gree
 BLOCK NET "system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red_c" ;
 BLOCK NET "system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue_c" ;
 BLOCK NET "system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green_c" ;
+LOCATE COMP "system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial" SITE "A11" ;
+LOCATE COMP "system_control_FPGA_out.bypass_relay" SITE "B3" ;
+LOCATE COMP "system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial" SITE "B9" ;

@@ -88,24 +88,8 @@ end component;
 signal s16_spi_data : std_logic_vector(15 downto 0); 
 
 begin
-onboard_adc : spi3w_ads7056_driver
-    generic map(2,18,9)
-    port map(
-			si_spi_clk,
-            si_pll_lock,
-			po_spi_cs,
-			po_spi_clk_out,
-			pi_spi_serial, 
-			si_spi_start,
-			s_spi_busy,
-			so_spi_rdy,
-			so_sh_rdy,
-			s16_spi_data);
-
-b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),1));
-
--- onboard_adc : ext_ad_spi3w
---     generic map(4,14,9)
+-- onboard_adc : spi3w_ads7056_driver
+--     generic map(2,18,9)
 --     port map(
 -- 			si_spi_clk,
 --             si_pll_lock,
@@ -118,6 +102,22 @@ b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),1));
 -- 			so_sh_rdy,
 -- 			s16_spi_data);
 --
--- b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),3));
+-- b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),1));
+
+onboard_adc : ext_ad_spi3w
+    generic map(4,14,9)
+    port map(
+			si_spi_clk,
+            si_pll_lock,
+			po_spi_cs,
+			po_spi_clk_out,
+			pi_spi_serial, 
+			si_spi_start,
+			s_spi_busy,
+			so_spi_rdy,
+			so_sh_rdy,
+			s16_spi_data);
+
+b_spi_rx <= std_logic_vector(shift_left(unsigned(s16_spi_data),3));
 
 end rtl;

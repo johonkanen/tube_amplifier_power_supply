@@ -51,6 +51,7 @@ begin
             if system_clocks.pll_lock = '0' then
             -- reset state
                 adc_test_counter := 0;
+                onboard_ad_control_data_in <=(false, 0, false, 0);
             else
                 adc_test_counter := adc_test_counter + 1;
                 if adc_test_counter = 7680 then
