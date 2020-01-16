@@ -24,8 +24,12 @@ package require cmdline
 
 set options \
 {\
-    { "source_path.arg" "" "testi" } \
+    { "source_path.arg"} \
+    { "card_version.arg"}
+    { "load_program_to.arg"} \
 }
+
+#possible versions, u10, u25
 
 array set opts [::cmdline::getoptions quartus(args) $options]
 
@@ -35,14 +39,11 @@ set tcl_scripts $jihuu
 set source_folder $tcl_scripts/../../source
 
 set need_to_close_project 0
-set make_assignments 1
-
 
 # Check that the right project is open
 if {[is_project_open]} {
 	if {[string compare $quartus(project) "cl10_tube_psu_v5"]} {
 		puts "Project cl10_tube_psu_v5 is not open"
-		set make_assignments 0
 	}
 } else {
 	# Only open if not already open
@@ -54,11 +55,21 @@ if {[is_project_open]} {
 	set need_to_close_project 1
 }
 
+if {$opts(card_version) == "u10"} \
+{
+    set fpga_device 10CL010YU256I7G
+}\
+else \
+{
+    set fpga_device 10CL025YU256I7G
+}
+
 # read sources
 source ../list_of_sources.tcl
-	set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
+
+	# set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
+	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
+	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/main_pll.qip
 
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_specifics.vhd
@@ -75,11 +86,10 @@ source ../list_of_sources.tcl
         else \
         { \
             set_global_assignment -name VHDL_FILE $source_folder/$x \
-        } \
+        } 
     }
 
 # Make assignments
-if {$make_assignments} {
 	set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.0.2
 	set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:17:12  OCTOBER 15, 2017"
 	set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
@@ -105,7 +115,7 @@ if {$make_assignments} {
 	set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
 	set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 7
 	set_global_assignment -name STATE_MACHINE_PROCESSING "ONE-HOT"
-	set_global_assignment -name DEVICE 10CL010YU256I7G
+	set_global_assignment -name DEVICE $fpga_device
 	set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
 	set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
 	set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
@@ -156,38 +166,6 @@ if {$make_assignments} {
 	set_global_assignment -name SAFE_STATE_MACHINE ON
 
 	# pin assignments
-	set_location_assignment PIN_M1 -to xclk
-	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay
-
-	set_location_assignment PIN_R8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red
-	set_location_assignment PIN_T7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.green
-	set_location_assignment PIN_T8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.blue
-
-	set_location_assignment PIN_T6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red
-	set_location_assignment PIN_R6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.green
-	set_location_assignment PIN_R7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.blue
-
-    set_location_assignment PIN_T3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.red
-	set_location_assignment PIN_R3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green
-	set_location_assignment PIN_R4 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue
-
-	set_location_assignment PIN_T9  -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.ada_data
-	set_location_assignment PIN_R10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_clock
-    set_location_assignment PIN_R9  -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_cs
-	set_location_assignment PIN_T10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[0]
-	set_location_assignment PIN_R11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[1]
-	set_location_assignment PIN_T11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[2]
-
-	set_location_assignment PIN_R5 -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.adb_data
-	set_location_assignment PIN_T4 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_cs
-	set_location_assignment PIN_T5 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_clock
-	set_location_assignment PIN_R12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[0]
-	set_location_assignment PIN_R13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
-	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
-# 
-
-	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
-	set_location_assignment PIN_L15 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
 
 	# set_location_assignment PIN_F15 -to po_ext_ad1_clk
 	# set_location_assignment PIN_A14 -to po_ext_ad1_cs
@@ -213,13 +191,16 @@ if {$make_assignments} {
 	set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 
 	# Commit assignments
-	export_assignments
 
 	# Close project
 	#if {$need_to_close_project} {
 	#	project_close
 	#}
-}
+
+source $tcl_scripts/route_fpga_pins.tcl
+place_fpga_pins_for_$fpga_device
+
+	export_assignments
 
 set_global_assignment -name SDC_FILE $tcl_scripts/cl10_tubepsu_constraints.sdc
 
@@ -228,11 +209,17 @@ set_global_assignment -name SDC_FILE $tcl_scripts/cl10_tubepsu_constraints.sdc
 execute_flow -compile
 
 #call external executables to generate flash image and program cfi flash
-exec quartus_cpf -c $tcl_scripts/generate_flash_image.cof
+exec quartus_cpf -c $tcl_scripts/generate_flash_image_$fpga_device.cof
 
-# program fpga ram
-exec quartus_pgm -c "USB-Blaster \[USB-0\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
-# program fpga flash
-# exec quartus_pgm -i -c "USB-Blaster \[USB-0\]" -m JTAG -o "ipv;./output_files/output_file.jic"
+if {$opts(load_program_to) == "ram"} \
+{
+    # program fpga ram
+    exec quartus_pgm -c "USB-Blaster \[USB-0\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
+}\
+else \
+{
+    # program fpga flash
+    exec quartus_pgm -i -c "USB-Blaster \[USB-0\]" -m JTAG -o "ipv;./output_files/tube_psu_flash.jic"
+}
 
 
