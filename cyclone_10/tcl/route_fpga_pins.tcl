@@ -1,0 +1,69 @@
+proc place_fpga_pins_for_10CL010YU256I7G {} \
+{
+	set_location_assignment PIN_M1 -to xclk
+	set_location_assignment PIN_G16 -to system_control_FPGA_out.bypass_relay 
+	set_location_assignment PIN_R8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red
+	set_location_assignment PIN_T7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.green
+	set_location_assignment PIN_T8 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.blue
+
+	set_location_assignment PIN_T6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red
+	set_location_assignment PIN_R6 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.green
+	set_location_assignment PIN_R7 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.blue
+
+    set_location_assignment PIN_T3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.red
+	set_location_assignment PIN_R3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green
+	set_location_assignment PIN_R4 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue
+
+	set_location_assignment PIN_T9  -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.ada_data
+	set_location_assignment PIN_R10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_clock
+    set_location_assignment PIN_R9  -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_cs
+	set_location_assignment PIN_T10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[0]
+	set_location_assignment PIN_R11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[1]
+	set_location_assignment PIN_T11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[2]
+
+	set_location_assignment PIN_R5 -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.adb_data
+	set_location_assignment PIN_T4 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_cs
+	set_location_assignment PIN_T5 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_clock
+	set_location_assignment PIN_R12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[0]
+	set_location_assignment PIN_R13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
+	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
+
+	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
+	set_location_assignment PIN_L15 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
+}
+
+proc place_fpga_pins_for_10CL025YU256I7G {} \
+{
+	set_location_assignment PIN_M2 -to xclk
+	set_location_assignment PIN_D15 -to system_control_FPGA_out.bypass_relay 
+
+	set_location_assignment PIN_R5 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red
+	set_location_assignment PIN_T4 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.green
+	set_location_assignment PIN_T5 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.blue
+
+	set_location_assignment PIN_T3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red
+	set_location_assignment PIN_R3 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.green
+	set_location_assignment PIN_R4 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.blue
+
+    set_location_assignment PIN_N2 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.red
+	set_location_assignment PIN_N1 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green
+	set_location_assignment PIN_P1 -to system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue
+
+	set_location_assignment PIN_T6  -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.ada_data
+	set_location_assignment PIN_R7 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_clock
+    set_location_assignment PIN_R6  -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_cs
+	set_location_assignment PIN_R10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[0]
+	set_location_assignment PIN_T10 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[1]
+	set_location_assignment PIN_R11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[2]
+
+	set_location_assignment PIN_T2 -to system_control_FPGA_in.component_interconnect_FPGA_in.onboard_ad_control_FPGA_in.adb_data
+	set_location_assignment PIN_R1 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_cs
+	set_location_assignment PIN_P2 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_clock
+	set_location_assignment PIN_T11 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[0]
+	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
+	set_location_assignment PIN_T13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
+# 
+
+	set_location_assignment PIN_J16 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
+	set_location_assignment PIN_K16 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
+}

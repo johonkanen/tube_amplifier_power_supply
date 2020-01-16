@@ -98,7 +98,7 @@ begin
     port map(system_clocks.core_clock, component_interconnect_FPGA_out.po3_led1, component_interconnect_FPGA_out.po3_led2, component_interconnect_FPGA_out.po3_led3, component_interconnect_data_in.led1_color, component_interconnect_data_in.led2_color, component_interconnect_data_in.led3_color);
 ------------------------------------------------------------------------
     u_uart_event_ctrl : uart_event_ctrl
-	generic map(25,2,2)
+	generic map(24,2,2)
     port map(
 	    system_clocks.core_clock,
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
