@@ -32,10 +32,10 @@ begin
             mult_b(0) <= to_signed(multiplier_data_in.mult_b,18);
             mult_a(1) <= mult_a(0);
             mult_b(1) <= mult_b(0);
-            mult_result(0) <= mult_a(1) * mult_b(1);
+            mult_result(0) <= mult_a(0) * mult_b(0);
             mult_result(1) <= mult_result(0);
 
-            multiplier_data_out.multiplier_result <=  mult_result(1);
+            multiplier_data_out.multiplier_result <= mult_result(0);
 
             multiplier_data_out.multiplier_is_ready <= false;
             CASE multiplier_counter is
@@ -46,10 +46,6 @@ begin
                 WHEN 1 => 
                     multiplier_counter := multiplier_counter + 1;
                 WHEN 2 => 
-                    multiplier_counter := multiplier_counter + 1;
-                WHEN 3 => 
-                    multiplier_counter := multiplier_counter + 1;
-                WHEN 4 =>
                     multiplier_data_out.multiplier_is_ready <= true;
                     multiplier_counter := 0;
                 WHEN others =>
