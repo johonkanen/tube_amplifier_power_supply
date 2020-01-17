@@ -3,6 +3,9 @@ proc read_sources {source_folder} \
     return \
     {
         /top/system_clocks_pkg.vhd
+        /dsp/multiplier/multiplier_pkg.vhd
+        /dsp/multiplier/multiplier.vhd
+
         /top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
         /top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 
         /top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd 

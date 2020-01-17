@@ -1,0 +1,100 @@
+<top name = "main_pll"  library = "work"  arch = "RTL"  entry = "VHDL">
+
+<clocks>
+    <clockitem name = "CLKOP"  type = "net" />
+    <clockitem name = "CLKI"  type = "port" />
+</clocks>
+
+<!--
+    //=============================================================
+    //  Number of Clocks processed: 2
+    //
+    //  If a clock cannot be found in the top level pins section,
+    //  that means it is an internal clock.
+    //
+    //=============================================================
+-->
+
+<library name = "work">
+
+<unit name = "main_pll">
+
+    <!--
+        Top Level Pins: 4
+    -->
+
+    <pins>
+        <pitem  name = "CLKI"  direction = "in"  />
+        <pitem  name = "CLKOP"  direction = "out"  />
+        <pitem  name = "CLKOS"  direction = "out"  />
+        <pitem  name = "LOCK"  direction = "out"  />
+    </pins>
+
+    <!--
+        Instances in netlist: 3
+    -->
+
+    <instance  name = "scuba_vhi_inst"  library = "work"  arch = "RTL"  type = "comb">
+        <pins>
+        </pins>
+
+        <nets>
+        </nets>
+    </instance>
+
+    <instance  name = "scuba_vlo_inst"  library = "work"  arch = "RTL"  type = "comb">
+        <pins>
+        <pitem  name = "z"  direction = "out"  />
+        </pins>
+
+        <nets>
+        <nitem  name = "scuba_vlo"  />
+        </nets>
+    </instance>
+
+    <instance  name = "PLLInst_0"  library = "work"  arch = "RTL"  type = "comb">
+        <pins>
+        <pitem  name = "CLKI"  direction = "in"  />
+        <pitem  name = "CLKFB"  direction = "in"  />
+        <pitem  name = "PHASESEL1"  direction = "in"  />
+        <pitem  name = "PHASESEL0"  direction = "in"  />
+        <pitem  name = "PHASEDIR"  direction = "in"  />
+        <pitem  name = "PHASESTEP"  direction = "in"  />
+        <pitem  name = "PHASELOADREG"  direction = "in"  />
+        <pitem  name = "STDBY"  direction = "in"  />
+        <pitem  name = "PLLWAKESYNC"  direction = "in"  />
+        <pitem  name = "RST"  direction = "in"  />
+        <pitem  name = "ENCLKOP"  direction = "in"  />
+        <pitem  name = "ENCLKOS"  direction = "in"  />
+        <pitem  name = "ENCLKOS2"  direction = "in"  />
+        <pitem  name = "ENCLKOS3"  direction = "in"  />
+        <pitem  name = "CLKOP"  direction = "out"  />
+        <pitem  name = "CLKOS"  direction = "out"  />
+        <pitem  name = "LOCK"  direction = "out"  />
+        </pins>
+
+        <nets>
+        <nitem  name = "CLKI"  />
+        <nitem  name = "CLKOP"  />
+        <nitem  name = "scuba_vlo"  />
+        <nitem  name = "CLKOS"  />
+        <nitem  name = "LOCK"  />
+        </nets>
+    </instance>
+
+    <!--
+        Views in design "main_pll": 0
+    -->
+
+    <views>
+    </views>
+
+</unit>
+
+</library>
+
+<library name = "ecp5u">
+
+</library>
+
+</top>

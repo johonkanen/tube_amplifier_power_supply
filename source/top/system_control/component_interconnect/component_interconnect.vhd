@@ -6,6 +6,7 @@ library work;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
     use work.uart_pkg.all;
+    use work.multiplier_pkg.all;
     -- use work.sw_supply_ctrl_pkg.all;
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
@@ -39,6 +40,7 @@ architecture rtl of component_interconnect is
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+
 begin
 ------------------------------------------------------------------------
     si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
@@ -80,6 +82,7 @@ begin
             end if; -- rstn
         end if; --rising_edge
     end process test_adc;	
+
 
 ------------------------------------------------------------------------  
 -- onboard_ad_control_data_in <= component_interconnect_data_in.onboard_ad_control_data_in;

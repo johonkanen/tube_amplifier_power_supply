@@ -70,7 +70,7 @@ source ../list_of_sources.tcl
 	# set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
-	set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/main_pll.qip
+	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/$opts(card_version)_clocks/main_pll.qip
 
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_specifics.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_pll_wrapper.vhd

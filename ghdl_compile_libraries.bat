@@ -1,5 +1,7 @@
 ghdl -a --ieee=synopsys source/top/system_clocks_pkg.vhd
 ghdl -a --ieee=synopsys source/ecp5/ecp5_pll_wrapper.vhd
+
+ghdl -a --ieee=synopsys source/dsp/multiplier/multiplier_pkg.vhd
 rem ghdl -a --ieee=synopsys source/cyclone_10lp/cl10_specifics.vhd
 
 rem ghdl -a --ieee=synopsys source/dsp/alu_routines_pkg.vhd
@@ -16,7 +18,6 @@ rem
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/ad_mux_control_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
-ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd
 rem
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/uart/uart_pkg.vhd

@@ -130,7 +130,7 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             r_po_spi_clk_out <= not r_po_spi_clk_out;
-                            spi_rx_buffer <= spi_rx_buffer(16 downto 0) & pi_spi_serial;
+                            spi_rx_buffer(i-2) <= pi_spi_serial;
                             i <= i - 1;
                         end if;
 
