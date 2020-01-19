@@ -40,7 +40,6 @@ package multiplier_pkg is
     (
         mult_a : in int18;
         mult_b : in int18;
-        variable result : out sign36;
         signal alu_input : out multiplier_data_input_group;
         signal alu_out : in multiplier_data_output_group
     );
@@ -61,7 +60,6 @@ package body multiplier_pkg is
     (
         mult_a : in int18;
         mult_b : in int18;
-        variable result : out sign36;
         signal alu_input : out multiplier_data_input_group;
         signal alu_out : in multiplier_data_output_group
     ) is
@@ -69,7 +67,6 @@ package body multiplier_pkg is
         alu_input.mult_a <= mult_a;
         alu_input.mult_b <= mult_b;
 
-        result := alu_out.multiplier_result;
         alu_input.multiplication_is_requested <= true;
         if alu_out.multiplier_is_ready then
             alu_input.multiplication_is_requested <= false;
@@ -115,6 +112,11 @@ package body multiplier_pkg is
     end get_result;
 ------------------------------------------------------------------------
 end package body multiplier_pkg;
+------------------------------------------------------------------------
+    -- signal multiplier_clocks   : multiplier_clock_group;
+    -- signal multiplier_data_in  : multiplier_data_input_group;
+    -- signal multiplier_data_out :  multiplier_data_output_group;
+------------------------------------------------------------------------
 -- impure interface functions for multiplier-----
 -- impure function "*" (left, right : int18) return sign36
 -- is
@@ -124,3 +126,10 @@ end package body multiplier_pkg;
 --     return result;
 -- end "*";
 ------------------------------------------------------------------------
+-- multiplier_clocks.dsp_clock <= simulator_clock;
+-- u_multiplier : multiplier
+--     port map(
+--         multiplier_clocks, 
+--         multiplier_data_in,
+--         multiplier_data_out 
+--     );

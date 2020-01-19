@@ -64,10 +64,10 @@ begin
 
     test_multiplier : process(simulator_clock, rstn)
 
-        constant b1 : int18 := 7800;
-        constant a1 : int18 := 11e3;
+        constant b1 : int18 := 2500;
+        constant a1 : int18 := 22e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := -10e3;
+        constant uin : int18 := 10e3;
         variable mem1, mem2, y : int18;
         variable a, b: int18;
         variable mpy_result : sign36;
@@ -79,7 +79,7 @@ begin
         is
             variable result : sign36;
         begin
-            alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out);
+            alu_mpy(left, right,multiplier_data_in, multiplier_data_out);
             return get_result(multiplier_data_out,radix);
         end "*";
         ------------------------------------------------------------------------

@@ -71,6 +71,7 @@ source ../list_of_sources.tcl
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/$opts(card_version)_clocks/main_pll.qip
+	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/multiplier/multiplier_18x18.qip
 
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_specifics.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/cyclone_10lp/cl10_pll_wrapper.vhd

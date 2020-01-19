@@ -41,10 +41,14 @@ architecture rtl of component_interconnect is
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
 
+    signal multiplier_clocks   : multiplier_clock_group;
+    signal multiplier_data_in  : multiplier_data_input_group;
+    signal multiplier_data_out :  multiplier_data_output_group;
+
 begin
 ------------------------------------------------------------------------
-    si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
-    si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
+    -- si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
+    -- si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
 ------------------------------------------------------------------------
     test_adc : process(system_clocks.core_clock)
         variable adc_test_counter : integer;
@@ -83,6 +87,66 @@ begin
         end if; --rising_edge
     end process test_adc;	
 
+    test_multiplier : process(system_clocks.core_clock)
+        constant b1 : int18 := 32768;
+        constant a1 : int18 := 15;
+        constant b0 : int18 := 2**15-a1-b1;
+        constant uin : int18 := 7819;
+        constant radix : integer := 15;
+        variable mem, mem1, y : int18;
+        variable process_counter : int18;
+        ------------------------------------------------------------------------
+        impure function "*" (left, right : int18) return int18
+        is
+        begin
+            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
+            return get_result(multiplier_data_out,radix);
+        end "*";
+        ------------------------------------------------------------------------
+    begin
+        if rising_edge(system_clocks.core_clock) then
+            if system_clocks.pll_lock = '0' then
+            -- reset state
+                process_counter := 0;
+                multiplier_data_in.mult_a <= 0;
+                multiplier_data_in.mult_b <= 0;
+                multiplier_data_in.multiplication_is_requested <= false;
+                mem := 0;
+                mem1 := 0;
+            else
+                si_uart_start_event <= '0';
+                multiplier_data_in.multiplication_is_requested <= false;
+                case process_counter is
+                    WHEN 0 => 
+                        if onboard_ad_control_data_out.ada_data_is_ready  then
+                                increment(process_counter);
+                                y := b1 * 14;
+                        end if;
+                    WHEN 1 => 
+                        y := b1 * 15;
+                            increment(process_counter);
+                    WHEN 2 => 
+                        y := b1 * 16;
+                        increment(process_counter);
+                    WHEN 3 => 
+                        y := b1 * 17;
+                        increment(process_counter);
+                    WHEN 4 => 
+                        y := b1 * 18;
+                        if multiplier_is_ready(multiplier_data_out) then
+                            si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
+                            si_uart_start_event <= '1';
+                            increment(process_counter);
+                        end if;
+                    WHEN 5 => 
+                        y := b1 * 19;
+                            process_counter := 0;
+                    when others =>
+                end CASE;
+            end if; -- rstn
+        end if; --rising_edge
+    end process test_multiplier;	
+
 
 ------------------------------------------------------------------------  
 -- onboard_ad_control_data_in <= component_interconnect_data_in.onboard_ad_control_data_in;
@@ -114,4 +178,11 @@ begin
 	    so16_uart_rx_data
 	);
 ------------------------------------------------------------------------
+    multiplier_clocks.dsp_clock <= system_clocks.core_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
 end rtl;
