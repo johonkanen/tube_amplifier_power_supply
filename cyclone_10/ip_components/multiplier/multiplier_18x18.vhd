@@ -79,7 +79,7 @@ BEGIN
 
 	lpm_mult_component : lpm_mult
 	GENERIC MAP (
-		lpm_hint => "MAXIMIZE_SPEED=9",
+		lpm_hint => "MAXIMIZE_SPEED=5",
 		lpm_pipeline => 2,
 		lpm_representation => "SIGNED",
 		lpm_type => "LPM_MULT",
@@ -117,9 +117,9 @@ END SYN;
 -- Retrieval info: PRIVATE: aclr NUMERIC "0"
 -- Retrieval info: PRIVATE: clken NUMERIC "0"
 -- Retrieval info: PRIVATE: new_diagram STRING "1"
--- Retrieval info: PRIVATE: optimize NUMERIC "1"
+-- Retrieval info: PRIVATE: optimize NUMERIC "0"
 -- Retrieval info: LIBRARY: lpm lpm.lpm_components.all
--- Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=9"
+-- Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=5"
 -- Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "2"
 -- Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
 -- Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"

@@ -36,12 +36,12 @@ architecture rtl of multiplier is
 
 begin
 
-    -- dataa <= std_logic_vector(to_signed(multiplier_data_in.mult_a,18));
-    -- datab <= std_logic_vector(to_signed(multiplier_data_in.mult_b,18));
-    -- multiplier_data_out.multiplier_result <= signed(result);
+    dataa <= std_logic_vector(to_signed(multiplier_data_in.mult_a,18));
+    datab <= std_logic_vector(to_signed(multiplier_data_in.mult_b,18));
+    multiplier_data_out.multiplier_result <= signed(result);
 
-    -- u_multiplier_18x18 : multiplier_18x18
-    -- port map(multiplier_clocks.dsp_clock, dataa,datab,result);
+    u_multiplier_18x18 : multiplier_18x18
+    port map(multiplier_clocks.dsp_clock, dataa,datab,result);
 
     test_multiplier : process(multiplier_clocks.dsp_clock)
 
@@ -52,8 +52,8 @@ begin
             -- mult_a(0) <= to_signed(multiplier_data_in.mult_a,18);
             -- mult_b(0) <= to_signed(multiplier_data_in.mult_b,18);
             -- mult_result(0) <= mult_a(0) * mult_b(0);
-            -- multiplier_data_out.multiplier_result <= mult_result(0);
-            multiplier_data_out.multiplier_result <= to_signed(multiplier_data_in.mult_a,18) * to_signed(multiplier_data_in.mult_b,18);
+            -- -- multiplier_data_out.multiplier_result <= mult_result(0);
+            -- multiplier_data_out.multiplier_result <= mult_a(0) * mult_b(0);
 
             multiplier_data_out.multiplier_is_ready <= false;
             CASE multiplier_counter is
@@ -64,6 +64,8 @@ begin
                 WHEN 1 => 
                     multiplier_counter := multiplier_counter + 1;
                 WHEN 2 => 
+                    multiplier_counter := multiplier_counter + 1;
+                WHEN 3 => 
                     multiplier_data_out.multiplier_is_ready <= true;
                     multiplier_counter := 0;
                 WHEN others =>

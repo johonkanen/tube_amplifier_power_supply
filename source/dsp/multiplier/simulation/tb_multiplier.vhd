@@ -54,13 +54,6 @@ begin
         wait;
     end process;
 
-    multiplier_clocks.dsp_clock <= simulator_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
 
     test_multiplier : process(simulator_clock, rstn)
 
@@ -104,7 +97,7 @@ begin
 
             radix := 15;
             case process_counter is
-                WHEN 0 => 
+               WHEN 0 => 
                     y := uin * b0 + mem1;
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
@@ -129,5 +122,13 @@ begin
 
         end if; -- rstn
     end process test_multiplier;	
+
+    multiplier_clocks.dsp_clock <= simulator_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
 
 end sim;

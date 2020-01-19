@@ -1,3 +1,4 @@
+ghdl -a --ieee=synopsys ..\sim_multiplier18x18.vhd
 ghdl -a --ieee=synopsys ..\multiplier_pkg.vhd
 ghdl -a --ieee=synopsys ..\multiplier.vhd
 ghdl -a --ieee=synopsys tb_multiplier.vhd

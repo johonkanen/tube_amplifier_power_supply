@@ -109,8 +109,10 @@ begin
                         increment(process_counter);
                     end if;
                 when 4 =>
-                    mem1 := mem1 + get_result(multiplier_data_out,radix);
-                    process_counter := 0;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        mem1 := mem1 + get_result(multiplier_data_out,radix);
+                        process_counter := 0;
+                    end if;
                 when others =>
                 end CASE;
             end if; -- rstn
