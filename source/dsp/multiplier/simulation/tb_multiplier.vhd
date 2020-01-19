@@ -102,9 +102,7 @@ begin
             testcounter <= process_counter;
             mpy_test <=multiplier_data_out.multiplier_result; 
 
-            multiplier_data_in.multiplication_is_requested <= false;
-
-            radix := -1;
+            radix := 15;
             case process_counter is
                 WHEN 0 => 
                     y := uin * b0 + mem1;
