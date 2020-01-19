@@ -88,13 +88,14 @@ begin
     end process test_adc;	
 
     test_multiplier : process(system_clocks.core_clock)
-        constant b1 : int18 := 32768;
-        constant a1 : int18 := 15;
+        constant b1 : int18 := 2500;
+        constant a1 : int18 := 22e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := 7819;
+        constant uin : int18 := 12345;
         constant radix : integer := 15;
         variable mem, mem1, y : int18;
         variable process_counter : int18;
+        variable delay_counter : integer;
         ------------------------------------------------------------------------
         impure function "*" (left, right : int18) return int18
         is
@@ -113,35 +114,39 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
                 mem := 0;
                 mem1 := 0;
+                delay_counter := 0;
             else
+                increment(delay_counter);
+                if delay_counter = 1280 then
+                    delay_counter := 0;
+                end if;
                 si_uart_start_event <= '0';
                 multiplier_data_in.multiplication_is_requested <= false;
-                case process_counter is
-                    WHEN 0 => 
-                        if onboard_ad_control_data_out.ada_data_is_ready  then
-                                increment(process_counter);
-                                y := b1 * 14;
-                        end if;
-                    WHEN 1 => 
-                        y := b1 * 15;
+            case process_counter is
+                WHEN 0 => 
+                    if delay_counter = 0 then
                             increment(process_counter);
-                    WHEN 2 => 
-                        y := b1 * 16;
+                    end if;
+               WHEN 1 => 
+                    y := uin * b0 + mem1;
+                    if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
-                    WHEN 3 => 
-                        y := b1 * 17;
+                        si_uart_start_event <= '1';
+                        si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
+                    end if;
+                WHEN 2 => 
+                    mem1 := b1 * uin;
+                    increment(process_counter);
+                WHEN 3 => 
+                    mem1 := a1 * y;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        mem1 := get_result(multiplier_data_out,radix);
                         increment(process_counter);
-                    WHEN 4 => 
-                        y := b1 * 18;
-                        if multiplier_is_ready(multiplier_data_out) then
-                            si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
-                            si_uart_start_event <= '1';
-                            increment(process_counter);
-                        end if;
-                    WHEN 5 => 
-                        y := b1 * 19;
-                            process_counter := 0;
-                    when others =>
+                    end if;
+                when 4 =>
+                    mem1 := mem1 + get_result(multiplier_data_out,radix);
+                    process_counter := 0;
+                when others =>
                 end CASE;
             end if; -- rstn
         end if; --rising_edge
