@@ -5,6 +5,8 @@
 spartan_7/output/
 spartan_6/output/
 ecp5_compile/
+*.vcd
+*.cf
 *.Xil
 *.mcs
 *.prm
