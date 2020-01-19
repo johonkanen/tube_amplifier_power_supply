@@ -28,7 +28,6 @@ architecture sim of tb_multiplier is
     signal testcounter : integer;
     signal signal_counter : int18;
     signal jihuu_y : int18;
-    signal if1_thenmultisrunning : int18;
 
 begin
 
@@ -74,13 +73,14 @@ begin
         variable mpy_result : sign36;
         variable process_counter : int18;
         variable plaaplaa :int18;
+        variable radix : int18;
         ------------------------------------------------------------------------
-        impure function "*" (left, right : int18) return sign36
+        impure function "*" (left, right : int18) return int18
         is
             variable result : sign36;
         begin
             alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out);
-            return result;
+            return get_result(multiplier_data_out,radix);
         end "*";
         ------------------------------------------------------------------------
     begin
@@ -95,6 +95,7 @@ begin
             signal_counter <= process_counter;
             process_counter := 0;
             jihuu_y <= 0;
+            radix := 0;
 
         elsif rising_edge(simulator_clock) then
             signal_counter <= process_counter;
@@ -103,36 +104,34 @@ begin
 
             multiplier_data_in.multiplication_is_requested <= false;
 
-            if multiplier_is_ready(multiplier_data_out) then
-                if1_thenmultisrunning <= 1;
-            else
-                if1_thenmultisrunning <= 0;
-            end if;
-
             case process_counter is
                 WHEN 0 => 
-                    mpy_result := 2**15 * 15;
+                    radix := 0;
+                    y := 2**16 * 15;
                     if multiplier_is_ready(multiplier_data_out) then
-                        jihuu_y <= get_result(multiplier_data_out,0);
                         increment(process_counter);
+                        jihuu_y <= y;
                     end if;
                 WHEN 1 => 
-                    mpy_result := 2**15 * 16;
+                    radix := 0;
+                    y := 2**16 * 16;
                     if multiplier_is_ready(multiplier_data_out) then
-                        jihuu_y <= get_result(multiplier_data_out,0);
                         increment(process_counter);
+                        jihuu_y <= y;
                     end if;
                 WHEN 2 => 
-                    mpy_result := 2**15 * 17;
+                    radix := 0;
+                    y := 2**16 * 17;
                     if multiplier_is_ready(multiplier_data_out) then
-                        jihuu_y <= get_result(multiplier_data_out,0);
                         increment(process_counter);
+                        jihuu_y <= y;
                     end if;
                 when 3 =>
-                    mpy_result := 2**15 * 18;
+                    radix := 0;
+                    y := 2**16 * 18;
                     if multiplier_is_ready(multiplier_data_out) then
-                        jihuu_y <= get_result(multiplier_data_out,0);
                         increment(process_counter);
+                        jihuu_y <= y;
                     end if;
                 when others =>
             end CASE;

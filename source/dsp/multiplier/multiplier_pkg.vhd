@@ -110,7 +110,17 @@ package body multiplier_pkg is
     return int18
     is
     begin
-        return to_integer(mpy_out.multiplier_result(33+shift_value downto 16 + shift_value)) + mpy_out.multiplier_result(15+shift_value);
+        return to_integer(mpy_out.multiplier_result(33+shift_value downto 16 + shift_value)) 
+                        + mpy_out.multiplier_result(15+shift_value);
     end get_result;
 ------------------------------------------------------------------------
 end package body multiplier_pkg;
+-- impure interface functions for multiplier-----
+-- impure function "*" (left, right : int18) return sign36
+-- is
+--     variable result : sign36;
+-- begin
+--     alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out);
+--     return result;
+-- end "*";
+------------------------------------------------------------------------
