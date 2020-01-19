@@ -19,13 +19,16 @@ architecture sim of tb_multiplier is
     signal simulator_clock : std_logic;
     constant clock_per : time := 1 ns;
     constant clock_half_per : time := 0.5 ns;
-    constant simtime_in_clocks : integer := 50;
+    constant simtime_in_clocks : integer := 200;
 
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
     signal mpy_test : sign36;
     signal testcounter : integer;
+    signal signal_counter : int18;
+    signal jihuu_y : int18;
+    signal if1_thenmultisrunning : int18;
 
 begin
 
@@ -62,15 +65,21 @@ begin
 
     test_multiplier : process(simulator_clock, rstn)
 
+        constant b0 : int18 := 9e3;
+        constant a0 : int18 := 20e3;
+        constant b1 : int18 := 2**15-1-b0-a0;
+        constant uin : int18 := 15384;
+        variable mem1, y : int18;
         variable a, b: int18;
         variable mpy_result : sign36;
-        variable process_counter : integer;
+        variable process_counter : int18;
+        variable plaaplaa :int18;
         ------------------------------------------------------------------------
         impure function "*" (left, right : int18) return sign36
         is
             variable result : sign36;
         begin
-            alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out, process_counter);
+            alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out);
             return result;
         end "*";
         ------------------------------------------------------------------------
@@ -81,11 +90,52 @@ begin
             b := 16;
             mpy_test <= (others => '0');
             process_counter := 0;
+            mem1 := 0;
+            y := 0;
+            signal_counter <= process_counter;
+            process_counter := 0;
+            jihuu_y <= 0;
 
         elsif rising_edge(simulator_clock) then
-            mpy_result := a * b;
-            mpy_test <=multiplier_data_out.multiplier_result; 
+            signal_counter <= process_counter;
             testcounter <= process_counter;
+            mpy_test <=multiplier_data_out.multiplier_result; 
+
+            multiplier_data_in.multiplication_is_requested <= false;
+
+            if multiplier_is_ready(multiplier_data_out) then
+                if1_thenmultisrunning <= 1;
+            else
+                if1_thenmultisrunning <= 0;
+            end if;
+
+            case process_counter is
+                WHEN 0 => 
+                    mpy_result := 2**15 * 15;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        jihuu_y <= get_result(multiplier_data_out,0);
+                        increment(process_counter);
+                    end if;
+                WHEN 1 => 
+                    mpy_result := 2**15 * 16;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        jihuu_y <= get_result(multiplier_data_out,0);
+                        increment(process_counter);
+                    end if;
+                WHEN 2 => 
+                    mpy_result := 2**15 * 17;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        jihuu_y <= get_result(multiplier_data_out,0);
+                        increment(process_counter);
+                    end if;
+                when 3 =>
+                    mpy_result := 2**15 * 18;
+                    if multiplier_is_ready(multiplier_data_out) then
+                        jihuu_y <= get_result(multiplier_data_out,0);
+                        increment(process_counter);
+                    end if;
+                when others =>
+            end CASE;
 
         end if; -- rstn
     end process test_multiplier;	

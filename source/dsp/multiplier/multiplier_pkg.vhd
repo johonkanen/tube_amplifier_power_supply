@@ -42,22 +42,28 @@ package multiplier_pkg is
         mult_b : in int18;
         variable result : out sign36;
         signal alu_input : out multiplier_data_input_group;
-        signal alu_out : in multiplier_data_output_group;
-        variable process_counter : inout integer
+        signal alu_out : in multiplier_data_output_group
     );
---------------------------------------------------
-end package multiplier_pkg;
 ------------------------------------------------------------------------
-package body multiplier_pkg is
+    function get_result ( mpy_out : multiplier_data_output_group; shift_value : integer)
+    return int18;
+------------------------------------------------------------------------
+    function multiplier_is_ready ( multiplier_in : multiplier_data_output_group)
+    return boolean;
+------------------------------------------------------------------------
+    procedure increment ( variable counter : inout int18);
+------------------------------------------------------------------------
+end package multiplier_pkg;
 
+package body multiplier_pkg is
+------------------------------------------------------------------------
     procedure alu_mpy
     (
         mult_a : in int18;
         mult_b : in int18;
         variable result : out sign36;
         signal alu_input : out multiplier_data_input_group;
-        signal alu_out : in multiplier_data_output_group;
-        variable process_counter : inout integer
+        signal alu_out : in multiplier_data_output_group
     ) is
     begin
         alu_input.mult_a <= mult_a;
@@ -66,8 +72,45 @@ package body multiplier_pkg is
         result := alu_out.multiplier_result;
         alu_input.multiplication_is_requested <= true;
         if alu_out.multiplier_is_ready then
-            process_counter := process_counter + 1;
             alu_input.multiplication_is_requested <= false;
         end if;
     end alu_mpy;
+------------------------------------------------------------------------
+    function multiplier_is_ready
+    (
+        multiplier_in : multiplier_data_output_group
+    )
+    return boolean
+    is
+    begin
+        return multiplier_in.multiplier_is_ready;
+    end multiplier_is_ready;
+------------------------------------------------------------------------
+    procedure increment ( variable counter : inout int18) is
+    begin
+        counter := counter + 1;
+    end increment;
+------------------------------------------------------------------------
+    function "+" ( left : integer; right : std_logic)
+    return integer
+    is
+    begin
+        if right = '1' then
+            return left + 1;
+        else
+            return left + 0;
+        end if;
+    end "+";
+------------------------------------------------------------------------
+    function get_result
+    (
+        mpy_out : multiplier_data_output_group;
+        shift_value : integer
+    )
+    return int18
+    is
+    begin
+        return to_integer(mpy_out.multiplier_result(33+shift_value downto 16 + shift_value)) + mpy_out.multiplier_result(15+shift_value);
+    end get_result;
+------------------------------------------------------------------------
 end package body multiplier_pkg;
