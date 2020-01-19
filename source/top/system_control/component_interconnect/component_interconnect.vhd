@@ -7,6 +7,7 @@ library work;
     use work.led_driver_pkg.all;
     use work.uart_pkg.all;
     use work.multiplier_pkg.all;
+    use work.power_supply_control_pkg.all;
     -- use work.sw_supply_ctrl_pkg.all;
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
@@ -25,13 +26,6 @@ end entity component_interconnect;
 
 architecture rtl of component_interconnect is
 
-    -- signal sw_supply_control_clocks : sw_supply_control_clock_group;
-    -- signal sw_supply_control_data_in : sw_supply_control_data_input_group;
-    -- signal sw_supply_control_data_out : sw_supply_control_data_output_group;
-
-    signal core_clk            : std_logic;
-    signal po_uart_tx_serial   :  std_logic;
-    signal pi_uart_rx_serial   : std_logic;
     signal si_uart_start_event : std_logic;
     signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
     signal so_uart_ready_event :  std_logic;
@@ -45,53 +39,21 @@ architecture rtl of component_interconnect is
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
 
+    signal power_supply_control_clocks   : power_supply_control_clock_group;
+    signal power_supply_control_FPGA_out :  power_supply_control_FPGA_output_group;
+    signal power_supply_control_data_in  : power_supply_control_data_input_group;
+    signal power_supply_control_data_out :  power_supply_control_data_output_group;
 begin
 ------------------------------------------------------------------------
     -- si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
     -- si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
 ------------------------------------------------------------------------
-    test_adc : process(system_clocks.core_clock)
-        variable adc_test_counter : integer;
-    begin
-        if rising_edge(system_clocks.core_clock) then
-            if system_clocks.pll_lock = '0' then
-            -- reset state
-                adc_test_counter := 0;
-                onboard_ad_control_data_in <=(false, 0, false, 0);
-            else
-                adc_test_counter := adc_test_counter + 1;
-                if adc_test_counter = 7680 then
-                    adc_test_counter := 0;
-                end if;
-
-                onboard_ad_control_data_in.ada_start_request <= false;
-                onboard_ad_control_data_in.adb_start_request <= false;
-                CASE adc_test_counter is
-                    WHEN 0 =>
-                        onboard_ad_control_data_in <= trigger_adc(1);
-                    WHEN 948 =>
-                        onboard_ad_control_data_in <= trigger_adc(2);
-                    WHEN 1896 =>
-                        onboard_ad_control_data_in <= trigger_adc(3);
-                    WHEN 3792 =>
-                        onboard_ad_control_data_in <= trigger_adc(4);
-                    WHEN 4740 =>
-                        onboard_ad_control_data_in <= trigger_adc(5);
-                    WHEN 5688 =>
-                        onboard_ad_control_data_in <= trigger_adc(6);
-                    WHEN 6636 =>
-                        onboard_ad_control_data_in <= trigger_adc(0);
-                    WHEN others =>
-                end CASE;
-            end if; -- rstn
-        end if; --rising_edge
-    end process test_adc;	
 
     test_multiplier : process(system_clocks.core_clock)
         constant b1 : int18 := 2500;
         constant a1 : int18 := 22e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := 44252;
+        variable uin : int18;
         constant radix : integer := 15;
         variable mem, mem1, y : int18;
         variable process_counter : int18;
@@ -112,9 +74,9 @@ begin
                 multiplier_data_in.mult_a <= 0;
                 multiplier_data_in.mult_b <= 0;
                 multiplier_data_in.multiplication_is_requested <= false;
-                mem := 0;
                 mem1 := 0;
                 delay_counter := 0;
+                uin := 0;
             else
                 increment(delay_counter);
                 if delay_counter = 1280 then
@@ -124,8 +86,11 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if delay_counter = 0 then
-                            increment(process_counter);
+                    if onboard_ad_control_data_out.ada_data_is_ready and
+                    onboard_ad_control_data_out.ada_channel = 
+                    to_integer(unsigned(so16_uart_rx_data)) then
+                        increment(process_counter);
+                        uin := onboard_ad_control_data_out.ada_conversion_data;
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;
@@ -171,7 +136,7 @@ begin
     port map(system_clocks.core_clock, component_interconnect_FPGA_out.po3_led1, component_interconnect_FPGA_out.po3_led2, component_interconnect_FPGA_out.po3_led3, component_interconnect_data_in.led1_color, component_interconnect_data_in.led2_color, component_interconnect_data_in.led3_color);
 ------------------------------------------------------------------------
     u_uart_event_ctrl : uart_event_ctrl
-	generic map(24,2,2)
+	generic map(25,2,2)
     port map(
 	    system_clocks.core_clock,
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
@@ -190,4 +155,15 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
+
+------------------------------------------------------------------------
+        -- HAS NOT BEEN ROUTED OUT
+        u_power_supply_control : power_supply_control
+        port map (
+            power_supply_control_clocks,
+            power_supply_control_FPGA_out,
+            power_supply_control_data_in,
+            power_supply_control_data_out
+        );
+
 end rtl;

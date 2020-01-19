@@ -1,7 +1,0 @@
-v 4
-file . "spi3w_testbench.vhd" "eda6a970944331a2383587db1f3784dc063bc2ab" "20190705085416.962":
-  entity spi3w_testbench at 1( 0) + 0 on 13;
-  architecture testi of spi3w_testbench at 12( 271) + 0 on 14;
-file . "..\ext_ad_spi3w.vhd" "cf607e98abb6cb01f32eb805bb44224f1aa40a3a" "20190705085416.860":
-  entity ext_ad_spi3w at 1( 0) + 0 on 11;
-  architecture synth of ext_ad_spi3w at 35( 918) + 0 on 12;

@@ -19,7 +19,7 @@ ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/com
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
 rem
-rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/sw_supply_ctrl_pkg.vhd
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/uart/uart_pkg.vhd
 rem
 rem ghdl -a --ieee=synopsys source/top/system_control/led_driver/led_driver_pkg.vhd
