@@ -158,6 +158,9 @@ begin
 
 ------------------------------------------------------------------------
         -- HAS NOT BEEN ROUTED OUT
+        power_supply_control_clocks <= (core_clock => system_clocks.core_clock, modulator_clock =>system_clocks.modulator_clock, pll_lock => system_clocks.pll_lock);
+        onboard_ad_control_data_in <= power_supply_control_data_out.onboard_ad_control_data_in;
+        power_supply_control_data_in.onboard_ad_control_data_out <= onboard_ad_control_data_out;
         u_power_supply_control : power_supply_control
         port map (
             power_supply_control_clocks,

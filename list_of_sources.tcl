@@ -23,6 +23,10 @@ proc read_sources {source_folder} \
         /top/system_control/led_driver/led_driver_pkg.vhd 
         /top/system_control/led_driver/led_driver.vhd 
 
+
+        /top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd
+        /top/system_control/component_interconnect/power_supply_control/power_supply_control.vhd
+
         /top/system_control/component_interconnect/component_interconnect_pkg.vhd 
         /top/system_control/component_interconnect/component_interconnect.vhd 
 
