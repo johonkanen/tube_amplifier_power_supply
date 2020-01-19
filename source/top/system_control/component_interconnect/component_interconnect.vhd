@@ -45,10 +45,6 @@ architecture rtl of component_interconnect is
     signal power_supply_control_data_out :  power_supply_control_data_output_group;
 begin
 ------------------------------------------------------------------------
-    -- si_uart_start_event <= '1' when onboard_ad_control_data_out.ada_data_is_ready and onboard_ad_control_data_out.ada_channel = to_integer(unsigned(so16_uart_rx_data)) else '0';
-    -- si16_uart_tx_data <= std_logic_vector(to_unsigned(onboard_ad_control_data_out.ada_conversion_data,16));
-------------------------------------------------------------------------
-
     test_multiplier : process(system_clocks.core_clock)
         constant b1 : int18 := 2500;
         constant a1 : int18 := 22e3;
@@ -86,11 +82,11 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if onboard_ad_control_data_out.ada_data_is_ready and
-                    onboard_ad_control_data_out.ada_channel = 
-                    to_integer(unsigned(so16_uart_rx_data)) then
+                    if adc_is_ready(onboard_ad_control_data_out,
+                       to_integer(unsigned(so16_uart_rx_data))) then
+
                         increment(process_counter);
-                        uin := onboard_ad_control_data_out.ada_conversion_data;
+                        uin := get_ada_measurement(onboard_ad_control_data_out);
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;
@@ -160,7 +156,10 @@ begin
 
 ------------------------------------------------------------------------
         -- HAS NOT BEEN ROUTED OUT
-        power_supply_control_clocks <= (core_clock => system_clocks.core_clock, modulator_clock =>system_clocks.modulator_clock, pll_lock => system_clocks.pll_lock);
+        power_supply_control_clocks <= (core_clock => system_clocks.core_clock,
+                                        modulator_clock =>system_clocks.modulator_clock,
+                                        pll_lock => system_clocks.pll_lock);
+
         onboard_ad_control_data_in <= power_supply_control_data_out.onboard_ad_control_data_in;
         power_supply_control_data_in.onboard_ad_control_data_out <= onboard_ad_control_data_out;
         u_power_supply_control : power_supply_control
@@ -170,5 +169,5 @@ begin
             power_supply_control_data_in,
             power_supply_control_data_out
         );
-
+------------------------------------------------------------------------
 end rtl;

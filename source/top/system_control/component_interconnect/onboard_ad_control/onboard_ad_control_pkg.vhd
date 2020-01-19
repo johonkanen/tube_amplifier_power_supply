@@ -55,11 +55,19 @@ package onboard_ad_control_pkg is
     end component onboard_ad_control;
 
 ------------------------------------------------------------------------
-    function trigger_adc ( next_ad_channel : integer) return onboard_ad_control_data_input_group;
+    function trigger_adc ( next_ad_channel : integer) 
+            return onboard_ad_control_data_input_group;
+------------------------------------------------------------------------
+    function adc_is_ready ( adc_data : onboard_ad_control_data_output_group; adc_channel : integer)
+            return boolean;
+------------------------------------------------------------------------
+    function get_ada_measurement ( adc_data : onboard_ad_control_data_output_group) 
+            return integer;
 ------------------------------------------------------------------------
 end package onboard_ad_control_pkg;
 
 package body onboard_ad_control_pkg is
+------------------------------------------------------------------------
     function trigger_adc
     (
         next_ad_channel : integer
@@ -70,5 +78,26 @@ package body onboard_ad_control_pkg is
     begin
         return (true, next_ad_channel, true, next_ad_channel);
     end trigger_adc;
-
+------------------------------------------------------------------------
+    function adc_is_ready
+    (
+        adc_data : onboard_ad_control_data_output_group;
+        adc_channel : integer
+    )
+    return boolean
+    is
+    begin
+        return adc_data.ada_data_is_ready and adc_data.ada_channel = adc_channel;
+    end adc_is_ready;
+------------------------------------------------------------------------
+        function get_ada_measurement
+        (
+            adc_data : onboard_ad_control_data_output_group
+        )
+        return integer
+        is
+        begin
+            return adc_data.ada_conversion_data;
+        end get_ada_measurement;
+        ------------------------------------------------------------------------
 end package body onboard_ad_control_pkg;

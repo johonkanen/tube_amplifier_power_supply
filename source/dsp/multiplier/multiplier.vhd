@@ -52,7 +52,7 @@ begin
             -- mult_a(0) <= to_signed(multiplier_data_in.mult_a,18);
             -- mult_b(0) <= to_signed(multiplier_data_in.mult_b,18);
             -- mult_result(0) <= mult_a(0) * mult_b(0);
-            -- -- multiplier_data_out.multiplier_result <= mult_result(0);
+            -- multiplier_data_out.multiplier_result <= mult_result(0);
             -- multiplier_data_out.multiplier_result <= mult_a(0) * mult_b(0);
 
             multiplier_data_out.multiplier_is_ready <= false;
