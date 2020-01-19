@@ -91,7 +91,7 @@ begin
         constant b1 : int18 := 2500;
         constant a1 : int18 := 22e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := 12345;
+        constant uin : int18 := 44252;
         constant radix : integer := 15;
         variable mem, mem1, y : int18;
         variable process_counter : int18;
