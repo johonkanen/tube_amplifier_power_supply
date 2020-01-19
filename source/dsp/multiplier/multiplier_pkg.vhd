@@ -111,7 +111,7 @@ package body multiplier_pkg is
     is
     begin
         return to_integer(mpy_out.multiplier_result(radix + 17 downto radix)) 
-                        + mpy_out.multiplier_result(radix - 1);
+                        + mpy_out.multiplier_result(radix -1);
     end get_result;
 ------------------------------------------------------------------------
 end package body multiplier_pkg;
