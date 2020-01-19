@@ -64,11 +64,11 @@ begin
 
     test_multiplier : process(simulator_clock, rstn)
 
-        constant b0 : int18 := 9e3;
-        constant a0 : int18 := 20e3;
-        constant b1 : int18 := 2**15-1-b0-a0;
-        constant uin : int18 := 15384;
-        variable mem1, y : int18;
+        constant b1 : int18 := 3800;
+        constant a1 : int18 := 18e3;
+        constant b0 : int18 := 2**15-a1-b1;
+        constant uin : int18 := 10e3;
+        variable mem1, mem2, y : int18;
         variable a, b: int18;
         variable mpy_result : sign36;
         variable process_counter : int18;
@@ -104,35 +104,26 @@ begin
 
             multiplier_data_in.multiplication_is_requested <= false;
 
+            radix := -1;
             case process_counter is
                 WHEN 0 => 
-                    radix := 0;
-                    y := 2**16 * 15;
+                    y := uin * b0 + mem1;
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                         jihuu_y <= y;
                     end if;
                 WHEN 1 => 
-                    radix := 0;
-                    y := 2**16 * 16;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        jihuu_y <= y;
-                    end if;
+                    mem1 := b1 * uin;
+                    increment(process_counter);
                 WHEN 2 => 
-                    radix := 0;
-                    y := 2**16 * 17;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        jihuu_y <= y;
-                    end if;
+                    mem1 := a1 * y;
+                    increment(process_counter);
                 when 3 =>
-                    radix := 0;
-                    y := 2**16 * 18;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        jihuu_y <= y;
-                    end if;
+                    mem1 := get_result(multiplier_data_out,radix);
+                    increment(process_counter);
+                when 4 =>
+                    mem1 := mem1 + get_result(multiplier_data_out,radix);
+                    process_counter := 0;
                 when others =>
             end CASE;
 

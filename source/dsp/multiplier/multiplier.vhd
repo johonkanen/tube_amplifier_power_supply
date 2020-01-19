@@ -41,8 +41,6 @@ begin
                         multiplier_counter := multiplier_counter + 1;
                     end if;
                 WHEN 1 => 
-                        multiplier_counter := multiplier_counter + 1;
-                WHEN 2 => 
                     multiplier_data_out.multiplier_is_ready <= true;
                     multiplier_counter := 0;
                 WHEN others =>
