@@ -20,6 +20,7 @@ ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/com
 ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
 rem
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
 
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
