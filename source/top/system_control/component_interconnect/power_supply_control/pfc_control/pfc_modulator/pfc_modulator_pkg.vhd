@@ -16,7 +16,7 @@ package pfc_modulator_pkg is
     
     type pfc_modulator_data_input_group is record
         duty : integer;
-        pfc_is_running : boolean;
+        pfc_is_enabled : boolean;
     end record;
     
     type pfc_modulator_data_output_group is record
@@ -33,6 +33,42 @@ package pfc_modulator_pkg is
             pfc_modulator_data_out : out pfc_modulator_data_output_group
         );
     end component pfc_modulator;
-        
-
+------------------------------------------------------------------------
+    procedure set_duty ( duty : in integer;
+        signal pfc_input : out pfc_modulator_data_input_group);
+------------------------------------------------------------------------         
+    procedure enable_pfc_modulator (
+        signal pfc_input : out pfc_modulator_data_input_group);
+------------------------------------------------------------------------         
+    procedure disable_pfc_modulator (
+        signal pfc_input : out pfc_modulator_data_input_group);
+------------------------------------------------------------------------         
 end package pfc_modulator_pkg;
+
+package body pfc_modulator_pkg is
+------------------------------------------------------------------------
+    procedure set_duty ( duty : in integer;
+        signal pfc_input : out pfc_modulator_data_input_group
+    )
+    is
+    begin
+        pfc_input.duty <= duty;
+    end set_duty;
+------------------------------------------------------------------------
+    procedure enable_pfc_modulator ( 
+        signal pfc_input : out pfc_modulator_data_input_group
+    ) is
+    begin
+        pfc_input.pfc_is_enabled <= true;
+    end enable_pfc_modulator;
+------------------------------------------------------------------------
+    procedure disable_pfc_modulator ( 
+        signal pfc_input : out pfc_modulator_data_input_group
+    ) is
+    begin
+        pfc_input.pfc_is_enabled <= false;
+    end disable_pfc_modulator;
+------------------------------------------------------------------------
+
+end package body pfc_modulator_pkg;
+
