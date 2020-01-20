@@ -20,7 +20,7 @@ package phase_modulator_pkg is
     end record;
     
     type phase_modulator_data_input_group is record
-        phase : std_logic;
+        phase : integer;
         dhb_is_enabled : boolean;
     end record;
     
@@ -36,6 +36,43 @@ package phase_modulator_pkg is
             phase_modulator_data_out : out phase_modulator_data_output_group
         );
     end component phase_modulator;
-        
+
+------------------------------------------------------------------------
+    procedure set_phase ( phase : in integer;
+        signal dhb_input : out phase_modulator_data_input_group);
+------------------------------------------------------------------------         
+    procedure enable_dhb_modulator (
+        signal dhb_input : out phase_modulator_data_input_group);
+------------------------------------------------------------------------         
+    procedure disable_dhb_modulator (
+        signal dhb_input : out phase_modulator_data_input_group);
+------------------------------------------------------------------------         
 
 end package phase_modulator_pkg;
+
+package body phase_modulator_pkg is
+------------------------------------------------------------------------
+    procedure set_phase ( phase : in integer;
+        signal dhb_input : out phase_modulator_data_input_group
+    )
+    is
+    begin
+        dhb_input.phase <= phase;
+    end set_phase;
+------------------------------------------------------------------------
+    procedure enable_dhb_modulator ( 
+        signal dhb_input : out phase_modulator_data_input_group
+    ) is
+    begin
+        dhb_input.dhb_is_enabled <= true;
+    end enable_dhb_modulator;
+------------------------------------------------------------------------
+    procedure disable_dhb_modulator ( 
+        signal dhb_input : out phase_modulator_data_input_group
+    ) is
+    begin
+        dhb_input.dhb_is_enabled <= false;
+    end disable_dhb_modulator;
+------------------------------------------------------------------------
+end package body phase_modulator_pkg;
+

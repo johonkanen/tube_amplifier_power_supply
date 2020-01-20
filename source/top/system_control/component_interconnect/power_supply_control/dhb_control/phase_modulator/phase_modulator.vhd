@@ -16,3 +16,11 @@ entity phase_modulator is
     );
 end entity phase_modulator;
 
+architecture rtl of phase_modulator is
+
+    
+
+begin
+
+
+end rtl;
