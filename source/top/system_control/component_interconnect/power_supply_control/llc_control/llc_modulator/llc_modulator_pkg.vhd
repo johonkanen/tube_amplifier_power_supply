@@ -3,11 +3,6 @@ library ieee;
     use ieee.numeric_std.all;
 
 package llc_modulator_pkg is
-    -- TODO, refactor half bridge to own module
-    type half_bridge is record
-        high_gate : std_logic;
-        low_gate : std_logic;
-    end record;
 
     type hb_llc_pwm is record
         pri_high : std_logic;
@@ -23,17 +18,12 @@ package llc_modulator_pkg is
     
     type llc_modulator_FPGA_output_group is record
         llc_gates : hb_llc_pwm;
-        -- use these refactored signals
-        primary : half_bridge;
-        secondary : half_bridge;
     end record;
     
     type llc_modulator_data_input_group is record
         period : integer;
         clock : std_logic;
         reset_n : std_logic;
-        -- refactored 
-        llc_is_enabled : boolean;
     end record;
     
     type llc_modulator_data_output_group is record
@@ -44,6 +34,7 @@ package llc_modulator_pkg is
         port (
             llc_modulator_clocks : in llc_modulator_clock_group;
     
+            -- llc_modulator_FPGA_in : in llc_modulator_FPGA_input_group;
             llc_modulator_FPGA_out : out llc_modulator_FPGA_output_group;
     
             llc_modulator_data_in : in llc_modulator_data_input_group;
