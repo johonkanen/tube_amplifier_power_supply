@@ -17,6 +17,7 @@ package pfc_modulator_pkg is
     type pfc_modulator_data_input_group is record
         duty : integer;
         pfc_is_enabled : boolean;
+        pfc_carrier : integer;
     end record;
     
     type pfc_modulator_data_output_group is record
@@ -69,6 +70,5 @@ package body pfc_modulator_pkg is
         pfc_input.pfc_is_enabled <= false;
     end disable_pfc_modulator;
 ------------------------------------------------------------------------
-
 end package body pfc_modulator_pkg;
 
