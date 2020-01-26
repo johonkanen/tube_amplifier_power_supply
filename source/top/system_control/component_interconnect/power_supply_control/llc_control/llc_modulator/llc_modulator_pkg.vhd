@@ -30,7 +30,6 @@ package llc_modulator_pkg is
     
     type llc_modulator_data_input_group is record
         period : integer;
-        clock : std_logic;
         reset_n : std_logic;
         -- refactored 
         llc_is_enabled : boolean;

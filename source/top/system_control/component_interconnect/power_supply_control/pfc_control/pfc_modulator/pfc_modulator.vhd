@@ -8,9 +8,7 @@ library work;
 entity pfc_modulator is
     port (
         pfc_modulator_clocks : in pfc_modulator_clock_group;
-
         pfc_modulator_FPGA_out : out pfc_modulator_FPGA_output_group;
-
         pfc_modulator_data_in : in pfc_modulator_data_input_group;
         pfc_modulator_data_out : out pfc_modulator_data_output_group
     );
@@ -21,13 +19,14 @@ architecture rtl of pfc_modulator is
 
     
     alias modulator_clock : std_logic is pfc_modulator_clocks.modulator_clock;
+    alias core_clock : std_logic is pfc_modulator_clocks.core_clock;
 
 begin
 
-    clock_crossing : process(modulator_clock)
+    clock_crossing : process(core_clock)
         
     begin
-        if rising_edge(modulator_clock) then
+        if rising_edge(core_clock) then
         end if; --rising_edge
     end process clock_crossing;	
 

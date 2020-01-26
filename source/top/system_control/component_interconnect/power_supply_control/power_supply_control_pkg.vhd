@@ -14,16 +14,14 @@ package power_supply_control_pkg is
     end record;
     
     type power_supply_control_FPGA_output_group is record
-        clock : std_logic;
+        pfc_control_FPGA_out : work.pfc_control_pkg.pfc_control_FPGA_output_group;
     end record;
     
     type power_supply_control_data_input_group is record
-        clock : std_logic;
         onboard_ad_control_data_out : onboard_ad_control_data_output_group;
     end record;
     
     type power_supply_control_data_output_group is record
-        clock : std_logic;
         onboard_ad_control_data_in : onboard_ad_control_data_input_group;
     end record;
     

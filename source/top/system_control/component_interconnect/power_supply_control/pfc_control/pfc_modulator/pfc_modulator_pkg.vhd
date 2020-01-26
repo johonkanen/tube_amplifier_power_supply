@@ -4,10 +4,6 @@ library ieee;
 
 package pfc_modulator_pkg is
 
-    type modulator_clock_signal_group is record
-        pfc_carrier : integer;
-    end record;
-
     type pfc_modulator_clock_group is record
         modulator_clock : std_logic;
         core_clock : std_logic;
@@ -22,7 +18,7 @@ package pfc_modulator_pkg is
         duty : integer;
         pfc_is_enabled : boolean;
         mains_voltage_measurement : integer;
-        modulator_clocked : modulator_clock_signal_group;
+        pfc_carrier : integer;
     end record;
     
     type pfc_modulator_data_output_group is record

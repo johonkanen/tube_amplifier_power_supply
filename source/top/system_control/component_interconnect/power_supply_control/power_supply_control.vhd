@@ -22,9 +22,11 @@ end entity power_supply_control;
 architecture rtl of power_supply_control is
 
     alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in;
+    signal carrier_reset : std_logic;
+    signal master_carrier : integer range 0 to 2**12;
 
 begin
-
+------------------------------------------------------------------------
     test_adc : process(power_supply_control_clocks.core_clock)
         variable adc_test_counter : integer;
     begin
@@ -61,5 +63,24 @@ begin
             end if; -- rstn
         end if; --rising_edge
     end process test_adc;	
+
+------------------------------------------------------------------------
+    carrier_generation : process(power_supply_control_clocks.modulator_clock)
+    -- free running carrier common for pfc and dhb controls
+        
+    begin
+        if rising_edge(power_supply_control_clocks.modulator_clock) then
+            if carrier_reset = '0' then
+            -- reset state
+                master_carrier <= 0;
+            else
+                master_carrier <= master_carrier + 1;
+                if master_carrier > 1896 then
+                    master_carrier <= 0;
+                end if;
+            end if; -- rstn
+        end if; --rising_edge
+    end process carrier_generation;	
+------------------------------------------------------------------------
 
 end rtl;
