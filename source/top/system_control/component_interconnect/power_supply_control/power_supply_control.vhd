@@ -82,7 +82,10 @@ begin
             if carrier_reset = '0' then
             -- reset state
                 master_carrier <= 0;
+                pfc_control_data_in.pfc_carrier <= 0;
             else
+                -- register carrier for pfc and dhb to shorten logic path
+                pfc_control_data_in.pfc_carrier <= master_carrier;
                 master_carrier <= master_carrier + 1;
                 if master_carrier > 1896 then
                     master_carrier <= 0;
@@ -91,7 +94,6 @@ begin
         end if; --rising_edge
     end process carrier_generation;	
 ------------------------------------------------------------------------
-
     pfc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
@@ -103,5 +105,6 @@ begin
             pfc_control_data_in, 
             pfc_control_data_out  
         );
+------------------------------------------------------------------------
 
 end rtl;
