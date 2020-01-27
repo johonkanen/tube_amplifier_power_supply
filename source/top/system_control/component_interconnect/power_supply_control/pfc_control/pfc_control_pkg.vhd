@@ -14,12 +14,13 @@ package pfc_control_pkg is
     end record;
     
     type pfc_control_FPGA_output_group is record
-        clock : std_logic;
+        pfc_modulator_FPGA_out : work.pfc_modulator_pkg.pfc_modulator_FPGA_output_group;
     end record;
     
     type pfc_control_data_input_group is record
         start_pfc : boolean;
         onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+        pfc_carrier : integer;
     end record;
     
     type pfc_control_data_output_group is record

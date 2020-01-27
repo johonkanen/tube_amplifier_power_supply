@@ -2,11 +2,12 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-library work;
-    use work.power_supply_control_pkg.all;
-
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
+
+library work;
+    use work.power_supply_control_pkg.all;
+    use work.pfc_control_pkg.all;
 
 entity power_supply_control is
     port (
@@ -22,8 +23,16 @@ end entity power_supply_control;
 architecture rtl of power_supply_control is
 
     alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in;
+
+    alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
+    alias core_clock : std_logic is power_supply_control_clocks.core_clock;
+    alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
     signal carrier_reset : std_logic;
     signal master_carrier : integer range 0 to 2**12;
+
+    signal pfc_control_clocks   : pfc_control_clock_group;
+    signal pfc_control_data_in  : pfc_control_data_input_group;
+    signal pfc_control_data_out : pfc_control_data_output_group;
 
 begin
 ------------------------------------------------------------------------
@@ -82,5 +91,17 @@ begin
         end if; --rising_edge
     end process carrier_generation;	
 ------------------------------------------------------------------------
+
+    pfc_control_clocks <= ( core_clock => core_clock,
+                            modulator_clock => modulator_clock,
+                            pll_lock => pll_lock);
+    u_pfc_control : pfc_control
+        port map
+        (
+            pfc_control_clocks, 
+            power_supply_control_FPGA_out.pfc_control_FPGA_out, 
+            pfc_control_data_in, 
+            pfc_control_data_out  
+        );
 
 end rtl;

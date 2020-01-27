@@ -28,9 +28,7 @@ package pfc_modulator_pkg is
     component pfc_modulator is
         port (
             pfc_modulator_clocks : in pfc_modulator_clock_group;
-    
             pfc_modulator_FPGA_out : out pfc_modulator_FPGA_output_group;
-    
             pfc_modulator_data_in : in pfc_modulator_data_input_group;
             pfc_modulator_data_out : out pfc_modulator_data_output_group
         );
