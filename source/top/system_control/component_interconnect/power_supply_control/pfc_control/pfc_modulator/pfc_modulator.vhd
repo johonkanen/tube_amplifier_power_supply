@@ -20,7 +20,6 @@ architecture rtl of pfc_modulator is
     
     alias modulator_clock : std_logic is pfc_modulator_clocks.modulator_clock;
     alias core_clock : std_logic is pfc_modulator_clocks.core_clock;
-    signal testi_carrier : integer;
 
 begin
 
@@ -36,7 +35,7 @@ begin
     begin
 
         if rising_edge(modulator_clock) then
-            if pfc_modulator_data_in.pfc_carrier < 937 then
+            if pfc_modulator_data_in.pfc_carrier < pfc_modulator_data_in.duty then
                 pfc_modulator_FPGA_out.ac1_switch <= '1';
                 pfc_modulator_FPGA_out.ac2_switch <= '1';
             else
@@ -48,4 +47,3 @@ begin
 
 
 end rtl;
-
