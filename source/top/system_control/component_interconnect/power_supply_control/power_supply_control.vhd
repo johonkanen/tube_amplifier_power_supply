@@ -27,7 +27,6 @@ architecture rtl of power_supply_control is
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
     alias core_clock : std_logic is power_supply_control_clocks.core_clock;
     alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
-    signal carrier_reset : std_logic;
     signal master_carrier : integer range 0 to 2**12;
 
     signal pfc_control_clocks   : pfc_control_clock_group;
@@ -35,6 +34,22 @@ architecture rtl of power_supply_control is
     signal pfc_control_data_out : pfc_control_data_output_group;
 
 begin
+
+------------------------------------------------------------------------
+    power_supply_sequencer : process(core_clock)
+        
+    begin
+        if rising_edge(core_clock) then
+            if pll_lock = '0' then
+            -- reset state
+                pfc_control_data_in.start_pfc <= false;
+
+            else
+                pfc_control_data_in.start_pfc <= true;
+            end if; -- rstn
+        end if; --rising_edge
+    end process power_supply_sequencer;	
+
 ------------------------------------------------------------------------
     test_adc : process(power_supply_control_clocks.core_clock)
         variable adc_test_counter : integer;
@@ -73,24 +88,18 @@ begin
         end if; --rising_edge
     end process test_adc;	
 
+    -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
     carrier_generation : process(power_supply_control_clocks.modulator_clock)
-    -- free running carrier common for pfc and dhb controls
         
     begin
         if rising_edge(power_supply_control_clocks.modulator_clock) then
-            if carrier_reset = '0' then
-            -- reset state
-                master_carrier <= 0;
-                pfc_control_data_in.pfc_carrier <= 0;
-            else
                 -- register carrier for pfc and dhb to shorten logic path
                 pfc_control_data_in.pfc_carrier <= master_carrier;
                 master_carrier <= master_carrier + 1;
                 if master_carrier > 1896 then
                     master_carrier <= 0;
                 end if;
-            end if; -- rstn
         end if; --rising_edge
     end process carrier_generation;	
 ------------------------------------------------------------------------

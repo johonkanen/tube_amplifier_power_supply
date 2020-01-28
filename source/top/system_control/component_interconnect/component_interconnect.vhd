@@ -40,7 +40,6 @@ architecture rtl of component_interconnect is
     signal multiplier_data_out :  multiplier_data_output_group;
 
     signal power_supply_control_clocks   : power_supply_control_clock_group;
-    signal power_supply_control_FPGA_out :  power_supply_control_FPGA_output_group;
     signal power_supply_control_data_in  : power_supply_control_data_input_group;
     signal power_supply_control_data_out :  power_supply_control_data_output_group;
 begin
@@ -165,7 +164,7 @@ begin
         u_power_supply_control : power_supply_control
         port map (
             power_supply_control_clocks,
-            power_supply_control_FPGA_out,
+            component_interconnect_FPGA_out.power_supply_control_FPGA_out,
             power_supply_control_data_in,
             power_supply_control_data_out
         );

@@ -28,6 +28,10 @@ proc place_fpga_pins_for_10CL010YU256I7G {} \
 	set_location_assignment PIN_R13 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[1]
 	set_location_assignment PIN_T12 -to system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.adb_mux[2]
 
+    set_location_assignment PIN_J15 -to system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.pfc_control_FPGA_out.pfc_modulator_FPGA_out.ac1_switch
+    set_location_assignment PIN_T13 -to system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.pfc_control_FPGA_out.pfc_modulator_FPGA_out.ac2_switch
+
+
 	set_location_assignment PIN_K15 -to system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial
 	set_location_assignment PIN_L15 -to system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial
 }

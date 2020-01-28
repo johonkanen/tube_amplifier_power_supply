@@ -27,7 +27,7 @@ package pfc_control_pkg is
         pfc_is_running : boolean;
         onboard_ad_control_data_in : onboard_ad_control_data_input_group;
     end record;
-    
+
     component pfc_control is
         port (
             pfc_control_clocks : in pfc_control_clock_group;
@@ -36,5 +36,36 @@ package pfc_control_pkg is
             pfc_control_data_out : out pfc_control_data_output_group
         );
     end component pfc_control;
-
+------------------------------------------------------------------------
+                -- pfc control interface
+------------------------------------------------------------------------
+    type pfc is record
+        pfc_control_data_in : pfc_control_data_input_group;
+        pfc_control_data_out : pfc_control_data_output_group;
+    end record;
+------------------------------------------------------------------------
+    procedure enable_pfc ( signal pfc_signals : out pfc);
+------------------------------------------------------------------------
+    procedure disable_pfc ( signal pfc_signals : out pfc);
+------------------------------------------------------------------------
 end package pfc_control_pkg;
+
+package body pfc_control_pkg is
+------------------------------------------------------------------------
+    procedure enable_pfc
+    (
+        signal pfc_signals : out pfc
+    ) is
+    begin
+        pfc_signals.pfc_control_data_in.start_pfc <= true;
+    end enable_pfc;
+------------------------------------------------------------------------
+    procedure disable_pfc
+    (
+        signal pfc_signals : out pfc
+    ) is
+    begin
+        pfc_signals.pfc_control_data_in.start_pfc <= false;
+    end disable_pfc;
+------------------------------------------------------------------------
+end package body pfc_control_pkg;

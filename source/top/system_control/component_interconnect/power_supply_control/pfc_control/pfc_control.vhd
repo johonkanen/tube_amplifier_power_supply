@@ -20,6 +20,7 @@ architecture rtl of pfc_control is
 
     alias core_clock : std_logic is pfc_control_clocks.core_clock;
     alias modulator_clock : std_logic is pfc_control_clocks.modulator_clock;
+    alias pll_lock : std_logic is pfc_control_clocks.pll_lock;
 
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
@@ -30,6 +31,7 @@ architecture rtl of pfc_control is
     signal pfc_modulator_data_out : pfc_modulator_data_output_group;
 
 begin
+
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
@@ -38,6 +40,32 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
+------------------------------------------------------------------------
+    pfc_control : process(core_clock)
+        type t_pfc_control_state is (idle, precharge, pfc_running);
+        variable st_pfc_control_state : t_pfc_control_state;
+    begin
+        if rising_edge(core_clock) then
+            if pll_lock = '0' then
+            -- reset state
+                st_pfc_control_state := idle;
+            else
+                CASE st_pfc_control_state is
+                    WHEN idle =>
+                        disable_pfc_modulator(pfc_modulator_data_in);
+                        if pfc_control_data_in.start_pfc then
+                            enable_pfc_modulator(pfc_modulator_data_in);
+                            set_duty(100,pfc_modulator_data_in);
+                            st_pfc_control_state := precharge;
+                        end if;
+                    WHEN precharge =>
+                        -- wait for 50 ms
+                    WHEN others =>
+                end CASE;
+            end if; -- rstn
+        end if; --rising_edge
+    end process pfc_control;	
+------------------------------------------------------------------------
 ------------------------------------------------------------------------
     pfc_modulator_clocks <= (modulator_clock => modulator_clock, core_clock => core_clock);
     pfc_modulator_data_in.pfc_carrier <= pfc_control_data_in.pfc_carrier;
@@ -50,5 +78,4 @@ begin
             pfc_modulator_data_out
         );
 ------------------------------------------------------------------------
-
 end rtl;
