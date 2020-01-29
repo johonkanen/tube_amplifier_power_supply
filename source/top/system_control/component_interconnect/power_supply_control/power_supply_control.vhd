@@ -22,11 +22,11 @@ end entity power_supply_control;
 
 architecture rtl of power_supply_control is
 
-    alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in;
-
+    alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in; 
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
     alias core_clock : std_logic is power_supply_control_clocks.core_clock;
     alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
+------------------------------------------------------------------------
     signal master_carrier : integer range 0 to 2**12-1;
 ------------------------------------------------------------------------
     signal pfc_control_clocks   : pfc_control_clock_group;
@@ -113,8 +113,8 @@ begin
         end if; --rising_edge
     end process carrier_generation;	
 ------------------------------------------------------------------------
-------------------------- power supplies -------------------------------
-------------------------------------------------------------------------
+
+---------------------- pfc control --------------------------------------
     pfc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
@@ -127,7 +127,7 @@ begin
             pfc_control_data_in, 
             pfc_control_data_out  
         );
-------------------------------------------------------------------------
+---------------------- llc control -------------------------------------
     llc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
@@ -139,7 +139,7 @@ begin
             llc_control_data_in,
             llc_control_data_out
         );
-------------------------------------------------------------------------
+---------------------- dhb control -------------------------------------
     dhb_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
