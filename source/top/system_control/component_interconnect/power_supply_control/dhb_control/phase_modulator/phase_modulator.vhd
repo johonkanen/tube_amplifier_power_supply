@@ -8,10 +8,8 @@ library work;
 entity phase_modulator is
     generic (g_carrier_max_value : integer);
     port (
-        phase_modulator_clocks : in phase_modulator_clock_group;
-
-        phase_modulator_FPGA_out : out phase_modulator_FPGA_output_group;
-
+        phase_modulator_clocks : in phase_modulator_clock_group; 
+        phase_modulator_FPGA_out : out phase_modulator_FPGA_output_group; 
         phase_modulator_data_in : in phase_modulator_data_input_group;
         phase_modulator_data_out : out phase_modulator_data_output_group
     );

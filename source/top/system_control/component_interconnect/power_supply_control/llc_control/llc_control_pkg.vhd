@@ -2,7 +2,12 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
+library onboard_adc_library;
+    use onboard_adc_library.onboard_ad_control_pkg.all;
+
 package llc_control_pkg is
+
+    type t_llc_control_states is (disabled, charging, running);
 
     type llc_control_clock_group is record
         core_clock : std_logic;
@@ -15,11 +20,12 @@ package llc_control_pkg is
     end record;
     
     type llc_control_data_input_group is record
-        clock : std_logic;
+        enable_llc : boolean;
     end record;
     
     type llc_control_data_output_group is record
-        clock : std_logic;
+        st_llc_control_states : t_llc_control_states;
+        onboard_ad_control_data_in : onboard_ad_control_data_input_group;
     end record;
     
     component llc_control is
