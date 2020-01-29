@@ -23,9 +23,6 @@ package llc_modulator_pkg is
     
     type llc_modulator_FPGA_output_group is record
         llc_gates : hb_llc_pwm;
-        -- use these refactored signals
-        primary : half_bridge;
-        secondary : half_bridge;
     end record;
     
     type llc_modulator_data_input_group is record
