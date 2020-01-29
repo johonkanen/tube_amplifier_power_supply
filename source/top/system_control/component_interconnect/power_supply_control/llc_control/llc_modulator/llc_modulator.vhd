@@ -16,14 +16,16 @@ end entity llc_modulator;
 
 architecture rtl of llc_modulator is
 
+    subtype uint12 is integer range 0 to 2**12-1;
+
     signal carrier: integer;
-    signal deadtime : integer range 0 to 2**15-1;
-    signal r1_deadtime : integer range 0 to 2**15-1;
+    signal deadtime : uint12;
+    signal r1_deadtime : uint12;
     signal s_pulse : std_logic;
     signal s1_pulse : std_logic;
     signal period : integer;
 
-    signal dly_cntr : integer range 0 to 2**15-1;
+    signal dly_cntr : uint12;
 
     signal dt_dly : integer;
     signal reset_carrier : integer;
@@ -169,7 +171,7 @@ startup : process(llc_modulator_clocks.modulator_clock)
     end process pri_gate_ctrl;
 ------------------------------------------------------------------------------------------
 deadtime_counter : process(llc_modulator_clocks.modulator_clock)
-    variable dt_count : integer range 0 to 2**15-1;
+    variable dt_count : uint12;
 begin
     if rising_edge(llc_modulator_clocks.modulator_clock) then
         if llc_modulator_data_in.reset_n = '0' then

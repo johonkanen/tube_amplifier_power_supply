@@ -15,6 +15,8 @@ package power_supply_control_pkg is
     
     type power_supply_control_FPGA_output_group is record
         pfc_control_FPGA_out : work.pfc_control_pkg.pfc_control_FPGA_output_group;
+        llc_control_FPGA_out : work.llc_control_pkg.llc_control_FPGA_output_group;
+        dhb_control_FPGA_out : work.dhb_control_pkg.dhb_control_FPGA_output_group;
     end record;
     
     type power_supply_control_data_input_group is record

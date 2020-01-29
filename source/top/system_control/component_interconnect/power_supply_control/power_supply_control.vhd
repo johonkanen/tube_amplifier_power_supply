@@ -124,5 +124,19 @@ begin
             pfc_control_data_out  
         );
 ------------------------------------------------------------------------
-
+    llc_control_clocks <= ( core_clock => core_clock,
+                            modulator_clock => modulator_clock,
+                            pll_lock => pll_lock);
+    u_llc_control : llc_control
+        port map(
+            llc_control_clocks,
+            power_supply_control_FPGA_out.llc_control_FPGA_out,
+            llc_control_data_in,
+            llc_control_data_out
+        );
+------------------------------------------------------------------------
+    dhb_control_clocks <= ( core_clock => core_clock,
+                            modulator_clock => modulator_clock,
+                            pll_lock => pll_lock);
+------------------------------------------------------------------------
 end rtl;
