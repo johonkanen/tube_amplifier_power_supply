@@ -4,12 +4,10 @@ library ieee;
 
 library work;
     use work.system_clocks_pkg.all;
-    -- use work.vendor_specifics_pkg.all;
     use work.system_control_pkg.all;
---
+
 entity top is
     port(
--- main clock input
 	    xclk : in std_logic;
         system_control_FPGA_in  : in system_control_FPGA_input_group;
         system_control_FPGA_out : out system_control_FPGA_output_group
@@ -19,25 +17,22 @@ end top;
 architecture behavioral of top is
 
     signal system_clocks : system_clock_group;
-    signal system_control_data_in : system_control_data_input_group;
-    signal system_control_data_out : system_control_data_output_group;
 
 begin
-
+------------------------------------------------------------------------
     clocks : entity work.pll_wrapper
 	port map
 	(
 		xclk,
         system_clocks
 	);
-
+------------------------------------------------------------------------
+    -- TODO, remove data in and out ports from system control
     u_system_control : system_control
         port map(
             system_clocks,
             system_control_FPGA_in,
-            system_control_FPGA_out,
-            system_control_data_in,
-            system_control_data_out
+            system_control_FPGA_out
         );
-
+------------------------------------------------------------------------
 end behavioral;

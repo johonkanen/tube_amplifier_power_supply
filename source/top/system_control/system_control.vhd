@@ -13,10 +13,7 @@ entity system_control is
         system_clocks : in system_clock_group;    
 
         system_control_FPGA_in : in system_control_FPGA_input_group;
-        system_control_FPGA_out : out system_control_FPGA_output_group;
-
-        system_control_data_in : in system_control_data_input_group;
-        system_control_data_out : out system_control_data_output_group
+        system_control_FPGA_out : out system_control_FPGA_output_group
     );
 end entity system_control;
 
@@ -51,6 +48,8 @@ architecture rtl of system_control is
 
 begin
 
+------------------------------------------------------------------------
+-- TODO, refactor into a component
     delay_20ms : process(system_clocks.core_clock)
         variable u22_init_dly_cnt : integer; 
         variable v_number_of_delays : integer;
@@ -76,7 +75,7 @@ begin
 	    end if;
 	end if;
     end process delay_20ms;
-
+------------------------------------------------------------------------
     system_main : process(system_clocks.core_clock) is
         type t_system_states is (init,
                         charge_dc_link,

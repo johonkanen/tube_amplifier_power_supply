@@ -8,7 +8,7 @@ library work;
     use work.uart_pkg.all;
     use work.multiplier_pkg.all;
     use work.power_supply_control_pkg.all;
-    -- use work.sw_supply_ctrl_pkg.all;
+    
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
 
@@ -26,22 +26,24 @@ end entity component_interconnect;
 
 architecture rtl of component_interconnect is
 
+------------------------------------------------------------------------
     signal si_uart_start_event : std_logic;
     signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
     signal so_uart_ready_event :  std_logic;
     signal so16_uart_rx_data   :  std_logic_vector(15 downto 0);
-
+------------------------------------------------------------------------
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
-
+------------------------------------------------------------------------
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
-
+------------------------------------------------------------------------
     signal power_supply_control_clocks   : power_supply_control_clock_group;
     signal power_supply_control_data_in  : power_supply_control_data_input_group;
     signal power_supply_control_data_out :  power_supply_control_data_output_group;
+------------------------------------------------------------------------
 begin
 ------------------------------------------------------------------------
     test_multiplier : process(system_clocks.core_clock)
@@ -112,8 +114,7 @@ begin
                 end CASE;
             end if; -- rstn
         end if; --rising_edge
-    end process test_multiplier;	
-
+    end process test_multiplier;
 
 ------------------------------------------------------------------------  
 -- onboard_ad_control_data_in <= component_interconnect_data_in.onboard_ad_control_data_in;
@@ -139,7 +140,6 @@ begin
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
 	    si_uart_start_event,
-        -- '1',
 	    si16_uart_tx_data,
 	    so_uart_ready_event,
 	    so16_uart_rx_data
@@ -154,10 +154,9 @@ begin
         );
 
 ------------------------------------------------------------------------
-        -- HAS NOT BEEN ROUTED OUT
-        power_supply_control_clocks <= (core_clock => system_clocks.core_clock,
-                                        modulator_clock =>system_clocks.modulator_clock,
-                                        pll_lock => system_clocks.pll_lock);
+        power_supply_control_clocks <= (core_clock      => system_clocks.core_clock,
+                                        modulator_clock => system_clocks.modulator_clock,
+                                        pll_lock        => system_clocks.pll_lock);
 
         onboard_ad_control_data_in <= power_supply_control_data_out.onboard_ad_control_data_in;
         power_supply_control_data_in.onboard_ad_control_data_out <= onboard_ad_control_data_out;

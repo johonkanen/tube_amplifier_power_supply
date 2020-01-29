@@ -10,7 +10,6 @@ library work;
     use work.llc_modulator_pkg.all;
     use work.multiplier_pkg.all;
 
-
 entity llc_control is
     port (
         llc_control_clocks : in llc_control_clock_group;
@@ -24,17 +23,15 @@ architecture rtl of llc_control is
 
     alias core_clock : std_logic is llc_control_clocks.core_clock;
     alias modulator_clock : std_logic is llc_control_clocks.modulator_clock;
-
+------------------------------------------------------------------------
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
-
-
-
+------------------------------------------------------------------------
     signal llc_modulator_clocks   : llc_modulator_clock_group;
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
     signal llc_modulator_data_out : llc_modulator_data_output_group;
-
+------------------------------------------------------------------------
 begin
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;

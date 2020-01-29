@@ -25,12 +25,8 @@ package system_control_pkg is
     component system_control is
         port(
             system_clocks : in work.system_clocks_pkg.system_clock_group;    
-
             system_control_FPGA_in : in system_control_FPGA_input_group;
-            system_control_FPGA_out : out system_control_FPGA_output_group;
-    
-            system_control_data_in : in system_control_data_input_group;
-            system_control_data_out : out system_control_data_output_group
+            system_control_FPGA_out : out system_control_FPGA_output_group
         );
     end component system_control;
         
