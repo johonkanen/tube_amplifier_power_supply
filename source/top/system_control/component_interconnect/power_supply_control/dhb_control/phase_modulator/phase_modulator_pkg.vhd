@@ -20,6 +20,7 @@ package phase_modulator_pkg is
     end record;
     
     type phase_modulator_data_input_group is record
+        carrier : integer;
         phase : integer;
         dhb_is_enabled : boolean;
     end record;
@@ -29,6 +30,7 @@ package phase_modulator_pkg is
     end record;
     
     component phase_modulator is
+        generic( g_carrier_max_value : integer);
         port (
             phase_modulator_clocks : in phase_modulator_clock_group;
             phase_modulator_FPGA_out : out phase_modulator_FPGA_output_group;
