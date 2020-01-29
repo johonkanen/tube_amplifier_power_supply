@@ -7,10 +7,8 @@ library work;
 
 entity llc_modulator is
     port (
-        llc_modulator_clocks : in llc_modulator_clock_group;
-
-        llc_modulator_FPGA_out : out llc_modulator_FPGA_output_group;
-
+        llc_modulator_clocks : in llc_modulator_clock_group; 
+        llc_modulator_FPGA_out : out llc_modulator_FPGA_output_group; 
         llc_modulator_data_in : in llc_modulator_data_input_group;
         llc_modulator_data_out : out llc_modulator_data_output_group
     );
