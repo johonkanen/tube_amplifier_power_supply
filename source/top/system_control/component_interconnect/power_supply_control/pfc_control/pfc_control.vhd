@@ -49,6 +49,7 @@ begin
             if pll_lock = '0' then
             -- reset state
                 st_pfc_control_state := idle;
+                set_duty(0,pfc_modulator_data_in);
             else
                 CASE st_pfc_control_state is
                     WHEN idle =>
@@ -59,6 +60,7 @@ begin
                             st_pfc_control_state := precharge;
                         end if;
                     WHEN precharge =>
+                            set_duty(1890,pfc_modulator_data_in);
                         -- wait for 50 ms
                     WHEN others =>
                 end CASE;

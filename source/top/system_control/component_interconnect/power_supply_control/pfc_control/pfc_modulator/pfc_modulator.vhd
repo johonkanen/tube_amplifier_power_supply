@@ -21,12 +21,20 @@ architecture rtl of pfc_modulator is
     alias modulator_clock : std_logic is pfc_modulator_clocks.modulator_clock;
     alias core_clock : std_logic is pfc_modulator_clocks.core_clock;
 
+    subtype uint12 is integer range 0 to 2**12-1;
+
+    signal jee : uint12;
+    signal pfc_carrier : uint12;
+    signal pfc_carrier1 : uint12;
+
 begin
 
     clock_crossing : process(core_clock)
         
     begin
         if rising_edge(core_clock) then
+            jee <= pfc_modulator_data_in.duty;
+
         end if; --rising_edge
     end process clock_crossing;	
 
@@ -34,8 +42,17 @@ begin
         
     begin
 
+        -- TODO, make maximum value a generic which is passed from power supply control layer
         if rising_edge(modulator_clock) then
-            if pfc_modulator_data_in.pfc_carrier < pfc_modulator_data_in.duty then
+            if pfc_modulator_data_in.pfc_carrier < 1896/2 then
+                pfc_carrier <= pfc_carrier + 1;
+            else
+                pfc_carrier <= pfc_carrier - 1;
+            end if;
+                pfc_carrier1 <= pfc_carrier;
+
+
+            if pfc_carrier1 < jee then
                 pfc_modulator_FPGA_out.ac1_switch <= '1';
                 pfc_modulator_FPGA_out.ac2_switch <= '1';
             else

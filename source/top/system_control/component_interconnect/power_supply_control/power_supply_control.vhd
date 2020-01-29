@@ -27,7 +27,7 @@ architecture rtl of power_supply_control is
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
     alias core_clock : std_logic is power_supply_control_clocks.core_clock;
     alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
-    signal master_carrier : integer range 0 to 2**12;
+    signal master_carrier : integer range 0 to 2**12-1;
 
     signal pfc_control_clocks   : pfc_control_clock_group;
     signal pfc_control_data_in  : pfc_control_data_input_group;
