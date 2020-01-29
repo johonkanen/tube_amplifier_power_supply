@@ -11,7 +11,7 @@ package llc_control_pkg is
     end record;
     
     type llc_control_FPGA_output_group is record
-        hb_llc_gates : work.llc_modulator_pkg.llc_modulator_FPGA_output_group;
+        llc_modulator_FPGA_out : work.llc_modulator_pkg.llc_modulator_FPGA_output_group;
     end record;
     
     type llc_control_data_input_group is record

@@ -8,6 +8,7 @@ library onboard_adc_library;
 library work;
     use work.dhb_control_pkg.all;
     use work.phase_modulator_pkg.all;
+    use work.multiplier_pkg.all;
 
 
 entity dhb_control is
@@ -30,11 +31,15 @@ architecture rtl of dhb_control is
     signal phase_modulator_clocks : phase_modulator_clock_group;
     signal phase_modulator_data_in : phase_modulator_data_input_group;
     signal phase_modulator_data_out : phase_modulator_data_output_group;
-    
+
+    signal multiplier_clocks   : multiplier_clock_group;
+    signal multiplier_data_in  : multiplier_data_input_group;
+    signal multiplier_data_out :  multiplier_data_output_group;
 
 begin
 ------------------------------------------------------------------------
-    phase_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
+    phase_modulator_clocks <= (core_clock => core_clock, 
+                              modulator_clock => modulator_clock);
     u_phase_modulator : phase_modulator
     generic map(g_carrier_max_value)
     port map
@@ -45,8 +50,12 @@ begin
         phase_modulator_data_out
     );
 ------------------------------------------------------------------------
-                
-
-
+    multiplier_clocks.dsp_clock <= core_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
+------------------------------------------------------------------------
 end rtl;
-

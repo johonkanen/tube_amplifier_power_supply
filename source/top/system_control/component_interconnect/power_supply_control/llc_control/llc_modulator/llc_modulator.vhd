@@ -34,7 +34,6 @@ architecture rtl of llc_modulator is
     signal st_startup : t_startup_states; 
 
     signal reset_dly_cntr : std_logic;
-    signal r_po4_ht_pwm : hb_llc_pwm;
     signal dt_counter_ready : std_logic;
     signal start_dt_counter : std_logic;
 
