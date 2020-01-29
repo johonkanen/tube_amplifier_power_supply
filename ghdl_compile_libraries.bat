@@ -23,8 +23,10 @@ ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_s
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
 
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
 
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
+ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/uart/uart_pkg.vhd
 rem

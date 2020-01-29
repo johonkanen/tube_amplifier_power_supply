@@ -3,9 +3,13 @@ library ieee;
     use ieee.numeric_std.all;
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_output_group;
+    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_input_group;
 
 package pfc_control_pkg is
+------------------------------------------------------------------------
+    type t_pfc_states is (disabled, ramping_up, running);
+------------------------------------------------------------------------
 
     type pfc_control_clock_group is record
         core_clock : std_logic;
@@ -24,7 +28,7 @@ package pfc_control_pkg is
     end record;
     
     type pfc_control_data_output_group is record
-        pfc_is_running : boolean;
+        pfc_state_is : t_pfc_states;
         onboard_ad_control_data_in : onboard_ad_control_data_input_group;
     end record;
 

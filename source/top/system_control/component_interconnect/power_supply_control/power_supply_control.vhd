@@ -8,13 +8,13 @@ library onboard_adc_library;
 library work;
     use work.power_supply_control_pkg.all;
     use work.pfc_control_pkg.all;
+    use work.llc_control_pkg.all;
+    use work.dhb_control_pkg.all;
 
 entity power_supply_control is
     port (
-        power_supply_control_clocks : in power_supply_control_clock_group;
-
-        power_supply_control_FPGA_out : out power_supply_control_FPGA_output_group;
-
+        power_supply_control_clocks : in power_supply_control_clock_group; 
+        power_supply_control_FPGA_out : out power_supply_control_FPGA_output_group; 
         power_supply_control_data_in : in power_supply_control_data_input_group;
         power_supply_control_data_out : out power_supply_control_data_output_group
     );
@@ -28,10 +28,19 @@ architecture rtl of power_supply_control is
     alias core_clock : std_logic is power_supply_control_clocks.core_clock;
     alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
     signal master_carrier : integer range 0 to 2**12-1;
-
+------------------------------------------------------------------------
     signal pfc_control_clocks   : pfc_control_clock_group;
     signal pfc_control_data_in  : pfc_control_data_input_group;
     signal pfc_control_data_out : pfc_control_data_output_group;
+------------------------------------------------------------------------
+    signal llc_control_clocks   : llc_control_clock_group;
+    signal llc_control_data_in  : llc_control_data_input_group;
+    signal llc_control_data_out : llc_control_data_output_group;
+------------------------------------------------------------------------
+    signal dhb_control_clocks   : llc_control_clock_group;
+    signal dhb_control_data_in  : llc_control_data_input_group;
+    signal dhb_control_data_out : llc_control_data_output_group;
+------------------------------------------------------------------------
 
 begin
 
@@ -45,6 +54,7 @@ begin
                 pfc_control_data_in.start_pfc <= false;
 
             else
+                -- pfc start is commanded from system control when precharge is done
                 pfc_control_data_in.start_pfc <= true;
             end if; -- rstn
         end if; --rising_edge
@@ -90,8 +100,7 @@ begin
 
     -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
-    carrier_generation : process(power_supply_control_clocks.modulator_clock)
-        
+    carrier_generation : process(power_supply_control_clocks.modulator_clock) 
     begin
         if rising_edge(power_supply_control_clocks.modulator_clock) then
                 -- register carrier for pfc and dhb to shorten logic path

@@ -49,9 +49,8 @@ begin
             else
                 pfc_carrier <= pfc_carrier - 1;
             end if;
-                pfc_carrier1 <= pfc_carrier;
 
-
+            pfc_carrier1 <= pfc_carrier;
             if pfc_carrier1 < jee then
                 pfc_modulator_FPGA_out.ac1_switch <= '1';
                 pfc_modulator_FPGA_out.ac2_switch <= '1';

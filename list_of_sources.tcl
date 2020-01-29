@@ -24,12 +24,13 @@ proc read_sources {source_folder} \
         /top/system_control/led_driver/led_driver.vhd 
 
         /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
+        /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
 
         /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
+        /top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control_pkg.vhd
 
         /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
         /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator.vhd
-
         /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
         /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control.vhd
 
