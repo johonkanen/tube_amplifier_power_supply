@@ -33,6 +33,7 @@ package pfc_control_pkg is
     end record;
 
     component pfc_control is
+        generic ( g_carrier_max_value : integer); 
         port (
             pfc_control_clocks : in pfc_control_clock_group;
             pfc_control_FPGA_out : out pfc_control_FPGA_output_group;

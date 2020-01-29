@@ -6,6 +6,7 @@ library work;
     use work.pfc_modulator_pkg.all;
 
 entity pfc_modulator is
+    generic( g_carrier_max_value : integer);
     port (
         pfc_modulator_clocks : in pfc_modulator_clock_group;
         pfc_modulator_FPGA_out : out pfc_modulator_FPGA_output_group;
@@ -44,7 +45,7 @@ begin
 
         -- TODO, make maximum value a generic which is passed from power supply control layer
         if rising_edge(modulator_clock) then
-            if pfc_modulator_data_in.pfc_carrier < 1896/2 then
+            if pfc_modulator_data_in.pfc_carrier < g_carrier_max_value/2 then
                 pfc_carrier <= pfc_carrier + 1;
             else
                 pfc_carrier <= pfc_carrier - 1;

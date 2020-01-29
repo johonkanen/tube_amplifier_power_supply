@@ -26,6 +26,7 @@ package pfc_modulator_pkg is
     end record;
     
     component pfc_modulator is
+        generic( g_carrier_max_value : integer);
         port (
             pfc_modulator_clocks : in pfc_modulator_clock_group;
             pfc_modulator_FPGA_out : out pfc_modulator_FPGA_output_group;

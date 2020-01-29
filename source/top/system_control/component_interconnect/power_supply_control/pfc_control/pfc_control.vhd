@@ -8,6 +8,7 @@ library work;
     use work.multiplier_pkg.all;
 
 entity pfc_control is
+        generic( g_carrier_max_value : integer);
         port (
             pfc_control_clocks : in pfc_control_clock_group;
             pfc_control_FPGA_out : out pfc_control_FPGA_output_group;
@@ -72,6 +73,7 @@ begin
     pfc_modulator_clocks <= (modulator_clock => modulator_clock, core_clock => core_clock);
     pfc_modulator_data_in.pfc_carrier <= pfc_control_data_in.pfc_carrier;
     u_pfc_modulator : pfc_modulator
+        generic map( g_carrier_max_value)
         port map 
         (
             pfc_modulator_clocks,

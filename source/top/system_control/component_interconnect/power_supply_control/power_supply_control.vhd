@@ -119,6 +119,7 @@ begin
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
     u_pfc_control : pfc_control
+        generic map(1896)
         port map
         (
             pfc_control_clocks, 
@@ -143,14 +144,14 @@ begin
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
     u_dhb_control : dhb_control
-    generic map(1896)
-    port map
-    (
-        dhb_control_clocks,
-        power_supply_control_FPGA_out.dhb_control_FPGA_out,
-        dhb_control_data_in,
-        dhb_control_data_out
-    );
+        generic map(1896)
+        port map
+        (
+            dhb_control_clocks,
+            power_supply_control_FPGA_out.dhb_control_FPGA_out,
+            dhb_control_data_in,
+            dhb_control_data_out
+        );
 
 ------------------------------------------------------------------------
 end rtl;
