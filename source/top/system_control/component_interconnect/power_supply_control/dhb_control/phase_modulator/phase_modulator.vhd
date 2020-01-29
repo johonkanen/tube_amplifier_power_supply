@@ -6,6 +6,7 @@ library work;
     use work.phase_modulator_pkg.all;
 
 entity phase_modulator is
+    generic (g_carrier_max_value : integer);
     port (
         phase_modulator_clocks : in phase_modulator_clock_group;
 

@@ -37,9 +37,9 @@ architecture rtl of power_supply_control is
     signal llc_control_data_in  : llc_control_data_input_group;
     signal llc_control_data_out : llc_control_data_output_group;
 ------------------------------------------------------------------------
-    signal dhb_control_clocks   : llc_control_clock_group;
-    signal dhb_control_data_in  : llc_control_data_input_group;
-    signal dhb_control_data_out : llc_control_data_output_group;
+    signal dhb_control_clocks   : dhb_control_clock_group;
+    signal dhb_control_data_in  : dhb_control_data_input_group;
+    signal dhb_control_data_out : dhb_control_data_output_group;
 ------------------------------------------------------------------------
 
 begin
@@ -105,12 +105,15 @@ begin
         if rising_edge(power_supply_control_clocks.modulator_clock) then
                 -- register carrier for pfc and dhb to shorten logic path
                 pfc_control_data_in.pfc_carrier <= master_carrier;
+                dhb_control_data_in.dhb_carrier <= master_carrier;
                 master_carrier <= master_carrier + 1;
                 if master_carrier > 1896 then
                     master_carrier <= 0;
                 end if;
         end if; --rising_edge
     end process carrier_generation;	
+------------------------------------------------------------------------
+------------------------- power supplies -------------------------------
 ------------------------------------------------------------------------
     pfc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
@@ -128,7 +131,8 @@ begin
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
     u_llc_control : llc_control
-        port map(
+        port map
+        (
             llc_control_clocks,
             power_supply_control_FPGA_out.llc_control_FPGA_out,
             llc_control_data_in,
@@ -138,5 +142,15 @@ begin
     dhb_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
+    u_dhb_control : dhb_control
+    generic map(1896)
+    port map
+    (
+        dhb_control_clocks,
+        power_supply_control_FPGA_out.dhb_control_FPGA_out,
+        dhb_control_data_in,
+        dhb_control_data_out
+    );
+
 ------------------------------------------------------------------------
 end rtl;
