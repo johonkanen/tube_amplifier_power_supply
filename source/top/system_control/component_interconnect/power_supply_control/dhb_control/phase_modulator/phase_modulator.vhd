@@ -17,14 +17,16 @@ end entity phase_modulator;
 
 architecture rtl of phase_modulator is
 
+    subtype uint12 is integer range 0 to 2**12-1;
+
     alias core_clock : std_logic is phase_modulator_clocks.core_clock;
     alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
 
-    signal dhb_master_carrier : integer := 0;
-    signal dhb_primary_carrier : integer := 0;
-    signal dhb_secondary_carrier : integer := 0;
-    signal primary_phase_shift : integer;
-    signal secondary_phase_shift : integer;
+    signal dhb_master_carrier : uint12 := 0;
+    signal dhb_primary_carrier : uint12 := 0;
+    signal dhb_secondary_carrier : uint12 := 0;
+    signal primary_phase_shift : uint12;
+    signal secondary_phase_shift : uint12;
     
 
 begin
