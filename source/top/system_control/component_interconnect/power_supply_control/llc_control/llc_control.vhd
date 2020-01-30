@@ -56,6 +56,7 @@ begin
             multiplier_data_out 
         );
 ------------------------------------------------------------------------
+    --TODO, create control logic for safe llc start
     llc_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
     llc_modulator_data_in.llc_is_enabled <= std_to_bool(llc_control_clocks.pll_lock);
     u_llc_modulator : llc_modulator
