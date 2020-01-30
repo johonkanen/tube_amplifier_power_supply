@@ -17,9 +17,29 @@ end entity phase_modulator;
 
 architecture rtl of phase_modulator is
 
+    alias core_clock : std_logic is phase_modulator_clocks.core_clock;
+    alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
     
 
 begin
+
+    create_pwm : process(modulator_clock)
+        
+    begin
+        if rising_edge(modulator_clock) then
+            if phase_modulator_data_in.dhb_is_enabled then
+            -- reset state
+                if phase_modulator_data_in.carrier > g_carrier_max_value/2 then
+                    phase_modulator_FPGA_out.primary <= positive_vector;
+                    phase_modulator_FPGA_out.secondary <= positive_vector;
+                else
+                    phase_modulator_FPGA_out.primary <= negative_vector;
+                    phase_modulator_FPGA_out.secondary <= negative_vector;
+                end if;
+    
+            end if; -- rstn
+        end if; --rising_edge
+    end process create_pwm;	
 
 
 end rtl;

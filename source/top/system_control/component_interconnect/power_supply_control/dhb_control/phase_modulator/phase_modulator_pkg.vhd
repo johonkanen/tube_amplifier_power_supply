@@ -26,7 +26,8 @@ package phase_modulator_pkg is
     end record;
     
     type phase_modulator_data_output_group is record
-        clock : std_logic;
+        dhb_modulator_clock : std_logic;
+        core_clock : std_logic;
     end record;
     
     component phase_modulator is
@@ -38,6 +39,10 @@ package phase_modulator_pkg is
             phase_modulator_data_out : out phase_modulator_data_output_group
         );
     end component phase_modulator;
+
+    constant positive_vector : half_bridge := (high_gate => '1', low_gate => '0');
+    constant negative_vector : half_bridge := (high_gate => '0', low_gate => '1');
+    constant all_off : half_bridge := (high_gate => '0', low_gate => '0');
 
 ------------------------------------------------------------------------
     procedure set_phase ( phase : in integer;
