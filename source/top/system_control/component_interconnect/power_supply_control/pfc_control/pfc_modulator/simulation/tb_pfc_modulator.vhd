@@ -74,7 +74,9 @@ begin
     begin
         pfc_modulator_data_in.duty <= 10;
         wait for 15 us;
-        pfc_modulator_data_in.duty <= 350;
+        pfc_modulator_data_in.duty <= 850;
+        wait for 18 us;
+        pfc_modulator_data_in.duty <= 10;
         wait;
     end process test_pwm;	
 ------------------------------------------------------------------------

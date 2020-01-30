@@ -34,7 +34,6 @@ begin
         
     begin
         if rising_edge(core_clock) then
-            jee <= pfc_modulator_data_in.duty;
 
         end if; --rising_edge
     end process clock_crossing;	
@@ -43,7 +42,6 @@ begin
         
     begin
 
-        -- TODO, make maximum value a generic which is passed from power supply control layer
         if rising_edge(modulator_clock) then
             if pfc_modulator_data_in.pfc_carrier <= g_carrier_max_value/2 then
                 pfc_carrier <= pfc_carrier + 1;
@@ -52,6 +50,10 @@ begin
             end if;
 
             pfc_carrier1 <= pfc_carrier;
+            if pfc_carrier1 = g_carrier_max_value/2 then
+                jee <= pfc_modulator_data_in.duty;
+            end if;
+
             if pfc_carrier1 < jee then
                 pfc_modulator_FPGA_out.ac1_switch <= '1';
                 pfc_modulator_FPGA_out.ac2_switch <= '1';
