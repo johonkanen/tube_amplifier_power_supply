@@ -18,17 +18,17 @@ architecture rtl of llc_modulator is
 
     subtype uint12 is integer range 0 to 2**12-1;
 
-    signal carrier: integer;
+    signal carrier: uint12;
     signal deadtime : uint12;
     signal r1_deadtime : uint12;
     signal s_pulse : std_logic;
     signal s1_pulse : std_logic;
-    signal period : integer;
+    signal period : uint12;
 
     signal dly_cntr : uint12;
 
-    signal dt_dly : integer;
-    signal reset_carrier : integer;
+    signal dt_dly : uint12;
+    signal reset_carrier : uint12;
 
     type t_startup_states is (init, rampup, ready);
     signal st_startup : t_startup_states; 
@@ -46,7 +46,7 @@ startup : process(llc_modulator_clocks.modulator_clock)
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
         r1_deadtime <= deadtime;
-        if llc_modulator_data_in.reset_n = '0' then
+        if llc_modulator_data_in.llc_is_enabled then
             st_startup <= rampup;
             dly_cntr <= 0;
             period <= 474; -- 290kHz initial frequency
@@ -96,7 +96,7 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
-        if llc_modulator_data_in.reset_n = '0' then
+        if llc_modulator_data_in.llc_is_enabled then
             s_pulse <= '0';
             reset_carrier <= 474;
         else
@@ -114,13 +114,13 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
 ------------------------------------------------------------------------------------------
     pri_gate_ctrl : process(llc_modulator_clocks.modulator_clock)
-        variable sec_pwm_cntr : integer;
+        variable sec_pwm_cntr : uint12;
         type t_dt_states is (active_pulse,deadtime);
         variable st_dt_states : t_dt_states;
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
             s1_pulse <= s_pulse;
-        if llc_modulator_data_in.reset_n = '0' then
+        if llc_modulator_data_in.llc_is_enabled then
             llc_modulator_FPGA_out.llc_gates <= (others => '0');
             dt_dly <= 0;
             st_dt_states := deadtime;
@@ -173,7 +173,7 @@ deadtime_counter : process(llc_modulator_clocks.modulator_clock)
     variable dt_count : uint12;
 begin
     if rising_edge(llc_modulator_clocks.modulator_clock) then
-        if llc_modulator_data_in.reset_n = '0' then
+        if llc_modulator_data_in.llc_is_enabled then
         -- reset state
             dt_count := 0;
             dt_counter_ready <= '0';

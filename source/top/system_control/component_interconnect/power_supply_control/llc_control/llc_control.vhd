@@ -32,6 +32,20 @@ architecture rtl of llc_control is
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
     signal llc_modulator_data_out : llc_modulator_data_output_group;
 ------------------------------------------------------------------------
+    function std_to_bool
+    (
+        check_for_1 : std_logic
+    )
+    return boolean
+    is
+    begin
+        if check_for_1 = '1' then
+            return true;
+        else 
+            return false;
+        end if;
+        
+    end std_to_bool;
 begin
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
@@ -43,6 +57,7 @@ begin
         );
 ------------------------------------------------------------------------
     llc_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
+    llc_modulator_data_in.llc_is_enabled <= std_to_bool(llc_control_clocks.pll_lock);
     u_llc_modulator : llc_modulator
     port map
     (

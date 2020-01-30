@@ -26,8 +26,7 @@ package llc_modulator_pkg is
     end record;
     
     type llc_modulator_data_input_group is record
-        period : integer;
-        reset_n : std_logic;
+        period : integer range 0 to 2**12-1;
         -- refactored 
         llc_is_enabled : boolean;
     end record;
