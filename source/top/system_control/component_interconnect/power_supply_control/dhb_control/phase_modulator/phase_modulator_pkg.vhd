@@ -21,7 +21,7 @@ package phase_modulator_pkg is
     
     type phase_modulator_data_input_group is record
         carrier : integer;
-        phase : integer;
+        phase : integer range -2**10 to 2**10-1;
         dhb_is_enabled : boolean;
     end record;
     

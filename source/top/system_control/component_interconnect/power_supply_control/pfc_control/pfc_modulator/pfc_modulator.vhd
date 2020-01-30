@@ -45,7 +45,7 @@ begin
 
         -- TODO, make maximum value a generic which is passed from power supply control layer
         if rising_edge(modulator_clock) then
-            if pfc_modulator_data_in.pfc_carrier < g_carrier_max_value/2 then
+            if pfc_modulator_data_in.pfc_carrier <= g_carrier_max_value/2 then
                 pfc_carrier <= pfc_carrier + 1;
             else
                 pfc_carrier <= pfc_carrier - 1;

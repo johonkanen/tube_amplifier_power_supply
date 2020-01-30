@@ -19,7 +19,7 @@ architecture sim of tb_phase_modulator is
     signal simulator_clock : std_logic;
     constant clock_per : time := 4 ns;
     constant clock_half_per : time := 2 ns;
-    constant simtime_in_clocks : integer := 10e3;
+    constant simtime_in_clocks : integer := 15e3;
 
     signal master_carrier : integer;
 
@@ -73,6 +73,19 @@ begin
         end if; -- rstn
     end process create_carrier;	
 ------------------------------------------------------------------------
+    change_phase : process
+        
+    begin
+        phase_modulator_data_in.phase <= 0;
+        wait for 15 us;
+        phase_modulator_data_in.phase <= -250;
+        wait for 15 us;
+        phase_modulator_data_in.phase <= 250;
+        wait for 15 us;
+        phase_modulator_data_in.phase <= -250;
+    
+        wait;
+    end process change_phase;	
     phase_modulator_clocks <= (modulator_clock => simulator_clock, core_clock => simulator_clock);
 
     primary <= (phase_modulator_FPGA_out.primary.high_gate, phase_modulator_FPGA_out.primary.low_gate);
