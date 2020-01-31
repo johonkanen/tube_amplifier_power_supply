@@ -54,13 +54,20 @@ begin
         wait;
     end process;
 
+    multiplier_clocks.dsp_clock <= simulator_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
 
     test_multiplier : process(simulator_clock, rstn)
 
-        constant b1 : int18 := 2500;
-        constant a1 : int18 := 22e3;
+        constant b1 : int18 := 7800;
+        constant a1 : int18 := 11e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := 10e3;
+        constant uin : int18 := -10e3;
         variable mem1, mem2, y : int18;
         variable a, b: int18;
         variable mpy_result : sign36;
@@ -72,7 +79,7 @@ begin
         is
             variable result : sign36;
         begin
-            alu_mpy(left, right,multiplier_data_in, multiplier_data_out);
+            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
             return get_result(multiplier_data_out,radix);
         end "*";
         ------------------------------------------------------------------------
@@ -113,22 +120,12 @@ begin
                         increment(process_counter);
                     end if;
                 when 3 =>
-                    if multiplier_is_ready(multiplier_data_out) then
-                        mem1 := mem1 + get_result(multiplier_data_out,radix);
-                        process_counter := 0;
-                    end if;
+                    mem1 := mem1 + get_result(multiplier_data_out,radix);
+                    process_counter := 0;
                 when others =>
             end CASE;
 
         end if; -- rstn
     end process test_multiplier;	
-
-    multiplier_clocks.dsp_clock <= simulator_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
 
 end sim;
