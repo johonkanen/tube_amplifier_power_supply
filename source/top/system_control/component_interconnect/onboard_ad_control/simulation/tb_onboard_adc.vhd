@@ -19,7 +19,7 @@ architecture sim of tb_onboard_adc is
     signal simulator_clock : std_logic;
     constant clock_per : time := 1 ns;
     constant clock_half_per : time := 0.5 ns;
-    constant simtime_in_clocks : integer := 500;
+    constant simtime_in_clocks : integer := 1100;
 ------------------------------------------------------------------------
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
     signal onboard_ad_control_FPGA_in  : onboard_ad_control_FPGA_input_group;
