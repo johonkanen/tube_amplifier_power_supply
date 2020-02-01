@@ -27,7 +27,6 @@ begin
         system_clocks
 	);
 ------------------------------------------------------------------------
-    -- TODO, remove data in and out ports from system control
     u_system_control : system_control
         port map(
             system_clocks,
