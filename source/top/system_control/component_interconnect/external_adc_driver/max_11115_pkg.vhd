@@ -31,7 +31,8 @@ package max_11115_pkg is
         generic (
             g_adc_clock_divisor : integer;
             g_adc_clocks_in_conversion : integer;
-            g_adc_clocks_in_frame : integer
+            g_adc_clocks_in_frame : integer;
+            g_adc_read_delay_in_clocks : integer
         );
         port (
             max_11115_clocks : in max_11115_clock_group;

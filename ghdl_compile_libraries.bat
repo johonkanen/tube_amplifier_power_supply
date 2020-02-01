@@ -15,9 +15,9 @@ rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/dhb/dhb_pkg.vhd
 rem ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/sw_supply_control/pfc_ctrl/pfc_pkg.vhd
 rem
-rem ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/ad_mux_control_pkg.vhd
-rem ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
-rem ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
+ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/ad_mux_control_pkg.vhd
+ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_pkg.vhd
+ghdl -a --ieee=synopsys --work=onboard_adc_library source/top/system_control/component_interconnect/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/external_adc_driver/max_11115_pkg.vhd
 rem
 ghdl -a --ieee=synopsys source/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd

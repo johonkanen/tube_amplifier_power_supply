@@ -9,7 +9,8 @@ entity max_11115 is
     generic (
         g_adc_clock_divisor : integer;
         g_adc_clocks_in_conversion : integer;
-        g_adc_clocks_in_frame : integer
+        g_adc_clocks_in_frame : integer;
+        g_adc_read_delay_in_clocks : integer
     );
     port (
         max_11115_clocks : in max_11115_clock_group;
@@ -28,7 +29,18 @@ architecture rtl of max_11115 is
 
     signal adc_spi_clock : std_logic; 
     signal adc_spi_clock_div : integer range 0 to 2**12-1;
+    signal adc_read_clock_div : integer range 0 to 2**12-1;
+    signal adc_serial_buffer : std_logic_vector(15 downto 0);
 
+    function to_uint
+    (
+        std_vector_data : std_logic_vector
+    )
+    return integer
+    is
+    begin
+        return to_integer(unsigned(std_vector_data));
+    end to_uint;
 
 
 ------------------------------------------------------------------------
@@ -57,6 +69,7 @@ architecture rtl of max_11115 is
 ------------------------------------------------------------------------
 begin
 
+------------------------------------------------------------------------
     chip_select_driver : process(adc_clock)
         variable adc_clock_divisor_counter : integer range 0 to 2**10-1;
         constant adc_enabled : std_logic := '0'; 
@@ -97,13 +110,10 @@ begin
             end if;
         end if;
     end process;
-
-
+------------------------------------------------------------------------
     adc_spi_clock_driver : process(adc_clock)
         variable adc_clock_counter : integer range 0 to 2**5-1;
         variable adc_clock_divisor_counter : integer range 0 to 2**10-1;
-        constant adc_enabled : std_logic := '0'; 
-        constant adc_disabled : std_logic := '1'; 
 
         type t_adc_control is (idle, conversion);
         variable st_adc_control : t_adc_control;
@@ -145,4 +155,54 @@ begin
             end if;
         end if;
     end process adc_spi_clock_driver;	
+------------------------------------------------------------------------
+    spi_serial_data_read : process(adc_clock)
+        variable adc_clock_counter : integer range 0 to 2**5-1;
+        variable adc_clock_divisor_counter : integer range 0 to 2**10-1;
+
+        variable adc_delay_counter : integer range 0 to 2**5-1;
+        type t_adc_control is (idle, adc_read_delay, adc_serial_read);
+        variable st_adc_control : t_adc_control;
+
+    begin
+        if rising_edge(adc_clock) then
+            if reset_n = '0' then
+            -- reset state
+                adc_clock_counter := 0;
+                adc_clock_divisor_counter := 0;
+                adc_read_clock_div <= 0;
+                adc_serial_buffer <= (others => '0');
+            else
+                CASE st_adc_control is
+                    WHEN idle =>
+                        adc_clock_counter := 0;
+                        adc_read_clock_div <= 0;
+
+                        st_adc_control := idle;
+                        if max_11115_data_in.adc_conversion_requested then
+                            st_adc_control := adc_read_delay;
+                        end if;
+                    WHEN adc_read_delay =>
+                            st_adc_control := adc_serial_read;
+
+                    WHEN adc_serial_read =>
+
+                        increment_and_wrap(adc_read_clock_div, g_adc_clock_divisor);
+
+                        if adc_read_clock_div = g_adc_clock_divisor -1 then
+                            increment(adc_clock_counter);
+                        end if;
+
+                        if adc_read_clock_div < g_adc_clock_divisor/2 then
+                            adc_serial_buffer <= adc_serial_buffer(14 downto 0) & max_11115_FPGA_in.adc_serial_data;
+                        end if;
+
+                        if adc_clock_counter = g_adc_clocks_in_frame -1 then
+                            st_adc_control := idle;
+                            max_11115_data_out.adc_measurement_data <= to_uint(adc_serial_buffer);
+                        end if;
+                end CASE;
+            end if;
+        end if;
+    end process spi_serial_data_read;	
 end rtl;
