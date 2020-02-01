@@ -4,6 +4,11 @@ library ieee;
 
 package onboard_ad_control_pkg is
 
+    type muxed_ad_control is record
+        ad_start_request_toggle : boolean;
+        ad_mux_position : integer;
+    end record;
+
     type onboard_ad_control_clock_group is record
         core_clock : std_logic;
         ad_clock : std_logic;
