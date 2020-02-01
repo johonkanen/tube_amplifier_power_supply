@@ -19,14 +19,16 @@ architecture sim of tb_onboard_adc is
     signal simulator_clock : std_logic;
     constant clock_per : time := 1 ns;
     constant clock_half_per : time := 0.5 ns;
-    constant simtime_in_clocks : integer := 50;
-
+    constant simtime_in_clocks : integer := 500;
+------------------------------------------------------------------------
     signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
     signal onboard_ad_control_FPGA_in  : onboard_ad_control_FPGA_input_group;
     signal onboard_ad_control_FPGA_out : onboard_ad_control_FPGA_output_group;
     signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
     signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
-
+------------------------------------------------------------------------
+    signal adc_measurement : integer;
+    signal clocked_reset : std_logic;
 begin
 
     simtime : process
@@ -51,12 +53,24 @@ begin
             end loop;
         wait;
     end process;
+
+    reset_gen : process(simulator_clock, rstn)
+    begin
+        if rstn = '0' then
+        -- reset state
+            clocked_reset <= '0';
+    
+        elsif rising_edge(simulator_clock) then
+            clocked_reset <= '1';
+    
+        end if; -- rstn
+    end process reset_gen;	
 ------------------------------------------------------------------------
     test_adc : process(simulator_clock)
         variable adc_test_counter : integer;
     begin
         if rising_edge(simulator_clock) then
-            if rstn = '0' then
+            if clocked_reset = '0' then
             -- reset state
                 adc_test_counter := 0;
                 onboard_ad_control_data_in <=(false, 0, false, 0);
@@ -90,7 +104,8 @@ begin
     end process test_adc;	
 ------------------------------------------------------------------------
 
-    onboard_ad_control_clocks <= (simulator_clock, simulator_clock, rstn);
+    onboard_ad_control_FPGA_in.ada_data <= '1';
+    onboard_ad_control_clocks <= (simulator_clock, simulator_clock, clocked_reset);
     u_onboard_ad_control : onboard_ad_control 
     port map(
         onboard_ad_control_clocks,   
