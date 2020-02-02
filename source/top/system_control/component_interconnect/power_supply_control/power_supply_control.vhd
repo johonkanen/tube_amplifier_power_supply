@@ -76,23 +76,6 @@ begin
                 if adc_test_counter = 896 then
                     adc_test_counter := 0;
                 end if;
-                CASE adc_test_counter is
-                    WHEN 0 =>
-                        trigger_adc(ada_triggers,1);
-                    WHEN 128 =>
-                        trigger_adc(ada_triggers,2);
-                    WHEN 256 =>
-                        trigger_adc(ada_triggers,3);
-                    WHEN 384 =>
-                        trigger_adc(ada_triggers,4);
-                    WHEN 512 =>
-                        trigger_adc(ada_triggers,5);
-                    WHEN 640 =>
-                        trigger_adc(ada_triggers,6);
-                    WHEN 768 =>
-                        trigger_adc(ada_triggers,0);
-                    WHEN others =>
-                end CASE;
             end if; -- rstn
         end if; --rising_edge
     end process test_adc;	
@@ -109,6 +92,23 @@ begin
                 if master_carrier > 1896 then
                     master_carrier <= 0;
                 end if;
+                CASE master_carrier is
+                    WHEN 0 =>
+                        trigger_adc(ada_triggers,1);
+                    WHEN 256 =>
+                        trigger_adc(ada_triggers,2);
+                    WHEN 512 =>
+                        trigger_adc(ada_triggers,3);
+                    WHEN 768 =>
+                        trigger_adc(ada_triggers,4);
+                    WHEN 1024 =>
+                        trigger_adc(ada_triggers,5);
+                    WHEN 1280 =>
+                        trigger_adc(ada_triggers,6);
+                    WHEN 1536 =>
+                        trigger_adc(ada_triggers,0);
+                    WHEN others =>
+                end CASE;
         end if; --rising_edge
     end process carrier_generation;	
 ------------------------------------------------------------------------
