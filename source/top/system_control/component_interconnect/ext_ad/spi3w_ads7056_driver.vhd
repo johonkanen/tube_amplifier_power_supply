@@ -82,8 +82,7 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             r_po_spi_clk_out <= not r_po_spi_clk_out;
-                            spi_rx_buffer(i-2) <= pi_spi_serial;
-                            i <= i - 1;
+                            spi_rx_buffer <= spi_rx_buffer(16 downto 0) & pi_spi_serial;
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*to_unsigned(24,8)-g_u8_clk_cnt/2 then
@@ -128,10 +127,12 @@ begin
                             spi_clk_div := spi_clk_div + 1;
                         end if;
 
+                        -- TODO, change rx buffer loading to shift register
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             r_po_spi_clk_out <= not r_po_spi_clk_out;
-                            spi_rx_buffer(i-2) <= pi_spi_serial;
-                            i <= i - 1;
+                            -- spi_rx_buffer(i-2) <= pi_spi_serial;
+                            spi_rx_buffer <= spi_rx_buffer(16 downto 0) & pi_spi_serial;
+                            -- i <= i - 1;
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 then
