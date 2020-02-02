@@ -40,7 +40,7 @@ package onboard_ad_control_pkg is
         ada_data_is_ready : boolean;
         ada_channel : integer;
 
-        adb_conversion_data : integer;
+        adb_conversion_data : integer range 0 to 2**16-1;
         adb_data_is_ready : boolean;
         adb_channel : integer;
     end record;

@@ -48,17 +48,18 @@ architecture rtl of onboard_ad_control is
     signal ada_start_conversion : std_logic;
     signal ada_sh_ready : std_logic;
     signal ada_data : std_logic_vector(15 downto 0);
+    signal ada_mux_io : std_logic_vector(2 downto 0);
+
 
     signal adb_ready : std_logic;
-    signal adb_start : std_logic;
+    signal adb_trigger_register : std_logic_vector(2 downto 0);
+    signal adb_start_conversion : std_logic;
     signal adb_sh_ready : std_logic;
     signal adb_data : std_logic_vector(15 downto 0);
-
-    signal ada_mux_io : std_logic_vector(2 downto 0);
+    signal adb_mux_io : std_logic_vector(2 downto 0);
 begin
-
+------------------------------------------------------------------------
     onboard_ad_control_FPGA_out.ada_mux <= ada_mux_io;
-
     ad_mux_control : process(onboard_ad_control_clocks.core_clock)
     begin
         if rising_edge(onboard_ad_control_clocks.core_clock) then
@@ -98,6 +99,35 @@ ada : adc_wrapper
     ada_ready,
     ada_sh_ready,
     ada_data);
+------------------------------------------------------------------------
+    onboard_ad_control_FPGA_out.adb_mux <= adb_mux_io;
+    adb_mux_control : process(onboard_ad_control_clocks.core_clock)
+    begin
+        if rising_edge(onboard_ad_control_clocks.core_clock) then
+
+            onboard_ad_control_data_out.adb_data_is_ready <= false;
+            if onboard_ad_control_clocks.reset_n = '0' then
+            -- reset state
+                adb_mux_io <= (others => '0');
+                adb_trigger_register <= (others => '0');
+                adb_start_conversion <= '0';
+            else
+
+                adb_trigger_register <= adb_trigger_register(1 downto 0) & (onboard_ad_control_data_in.adb_triggers.ad_start_request_toggle);
+                adb_start_conversion <= adb_trigger_register(2) xor adb_trigger_register(1);
+
+                if adb_sh_ready = '1' then
+                    adb_mux_io <= drive_ad_mux(onboard_ad_control_data_in.adb_triggers.ad_mux_position);
+                    onboard_ad_control_data_out.adb_channel <= read_ad_mux_position(adb_mux_io);
+                end if;
+
+                if std_to_bool(adb_ready) then
+                    onboard_ad_control_data_out.adb_data_is_ready <= true;
+                    onboard_ad_control_data_out.adb_conversion_data <= read_ad_data(adb_data);
+                end if;
+            end if; -- rstn
+        end if; --rising_edge
+    end process adb_mux_control;	
 
 adb : adc_wrapper 
     port map(onboard_ad_control_clocks.core_clock,
@@ -105,10 +135,10 @@ adb : adc_wrapper
     onboard_ad_control_FPGA_out.adb_cs,
     onboard_ad_control_FPGA_out.adb_clock,
     onboard_ad_control_FPGA_in.adb_data,
-    adb_start,
+    adb_start_conversion,
     open,
     adb_ready,
     adb_sh_ready,
     adb_data);
-
+------------------------------------------------------------------------
 end rtl;
