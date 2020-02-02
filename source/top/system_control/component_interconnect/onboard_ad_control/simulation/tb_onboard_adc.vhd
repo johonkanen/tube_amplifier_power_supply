@@ -108,6 +108,7 @@ begin
     onboard_ad_control_FPGA_in.ada_data <= '1';
     onboard_ad_control_clocks <= (simulator_clock, simulator_clock, clocked_reset);
     ad_channel <= onboard_ad_control_data_out.ada_channel;
+    adc_measurement <= onboard_ad_control_data_out.ada_conversion_data;
     u_onboard_ad_control : onboard_ad_control 
     port map(
         onboard_ad_control_clocks,   

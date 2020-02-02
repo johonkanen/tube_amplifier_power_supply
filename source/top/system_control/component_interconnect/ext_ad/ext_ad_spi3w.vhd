@@ -36,9 +36,10 @@ architecture synth of ext_ad_spi3w is
 
     constant c_convert : std_logic := '0';
     constant c_idle : std_logic := '1';
-    signal i : integer range 0 to 31;
     signal clk_buffer : std_logic; 
     signal r_po_spi_cs : std_logic; 
+
+    signal r_po_spi_rx : std_logic_vector(15 downto 0);
 
 begin
 
@@ -52,6 +53,7 @@ begin
                 po_spi_clk_out <= '1';
                 clk_buffer <= '1';
                 b_spi_rx <= (others => '0');
+                r_po_spi_rx <= (others => '0');
                 so_spi_rdy <= '0';
             else
                 po_spi_clk_out <= clk_buffer;
@@ -60,8 +62,6 @@ begin
                         so_spi_rdy <= '0';
                         spi_process_count := (others => '0');
                         spi_clk_div := (others => '0');
-                        i <= (g_u8_clks_per_conversion)+1;
-                        b_spi_rx <= (others => '0');  
 
                         if si_spi_start = '1' then
                             r_po_spi_cs <= c_convert;
@@ -89,13 +89,14 @@ begin
 
                         if spi_clk_div = g_u8_clk_cnt/2 then
                             clk_buffer <= not clk_buffer;
-                            b_spi_rx(i-2) <= pi_spi_serial;
-                            i <= i - 1;
+                            -- r_b_spi_rx(i-2) <= pi_spi_serial;
+                            r_po_spi_rx <= r_po_spi_rx(14 downto 0) & pi_spi_serial;
                         end if;
 
                         if spi_process_count = g_u8_clk_cnt*g_u8_clks_per_conversion-g_u8_clk_cnt/2 + 1 then
                             r_po_spi_cs <= c_idle;
                             so_spi_rdy <= '1';
+                            b_spi_rx <= r_po_spi_rx;
                         else
                             r_po_spi_cs <= c_convert;
                             so_spi_rdy <= '0';
