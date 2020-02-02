@@ -15,6 +15,8 @@ end;
 architecture sim of tb_onboard_adc is
     signal rstn : std_logic;
 
+    signal ada_triggers : muxed_ad_control;
+
     signal simulation_running : boolean;
     signal simulator_clock : std_logic;
     constant clock_per : time := 1 ns;
@@ -67,6 +69,7 @@ begin
         end if; -- rstn
     end process reset_gen;	
 ------------------------------------------------------------------------
+    onboard_ad_control_data_in.ada_triggers <= ada_triggers;
     test_adc : process(simulator_clock)
         variable adc_test_counter : integer;
     begin
@@ -74,30 +77,27 @@ begin
             if clocked_reset = '0' then
             -- reset state
                 adc_test_counter := 0;
-                onboard_ad_control_data_in <=(false, 0, false, 0);
             else
                 adc_test_counter := adc_test_counter + 1;
                 if adc_test_counter = 896 then
                     adc_test_counter := 0;
                 end if;
 
-                onboard_ad_control_data_in.ada_start_request <= false;
-                onboard_ad_control_data_in.adb_start_request <= false;
                 CASE adc_test_counter is
                     WHEN 0 =>
-                        onboard_ad_control_data_in <= trigger_adc(1);
+                        trigger_adc(ada_triggers,1);
                     WHEN 128 =>
-                        onboard_ad_control_data_in <= trigger_adc(2);
+                        trigger_adc(ada_triggers,2);
                     WHEN 256 =>
-                        onboard_ad_control_data_in <= trigger_adc(3);
+                        trigger_adc(ada_triggers,3);
                     WHEN 384 =>
-                        onboard_ad_control_data_in <= trigger_adc(4);
+                        trigger_adc(ada_triggers,4);
                     WHEN 512 =>
-                        onboard_ad_control_data_in <= trigger_adc(5);
+                        trigger_adc(ada_triggers,5);
                     WHEN 640 =>
-                        onboard_ad_control_data_in <= trigger_adc(6);
+                        trigger_adc(ada_triggers,6);
                     WHEN 768 =>
-                        onboard_ad_control_data_in <= trigger_adc(0);
+                        trigger_adc(ada_triggers,0);
                     WHEN others =>
                 end CASE;
             end if; -- rstn

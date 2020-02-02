@@ -44,7 +44,8 @@ architecture rtl of onboard_ad_control is
     end component; 
 
     signal ada_ready : std_logic;
-    signal ada_start : std_logic;
+    signal ada_trigger_register : std_logic_vector(2 downto 0);
+    signal ada_start_conversion : std_logic;
     signal ada_sh_ready : std_logic;
     signal ada_data : std_logic_vector(15 downto 0);
 
@@ -53,11 +54,10 @@ architecture rtl of onboard_ad_control is
     signal adb_sh_ready : std_logic;
     signal adb_data : std_logic_vector(15 downto 0);
 
-    signal ad_mux_io : std_logic_vector(2 downto 0);
+    signal ada_mux_io : std_logic_vector(2 downto 0);
 begin
 
-    ada_start <= bool_to_std(onboard_ad_control_data_in.ada_start_request);
-    onboard_ad_control_FPGA_out.ada_mux <= ad_mux_io;
+    onboard_ad_control_FPGA_out.ada_mux <= ada_mux_io;
 
     ad_mux_control : process(onboard_ad_control_clocks.core_clock)
     begin
@@ -66,12 +66,17 @@ begin
             onboard_ad_control_data_out.ada_data_is_ready <= false;
             if onboard_ad_control_clocks.reset_n = '0' then
             -- reset state
-                ad_mux_io <= (others => '0');
+                ada_mux_io <= (others => '0');
+                ada_trigger_register <= (others => '0');
+                ada_start_conversion <= '0';
             else
 
+                ada_trigger_register <= ada_trigger_register(1 downto 0) & (onboard_ad_control_data_in.ada_triggers.ad_start_request_toggle);
+                ada_start_conversion <= ada_trigger_register(2) xor ada_trigger_register(1);
+
                 if ada_sh_ready = '1' then
-                    ad_mux_io <= drive_ad_mux(onboard_ad_control_data_in.ada_mux_position);
-                    onboard_ad_control_data_out.ada_channel <= read_ad_mux_position(ad_mux_io);
+                    ada_mux_io <= drive_ad_mux(onboard_ad_control_data_in.ada_triggers.ad_mux_position);
+                    onboard_ad_control_data_out.ada_channel <= read_ad_mux_position(ada_mux_io);
                 end if;
 
                 if std_to_bool(ada_ready) then
@@ -88,7 +93,7 @@ ada : adc_wrapper
     onboard_ad_control_FPGA_out.ada_cs,
     onboard_ad_control_FPGA_out.ada_clock,
     onboard_ad_control_FPGA_in.ada_data,
-    ada_start,
+    ada_start_conversion,
     open,
     ada_ready,
     ada_sh_ready,

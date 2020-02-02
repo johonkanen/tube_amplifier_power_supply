@@ -5,7 +5,7 @@ library ieee;
 package onboard_ad_control_pkg is
 
     type muxed_ad_control is record
-        ad_start_request_toggle : boolean;
+        ad_start_request_toggle : std_logic;
         ad_mux_position : integer range 0 to 7;
     end record;
 
@@ -31,10 +31,8 @@ package onboard_ad_control_pkg is
     end record;
 
     type onboard_ad_control_data_input_group is record
-        ada_start_request : boolean;
-        ada_mux_position : integer;
-        adb_start_request : boolean;
-        adb_mux_position : integer;
+        ada_triggers : muxed_ad_control;
+        adb_triggers : muxed_ad_control;
     end record;
 
     type onboard_ad_control_data_output_group is record
@@ -60,8 +58,7 @@ package onboard_ad_control_pkg is
     end component onboard_ad_control;
 
 ------------------------------------------------------------------------
-    function trigger_adc ( next_ad_channel : integer) 
-            return onboard_ad_control_data_input_group;
+    procedure trigger_adc (signal adc_controls : inout muxed_ad_control; next_ad_channel : integer);
 ------------------------------------------------------------------------
     function adc_is_ready ( adc_data : onboard_ad_control_data_output_group; adc_channel : integer)
             return boolean;
@@ -73,15 +70,16 @@ end package onboard_ad_control_pkg;
 
 package body onboard_ad_control_pkg is
 ------------------------------------------------------------------------
-    function trigger_adc
+    procedure trigger_adc
     (
+        signal adc_controls : inout muxed_ad_control;
         next_ad_channel : integer
     )
-    return onboard_ad_control_data_input_group
     is
-        variable jee : onboard_ad_control_data_input_group;
+        variable jee : muxed_ad_control;
     begin
-        return (true, next_ad_channel, true, next_ad_channel);
+        jee :=(ad_start_request_toggle => (not adc_controls.ad_start_request_toggle), ad_mux_position => next_ad_channel);
+        adc_controls <= jee;
     end trigger_adc;
 ------------------------------------------------------------------------
     function adc_is_ready
