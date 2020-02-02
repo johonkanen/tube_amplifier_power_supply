@@ -77,6 +77,7 @@ begin
             if clocked_reset = '0' then
             -- reset state
                 adc_test_counter := 0;
+                ada_triggers <= ('0', 0);
             else
                 adc_test_counter := adc_test_counter + 1;
                 if adc_test_counter = 896 then
