@@ -82,7 +82,7 @@ derive_clock_uncertainty
 # Set False Path
 #**************************************************************
 
-set_false_path -from * -to [get_ports *pwm*]
+set_false_path -from * -to [get_ports *gate*]
 set_false_path -from * -to [get_ports *led*]
 
 #**************************************************************

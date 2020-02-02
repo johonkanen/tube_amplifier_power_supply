@@ -19,6 +19,7 @@ architecture rtl of llc_modulator is
     subtype uint12 is integer range 0 to 2**12-1;
 
     signal carrier: uint12;
+    signal r_carrier: uint12;
     signal deadtime : uint12;
     signal r1_deadtime : uint12;
     signal s_pulse : std_logic;
@@ -99,13 +100,13 @@ startup : process(llc_modulator_clocks.modulator_clock)
         if llc_modulator_data_in.llc_is_enabled then
             s_pulse <= '0';
             reset_carrier <= 474;
+            carrier <= 0;
         else
+            carrier <= carrier + 1;
             reset_carrier <= period;
             if carrier > reset_carrier then
                carrier <= 0;
                s_pulse <= NOT s_pulse;
-            else
-                carrier <= carrier + 1;
             end if;
 
         end if;
