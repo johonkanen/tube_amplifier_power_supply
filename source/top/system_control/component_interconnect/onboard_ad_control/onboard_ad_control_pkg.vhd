@@ -6,7 +6,7 @@ package onboard_ad_control_pkg is
 
     type muxed_ad_control is record
         ad_start_request_toggle : boolean;
-        ad_mux_position : integer;
+        ad_mux_position : integer range 0 to 7;
     end record;
 
     type onboard_ad_control_clock_group is record
