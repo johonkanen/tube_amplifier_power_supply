@@ -33,6 +33,7 @@ architecture rtl of system_control is
     signal zero_cross_event : std_logic;
 
     signal number_of_delays : integer;
+    signal dc_link_measurement : integer;
 
 
     signal component_interconnect_data_in  : component_interconnect_data_input_group;
@@ -89,7 +90,6 @@ begin
 		variable st_main_states : t_system_states;
 
 
-        variable dc_link_measurement : integer;
 
         use onboard_ad_control_pkg.ad_channel_is_ready;
         use onboard_ad_control_pkg.get_ad_measurement;
@@ -103,7 +103,7 @@ begin
             led3_color <= led_color_red;
             start_dly <= '0';
             number_of_delays <= 0;
-            dc_link_measurement := 0;
+            dc_link_measurement <= 0;
             st_main_states := init;
         else
 
