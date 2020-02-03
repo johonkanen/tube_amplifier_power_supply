@@ -7,6 +7,19 @@ library onboard_adc_library;
 
 package psu_measurement_interface_pkg is
 ------------------------------------------------------------------------
+function pfc_I1_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+--------------------------------------------------
+function pfc_I2_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+------------------------------------------------------------------------
+function DHB_current_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+--------------------------------------------------
+function LLC_current_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+--------------------------------------------------
+function dc_link_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+--------------------------------------------------
+function vac_is_ready( adc : in onboard_ad_control_data_output_group) return boolean;
+--------------------------------------------------
+------------------------------------------------------------------------
     procedure get_pfc_I1 (
         signal adc_data : in onboard_ad_control_data_output_group; pfc_I1 : out integer);
 ------------------------------------------------------------------------
@@ -28,10 +41,21 @@ package psu_measurement_interface_pkg is
     procedure get_dc_link (
         signal adc_data : in onboard_ad_control_data_output_group; dc_link : out integer);
 ------------------------------------------------------------------------
+
 end package psu_measurement_interface_pkg;
+
+
+
+
 
 package body psu_measurement_interface_pkg is
 ------------------------------------------------------------------------
+    function pfc_I1_is_ready ( adc : in onboard_ad_control_data_output_group) return boolean
+    is 
+    begin 
+        return ad_channel_is_ready(adc.adb_measurements,3); 
+    end pfc_I1_is_ready;
+--------------------------------------------------
     procedure get_pfc_I1
     (
         signal adc_data : in onboard_ad_control_data_output_group;
@@ -44,6 +68,12 @@ package body psu_measurement_interface_pkg is
         end if;
     end get_pfc_I1;
 ------------------------------------------------------------------------
+function pfc_I2_is_ready( adc : in onboard_ad_control_data_output_group) return boolean
+is
+begin
+    return ad_channel_is_ready(adc.ada_measurements,3);
+end;
+------------------------------
     procedure get_pfc_I2
     (
         signal adc_data : in onboard_ad_control_data_output_group;
@@ -68,6 +98,12 @@ package body psu_measurement_interface_pkg is
         end if;
     end get_pfc_current;
 ------------------------------------------------------------------------
+function DHB_current_is_ready( adc : in onboard_ad_control_data_output_group) return boolean
+is
+begin
+    return ad_channel_is_ready(adc.adb_measurements,6);
+end;
+------------------------------
     procedure get_DHB_current
     (
         signal adc_data : in onboard_ad_control_data_output_group;
@@ -80,6 +116,12 @@ package body psu_measurement_interface_pkg is
         end if;
     end get_DHB_current;
 ------------------------------------------------------------------------
+function LLC_current_is_ready( adc : in onboard_ad_control_data_output_group) return boolean
+is
+begin
+    return ad_channel_is_ready(adc.adb_measurements,2);
+end;
+------------------------------
     procedure get_LLC_current
     (
         signal adc_data : in onboard_ad_control_data_output_group;
@@ -92,6 +134,12 @@ package body psu_measurement_interface_pkg is
         end if;
     end get_LLC_current;
 ------------------------------------------------------------------------
+function vac_is_ready( adc : in onboard_ad_control_data_output_group) return boolean
+is
+begin
+    return ad_channel_is_ready(adc.adb_measurements,1);
+end;
+------------------------------
     procedure get_vac
     (
         signal adc_data : in onboard_ad_control_data_output_group;
@@ -104,6 +152,12 @@ package body psu_measurement_interface_pkg is
         end if;
     end get_vac;
 ------------------------------------------------------------------------
+function dc_link_is_ready( adc : in onboard_ad_control_data_output_group) return boolean
+is
+begin
+    return ad_channel_is_ready(adc.adb_measurements,4);
+end;
+--------------------------------------------------
     procedure get_dc_link
     (
         signal adc_data : in onboard_ad_control_data_output_group;

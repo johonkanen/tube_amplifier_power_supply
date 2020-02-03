@@ -106,9 +106,7 @@ begin
             dc_link_measurement := 0;
             st_main_states := init;
         else
-            -- if ad_channel_is_ready(onboard_adc.adb_measurements,4) then
-            --     dc_link_measurement := get_ad_measurement(onboard_adc.adb_measurements);
-            -- end if;
+
             get_dc_link(onboard_adc,dc_link_measurement);
 
 	    CASE st_main_states is
@@ -122,7 +120,6 @@ begin
 				system_control_FPGA_out.bypass_relay <= '0';
 
 				start_dly <= '0';
-				-- r_si_tcmd_system_cmd <= init;
 
 				if system_clocks.pll_lock = '1' then
 				    st_main_states := charge_dc_link;
@@ -140,10 +137,10 @@ begin
 				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
 				start_dly <= '1';
-				-- wait until DC link above 100V
 
+				-- wait until DC link above 100V
                 st_main_states := charge_dc_link; 
-                if dc_link_measurement > 12e3 then
+                if dc_link_measurement > 4900 then
                         st_main_states := bypass_relay;
                 end if;
 			WHEN bypass_relay=> 
@@ -182,18 +179,6 @@ begin
 				    start_dly <= '1';
 				end if;
 				
-                -- if r_so_adb_ctrl.ad_rdy_trigger = '1' then
-                --     if  r_so_adb_ctrl.std3_ad_address = 2 then -- if bypass released at 0V, vac meas = 2088
-                --         if unsigned(r_so_adb_ctrl.std16_ad_bus) > 16504 AND unsigned(r_so_adb_ctrl.std16_ad_bus) < 16904 then
-                --             zero_cross_event <= '1';
-                --         else
-                --             zero_cross_event <= '0';
-                --         end if;
-                --     end if;
-                -- end if;
-				-- r_si_tcmd_system_cmd <= start_aux;
-
-
 			WHEN system_running =>
 
                 led1_color <= led_color_blu; 
