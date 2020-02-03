@@ -91,25 +91,25 @@ begin
 
                 CASE adc_test_counter is
                     WHEN 0 =>
-                        trigger_adc(ada_triggers,1);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,1);
                     WHEN 128 =>
-                        trigger_adc(ada_triggers,2);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,2);
                     WHEN 256 =>
-                        trigger_adc(ada_triggers,3);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,3);
                     WHEN 384 =>
-                        trigger_adc(ada_triggers,4);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,4);
                     WHEN 512 =>
                         trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,5);
                     WHEN 640 =>
-                        trigger_adc(ada_triggers,6);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,6);
                     WHEN 768 =>
-                        trigger_adc(ada_triggers,0);
+                        trigger_adc(ada_triggers,5);
                         trigger_adc(adb_triggers,0);
                     WHEN others =>
                 end CASE;

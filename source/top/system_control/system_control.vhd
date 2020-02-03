@@ -43,6 +43,7 @@ architecture rtl of system_control is
 -- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
     alias aka_ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
+    alias aka_adb_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.adb_channel;
     -- alias aka_ada_data : integer range 0 to 2**16-1 is component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data;
     alias aka_ada_is_ready : boolean is component_interconnect_data_out.onboard_ad_control_data_out.ada_data_is_ready;
 

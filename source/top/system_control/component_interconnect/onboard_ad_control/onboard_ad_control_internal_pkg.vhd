@@ -21,7 +21,7 @@ package body onboard_ad_control_internal_pkg is
     -- translate ad channels to mux positions
     type integer_array is array (integer range 0 to 7) of integer;
     constant channel_to_mux_position : integer_array := (2,1,0,3,4,6,7,5);
-    constant mux_to_ad_channel : integer_array       := (2,1,0,3,4,6,7,5);
+    constant mux_to_ad_channel : integer_array       := (2,1,0,3,4,7,5,6);
 ------------------------------------------------------------------------
     function bool_to_std ( test_condition : boolean)
     return std_logic

@@ -23,6 +23,7 @@ end entity power_supply_control;
 architecture rtl of power_supply_control is
 
     signal ada_triggers : muxed_ad_control;
+    signal adb_triggers : muxed_ad_control;
 
     alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in; 
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
@@ -64,6 +65,7 @@ begin
 
 ------------------------------------------------------------------------
     onboard_ad_control_data_in.ada_triggers <= ada_triggers;
+    onboard_ad_control_data_in.adb_triggers <= ada_triggers;
     test_adc : process(power_supply_control_clocks.core_clock)
         variable adc_test_counter : integer;
     begin
@@ -92,21 +94,36 @@ begin
                 if master_carrier > 1896 then
                     master_carrier <= 0;
                 end if;
+
                 CASE master_carrier is
-                    WHEN 0 =>
-                        trigger_adc(ada_triggers,1);
-                    WHEN 256 =>
-                        trigger_adc(ada_triggers,2);
-                    WHEN 512 =>
-                        trigger_adc(ada_triggers,3);
-                    WHEN 768 =>
-                        trigger_adc(ada_triggers,4);
-                    WHEN 1024 =>
-                        trigger_adc(ada_triggers,5);
-                    WHEN 1280 =>
+                    WHEN 6 =>
+                        -- pfc current measurement
                         trigger_adc(ada_triggers,6);
-                    WHEN 1536 =>
+                        trigger_adc(adb_triggers,6);
+                    WHEN 300 =>
+                        --dhb_I
                         trigger_adc(ada_triggers,0);
+                        trigger_adc(adb_triggers,2);
+                    WHEN 500 =>
+                        --heater_I
+                        trigger_adc(ada_triggers,1);
+                        trigger_adc(adb_triggers,6);
+                    WHEN 700 =>
+                        --dhb_I
+                        trigger_adc(ada_triggers,2);
+                        trigger_adc(adb_triggers,2);
+                    WHEN 900 =>
+                        --heater_I
+                        trigger_adc(ada_triggers,4);
+                        trigger_adc(adb_triggers,6);
+                    WHEN 1200 =>
+                        --heater_I
+                        trigger_adc(ada_triggers,5);
+                        trigger_adc(adb_triggers,6);
+                    WHEN 1500 =>
+                        -- vaux & vac
+                        trigger_adc(ada_triggers,3);
+                        trigger_adc(adb_triggers,3);
                     WHEN others =>
                 end CASE;
         end if; --rising_edge
