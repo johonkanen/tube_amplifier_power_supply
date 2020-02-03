@@ -8,6 +8,11 @@ library work;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
 
+
+library onboard_adc_library;
+    use onboard_adc_library.onboard_ad_control_pkg;
+    use onboard_adc_library.psu_measurement_interface_pkg.all;
+
 entity system_control is
     port (
         system_clocks : in system_clock_group;    
@@ -36,16 +41,10 @@ architecture rtl of system_control is
     alias led1_color : led_counters is component_interconnect_data_in.led1_color;
     alias led2_color : led_counters is component_interconnect_data_in.led2_color;
     alias led3_color : led_counters is component_interconnect_data_in.led3_color;
-        -- ada_conversion_data : integer range 0 to 2**16-1;
-        -- ada_data_is_ready : boolean;
-        -- ada_channel : integer;
--- signal r_so_ada_ctrl : rec_onboard_ad_ctrl_signals;
--- signal r_so_adb_ctrl : rec_onboard_ad_ctrl_signals;
 
-    alias aka_ada_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.ada_channel;
-    alias aka_adb_channel : integer is component_interconnect_data_out.onboard_ad_control_data_out.adb_channel;
-    -- alias aka_ada_data : integer range 0 to 2**16-1 is component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data;
-    alias aka_ada_is_ready : boolean is component_interconnect_data_out.onboard_ad_control_data_out.ada_data_is_ready;
+    use onboard_ad_control_pkg.ad_channel_is_ready;
+
+    alias onboard_adc : onboard_ad_control_pkg.onboard_ad_control_data_output_group is component_interconnect_data_out.onboard_ad_control_data_out;
 
 begin
 
@@ -89,6 +88,12 @@ begin
                         stop);
 		variable st_main_states : t_system_states;
 
+
+        variable dc_link_measurement : integer;
+
+        use onboard_ad_control_pkg.ad_channel_is_ready;
+        use onboard_ad_control_pkg.get_ad_measurement;
+
     begin
 
 	if rising_edge(system_clocks.core_clock) then
@@ -98,8 +103,13 @@ begin
             led3_color <= led_color_red;
             start_dly <= '0';
             number_of_delays <= 0;
+            dc_link_measurement := 0;
             st_main_states := init;
         else
+            -- if ad_channel_is_ready(onboard_adc.adb_measurements,4) then
+            --     dc_link_measurement := get_ad_measurement(onboard_adc.adb_measurements);
+            -- end if;
+            get_dc_link(onboard_adc,dc_link_measurement);
 
 	    CASE st_main_states is
 			WHEN init =>
@@ -129,18 +139,13 @@ begin
 
 				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
-				-- r_si_tcmd_system_cmd <= charge_dc_link;
 				start_dly <= '1';
 				-- wait until DC link above 100V
 
                 st_main_states := charge_dc_link; 
-                if aka_ada_channel = 5 AND aka_ada_is_ready then
+                if dc_link_measurement > 12e3 then
                         st_main_states := bypass_relay;
                 end if;
-                -- if component_interconnect_data_out.onboard_ad_control_data_out.ada_conversion_data = 0 then
-                --         st_main_states := bypass_relay;
-                -- end if;
-
 			WHEN bypass_relay=> 
 
                 led1_color <= led_color_pink; 

@@ -83,11 +83,11 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if adc_is_ready(onboard_ad_control_data_out,
+                    if ad_channel_is_ready(onboard_ad_control_data_out.ada_measurements,
                        to_integer(unsigned(so16_uart_rx_data))) then
 
                         increment(process_counter);
-                        uin := get_ada_measurement(onboard_ad_control_data_out);
+                        uin := get_ad_measurement(onboard_ad_control_data_out.ada_measurements);
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;

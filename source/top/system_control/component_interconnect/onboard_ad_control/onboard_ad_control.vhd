@@ -64,7 +64,7 @@ begin
     begin
         if rising_edge(onboard_ad_control_clocks.core_clock) then
 
-            onboard_ad_control_data_out.ada_data_is_ready <= false;
+            onboard_ad_control_data_out.ada_measurements.ad_data_is_ready <= false;
             if onboard_ad_control_clocks.reset_n = '0' then
             -- reset state
                 ada_mux_io <= (others => '0');
@@ -77,12 +77,12 @@ begin
 
                 if ada_sh_ready = '1' then
                     ada_mux_io <= drive_ad_mux(onboard_ad_control_data_in.ada_triggers.ad_mux_position);
-                    onboard_ad_control_data_out.ada_channel <= read_ad_mux_position(ada_mux_io);
+                    onboard_ad_control_data_out.ada_measurements.ad_channel <= read_ad_mux_position(ada_mux_io);
                 end if;
 
                 if std_to_bool(ada_ready) then
-                    onboard_ad_control_data_out.ada_data_is_ready <= true;
-                    onboard_ad_control_data_out.ada_conversion_data <= read_ad_data(ada_data);
+                    onboard_ad_control_data_out.ada_measurements.ad_data_is_ready <= true;
+                    onboard_ad_control_data_out.ada_measurements.ad_conversion_data <= read_ad_data(ada_data);
                 end if;
             end if; -- rstn
         end if; --rising_edge
@@ -105,7 +105,7 @@ ada : adc_wrapper
     begin
         if rising_edge(onboard_ad_control_clocks.core_clock) then
 
-            onboard_ad_control_data_out.adb_data_is_ready <= false;
+            onboard_ad_control_data_out.adb_measurements.ad_data_is_ready <= false;
             if onboard_ad_control_clocks.reset_n = '0' then
             -- reset state
                 adb_mux_io <= (others => '0');
@@ -118,12 +118,12 @@ ada : adc_wrapper
 
                 if adb_sh_ready = '1' then
                     adb_mux_io <= drive_ad_mux(onboard_ad_control_data_in.adb_triggers.ad_mux_position);
-                    onboard_ad_control_data_out.adb_channel <= read_ad_mux_position(adb_mux_io);
+                    onboard_ad_control_data_out.adb_measurements.ad_channel <= read_ad_mux_position(adb_mux_io);
                 end if;
 
                 if std_to_bool(adb_ready) then
-                    onboard_ad_control_data_out.adb_data_is_ready <= true;
-                    onboard_ad_control_data_out.adb_conversion_data <= read_ad_data(adb_data);
+                    onboard_ad_control_data_out.adb_measurements.ad_data_is_ready <= true;
+                    onboard_ad_control_data_out.adb_measurements.ad_conversion_data <= read_ad_data(adb_data);
                 end if;
             end if; -- rstn
         end if; --rising_edge

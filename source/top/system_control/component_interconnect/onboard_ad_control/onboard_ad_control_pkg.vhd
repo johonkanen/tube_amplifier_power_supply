@@ -9,6 +9,12 @@ package onboard_ad_control_pkg is
         ad_mux_position : integer range 0 to 7;
     end record;
 
+    type ad_measurement_group is record
+        ad_conversion_data : integer range 0 to 2**16-1;
+        ad_channel : integer range 0 to 7;
+        ad_data_is_ready : boolean;
+    end record;
+
     type onboard_ad_control_clock_group is record
         core_clock : std_logic;
         ad_clock : std_logic;
@@ -36,13 +42,8 @@ package onboard_ad_control_pkg is
     end record;
 
     type onboard_ad_control_data_output_group is record
-        ada_conversion_data : integer range 0 to 2**16-1;
-        ada_data_is_ready : boolean;
-        ada_channel : integer;
-
-        adb_conversion_data : integer range 0 to 2**16-1;
-        adb_data_is_ready : boolean;
-        adb_channel : integer;
+        ada_measurements : ad_measurement_group;
+        adb_measurements : ad_measurement_group;
     end record;
 
     component onboard_ad_control is
@@ -60,10 +61,10 @@ package onboard_ad_control_pkg is
 ------------------------------------------------------------------------
     procedure trigger_adc (signal adc_controls : inout muxed_ad_control; next_ad_channel : integer);
 ------------------------------------------------------------------------
-    function adc_is_ready ( adc_data : onboard_ad_control_data_output_group; adc_channel : integer)
+    function ad_channel_is_ready ( adc_data : ad_measurement_group; adc_channel : integer)
             return boolean;
 ------------------------------------------------------------------------
-    function get_ada_measurement ( adc_data : onboard_ad_control_data_output_group) 
+    function get_ad_measurement ( adc_data : ad_measurement_group) 
             return integer;
 ------------------------------------------------------------------------
 end package onboard_ad_control_pkg;
@@ -82,25 +83,25 @@ package body onboard_ad_control_pkg is
         adc_controls <= jee;
     end trigger_adc;
 ------------------------------------------------------------------------
-    function adc_is_ready
+    function ad_channel_is_ready
     (
-        adc_data : onboard_ad_control_data_output_group;
+        adc_data : ad_measurement_group;
         adc_channel : integer
     )
     return boolean
     is
     begin
-        return adc_data.ada_data_is_ready and adc_data.ada_channel = adc_channel;
-    end adc_is_ready;
+        return adc_data.ad_data_is_ready and adc_data.ad_channel = adc_channel;
+    end ad_channel_is_ready;
 ------------------------------------------------------------------------
-        function get_ada_measurement
-        (
-            adc_data : onboard_ad_control_data_output_group
-        )
-        return integer
-        is
-        begin
-            return adc_data.ada_conversion_data;
-        end get_ada_measurement;
-        ------------------------------------------------------------------------
+    function get_ad_measurement
+    (
+        adc_data : ad_measurement_group
+    )
+    return integer
+    is
+    begin
+        return adc_data.ad_conversion_data;
+    end get_ad_measurement;
+------------------------------------------------------------------------
 end package body onboard_ad_control_pkg;
