@@ -66,22 +66,6 @@ begin
 ------------------------------------------------------------------------
     onboard_ad_control_data_in.ada_triggers <= ada_triggers;
     onboard_ad_control_data_in.adb_triggers <= ada_triggers;
-    test_adc : process(power_supply_control_clocks.core_clock)
-        variable adc_test_counter : integer;
-    begin
-        if rising_edge(power_supply_control_clocks.core_clock) then
-            if power_supply_control_clocks.pll_lock = '0' then
-            -- reset state
-                adc_test_counter := 0;
-            else
-                adc_test_counter := adc_test_counter + 1;
-                if adc_test_counter = 896 then
-                    adc_test_counter := 0;
-                end if;
-            end if; -- rstn
-        end if; --rising_edge
-    end process test_adc;	
-
     -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
     carrier_generation : process(power_supply_control_clocks.modulator_clock) 
@@ -90,6 +74,7 @@ begin
                 -- register carrier for pfc and dhb to shorten logic path
                 pfc_control_data_in.pfc_carrier <= master_carrier;
                 dhb_control_data_in.dhb_carrier <= master_carrier;
+
                 master_carrier <= master_carrier + 1;
                 if master_carrier > 1896 then
                     master_carrier <= 0;
