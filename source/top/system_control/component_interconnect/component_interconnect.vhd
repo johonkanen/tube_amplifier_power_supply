@@ -119,7 +119,6 @@ begin
 ------------------------------------------------------------------------  
 -- onboard_ad_control_data_in <= component_interconnect_data_in.onboard_ad_control_data_in;
     component_interconnect_data_out.onboard_ad_control_data_out <= onboard_ad_control_data_out;
-
     onboard_ad_control_clocks <= (system_clocks.core_clock, system_clocks.core_clock, system_clocks.pll_lock);
     u_onboard_ad_control : onboard_ad_control 
     port map(

@@ -4,6 +4,7 @@ library ieee;
 
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.measurement_interface_pkg.all;
 
 
 entity measurement_interface is
@@ -42,21 +43,29 @@ architecture rtl of measurement_interface is
                 -- ext spi control signals
                 s_spi_busy	 : out std_logic; 
                 -- output signal indicating word is ready to be read 
-                so_spi_rdy	 : out std_logic; 
+                so_spi_ready	 : out std_logic; 
                 -- output signal indicating sampling is done
-                so_sh_rdy	 : out std_logic; 
+                so_sh_ready	 : out std_logic; 
                 -- output buffer
                 b_spi_rx : out std_logic_vector(15 downto 0)  
             );	
     end component; 
 
+    signal onboard_ad_control_clocks : onboard_ad_control_clock_group;
+    signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+    signal onboard_ad_control_data_in : onboard_ad_control_data_input_group;
+
     signal llc_voltage : integer range 0 to 2**16-1;
     signal llc_ad_trigger : std_logic_vector(2 downto 0);
     signal llc_ad_spi_start : std_logic;
+    signal llc_spi_ready : std_logic;
+    signal llc_ad_data : std_logic_vector(15 downto 0);
 
     signal dhb_voltage : integer range 0 to 2**16-1;
     signal dhb_ad_trigger : std_logic_vector(2 downto 0);
-    signal llc_ad_spi_start : std_logic;
+    signal dhb_ad_spi_start : std_logic;
+    signal dhb_spi_ready : std_logic;
+    signal dhb_ad_data : std_logic_vector(15 downto 0);
 
 begin
 ------------------------------------------------------------------------
@@ -92,12 +101,12 @@ llc_adc : ext_ad_spi3w
 			measurement_interface_FPGA_out.llc_ad_cs,
 			measurement_interface_FPGA_out.llc_ad_clock,
 			measurement_interface_FPGA_in.llc_ad_data, 
-			si_spi_start,
+			llc_ad_spi_start,
 			open,
-			so_spi_rdy,
+			llc_spi_ready,
 			open,
-			s16_spi_data);
-llc_voltage <= to_integer(shift_left(unsigned(s16_spi_data),3));
+			llc_ad_data);
+llc_voltage <= to_integer(shift_left(unsigned(llc_ad_data),3));
 ------------------------------------------------------------------------
 dhb_adc : ext_ad_spi3w
     generic map(4,14,9)
@@ -107,12 +116,12 @@ dhb_adc : ext_ad_spi3w
 			measurement_interface_FPGA_out.dhb_ad_cs,
 			measurement_interface_FPGA_out.dhb_ad_clock,
 			measurement_interface_FPGA_in.dhb_ad_data, 
-			si_spi_start,
+			dhb_ad_spi_start,
 			open,
-			so_spi_rdy,
+			dhb_spi_ready,
 			open,
-			s16_spi_data);
-dhb_voltage <= to_integer(shift_left(unsigned(s16_spi_data),3));
+			dhb_ad_data);
+dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
 ------------------------------------------------------------------------
     measurement_interface_data_out.onboard_ad_control_data_out <= onboard_ad_control_data_out;
     onboard_ad_control_clocks <= (core_clock, core_clock, reset_n);
