@@ -6,7 +6,6 @@ library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
     use onboard_adc_library.measurement_interface_pkg.all;
 
-
 entity measurement_interface is
     port 
     (
@@ -69,7 +68,7 @@ architecture rtl of measurement_interface is
 
 begin
 ------------------------------------------------------------------------
-    trigger_llc_ad : process(core_clock)
+    catch_measurement_triggers : process(core_clock)
         
     begin
         if rising_edge(core_clock) then
@@ -91,7 +90,7 @@ begin
                 end if;
             end if; -- rstn
         end if; --rising_edge
-    end process trigger_llc_ad;	
+    end process catch_measurement_triggers;	
 ------------------------------------------------------------------------
 llc_adc : ext_ad_spi3w
     generic map(4,14,9)
@@ -123,6 +122,7 @@ dhb_adc : ext_ad_spi3w
 			dhb_ad_data);
 dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
 ------------------------------------------------------------------------
+------------------------------------------------------------------------
     measurement_interface_data_out.onboard_ad_control_data_out <= onboard_ad_control_data_out;
     onboard_ad_control_clocks <= (core_clock, core_clock, reset_n);
     u_onboard_ad_control : onboard_ad_control 
@@ -133,4 +133,5 @@ dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
         onboard_ad_control_data_in,
         onboard_ad_control_data_out 
     );
+------------------------------------------------------------------------
 end rtl;
