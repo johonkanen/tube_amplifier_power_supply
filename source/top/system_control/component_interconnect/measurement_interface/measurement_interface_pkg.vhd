@@ -15,18 +15,31 @@ package measurement_interface_pkg is
     
     type measurement_interface_FPGA_input_group is record
         onboard_ad_control_FPGA_in : onboard_ad_control_FPGA_input_group;
+        llc_ad_data  : std_logic;
+        dhb_ad_data  : std_logic;
     end record;
     
     type measurement_interface_FPGA_output_group is record
         onboard_ad_control_FPGA_out : onboard_ad_control_FPGA_output_group;
+        llc_ad_clock : std_logic;
+        llc_ad_cs : std_logic;
+
+        dhb_ad_clock : std_logic;
+        dhb_ad_cs : std_logic;
     end record;
     
     type measurement_interface_data_input_group is record
         onboard_ad_control_data_in : onboard_ad_control_data_input_group;
+        llc_ad_start_request_toggle : std_logic;
+        dhb_ad_start_request_toggle : std_logic;
     end record;
     
     type measurement_interface_data_output_group is record
         onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+        llc_ad_measurement : std_logic;
+        llc_ad_is_done : boolean;
+        dhb_ad_measurement : std_logic;
+        dhb_ad_is_done : boolean;
     end record;
     
     component measurement_interface is
