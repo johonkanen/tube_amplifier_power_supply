@@ -153,6 +153,5 @@ begin
             dhb_control_data_in,
             dhb_control_data_out
         );
-
 ------------------------------------------------------------------------
 end rtl;
