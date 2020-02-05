@@ -51,8 +51,6 @@ architecture rtl of measurement_interface is
     end component; 
 
     signal onboard_ad_control_clocks : onboard_ad_control_clock_group;
-    signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
-    signal onboard_ad_control_data_in : onboard_ad_control_data_input_group;
 
     signal llc_voltage : integer range 0 to 2**16-1;
     signal llc_ad_trigger : std_logic_vector(2 downto 0);
@@ -123,15 +121,14 @@ dhb_adc : ext_ad_spi3w
 dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
-    measurement_interface_data_out.onboard_ad_control_data_out <= onboard_ad_control_data_out;
     onboard_ad_control_clocks <= (core_clock, core_clock, reset_n);
     u_onboard_ad_control : onboard_ad_control 
     port map(
         onboard_ad_control_clocks,   
         measurement_interface_FPGA_in.onboard_ad_control_FPGA_in,  
         measurement_interface_FPGA_out.onboard_ad_control_FPGA_out, 
-        onboard_ad_control_data_in,
-        onboard_ad_control_data_out 
+        measurement_interface_data_in.onboard_ad_control_data_in,
+        measurement_interface_data_out.onboard_ad_control_data_out 
     );
 ------------------------------------------------------------------------
 end rtl;

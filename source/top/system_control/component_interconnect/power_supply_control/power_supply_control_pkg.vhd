@@ -3,7 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.measurement_interface_pkg.all;
 
 package power_supply_control_pkg is
 
@@ -20,11 +20,11 @@ package power_supply_control_pkg is
     end record;
     
     type power_supply_control_data_input_group is record
-        onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+        measurement_interface_data_out : measurement_interface_data_output_group;
     end record;
     
     type power_supply_control_data_output_group is record
-        onboard_ad_control_data_in : onboard_ad_control_data_input_group;
+        measurement_interface_data_in : measurement_interface_data_input_group;
     end record;
     
     component power_supply_control is

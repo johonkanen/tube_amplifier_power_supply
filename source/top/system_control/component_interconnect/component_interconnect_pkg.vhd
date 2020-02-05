@@ -4,17 +4,17 @@ library ieee;
 
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg;
+    use onboard_adc_library.measurement_interface_pkg;
 
 package component_interconnect_pkg is
 
 type component_interconnect_FPGA_input_group is record
-    onboard_ad_control_FPGA_in : onboard_ad_control_pkg.onboard_ad_control_FPGA_input_group;
+    measurement_interface_FPGA_in : measurement_interface_pkg.measurement_interface_FPGA_input_group;
     pi_uart_rx_serial : std_logic;
 end record;
 
 type component_interconnect_FPGA_output_group is record
-    onboard_ad_control_FPGA_out : onboard_ad_control_pkg.onboard_ad_control_FPGA_output_group;
+    measurement_interface_FPGA_out : measurement_interface_pkg.measurement_interface_FPGA_output_group;
     power_supply_control_FPGA_out : work.power_supply_control_pkg.power_supply_control_FPGA_output_group;
     po_uart_tx_serial : std_logic;
     po3_led1 : work.led_driver_pkg.rgb_led;
@@ -30,7 +30,7 @@ type component_interconnect_data_input_group is record
 end record;
 
 type component_interconnect_data_output_group is record
-    onboard_ad_control_data_out : onboard_ad_control_pkg.onboard_ad_control_data_output_group;
+    measurement_interface_data_out : measurement_interface_pkg.measurement_interface_data_output_group;
 end record;
 
 component component_interconnect is

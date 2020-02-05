@@ -10,7 +10,7 @@ library work;
     use work.power_supply_control_pkg.all;
     
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.measurement_interface_pkg.all;
 
 entity component_interconnect is
     port (
@@ -32,9 +32,9 @@ architecture rtl of component_interconnect is
     signal so_uart_ready_event :  std_logic;
     signal so16_uart_rx_data   :  std_logic_vector(15 downto 0);
 ------------------------------------------------------------------------
-    signal onboard_ad_control_clocks   : onboard_ad_control_clock_group;
-    signal onboard_ad_control_data_in  : onboard_ad_control_data_input_group;
-    signal onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+    signal measurement_interface_clocks   : measurement_interface_clock_group;
+    signal measurement_interface_data_in  : measurement_interface_data_input_group;
+    signal measurement_interface_data_out : measurement_interface_data_output_group;
 ------------------------------------------------------------------------
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
@@ -83,11 +83,11 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if ad_channel_is_ready(onboard_ad_control_data_out.ada_measurements,
+                    if ad_channel_is_ready(measurement_interface_data_out.ada_measurements,
                        to_integer(unsigned(so16_uart_rx_data))) then
 
                         increment(process_counter);
-                        uin := get_ad_measurement(onboard_ad_control_data_out.ada_measurements);
+                        uin := get_ad_measurement(measurement_interface_data_out.ada_measurements);
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;
@@ -117,16 +117,16 @@ begin
     end process test_multiplier;
 
 ------------------------------------------------------------------------  
--- onboard_ad_control_data_in <= component_interconnect_data_in.onboard_ad_control_data_in;
-    component_interconnect_data_out.onboard_ad_control_data_out <= onboard_ad_control_data_out;
-    onboard_ad_control_clocks <= (system_clocks.core_clock, system_clocks.core_clock, system_clocks.pll_lock);
-    u_onboard_ad_control : onboard_ad_control 
+-- measurement_interface_data_in <= component_interconnect_data_in.measurement_interface_data_in;
+    component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
+    measurement_interface_clocks <= (system_clocks.core_clock, system_clocks.core_clock, system_clocks.pll_lock);
+    u_measurement_interface : measurement_interface 
     port map(
-        onboard_ad_control_clocks,   
-        component_interconnect_FPGA_in.onboard_ad_control_FPGA_in,  
-        component_interconnect_FPGA_out.onboard_ad_control_FPGA_out, 
-        onboard_ad_control_data_in,
-        onboard_ad_control_data_out 
+        measurement_interface_clocks,   
+        component_interconnect_FPGA_in.measurement_interface_FPGA_in,  
+        component_interconnect_FPGA_out.measurement_interface_FPGA_out, 
+        measurement_interface_data_in,
+        measurement_interface_data_out 
     );
 ------------------------------------------------------------------------
     burn_leds : led_driver
@@ -157,8 +157,8 @@ begin
                                         modulator_clock => system_clocks.modulator_clock,
                                         pll_lock        => system_clocks.pll_lock);
 
-        onboard_ad_control_data_in <= power_supply_control_data_out.onboard_ad_control_data_in;
-        power_supply_control_data_in.onboard_ad_control_data_out <= onboard_ad_control_data_out;
+        measurement_interface_data_in <= power_supply_control_data_out.measurement_interface_data_in;
+        power_supply_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
         u_power_supply_control : power_supply_control
         port map (
             power_supply_control_clocks,

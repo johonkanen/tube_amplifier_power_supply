@@ -25,7 +25,7 @@ architecture rtl of power_supply_control is
     signal ada_triggers : muxed_ad_control;
     signal adb_triggers : muxed_ad_control;
 
-    alias onboard_ad_control_data_in is power_supply_control_data_out.onboard_ad_control_data_in; 
+    alias measurement_interface_data_in is power_supply_control_data_out.measurement_interface_data_in; 
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
     alias core_clock : std_logic is power_supply_control_clocks.core_clock;
     alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
@@ -64,8 +64,8 @@ begin
     end process power_supply_sequencer;	
 
 ------------------------------------------------------------------------
-    onboard_ad_control_data_in.ada_triggers <= ada_triggers;
-    onboard_ad_control_data_in.adb_triggers <= ada_triggers;
+    measurement_interface_data_in.onboard_ad_control_data_in.ada_triggers <= ada_triggers;
+    measurement_interface_data_in.onboard_ad_control_data_in.adb_triggers <= ada_triggers;
     -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
     carrier_generation : process(power_supply_control_clocks.modulator_clock) 
