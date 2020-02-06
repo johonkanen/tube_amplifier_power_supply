@@ -11,6 +11,7 @@ library work;
 
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg;
+    use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
 entity system_control is
@@ -45,7 +46,7 @@ architecture rtl of system_control is
 
     use onboard_ad_control_pkg.ad_channel_is_ready;
 
-    alias onboard_adc : onboard_ad_control_pkg.onboard_ad_control_data_output_group is component_interconnect_data_out.onboard_ad_control_data_out;
+    alias adc_measurements : onboard_ad_control_pkg.onboard_ad_control_data_output_group is component_interconnect_data_out.onboard_ad_control_data_out;
 
 begin
 

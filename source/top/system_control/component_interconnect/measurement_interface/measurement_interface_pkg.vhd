@@ -36,9 +36,9 @@ package measurement_interface_pkg is
     
     type measurement_interface_data_output_group is record
         onboard_ad_control_data_out : onboard_ad_control_data_output_group;
-        llc_ad_measurement : std_logic;
+        llc_ad_measurement : integer;
         llc_ad_is_done : boolean;
-        dhb_ad_measurement : std_logic;
+        dhb_ad_measurement : integer;
         dhb_ad_is_done : boolean;
     end record;
     
