@@ -8,6 +8,10 @@ library onboard_adc_library;
 
 package psu_measurement_interface_pkg is
 --------------------------------------------------
+    function get_ada_measurement( adc_interface : measurement_interface_data_output_group) return integer;
+--------------------------------------------------
+    function get_adb_measurement( adc_interface : measurement_interface_data_output_group) return integer;
+--------------------------------------------------
     function pfc_I1_is_ready( adc_data : in measurement_interface_data_output_group) return boolean;
 --------------------------------------------------
     function pfc_I2_is_ready( adc_data : in measurement_interface_data_output_group) return boolean;
@@ -56,6 +60,26 @@ end package psu_measurement_interface_pkg;
 
 
 package body psu_measurement_interface_pkg is
+------------------------------------------------------------------------
+    function get_ada_measurement
+    (
+        adc_interface : measurement_interface_data_output_group
+    )
+    return integer
+    is
+    begin
+        return adc_interface.onboard_ad_control_data_out.ada_measurements.ad_conversion_data;
+    end get_ada_measurement;
+------------------------------------------------------------------------
+    function get_adb_measurement
+    (
+        adc_interface : measurement_interface_data_output_group
+    )
+    return integer
+    is
+    begin
+        return adc_interface.onboard_ad_control_data_out.adb_measurements.ad_conversion_data;
+    end get_adb_measurement;
 ------------------------------------------------------------------------
     function pfc_I1_is_ready ( adc_data : in measurement_interface_data_output_group) return boolean
     is 

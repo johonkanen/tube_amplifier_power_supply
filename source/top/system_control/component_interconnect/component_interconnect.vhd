@@ -10,7 +10,10 @@ library work;
     use work.power_supply_control_pkg.all;
     
 library onboard_adc_library;
+    use onboard_adc_library.onboard_ad_control_pkg.get_ad_measurement;
+    use onboard_adc_library.onboard_ad_control_pkg.ad_channel_is_ready;
     use onboard_adc_library.measurement_interface_pkg.all;
+    use onboard_adc_library.psu_measurement_interface_pkg.all;
 
 entity component_interconnect is
     port (
@@ -83,11 +86,11 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if ad_channel_is_ready(measurement_interface_data_out.ada_measurements,
+                    if ad_channel_is_ready(measurement_interface_data_out.onboard_ad_control_data_out.ada_measurements,
                        to_integer(unsigned(so16_uart_rx_data))) then
 
                         increment(process_counter);
-                        uin := get_ad_measurement(measurement_interface_data_out.ada_measurements);
+                        uin := get_ada_measurement(measurement_interface_data_out);
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;

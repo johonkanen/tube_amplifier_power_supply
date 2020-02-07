@@ -10,7 +10,7 @@ library work;
 
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg;
+    use onboard_adc_library.onboard_ad_control_pkg.all;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
@@ -44,9 +44,6 @@ architecture rtl of system_control is
     alias led2_color : led_counters is component_interconnect_data_in.led2_color;
     alias led3_color : led_counters is component_interconnect_data_in.led3_color;
 
-    use onboard_ad_control_pkg.ad_channel_is_ready;
-
-    alias adc_measurements : onboard_ad_control_pkg.onboard_ad_control_data_output_group is component_interconnect_data_out.onboard_ad_control_data_out;
 
 begin
 
@@ -90,10 +87,7 @@ begin
                         stop);
 		variable st_main_states : t_system_states;
 
-
-
-        use onboard_ad_control_pkg.ad_channel_is_ready;
-        use onboard_ad_control_pkg.get_ad_measurement;
+        alias onboard_adc : measurement_interface_data_output_group is component_interconnect_data_out.measurement_interface_data_out;
 
     begin
 

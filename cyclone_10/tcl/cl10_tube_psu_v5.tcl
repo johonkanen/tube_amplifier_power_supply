@@ -80,7 +80,7 @@ source ../list_of_sources.tcl
 
     foreach x [read_sources ../] \
     { \
-        if {[lsearch -glob $x *onboard_ad_control*] == 0} \
+        if {[lsearch -glob $x *measurement_interface*] == 0} \
         { \
             set_global_assignment -name VHDL_FILE $source_folder/$x -library onboard_adc_library
         } \
@@ -217,6 +217,9 @@ if {$opts(load_program_to) == "ram"} \
     # program fpga ram
     exec quartus_pgm -c "USB-Blaster \[USB-0\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
 }\
+elseif {$opts(load_program_to) == "none"} \
+{
+}
 else \
 {
     # program fpga flash
