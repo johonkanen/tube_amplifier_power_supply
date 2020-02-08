@@ -78,8 +78,24 @@ begin
             -- reset state
                 llc_ad_trigger <= (others => '0');
                 dhb_ad_trigger <= (others => '0');
+                measurement_interface_data_out.dhb_ad_is_done <= false;
+                measurement_interface_data_out.llc_ad_is_done <= false;
     
             else
+                measurement_interface_data_out.llc_ad_measurement <= llc_voltage;
+                measurement_interface_data_out.dhb_ad_measurement <= dhb_voltage;
+
+                measurement_interface_data_out.dhb_ad_is_done <= false;
+                if dhb_spi_ready = '1' then
+                    measurement_interface_data_out.dhb_ad_is_done <= true;
+                end if;
+
+                measurement_interface_data_out.llc_ad_is_done <= false;
+                if llc_spi_ready = '1' then
+                    measurement_interface_data_out.llc_ad_is_done <= true;
+                end if;
+
+
                 llc_ad_trigger <= llc_ad_trigger(1 downto 0) & measurement_interface_data_in.llc_ad_start_request_toggle; 
                 llc_ad_spi_start <= '0';
                 if llc_ad_trigger(2) /= llc_ad_trigger(1) then 
@@ -94,6 +110,8 @@ begin
             end if; -- rstn
         end if; --rising_edge
     end process catch_measurement_triggers;	
+    llc_voltage <= to_integer(shift_left(unsigned(llc_ad_data),3));
+    dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
 ----------------------------------------------------------------------
 llc_adc : ext_ad_spi3w
     generic map(8,16,9)
@@ -108,7 +126,6 @@ llc_adc : ext_ad_spi3w
 			llc_spi_ready,
 			llc_so_sh_ready,
 			llc_ad_data);
-llc_voltage <= to_integer(shift_left(unsigned(llc_ad_data),3));
 ------------------------------------------------------------------------
 dhb_adc : ext_ad_spi3w
     generic map(8,16,9)
@@ -123,7 +140,6 @@ dhb_adc : ext_ad_spi3w
 			dhb_spi_ready,
 			dhb_so_sh_ready,
 			dhb_ad_data);
-dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
 ----------------------------------------------------------------------
 ------------------------------------------------------------------------
     onboard_ad_control_clocks <= (core_clock, core_clock, reset_n);

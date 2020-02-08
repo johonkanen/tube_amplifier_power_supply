@@ -24,6 +24,16 @@ architecture rtl of power_supply_control is
 
     signal ada_triggers : muxed_ad_control;
     signal adb_triggers : muxed_ad_control;
+    signal dhb_trigger : std_logic;
+    signal llc_trigger : std_logic;
+
+    procedure trigger_ext_ad
+    (
+        signal dhb_adc_trigger : inout std_logic
+    ) is
+    begin
+        dhb_adc_trigger <= not dhb_adc_trigger;
+    end trigger_ext_ad;
 
     alias measurement_interface_data_in is power_supply_control_data_out.measurement_interface_data_in; 
     alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
@@ -44,7 +54,6 @@ architecture rtl of power_supply_control is
     signal dhb_control_data_in  : dhb_control_data_input_group;
     signal dhb_control_data_out : dhb_control_data_output_group;
 ------------------------------------------------------------------------
-
 begin
 
 ------------------------------------------------------------------------
@@ -66,6 +75,8 @@ begin
 ------------------------------------------------------------------------
     measurement_interface_data_in.onboard_ad_control_data_in.ada_triggers <= ada_triggers;
     measurement_interface_data_in.onboard_ad_control_data_in.adb_triggers <= ada_triggers;
+    measurement_interface_data_in.dhb_ad_start_request_toggle <= dhb_trigger;
+    measurement_interface_data_in.llc_ad_start_request_toggle <= llc_trigger;
     -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
     carrier_generation : process(power_supply_control_clocks.modulator_clock) 
@@ -101,6 +112,8 @@ begin
                         --heater_I
                         trigger_adc(ada_triggers,4);
                         trigger_adc(adb_triggers,6);
+                        trigger_ext_ad(llc_trigger);
+                        trigger_ext_ad(dhb_trigger);
                     WHEN 1200 =>
                         --heater_I
                         trigger_adc(ada_triggers,5);
