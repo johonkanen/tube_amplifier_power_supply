@@ -217,9 +217,6 @@ if {$opts(load_program_to) == "ram"} \
     # program fpga ram
     exec quartus_pgm -c "USB-Blaster \[USB-0\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
 }\
-elseif {$opts(load_program_to) == "none"} \
-{
-}
 else \
 {
     # program fpga flash

@@ -19,9 +19,9 @@ proc read_sources {source_folder} \
         /top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_pkg.vhd 
         /top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_internal_pkg.vhd 
         /top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control.vhd 
-        /top/system_control/component_interconnect/measurement_interface/psu_measurement_interface_pkg.vhd 
         /top/system_control/component_interconnect/measurement_interface/measurement_interface_pkg.vhd 
         /top/system_control/component_interconnect/measurement_interface/measurement_interface.vhd 
+        /top/system_control/component_interconnect/measurement_interface/psu_measurement_interface_pkg.vhd 
 
         /top/system_control/led_driver/led_driver_pkg.vhd 
         /top/system_control/led_driver/led_driver.vhd 

@@ -29,24 +29,24 @@ architecture rtl of measurement_interface is
                     g_sh_counter_latch : integer
                 );
         port( 
-                si_spi_clk 	 : in std_logic; 
-                si_rstn : in std_logic;
-                 
-                -- physical signals to ext ad converter
-                po_spi_cs 	 : out std_logic;
-                po_spi_clk_out : out std_logic;
-                pi_spi_serial : in std_logic; 
-     
-                si_spi_start	 : in std_logic; 
-                 
-                -- ext spi control signals
-                s_spi_busy	 : out std_logic; 
-                -- output signal indicating word is ready to be read 
-                so_spi_ready	 : out std_logic; 
-                -- output signal indicating sampling is done
-                so_sh_ready	 : out std_logic; 
-                -- output buffer
-                b_spi_rx : out std_logic_vector(15 downto 0)  
+			si_spi_clk 	 : in std_logic; 
+            si_rstn : in std_logic;
+			 
+			-- physical signals to ext ad converter
+			po_spi_cs 	 : out std_logic;
+			po_spi_clk_out : out std_logic;
+			pi_spi_serial : in std_logic; 
+ 
+			si_spi_start	 : in std_logic; 
+			 
+			-- ext spi control signals
+			s_spi_busy	 : out std_logic; 
+			-- output signal indicating word is ready to be read 
+			so_spi_rdy	 : out std_logic; 
+			-- output signal indicating sampling is done
+			so_sh_rdy	 : out std_logic; 
+			-- output buffer
+			b_spi_rx : out std_logic_vector(15 downto 0)  
             );	
     end component; 
 
@@ -57,12 +57,16 @@ architecture rtl of measurement_interface is
     signal llc_ad_spi_start : std_logic;
     signal llc_spi_ready : std_logic;
     signal llc_ad_data : std_logic_vector(15 downto 0);
+    signal llc_s_spi_busy : std_logic;
+    signal llc_so_sh_ready : std_logic;
 
     signal dhb_voltage : integer range 0 to 2**16-1;
     signal dhb_ad_trigger : std_logic_vector(2 downto 0);
     signal dhb_ad_spi_start : std_logic;
     signal dhb_spi_ready : std_logic;
     signal dhb_ad_data : std_logic_vector(15 downto 0);
+    signal dhb_s_spi_busy : std_logic;
+    signal dhb_so_sh_ready : std_logic;
 
 begin
 ------------------------------------------------------------------------
@@ -89,37 +93,37 @@ begin
             end if; -- rstn
         end if; --rising_edge
     end process catch_measurement_triggers;	
+----------------------------------------------------------------------
+llc_adc : ext_ad_spi3w
+    generic map(8,16,9)
+    port map(
+			core_clock,
+            reset_n,
+			measurement_interface_FPGA_out.llc_ad_cs,
+			measurement_interface_FPGA_out.llc_ad_clock,
+			measurement_interface_FPGA_in.llc_ad_data, 
+			llc_ad_spi_start,
+			llc_s_spi_busy,
+			llc_spi_ready,
+			llc_so_sh_ready,
+			llc_ad_data);
+llc_voltage <= to_integer(shift_left(unsigned(llc_ad_data),3));
 ------------------------------------------------------------------------
--- llc_adc : ext_ad_spi3w
---     generic map(4,14,9)
---     port map(
--- 			core_clock,
---             reset_n,
--- 			measurement_interface_FPGA_out.llc_ad_cs,
--- 			measurement_interface_FPGA_out.llc_ad_clock,
--- 			measurement_interface_FPGA_in.llc_ad_data, 
--- 			llc_ad_spi_start,
--- 			open,
--- 			llc_spi_ready,
--- 			open,
--- 			llc_ad_data);
--- llc_voltage <= to_integer(shift_left(unsigned(llc_ad_data),3));
--- ------------------------------------------------------------------------
--- dhb_adc : ext_ad_spi3w
---     generic map(4,14,9)
---     port map(
--- 			core_clock,
---             reset_n,
--- 			measurement_interface_FPGA_out.dhb_ad_cs,
--- 			measurement_interface_FPGA_out.dhb_ad_clock,
--- 			measurement_interface_FPGA_in.dhb_ad_data, 
--- 			dhb_ad_spi_start,
--- 			open,
--- 			dhb_spi_ready,
--- 			open,
--- 			dhb_ad_data);
--- dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
-------------------------------------------------------------------------
+dhb_adc : ext_ad_spi3w
+    generic map(8,16,9)
+    port map(
+			core_clock,
+            reset_n,
+			measurement_interface_FPGA_out.dhb_ad_cs,
+			measurement_interface_FPGA_out.dhb_ad_clock,
+			measurement_interface_FPGA_in.dhb_ad_data, 
+			dhb_ad_spi_start,
+			dhb_s_spi_busy,
+			dhb_spi_ready,
+			dhb_so_sh_ready,
+			dhb_ad_data);
+dhb_voltage <= to_integer(shift_left(unsigned(dhb_ad_data),3));
+----------------------------------------------------------------------
 ------------------------------------------------------------------------
     onboard_ad_control_clocks <= (core_clock, core_clock, reset_n);
     u_onboard_ad_control : onboard_ad_control 
