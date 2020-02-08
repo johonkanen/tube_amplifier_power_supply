@@ -77,6 +77,7 @@ begin
             if reset_n = '0' then
             -- reset state
                 llc_ad_trigger <= (others => '0');
+                dhb_ad_trigger <= (others => '0');
     
             else
                 llc_ad_trigger <= llc_ad_trigger(1 downto 0) & measurement_interface_data_in.llc_ad_start_request_toggle; 
