@@ -67,7 +67,6 @@ begin
         constant radix : integer := 15;
         variable mem, mem1, y : int18;
         variable process_counter : int18;
-        variable delay_counter : integer;
         ------------------------------------------------------------------------
         impure function "*" (left, right : int18) return int18
         is
@@ -85,13 +84,8 @@ begin
                 multiplier_data_in.mult_b <= 0;
                 multiplier_data_in.multiplication_is_requested <= false;
                 mem1 := 0;
-                delay_counter := 0;
                 uin := 0;
             else
-                increment(delay_counter);
-                if delay_counter = 1280 then
-                    delay_counter := 0;
-                end if;
                 si_uart_start_event <= '0';
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
