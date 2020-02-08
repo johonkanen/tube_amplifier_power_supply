@@ -29,6 +29,16 @@ end entity component_interconnect;
 
 architecture rtl of component_interconnect is
 
+    function "<"
+    (
+        left : std_logic_vector; right : integer
+    )
+    return boolean
+    is
+    begin
+        return to_integer(unsigned(left)) < right;
+    end "<";
+
 ------------------------------------------------------------------------
     signal si_uart_start_event : std_logic;
     signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
@@ -86,11 +96,23 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
-                    if ad_channel_is_ready(measurement_interface_data_out.onboard_ad_control_data_out.ada_measurements,
-                       to_integer(unsigned(so16_uart_rx_data))) then
+                    if so16_uart_rx_data < 7 then
+                        if ad_channel_is_ready(measurement_interface_data_out.onboard_ad_control_data_out.ada_measurements,
+                           to_integer(unsigned(so16_uart_rx_data))) then
 
-                        increment(process_counter);
-                        uin := get_ada_measurement(measurement_interface_data_out);
+                            increment(process_counter);
+                            uin := get_ada_measurement(measurement_interface_data_out);
+                        end if;
+                    elsif so16_uart_rx_data < 8 then 
+                        if measurement_interface_data_out.dhb_ad_is_done then
+                            uin := measurement_interface_data_out.dhb_ad_measurement;
+                            increment(process_counter);
+                        end if;
+                    else
+                        if measurement_interface_data_out.llc_ad_is_done then
+                            uin := measurement_interface_data_out.llc_ad_measurement;
+                            increment(process_counter);
+                        end if;
                     end if;
                WHEN 1 => 
                     y := uin * b0 + mem1;

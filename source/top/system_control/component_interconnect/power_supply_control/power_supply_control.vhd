@@ -73,15 +73,15 @@ begin
     end process power_supply_sequencer;	
 
 ------------------------------------------------------------------------
-    measurement_interface_data_in.onboard_ad_control_data_in.ada_triggers <= ada_triggers;
-    measurement_interface_data_in.onboard_ad_control_data_in.adb_triggers <= ada_triggers;
-    measurement_interface_data_in.dhb_ad_start_request_toggle <= dhb_trigger;
-    measurement_interface_data_in.llc_ad_start_request_toggle <= llc_trigger;
     -- free running carrier common for pfc and dhb controls, and used for triggering adc
 ------------------------------------------------------------------------
     carrier_generation : process(power_supply_control_clocks.modulator_clock) 
     begin
         if rising_edge(power_supply_control_clocks.modulator_clock) then
+                measurement_interface_data_in.onboard_ad_control_data_in.ada_triggers <= ada_triggers;
+                measurement_interface_data_in.onboard_ad_control_data_in.adb_triggers <= ada_triggers;
+                measurement_interface_data_in.dhb_ad_start_request_toggle <= dhb_trigger;
+                measurement_interface_data_in.llc_ad_start_request_toggle <= llc_trigger;
                 -- register carrier for pfc and dhb to shorten logic path
                 pfc_control_data_in.pfc_carrier <= master_carrier;
                 dhb_control_data_in.dhb_carrier <= master_carrier;

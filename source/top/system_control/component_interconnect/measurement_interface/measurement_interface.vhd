@@ -122,9 +122,9 @@ llc_adc : ext_ad_spi3w
 			measurement_interface_FPGA_out.llc_ad_clock,
 			measurement_interface_FPGA_in.llc_ad_data, 
 			llc_ad_spi_start,
-			llc_s_spi_busy,
+			open,
 			llc_spi_ready,
-			llc_so_sh_ready,
+			open,
 			llc_ad_data);
 ------------------------------------------------------------------------
 dhb_adc : ext_ad_spi3w
@@ -136,9 +136,9 @@ dhb_adc : ext_ad_spi3w
 			measurement_interface_FPGA_out.dhb_ad_clock,
 			measurement_interface_FPGA_in.dhb_ad_data, 
 			dhb_ad_spi_start,
-			dhb_s_spi_busy,
+			open,
 			dhb_spi_ready,
-			dhb_so_sh_ready,
+			open,
 			dhb_ad_data);
 ----------------------------------------------------------------------
 ------------------------------------------------------------------------
