@@ -36,7 +36,7 @@ architecture sim of tb_sincos is
 
     type int18_array is array (integer range <>) of int18;
     constant sinegains : int18_array(0 to 2) := (12868,21159,10180);
-    constant cosgains : int18_array(0 to 2) := (4096,20201,16118);
+    constant cosgains : int18_array(0 to 2) := (32768,80805,64473);
 
     signal angle : int18;
     signal test_angle : int18;
@@ -161,32 +161,37 @@ begin
                         increment(process_counter);
                     end if;
                 when 5 =>
-                    radix := 12;
+                    radix := 11;
                     prod := z*(cosgains(1) - prod);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
                 when 6 =>
+                        increment(process_counter);
                     cos16 := cosgains(0) - prod;
-                    angle <= angle + 128;
-                    test_angle <= reduce_angle(angle);
-                    -- if angle < 8192 then
+                    if angle < 8192 then
                         sine   <= sin16;
                         cosine <= cos16;
-                    -- elsif angle < 2**15*2/4 then
-                    --     sine   <= cos16;
-                    --     cosine <= -sin16;
-                    -- elsif angle < 2**15*5/4 then
-                    --     sine   <= -sin16;
-                    --     cosine <= -cos16;
-                    -- elsif angle < 2**15*7/4 then
-                    --     sine   <= sin16;
-                    --     cosine <= -cos16;
-                    -- else
-                    --     sine   <= sin16;
-                    --     cosine <= cos16;
-                    -- end if;
+                    elsif angle < 24576 then
+                        sine   <= cos16;
+                        cosine <= -sin16;
+                    elsif angle < 40960 then
+                        sine   <= -sin16;
+                        cosine <= -cos16;
+                    elsif angle < 57344 then
+                        sine   <= -cos16;
+                        cosine <= sin16;
+                    else
+                        sine   <= sin16;
+                        cosine <= cos16;
+                    end if;
+                WHEN 7 =>
+                        increment(process_counter);
+                    angle <= angle + 128;
+                when 8 =>
+                    test_angle <= reduce_angle(angle);
                     process_counter := 0;
+
                 when others =>
                     process_counter := 0;
             end CASE;
