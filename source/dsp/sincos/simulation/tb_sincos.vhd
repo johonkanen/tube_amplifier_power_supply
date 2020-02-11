@@ -19,7 +19,7 @@ architecture sim of tb_sincos is
     signal simulator_clock : std_logic;
     constant clock_per : time := 1 ns;
     constant clock_half_per : time := 0.5 ns;
-    constant simtime_in_clocks : integer := 15600;
+    constant simtime_in_clocks : integer := 20e3;
 
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
@@ -51,7 +51,7 @@ architecture sim of tb_sincos is
     begin
         sign16_angle := to_signed(int16_angle,18); 
         return to_integer((sign16_angle(13 downto 0)));
-end reduce_angle;
+    end reduce_angle;
 
 begin
 
@@ -167,7 +167,7 @@ begin
                         increment(process_counter);
                     end if;
                 when 6 =>
-                        increment(process_counter);
+                    increment(process_counter);
                     cos16 := cosgains(0) - prod;
                     if angle < 8192 then
                         sine   <= sin16;
@@ -186,10 +186,14 @@ begin
                         cosine <= cos16;
                     end if;
                 WHEN 7 =>
-                        increment(process_counter);
+                    increment(process_counter);
                     angle <= angle + 128;
                 when 8 =>
                     test_angle <= reduce_angle(angle);
+                    if angle > 2**16-1 then
+                        test_angle <= reduce_angle(0);
+                        angle <= 0;
+                    end if;
                     process_counter := 0;
 
                 when others =>
