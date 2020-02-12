@@ -30,6 +30,7 @@ architecture sim of tb_sincos is
     signal sincos_clocks   : sincos_clock_group;
     signal sincos_data_in  : sincos_data_input_group;
     signal sincos_data_out : sincos_data_output_group;
+    signal sincos_is_requested : boolean;
 --------------- simulation signals -------------------------------------
     signal mpy_test : sign36;
     signal testcounter : integer;
@@ -144,11 +145,13 @@ begin
             cos16 := 4096;
             sine <= 0;
             cosine <= 0;
+            sincos_is_requested <= false;
 
         elsif rising_edge(simulator_clock) then
             signal_counter <= process_counter;
             testcounter <= process_counter;
             mpy_test <=multiplier_data_out.multiplier_result; 
+            sincos_is_requested <= false;
 
             case process_counter is
                WHEN 0 => 
@@ -156,6 +159,7 @@ begin
                     z := test_angle*test_angle;
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
+                        sincos_is_requested <= true;
                     end if;
                 WHEN 1 => 
                     radix := 12;
@@ -225,6 +229,7 @@ begin
     end process calculate_sincos;	
 ------------------------------------------------------------------------
     sincos_clocks <= (alu_clock => simulator_clock, reset_n => clocked_reset);
+    sincos_data_in <= (angle_pirad => angle, sincos_is_requested => sincos_is_requested);
     u_sincos : entity work.sincos
     port map
     (

@@ -19,6 +19,8 @@ end entity sincos;
 architecture rtl of sincos is
     alias alu_clock : std_logic is sincos_clocks.alu_clock;
     alias reset_n : std_logic is sincos_clocks.reset_n;
+    alias angle : int18 is sincos_data_in.angle_pirad;
+    alias sincos_is_ready : boolean is sincos_data_out.sincos_is_ready;
 
     -- TODO, move these to sincos data_in/out to use common dsp slice
     signal multiplier_clocks   : multiplier_clock_group;
@@ -29,7 +31,6 @@ architecture rtl of sincos is
     signal sine : int18;
     signal cosine : int18;
 
-    signal angle : int18;
     signal test_angle : int18;
 
 --------------- module signals -------------------------------------
@@ -56,6 +57,8 @@ architecture rtl of sincos is
 
 
 begin
+    sincos_data_out.sine <= sine;
+    sincos_data_out.cosine <= cosine;
 
     multiplier_clocks.dsp_clock <= alu_clock;
     u_multiplier : multiplier
@@ -90,54 +93,65 @@ begin
         -- reset state
             process_counter := 0;
             radix := 0;
-            angle <= 0;
             sin16 := 0;
             test_angle <= 0;
             cos16 := 0;
             sine <= 0;
             cosine <= 0;
+            sincos_is_ready <= false;
 
         elsif rising_edge(alu_clock) then
+            sincos_is_ready <= false;
 
             case process_counter is
                WHEN 0 => 
+                    test_angle <= reduce_angle(angle);
+
+                    radix := 18;
+                    if sincos_data_in.sincos_is_requested then
+                        z := test_angle*test_angle;
+                        increment(process_counter);
+                    end if;
+                WHEN 1 =>
                     radix := 18;
                     z := test_angle*test_angle;
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                WHEN 1 => 
+
+                WHEN 2 => 
                     radix := 12;
                     prod := z * sinegains(2);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                WHEN 2 => 
+                WHEN 3 => 
                     radix := 12;
                     prod := z*(sinegains(1) - prod);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                when 3 =>
+                when 4 =>
                     radix := 12;
                     sin16 := test_angle * (sinegains(0) - prod);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                when 4 =>
+                when 5 =>
                     radix := 12;
                     prod := z*cosgains(2);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                when 5 =>
+                when 6 =>
                     radix := 11;
                     prod := z*(cosgains(1) - prod);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
-                when 6 =>
-                    increment(process_counter);
+                when 7 =>
+                    process_counter := 0;
+                    sincos_is_ready <= true;
                     cos16 := cosgains(0) - prod;
                     if angle < one_quarter then
                         sine   <= sin16;
@@ -155,17 +169,6 @@ begin
                         sine   <= sin16;
                         cosine <= cos16;
                     end if;
-                WHEN 7 =>
-                    increment(process_counter);
-                    angle <= angle + 128;
-                when 8 =>
-                    test_angle <= reduce_angle(angle);
-                    if angle > 2**16-1 then
-                        test_angle <= reduce_angle(0);
-                        angle <= 0;
-                    end if;
-                    process_counter := 0;
-
                 when others =>
                     process_counter := 0;
             end CASE;
