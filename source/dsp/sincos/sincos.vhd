@@ -28,10 +28,9 @@ architecture rtl of sincos is
     signal multiplier_data_out : multiplier_data_output_group;
 --------------- simulation signals -------------------------------------
 
-    signal sine : int18;
-    signal cosine : int18;
+    signal sine : int18 := 0;
+    signal cosine : int18 := 0;
 
-    signal test_angle : int18;
 
 --------------- module signals -------------------------------------
 
@@ -78,6 +77,7 @@ begin
         variable prod : int18;
         variable sin16 : int18;
         variable cos16 : int18;
+        variable reduced_angle : int18;
 
         ------------------------------------------------------------------------
         impure function "*" (left, right : int18) return int18
@@ -89,32 +89,34 @@ begin
         end "*";
         ------------------------------------------------------------------------
     begin
-        if reset_n = '0' then
-        -- reset state
-            process_counter := 0;
-            radix := 0;
-            sin16 := 0;
-            test_angle <= 0;
-            cos16 := 0;
-            sine <= 0;
-            cosine <= 0;
-            sincos_is_ready <= false;
 
-        elsif rising_edge(alu_clock) then
-            sincos_is_ready <= false;
+        if rising_edge(alu_clock) then
+            if reset_n = '0' then
+            -- reset state
+                process_counter := 0;
+                radix := 0;
+                sin16 := 0;
+                reduced_angle := 0;
+                cos16 := 0;
+                sine <= 0;
+                cosine <= 0;
+                sincos_is_ready <= false;
+            else
+                sincos_is_ready <= false;
 
             case process_counter is
                WHEN 0 => 
-                    test_angle <= reduce_angle(angle);
 
                     radix := 18;
                     if sincos_data_in.sincos_is_requested then
-                        z := test_angle*test_angle;
+                        reduced_angle := reduce_angle(angle);
+
+                        z := reduced_angle*reduced_angle;
                         increment(process_counter);
                     end if;
                 WHEN 1 =>
                     radix := 18;
-                    z := test_angle*test_angle;
+                    z := reduced_angle*reduced_angle;
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
@@ -133,7 +135,7 @@ begin
                     end if;
                 when 4 =>
                     radix := 12;
-                    sin16 := test_angle * (sinegains(0) - prod);
+                    sin16 := reduced_angle * (sinegains(0) - prod);
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                     end if;
@@ -150,28 +152,35 @@ begin
                         increment(process_counter);
                     end if;
                 when 7 =>
-                    process_counter := 0;
-                    sincos_is_ready <= true;
                     cos16 := cosgains(0) - prod;
-                    if angle < one_quarter then
+                    increment(process_counter);
+                when 8 =>
+                    increment(process_counter);
+
+                    if angle <= one_quarter then
                         sine   <= sin16;
                         cosine <= cos16;
-                    elsif angle < three_fourths then
+                    elsif angle <= three_fourths then
                         sine   <= cos16;
                         cosine <= -sin16;
-                    elsif angle < five_fourths then
+                    elsif angle <= five_fourths then
                         sine   <= -sin16;
                         cosine <= -cos16;
-                    elsif angle < seven_fourths then
+                    elsif angle <= seven_fourths then
                         sine   <= -cos16;
                         cosine <= sin16;
                     else
                         sine   <= sin16;
                         cosine <= cos16;
                     end if;
+                when 9 =>
+                    process_counter := 0;
+                    sincos_is_ready <= true;
+
                 when others =>
                     process_counter := 0;
             end CASE;
+        end if;
 
         end if; -- reset_n
     end process calculate_sincos;	

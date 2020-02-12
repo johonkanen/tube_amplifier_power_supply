@@ -120,15 +120,6 @@ begin
         variable sin16 : int18;
         variable cos16 : int18;
 
-        ------------------------------------------------------------------------
-        impure function "*" (left, right : int18) return int18
-        is
-            variable result : sign36;
-        begin
-            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
-            return get_result(multiplier_data_out,radix);
-        end "*";
-        ------------------------------------------------------------------------
     begin
         if rstn = '0' then
         -- reset state
@@ -148,88 +139,21 @@ begin
             sincos_is_requested <= false;
 
         elsif rising_edge(simulator_clock) then
-            signal_counter <= process_counter;
-            testcounter <= process_counter;
-            mpy_test <=multiplier_data_out.multiplier_result; 
-            sincos_is_requested <= false;
 
-            case process_counter is
-               WHEN 0 => 
-                    radix := 18;
-                    z := test_angle*test_angle;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        sincos_is_requested <= true;
-                    end if;
-                WHEN 1 => 
-                    radix := 12;
-                    prod := z * sinegains(2);
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                    end if;
-                WHEN 2 => 
-                    radix := 12;
-                    prod := z*(sinegains(1) - prod);
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                    end if;
-                when 3 =>
-                    radix := 12;
-                    sin16 := test_angle * (sinegains(0) - prod);
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                    end if;
-                when 4 =>
-                    radix := 12;
-                    prod := z*cosgains(2);
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                    end if;
-                when 5 =>
-                    radix := 11;
-                    prod := z*(cosgains(1) - prod);
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                    end if;
-                when 6 =>
-                    increment(process_counter);
-                    cos16 := cosgains(0) - prod;
-                    if angle < 8192 then
-                        sine   <= sin16;
-                        cosine <= cos16;
-                    elsif angle < 24576 then
-                        sine   <= cos16;
-                        cosine <= -sin16;
-                    elsif angle < 40960 then
-                        sine   <= -sin16;
-                        cosine <= -cos16;
-                    elsif angle < 57344 then
-                        sine   <= -cos16;
-                        cosine <= sin16;
-                    else
-                        sine   <= sin16;
-                        cosine <= cos16;
-                    end if;
-                WHEN 7 =>
-                    increment(process_counter);
-                    angle <= angle + 128;
-                when 8 =>
-                    test_angle <= reduce_angle(angle);
-                    if angle > 2**16-1 then
-                        test_angle <= reduce_angle(0);
-                        angle <= 0;
-                    end if;
-                    process_counter := 0;
+            sincos_is_requested <= true;
+            if sincos_data_out.sincos_is_ready then
+                angle <= angle + 128;
+                if angle > 2**16-1 then
+                    angle <= 0;
+                end if;
+            end if;
 
-                when others =>
-                    process_counter := 0;
-            end CASE;
-
-        end if; -- rstn
+            end if; -- rstn
     end process calculate_sincos;	
 ------------------------------------------------------------------------
     sincos_clocks <= (alu_clock => simulator_clock, reset_n => clocked_reset);
-    sincos_data_in <= (angle_pirad => angle, sincos_is_requested => sincos_is_requested);
+    multiplier_data_in <= sincos_data_out.multiplier_data_in;
+    sincos_data_in <= (angle_pirad => angle, sincos_is_requested => sincos_is_requested, multiplier_data_out => multiplier_data_out);
     u_sincos : entity work.sincos
     port map
     (
