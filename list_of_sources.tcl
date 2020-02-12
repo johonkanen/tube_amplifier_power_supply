@@ -5,6 +5,8 @@ proc read_sources {source_folder} \
         /top/system_clocks_pkg.vhd
         /dsp/multiplier/multiplier_pkg.vhd
         /dsp/multiplier/multiplier.vhd
+        /dsp/sincos/sincos_pkg.vhd
+        /dsp/sincos/sincos.vhd
 
         /top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
         /top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 

@@ -8,6 +8,7 @@ library work;
     use work.uart_pkg.all;
     use work.multiplier_pkg.all;
     use work.power_supply_control_pkg.all;
+    use work.sincos_pkg.all;
     
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.get_ad_measurement;
@@ -57,6 +58,11 @@ architecture rtl of component_interconnect is
     signal power_supply_control_data_in  : power_supply_control_data_input_group;
     signal power_supply_control_data_out :  power_supply_control_data_output_group;
 ------------------------------------------------------------------------
+    signal sincos_clocks   : sincos_clock_group;
+    signal sincos_data_in  : sincos_data_input_group;
+    signal sincos_data_out : sincos_data_output_group;
+------------------------------------------------------------------------
+    signal angle : int18;
 begin
 ------------------------------------------------------------------------
     test_multiplier : process(system_clocks.core_clock)
@@ -85,15 +91,24 @@ begin
                 multiplier_data_in.multiplication_is_requested <= false;
                 mem1 := 0;
                 uin := 0;
+                angle <= 0;
+                sincos_data_in.sincos_is_requested <= false;
             else
                 si_uart_start_event <= '0';
                 multiplier_data_in.multiplication_is_requested <= false;
+                sincos_data_in.sincos_is_requested <= false;
             case process_counter is
                 WHEN 0 => 
                     if so16_uart_rx_data < 7 then
                         if ad_channel_is_ready(measurement_interface_data_out.onboard_ad_control_data_out.ada_measurements,
                            to_integer(unsigned(so16_uart_rx_data))) then
 
+                            angle <= angle + 1;
+                            if angle > 2**16-1 then
+                                angle <= 0;
+                            end if;
+                            sincos_data_in.sincos_is_requested <= true;
+                            si16_uart_tx_data <= std_logic_vector(to_signed(sincos_data_out.sine,16));
                             increment(process_counter);
                             uin := get_ada_measurement(measurement_interface_data_out);
                         end if;
@@ -113,7 +128,7 @@ begin
                     if multiplier_is_ready(multiplier_data_out) then
                         increment(process_counter);
                         si_uart_start_event <= '1';
-                        si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
+                        
                     end if;
                 WHEN 2 => 
                     mem1 := b1 * uin;
@@ -186,4 +201,20 @@ begin
             power_supply_control_data_out
         );
 ------------------------------------------------------------------------
+    sincos_clocks <= (alu_clock => system_clocks.core_clock, reset_n => system_clocks.pll_lock);
+    -- sine          <= sincos_data_out.sine;
+    -- cosine        <= sincos_data_out.cosine;
+
+    sincos_data_in.angle_pirad <= angle;
+    -- sincos_data_in <= (angle_pirad => angle, 
+    --                   sincos_is_requested => sincos_is_requested, 
+    --                   multiplier_data_out => multiplier_data_out);
+    --
+    u_sincos : sincos
+    port map
+    (
+        sincos_clocks,   
+        sincos_data_in, 
+        sincos_data_out 
+    );
 end rtl;

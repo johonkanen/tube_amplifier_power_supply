@@ -10,9 +10,9 @@ package sincos_pkg is
     end record;
     
     type sincos_data_input_group is record
-        angle_pirad : integer;
+        angle_pirad : work.multiplier_pkg.int18;
         sincos_is_requested : boolean;
-        multiplier_data_out : work.multiplier_pkg.multiplier_data_output_group;
+        -- multiplier_data_out : work.multiplier_pkg.multiplier_data_output_group;
     end record;
     
     type sincos_data_output_group is record
@@ -21,7 +21,7 @@ package sincos_pkg is
 
         sine : work.multiplier_pkg.int18;
         cosine : work.multiplier_pkg.int18;
-        multiplier_data_in  : work.multiplier_pkg.multiplier_data_input_group;
+        -- multiplier_data_in  : work.multiplier_pkg.multiplier_data_input_group;
     end record;
     
     component sincos is

@@ -131,13 +131,13 @@ begin
         );
 ------------------------------------------------------------------------
     sincos_clocks <= (alu_clock => simulator_clock, reset_n => clocked_reset);
-    multiplier_data_in <= sincos_data_out.multiplier_data_in;
+    -- multiplier_data_in <= sincos_data_out.multiplier_data_in;
     sine <= sincos_data_out.sine;
     cosine <= sincos_data_out.cosine;
 
     sincos_data_in <= (angle_pirad => angle, 
-                      sincos_is_requested => sincos_is_requested, 
-                      multiplier_data_out => multiplier_data_out);
+                      sincos_is_requested => sincos_is_requested);
+                      -- multiplier_data_out => multiplier_data_out);
 
     u_sincos : entity work.sincos
     port map

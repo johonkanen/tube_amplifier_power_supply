@@ -67,11 +67,10 @@ begin
             multiplier_data_out 
         );
 
-    calculate_sincos : process(alu_clock, reset_n)
+    calculate_sincos : process(alu_clock)
 
         variable process_counter : int18;
         variable radix : int18;
-
 
         variable z : int18;
         variable prod : int18;
@@ -101,6 +100,8 @@ begin
                 sine <= 0;
                 cosine <= 0;
                 sincos_is_ready <= false;
+                multiplier_data_in.mult_a <= 0;
+                multiplier_data_in.mult_b <= 0;
             else
                 sincos_is_ready <= false;
 
