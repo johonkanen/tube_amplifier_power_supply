@@ -20,6 +20,7 @@ architecture sim of tb_sincos is
     constant clock_per : time := 1 ns;
     constant clock_half_per : time := 0.5 ns;
     constant simtime_in_clocks : integer := 20e3;
+    signal clocked_reset :std_logic;
 
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
@@ -78,6 +79,22 @@ begin
         wait;
     end process;
 
+    gen_clocked_reset : process(simulator_clock, rstn)
+        variable reset_counter : integer;
+    begin
+        if rstn = '0' then
+            reset_counter := 0;
+
+            clocked_reset <= '0';
+        elsif rising_edge(simulator_clock) then
+            reset_counter := reset_counter + 1;
+            if reset_counter = 2 then
+                clocked_reset <= '1';
+            end if;
+        end if;
+    end process;
+
+
     multiplier_clocks.dsp_clock <= simulator_clock;
     u_multiplier : multiplier
         port map(
@@ -85,7 +102,7 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
-
+------------------------------------------------------------------------
     calculate_sincos : process(simulator_clock, rstn)
 
         variable mem1, mem2, y : int18;
@@ -202,5 +219,7 @@ begin
 
         end if; -- rstn
     end process calculate_sincos;	
-
+------------------------------------------------------------------------
+    u_sincos : entity work.sincos
+    port map(simulator_clock,clocked_reset);
 end sim;

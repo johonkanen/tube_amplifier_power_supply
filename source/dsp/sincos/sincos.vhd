@@ -7,7 +7,8 @@ library work;
 
 entity sincos is
     port (
-        clk : in std_logic	
+        alu_clock : in std_logic;
+        reset_n : in std_logic	
     );
 end entity sincos;
 
@@ -18,26 +19,21 @@ architecture rtl of sincos is
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out : multiplier_data_output_group;
 --------------- simulation signals -------------------------------------
-    signal mpy_test : sign36;
-    signal testcounter : integer;
-    signal signal_counter : int18;
-    signal jihuu_y : int18;
 
     signal sine : int18;
     signal cosine : int18;
+
+    signal angle : int18;
+    signal test_angle : int18;
+
+--------------- module signals -------------------------------------
 
     type int18_array is array (integer range <>) of int18;
     constant sinegains : int18_array(0 to 2) := (12868,21159,10180);
     constant cosgains : int18_array(0 to 2) := (32768,80805,64473);
 
-    signal angle : int18;
-    signal test_angle : int18;
-
-    function reduce_angle
-    (
-        int16_angle : int18
-    )
-    return int18
+    function reduce_angle ( int16_angle : int18)
+        return int18
     is
         variable sign16_angle : signed(17 downto 0);
     begin
@@ -48,7 +44,7 @@ architecture rtl of sincos is
 
 begin
 
-    multiplier_clocks.dsp_clock <= simulator_clock;
+    multiplier_clocks.dsp_clock <= alu_clock;
     u_multiplier : multiplier
         port map(
             multiplier_clocks, 
@@ -56,9 +52,8 @@ begin
             multiplier_data_out 
         );
 
-    calculate_sincos : process(simulator_clock, rstn)
+    calculate_sincos : process(alu_clock, reset_n)
 
-        variable mem1, mem2, y : int18;
         variable process_counter : int18;
         variable radix : int18;
 
@@ -78,26 +73,18 @@ begin
         end "*";
         ------------------------------------------------------------------------
     begin
-        if rstn = '0' then
+        if reset_n = '0' then
         -- reset state
             process_counter := 0;
-            mem1 := 0;
-            y := 0;
-            signal_counter <= process_counter;
-            process_counter := 0;
-            jihuu_y <= 0;
             radix := 0;
             angle <= 0;
             sin16 := 0;
             test_angle <= 0;
-            cos16 := 4096;
+            cos16 := 0;
             sine <= 0;
             cosine <= 0;
 
-        elsif rising_edge(simulator_clock) then
-            signal_counter <= process_counter;
-            testcounter <= process_counter;
-            mpy_test <=multiplier_data_out.multiplier_result; 
+        elsif rising_edge(alu_clock) then
 
             case process_counter is
                WHEN 0 => 
@@ -170,7 +157,7 @@ begin
                     process_counter := 0;
             end CASE;
 
-        end if; -- rstn
+        end if; -- reset_n
     end process calculate_sincos;	
 
 
