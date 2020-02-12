@@ -8,6 +8,7 @@ LIBRARY std  ;
 
 library work;
     use work.multiplier_pkg.all;
+    use work.sincos_pkg.all;
 
 entity tb_sincos is
 end;
@@ -26,6 +27,9 @@ architecture sim of tb_sincos is
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out : multiplier_data_output_group;
 
+    signal sincos_clocks   : sincos_clock_group;
+    signal sincos_data_in  : sincos_data_input_group;
+    signal sincos_data_out : sincos_data_output_group;
 --------------- simulation signals -------------------------------------
     signal mpy_test : sign36;
     signal testcounter : integer;
@@ -220,6 +224,12 @@ begin
         end if; -- rstn
     end process calculate_sincos;	
 ------------------------------------------------------------------------
+    sincos_clocks <= (alu_clock => simulator_clock, reset_n => clocked_reset);
     u_sincos : entity work.sincos
-    port map(simulator_clock,clocked_reset);
+    port map
+    (
+        sincos_clocks,   
+        sincos_data_in, 
+        sincos_data_out 
+    );
 end sim;
