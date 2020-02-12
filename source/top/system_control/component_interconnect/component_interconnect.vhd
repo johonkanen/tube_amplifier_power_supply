@@ -108,7 +108,7 @@ begin
                                 angle <= 0;
                             end if;
                             sincos_data_in.sincos_is_requested <= true;
-                            si16_uart_tx_data <= std_logic_vector(to_signed(sincos_data_out.sine,16));
+                            si16_uart_tx_data <= std_logic_vector(to_signed(sincos_data_out.cosine,16));
                             increment(process_counter);
                             uin := get_ada_measurement(measurement_interface_data_out);
                         end if;
