@@ -100,42 +100,13 @@ begin
     end process;
 
 
-    multiplier_clocks.dsp_clock <= simulator_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
 ------------------------------------------------------------------------
     calculate_sincos : process(simulator_clock, rstn)
-
-        variable mem1, mem2, y : int18;
-        variable process_counter : int18;
-        variable radix : int18;
-
-
-        variable z : int18;
-        variable prod : int18;
-        variable sin16 : int18;
-        variable cos16 : int18;
 
     begin
         if rstn = '0' then
         -- reset state
-            process_counter := 0;
-            mem1 := 0;
-            y := 0;
-            signal_counter <= process_counter;
-            process_counter := 0;
-            jihuu_y <= 0;
-            radix := 0;
             angle <= 0;
-            sin16 := 0;
-            test_angle <= 0;
-            cos16 := 4096;
-            sine <= 0;
-            cosine <= 0;
             sincos_is_requested <= false;
 
         elsif rising_edge(simulator_clock) then
@@ -151,9 +122,23 @@ begin
             end if; -- rstn
     end process calculate_sincos;	
 ------------------------------------------------------------------------
+    multiplier_clocks.dsp_clock <= simulator_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
+------------------------------------------------------------------------
     sincos_clocks <= (alu_clock => simulator_clock, reset_n => clocked_reset);
     multiplier_data_in <= sincos_data_out.multiplier_data_in;
-    sincos_data_in <= (angle_pirad => angle, sincos_is_requested => sincos_is_requested, multiplier_data_out => multiplier_data_out);
+    sine <= sincos_data_out.sine;
+    cosine <= sincos_data_out.cosine;
+
+    sincos_data_in <= (angle_pirad => angle, 
+                      sincos_is_requested => sincos_is_requested, 
+                      multiplier_data_out => multiplier_data_out);
+
     u_sincos : entity work.sincos
     port map
     (
