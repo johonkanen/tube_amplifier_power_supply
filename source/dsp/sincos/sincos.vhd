@@ -156,27 +156,25 @@ begin
                     cos16 := cosgains(0) - prod;
                     increment(process_counter);
                 when 8 =>
-                    increment(process_counter);
+                    process_counter := 0;
+                    sincos_is_ready <= true;
 
-                    if angle <= one_quarter then
+                    if angle < one_quarter then
                         sine   <= sin16;
                         cosine <= cos16;
-                    elsif angle <= three_fourths then
+                    elsif angle < three_fourths then
                         sine   <= cos16;
                         cosine <= -sin16;
-                    elsif angle <= five_fourths then
+                    elsif angle < five_fourths then
                         sine   <= -sin16;
                         cosine <= -cos16;
-                    elsif angle <= seven_fourths then
+                    elsif angle < seven_fourths then
                         sine   <= -cos16;
                         cosine <= sin16;
                     else
                         sine   <= sin16;
                         cosine <= cos16;
                     end if;
-                when 9 =>
-                    process_counter := 0;
-                    sincos_is_ready <= true;
 
                 when others =>
                     process_counter := 0;
