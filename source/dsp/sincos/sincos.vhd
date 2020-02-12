@@ -3,18 +3,24 @@ library ieee;
     use ieee.numeric_std.all;
 
 library work;
+    use work.sincos_pkg.all;
     use work.multiplier_pkg.all;
 
 entity sincos is
-    port (
-        alu_clock : in std_logic;
-        reset_n : in std_logic	
+    port 
+    (
+        sincos_clocks : in sincos_clock_group;
+        sincos_data_in : in sincos_data_input_group;
+        sincos_data_out : out sincos_data_output_group
     );
 end entity sincos;
 
 
 architecture rtl of sincos is
+    alias alu_clock : std_logic is sincos_clocks.alu_clock;
+    alias reset_n : std_logic is sincos_clocks.reset_n;
 
+    -- TODO, move these to sincos data_in/out to use common dsp slice
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out : multiplier_data_output_group;
@@ -31,6 +37,13 @@ architecture rtl of sincos is
     type int18_array is array (integer range <>) of int18;
     constant sinegains : int18_array(0 to 2) := (12868,21159,10180);
     constant cosgains : int18_array(0 to 2) := (32768,80805,64473);
+
+    constant one_quarter   : integer := 8192;
+    constant three_fourths : integer := 24576;
+    constant five_fourths  : integer := 40960;
+    constant seven_fourths : integer := 57344;
+
+------------------------------------------------------------------------
 
     function reduce_angle ( int16_angle : int18)
         return int18
@@ -126,16 +139,16 @@ begin
                 when 6 =>
                     increment(process_counter);
                     cos16 := cosgains(0) - prod;
-                    if angle < 8192 then
+                    if angle < one_quarter then
                         sine   <= sin16;
                         cosine <= cos16;
-                    elsif angle < 24576 then
+                    elsif angle < three_fourths then
                         sine   <= cos16;
                         cosine <= -sin16;
-                    elsif angle < 40960 then
+                    elsif angle < five_fourths then
                         sine   <= -sin16;
                         cosine <= -cos16;
-                    elsif angle < 57344 then
+                    elsif angle < seven_fourths then
                         sine   <= -cos16;
                         cosine <= sin16;
                     else

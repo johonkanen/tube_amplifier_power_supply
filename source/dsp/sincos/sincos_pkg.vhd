@@ -5,7 +5,8 @@ library ieee;
 package sincos_pkg is
 
     type sincos_clock_group is record
-        clock : std_logic;
+        alu_clock : std_logic;
+        reset_n : std_logic;
     end record;
     
     type sincos_data_input_group is record
