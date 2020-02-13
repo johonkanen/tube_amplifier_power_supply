@@ -37,5 +37,21 @@ package power_supply_control_pkg is
             power_supply_control_data_out : out power_supply_control_data_output_group
         );
     end component power_supply_control;
-        
+    -- TODO, move this to internal package
+------------------------------------------------------------------------         
+    procedure trigger_ext_ad ( signal dhb_adc_trigger : inout std_logic);
+------------------------------------------------------------------------
 end package power_supply_control_pkg;
+
+package body power_supply_control_pkg is
+------------------------------------------------------------------------
+    procedure trigger_ext_ad
+    (
+        signal dhb_adc_trigger : inout std_logic
+    ) is
+    begin
+        dhb_adc_trigger <= not dhb_adc_trigger;
+    end trigger_ext_ad;
+------------------------------------------------------------------------
+
+end package body power_supply_control_pkg;

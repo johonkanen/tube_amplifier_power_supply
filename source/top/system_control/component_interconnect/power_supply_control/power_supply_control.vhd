@@ -22,23 +22,17 @@ end entity power_supply_control;
 
 architecture rtl of power_supply_control is
 
+-------------------- simplify signal naming ----------------------------
+    alias measurement_interface_data_in  is power_supply_control_data_out.measurement_interface_data_in;
+    alias measurement_interface_data_out is power_supply_control_data_in.measurement_interface_data_out;
+    alias modulator_clock                is power_supply_control_clocks.modulator_clock;
+    alias core_clock                     is power_supply_control_clocks.core_clock;
+    alias pll_lock                       is power_supply_control_clocks.pll_lock;
+------------------------------------------------------------------------
     signal ada_triggers : muxed_ad_control;
     signal adb_triggers : muxed_ad_control;
     signal dhb_trigger : std_logic;
     signal llc_trigger : std_logic;
-
-    procedure trigger_ext_ad
-    (
-        signal dhb_adc_trigger : inout std_logic
-    ) is
-    begin
-        dhb_adc_trigger <= not dhb_adc_trigger;
-    end trigger_ext_ad;
-
-    alias measurement_interface_data_in is power_supply_control_data_out.measurement_interface_data_in; 
-    alias modulator_clock : std_logic is power_supply_control_clocks.modulator_clock;
-    alias core_clock : std_logic is power_supply_control_clocks.core_clock;
-    alias pll_lock : std_logic is power_supply_control_clocks.pll_lock;
 ------------------------------------------------------------------------
     signal master_carrier : integer range 0 to 2**12-1;
 ------------------------------------------------------------------------
@@ -132,6 +126,7 @@ begin
     pfc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
+    pfc_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_pfc_control : pfc_control
         generic map(1896)
         port map
@@ -145,6 +140,7 @@ begin
     llc_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
+    llc_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_llc_control : llc_control
         port map
         (
@@ -157,6 +153,7 @@ begin
     dhb_control_clocks <= ( core_clock => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock => pll_lock);
+    dhb_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_dhb_control : dhb_control
         generic map(1896)
         port map

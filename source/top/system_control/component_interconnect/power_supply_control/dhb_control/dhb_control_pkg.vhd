@@ -3,8 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_output_group;
-    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_input_group;
+    use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
 
 package dhb_control_pkg is
 ------------------------------------------------------------------------
@@ -21,13 +20,12 @@ package dhb_control_pkg is
     end record;
     
     type dhb_control_data_input_group is record
-        onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+        measurement_interface_data_out : measurement_interface_data_output_group;
         enable_dhb : boolean;
         dhb_carrier : integer;
     end record;
     
     type dhb_control_data_output_group is record
-        onboard_ad_control_data_in : onboard_ad_control_data_input_group;
         dhb_state_is : t_dhb_states;
     end record;
     

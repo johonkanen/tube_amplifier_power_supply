@@ -3,7 +3,8 @@ library ieee;
     use ieee.numeric_std.all;
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
+    use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_input_group;
 
 package llc_control_pkg is
 
@@ -21,11 +22,12 @@ package llc_control_pkg is
     
     type llc_control_data_input_group is record
         enable_llc : boolean;
+        measurement_interface_data_out : measurement_interface_data_output_group;
     end record;
     
     type llc_control_data_output_group is record
         st_llc_control_states : t_llc_control_states;
-        onboard_ad_control_data_in : onboard_ad_control_data_input_group;
+        onboard_ad_control_data_in : measurement_interface_data_input_group;
     end record;
     
     component llc_control is

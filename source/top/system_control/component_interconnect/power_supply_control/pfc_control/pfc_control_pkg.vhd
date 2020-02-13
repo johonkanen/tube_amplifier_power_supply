@@ -3,8 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
 library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_output_group;
-    use onboard_adc_library.onboard_ad_control_pkg.onboard_ad_control_data_input_group;
+    use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
 
 package pfc_control_pkg is
 ------------------------------------------------------------------------
@@ -23,13 +22,12 @@ package pfc_control_pkg is
     
     type pfc_control_data_input_group is record
         start_pfc : boolean;
-        onboard_ad_control_data_out : onboard_ad_control_data_output_group;
+        measurement_interface_data_out : measurement_interface_data_output_group;
         pfc_carrier : integer;
     end record;
     
     type pfc_control_data_output_group is record
         pfc_state_is : t_pfc_states;
-        onboard_ad_control_data_in : onboard_ad_control_data_input_group;
     end record;
 
     component pfc_control is
