@@ -19,8 +19,8 @@ end entity;
 
 architecture rtl of measurement_interface is
 
-    alias core_clock : std_logic is measurement_interface_clocks.core_clock;
-    alias reset_n : std_logic is measurement_interface_clocks.reset_n;
+    alias core_clock is measurement_interface_clocks.core_clock;
+    alias reset_n    is measurement_interface_clocks.reset_n;
 
     component ext_ad_spi3w is
         generic(

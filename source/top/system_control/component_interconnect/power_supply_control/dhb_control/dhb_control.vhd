@@ -26,8 +26,9 @@ end dhb_control;
 
 architecture rtl of dhb_control is
 
-    alias core_clock : std_logic is dhb_control_clocks.core_clock;
-    alias modulator_clock : std_logic is dhb_control_clocks.modulator_clock;
+    alias core_clock      is dhb_control_clocks.core_clock;
+    alias modulator_clock is dhb_control_clocks.modulator_clock;
+
     signal phase_modulator_clocks : phase_modulator_clock_group;
     signal phase_modulator_data_in : phase_modulator_data_input_group;
     signal phase_modulator_data_out : phase_modulator_data_output_group;

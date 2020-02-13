@@ -21,8 +21,8 @@ end llc_control;
 
 architecture rtl of llc_control is
 
-    alias core_clock : std_logic is llc_control_clocks.core_clock;
-    alias modulator_clock : std_logic is llc_control_clocks.modulator_clock;
+    alias core_clock is llc_control_clocks.core_clock;
+    alias modulator_clock is llc_control_clocks.modulator_clock;
 ------------------------------------------------------------------------
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
@@ -47,6 +47,21 @@ architecture rtl of llc_control is
         
     end std_to_bool;
 begin
+    heater_control : process(core_clock)
+        type t_heater_control_states is (idle, precharge, rampup, tripped);
+        variable st_heater_control_states : t_heater_control_states;
+        
+    begin
+        if rising_edge(core_clock) then
+            disable_llc_modulator(llc_modulator_data_in);
+            CASE st_heater_control_states is
+                WHEN idle =>
+
+                WHEN others =>
+            end CASE;
+
+        end if; --rising_edge
+    end process heater_control;	
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
@@ -58,7 +73,7 @@ begin
 ------------------------------------------------------------------------
     --TODO, create control logic for safe llc start
     llc_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
-    llc_modulator_data_in.llc_is_enabled <= std_to_bool(llc_control_clocks.pll_lock);
+    -- llc_modulator_data_in.llc_is_enabled <= std_to_bool(llc_control_clocks.pll_lock);
     u_llc_modulator : llc_modulator
     port map
     (

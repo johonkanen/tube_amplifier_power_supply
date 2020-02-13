@@ -42,6 +42,9 @@ package llc_modulator_pkg is
             llc_modulator_data_out : out llc_modulator_data_output_group
         );
     end component llc_modulator;
+
+    constant llc_min_period : integer := 474;
+    constant llc_max_period : integer := 853;
         
 ------------------------------------------------------------------------
     procedure set_period ( period : in integer;
@@ -77,6 +80,7 @@ package body llc_modulator_pkg is
     ) is
     begin
         llc_input.llc_is_enabled <= false;
+        set_period(474,llc_input);
     end disable_llc_modulator;
 ------------------------------------------------------------------------
 
