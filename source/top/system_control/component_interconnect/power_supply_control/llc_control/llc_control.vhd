@@ -53,13 +53,12 @@ begin
         
     begin
         if rising_edge(core_clock) then
-            disable_llc_modulator(llc_modulator_data_in);
             CASE st_heater_control_states is
                 WHEN idle =>
+                    disable_llc_modulator(llc_modulator_data_in);
 
                 WHEN others =>
             end CASE;
-
         end if; --rising_edge
     end process heater_control;	
 ------------------------------------------------------------------------
