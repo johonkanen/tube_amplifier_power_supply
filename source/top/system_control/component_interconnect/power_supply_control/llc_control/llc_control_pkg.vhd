@@ -27,7 +27,7 @@ package llc_control_pkg is
     
     type llc_control_data_output_group is record
         st_llc_control_states : t_llc_control_states;
-        onboard_ad_control_data_in : measurement_interface_data_input_group;
+        measurement_interface_data_in : measurement_interface_data_input_group;
     end record;
     
     component llc_control is
