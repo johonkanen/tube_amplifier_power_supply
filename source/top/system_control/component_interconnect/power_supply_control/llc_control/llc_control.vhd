@@ -25,16 +25,17 @@ architecture rtl of llc_control is
     alias core_clock is llc_control_clocks.core_clock;
     alias modulator_clock is llc_control_clocks.modulator_clock;
     alias adc_interface is llc_control_data_in.measurement_interface_data_out;
-------------------------------------------------------------------------
+----------------------- module internal signals ------------------------
+    signal llc_voltage : int18;
+----------------------- multiplier signals -----------------------------
     signal multiplier_clocks   : multiplier_clock_group;
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
-------------------------------------------------------------------------
+----------------------- modulator interface signals --------------------
     signal llc_modulator_clocks   : llc_modulator_clock_group;
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
     signal llc_modulator_data_out : llc_modulator_data_output_group;
 ------------------------------------------------------------------------
-    signal llc_voltage : int18;
     function std_to_bool
     (
         check_for_1 : std_logic
@@ -49,10 +50,24 @@ architecture rtl of llc_control is
         end if;
         
     end std_to_bool;
+------------------------------------------------------------------------
 begin
     heater_control : process(core_clock)
         type t_heater_control_states is (idle, precharge, rampup, tripped);
         variable st_heater_control_states : t_heater_control_states;
+
+        type t_pi_control is (idle, pi_out, integrate);
+        variable st_pi_control : t_pi_control;
+        ------------------------------------------------------------------------
+        variable radix : int18;
+        impure function "*" (left, right : int18) return int18
+        is
+            variable result : sign36;
+        begin
+            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
+            return get_result(multiplier_data_out,radix);
+        end "*";
+        ------------------------------------------------------------------------
         
     begin
         if rising_edge(core_clock) then
