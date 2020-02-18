@@ -1,4 +1,5 @@
 set source=source/
+
 ghdl -a --ieee=synopsys %source%/top/system_clocks_pkg.vhd
 ghdl -a --ieee=synopsys %source%/ecp5/ecp5_pll_wrapper.vhd
 
