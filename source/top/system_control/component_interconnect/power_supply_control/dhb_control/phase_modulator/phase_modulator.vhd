@@ -21,14 +21,41 @@ architecture rtl of phase_modulator is
 
     alias core_clock : std_logic is phase_modulator_clocks.core_clock;
     alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
+    signal reset_n : std_logic;
 
     signal dhb_master_carrier : uint12 := 0;
     signal dhb_primary_carrier : uint12 := 0;
     signal dhb_secondary_carrier : uint12 := 0;
     signal primary_phase_shift : uint12;
     signal secondary_phase_shift : uint12;
-    
 
+    type t_voltage is (high, low);
+
+    type dhb_modulator_clocked_signals is record
+        primary_voltage : t_voltage;
+        secondary_voltage : t_voltage;
+    end record;
+
+    signal dhb_signals : dhb_modulator_clocked_signals;
+------------------------------------------------------------------------
+    procedure set_primary_bridge_voltage
+    (
+        signal dhb : out dhb_modulator_clocked_signals;
+        voltage_state : t_voltage
+    ) is
+    begin
+        dhb.primary_voltage <= voltage_state;
+    end set_primary_bridge_voltage;
+------------------------------------------------------------------------
+    procedure set_secondary_bridge_voltage
+    (
+        signal dhb : out dhb_modulator_clocked_signals;
+        voltage_state : t_voltage
+    ) is
+    begin
+        dhb.secondary_voltage <= voltage_state;
+    end set_secondary_bridge_voltage;
+------------------------------------------------------------------------
 begin
 
     create_carriers : process(modulator_clock)
@@ -73,6 +100,19 @@ begin
 ------------------------------------------------------------------------
         end if; --rising_edge
     end process create_carriers;	
+
+    deadtime_generator : process(modulator_clock)
+        
+    begin
+        if rising_edge(modulator_clock) then
+            if reset_n = '0' then
+            -- reset state
+    
+            else
+    
+            end if; -- rstn
+        end if; --rising_edge
+    end process deadtime_generator;	
 
 
 end rtl;
