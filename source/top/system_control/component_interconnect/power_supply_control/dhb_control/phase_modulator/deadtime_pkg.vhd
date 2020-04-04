@@ -24,11 +24,10 @@ package deadtime_pkg is
     type deadtime_data_input_array is array (integer range <>) of deadtime_data_input_group;
 
     component deadtime is
-        generic(number_of_half_bridge_modules : integer);
         port (
             deadtime_clocks : in deadtime_clock_group; 
-            deadtime_FPGA_out : out deadtime_FPGA_output_array(1 to number_of_half_bridge_modules); 
-            deadtime_data_in : in deadtime_data_input_array(1 to number_of_half_bridge_modules)
+            deadtime_FPGA_out : out deadtime_FPGA_output_group; 
+            deadtime_data_in : in deadtime_data_input_group
         );
     end component deadtime;
     
