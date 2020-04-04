@@ -20,6 +20,9 @@ package deadtime_pkg is
         deadtime_cycles : uint12;
     end record;
 
+    type deadtime_FPGA_output_array is array (integer range <>) of deadtime_FPGA_output_group;
+    type deadtime_data_input_array is array (integer range <>) of deadtime_data_input_group;
+
     component deadtime is
         port (
             deadtime_clocks : in deadtime_clock_group; 
@@ -28,9 +31,10 @@ package deadtime_pkg is
         );
     end component deadtime;
     
+    -- constant number_of_half_bridge_modules : integer := 2;
     -- signal deadtime_clocks   : deadtime_clock_group;
-    -- signal deadtime_FPGA_out : deadtime_FPGA_output_group;
-    -- signal deadtime_data_in  : deadtime_data_input_group;
+    -- signal deadtime_FPGA_out : deadtime_FPGA_output_array(1 to number_of_half_bridge_modules); 
+    -- signal deadtime_data_in : deadtime_data_input_array(1 to number_of_half_bridge_modules);
     
     -- u_deadtime : deadtime
     -- port map( deadtime_clocks,
