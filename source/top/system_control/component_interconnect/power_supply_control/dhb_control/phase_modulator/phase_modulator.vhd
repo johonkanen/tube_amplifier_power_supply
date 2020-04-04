@@ -36,9 +36,10 @@ architecture rtl of phase_modulator is
     constant high : std_logic := '1';
     constant low : std_logic := '0';
 
+    constant number_of_half_bridge_modules : integer := 2;
     signal deadtime_clocks   : deadtime_clock_group;
-    signal deadtime_FPGA_out : deadtime_FPGA_output_group;
-    signal deadtime_data_in  : deadtime_data_input_group;
+    signal deadtime_FPGA_out : deadtime_FPGA_output_array(1 to number_of_half_bridge_modules); 
+    signal deadtime_data_in : deadtime_data_input_array(1 to number_of_half_bridge_modules);
 
 begin
 
@@ -86,35 +87,20 @@ begin
     end process create_carriers;	
 ------------------------------------------------------------------------
     deadtime_clocks <= (modulator_clock => modulator_clock);
-    phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out.half_bridge_gates(1),
-                                        low_gate => deadtime_FPGA_out.half_bridge_gates(0));
+    phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out(1).half_bridge_gates(1),
+                                        low_gate => deadtime_FPGA_out(1).half_bridge_gates(0));
 
-    deadtime_data_in <= (half_bridge_voltage => primary_voltage,
+    phase_modulator_FPGA_out.secondary <= (high_gate => deadtime_FPGA_out(2).half_bridge_gates(1),
+                                        low_gate => deadtime_FPGA_out(2).half_bridge_gates(0));
+
+    deadtime_data_in(1) <= (half_bridge_voltage => primary_voltage,
+                        deadtime_cycles => 50);
+    deadtime_data_in(2) <= (half_bridge_voltage => secondary_voltage,
                         deadtime_cycles => 50);
     u_deadtime : deadtime
+    generic map(number_of_half_bridge_modules)
     port map( deadtime_clocks,
     	  deadtime_FPGA_out,
     	  deadtime_data_in);
 ------------------------------------------------------------------------
-    deadtime_generator : process(modulator_clock)
-        
-    begin
-        if rising_edge(modulator_clock) then
-            if reset_n = '0' then
-            -- reset state
-            else
-
-                if secondary_voltage = high then
-                    phase_modulator_FPGA_out.secondary <= positive_vector;
-                end if;
-
-                if secondary_voltage = low then
-                    phase_modulator_FPGA_out.secondary <= negative_vector;
-                end if;
-    
-            end if; -- rstn
-        end if; --rising_edge
-    end process deadtime_generator;	
-
-
 end rtl;
