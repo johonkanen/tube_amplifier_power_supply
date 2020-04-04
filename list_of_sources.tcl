@@ -8,6 +8,9 @@ proc read_sources {source_folder} \
         /dsp/sincos/sincos_pkg.vhd
         /dsp/sincos/sincos.vhd
 
+        /common/timing/timing_pkg.vhd
+        /common/timing/delay_timer.vhd
+
         /top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
         /top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 
         /top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd 

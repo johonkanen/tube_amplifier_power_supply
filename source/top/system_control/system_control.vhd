@@ -8,6 +8,8 @@ library work;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
 
+library common_library;
+    use common_library.timing_pkg.all;
 
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
@@ -44,37 +46,22 @@ architecture rtl of system_control is
     alias led2_color : led_counters is component_interconnect_data_in.led2_color;
     alias led3_color : led_counters is component_interconnect_data_in.led3_color;
 
+    signal delay_timer_data_in  : delay_timer_data_input_group;
+    signal delay_timer_data_out : delay_timer_data_output_group;
 
 begin
-
 ------------------------------------------------------------------------
--- TODO, refactor into a component
-    delay_20ms : process(system_clocks.core_clock)
-        variable u22_init_dly_cnt : integer; 
-        variable v_number_of_delays : integer;
-    begin
-	if rising_edge(system_clocks.core_clock) then
+    delay_is_complete <= delay_timer_data_out.delay_is_complete;
+    delay_timer_data_in.start_delay <= true when start_dly = '1' 
+                                       else false;
+    delay_timer_data_in.number_of_counter_wraps <= number_of_delays;
 
-        delay_is_complete <= false;
-	    if start_dly = '1' then
-            u22_init_dly_cnt := u22_init_dly_cnt +1;
-
-			if u22_init_dly_cnt = 2560000 then
-				u22_init_dly_cnt := 0;
-				v_number_of_delays := v_number_of_delays + 1;
-
-				if v_number_of_delays = number_of_delays then
-				    delay_is_complete <= true;
-				end if;
-
-			end if;
-	    else
-			v_number_of_delays := 0;
-			u22_init_dly_cnt := 0;
-	    end if;
-	end if;
-    end process delay_20ms;
-------------------------------------------------------------------------
+    u_delay_timer : delay_timer
+    generic map (count_up_to => 2560000)
+    port map( system_clocks.core_clock,
+    	  delay_timer_data_in,
+    	  delay_timer_data_out);
+----------------------------------------------------------------------
     system_main : process(system_clocks.core_clock) is
         type t_system_states is (init,
                         charge_dc_link,

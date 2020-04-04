@@ -86,6 +86,10 @@ source ../list_of_sources.tcl
         { \
             set_global_assignment -name VHDL_FILE $source_folder/$x -library onboard_adc_library
         } \
+        elseif {[lsearch -glob $x *common*] == 0} \
+        { \
+            set_global_assignment -name VHDL_FILE $source_folder/$x -library common_library
+        } \
         else \
         { \
             set_global_assignment -name VHDL_FILE $source_folder/$x \

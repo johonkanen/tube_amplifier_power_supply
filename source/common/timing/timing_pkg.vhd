@@ -27,6 +27,7 @@ package timing_pkg is
     -- signal delay_timer_data_out : delay_timer_data_output_group;
     
     -- u_delay_timer : delay_timer
+    -- generic map (count_up_to => 2560000)
     -- port map( delay_timer_clocks,
     --	  delay_timer_data_in,
     --	  delay_timer_data_out);
