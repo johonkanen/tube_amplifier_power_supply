@@ -11,6 +11,7 @@ package timing_pkg is
     
     type delay_timer_data_output_group is record
         delay_is_complete : boolean;
+        delay_is_running : boolean;
     end record;
     
     component delay_timer is
@@ -32,5 +33,51 @@ package timing_pkg is
     --	  delay_timer_data_in,
     --	  delay_timer_data_out);
 ------------------------------------------------------------------------
+    procedure init_timer (
+        signal timer_control : out delay_timer_data_input_group);
+------------------------------------------------------------------------
+    procedure request_delay (
+        signal timer_control : out delay_timer_data_input_group;
+        timer_control_out : in delay_timer_data_output_group;
+        constant number_of_timer_tics : integer);
+------------------------------------------------------------------------
+    function timer_is_ready ( timer_control : delay_timer_data_output_group)
+        return boolean;
+------------------------------------------------------------------------
 
 end package timing_pkg;
+
+package body timing_pkg is
+------------------------------------------------------------------------
+    procedure init_timer
+    (
+        signal timer_control : out delay_timer_data_input_group
+    ) is
+    begin
+        timer_control.start_delay <= false;
+    end init_timer;
+------------------------------------------------------------------------
+    procedure request_delay
+    (
+        signal timer_control : out delay_timer_data_input_group;
+        timer_control_out : in delay_timer_data_output_group;
+        constant number_of_timer_tics : integer
+    ) is
+    begin
+        if timer_control_out.delay_is_running = false then
+            timer_control.start_delay <= true;
+            timer_control.number_of_counter_wraps <= number_of_timer_tics;
+        end if;
+    end request_delay;
+------------------------------------------------------------------------
+    function timer_is_ready
+    (
+        timer_control : delay_timer_data_output_group
+    )
+    return boolean
+    is
+    begin
+        return timer_control.delay_is_complete;
+    end timer_is_ready;
+------------------------------------------------------------------------
+end package body timing_pkg;

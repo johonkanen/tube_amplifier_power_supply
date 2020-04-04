@@ -5,6 +5,9 @@ library ieee;
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
 
+library common_library;
+    use common_library.timing_pkg.all;
+
 library work;
     use work.dhb_control_pkg.all;
     use work.phase_modulator_pkg.all;
@@ -41,8 +44,16 @@ architecture rtl of dhb_control is
     type t_dhb_states is (idle,ramping_up,running,trip);
     signal st_dhb_states : t_dhb_states;
 
+    signal delay_timer_data_in  : delay_timer_data_input_group;
+    signal delay_timer_data_out : delay_timer_data_output_group;
 begin
 ------------------------------------------------------------------------
+    delay_10us : delay_timer
+    generic map (count_up_to => 1280)
+    port map( core_clock,
+    	  delay_timer_data_in,
+    	  delay_timer_data_out);
+----------------------------------------------------------------------
     dhb_control : process(core_clock)
         constant kp : int18 := 22e3;
         constant ki : int18 := 2500;

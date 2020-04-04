@@ -51,11 +51,6 @@ architecture rtl of system_control is
 
 begin
 ------------------------------------------------------------------------
-    delay_is_complete <= delay_timer_data_out.delay_is_complete;
-    delay_timer_data_in.start_delay <= true when start_dly = '1' 
-                                       else false;
-    delay_timer_data_in.number_of_counter_wraps <= number_of_delays;
-
     u_delay_timer : delay_timer
     generic map (count_up_to => 2560000)
     port map( system_clocks.core_clock,
@@ -66,7 +61,6 @@ begin
         type t_system_states is (init,
                         charge_dc_link,
                         bypass_relay, 
-                        start_aux, 
                         start_pfc, 
                         start_heaters, 
                         start_dhb, 
@@ -90,7 +84,7 @@ begin
         else
 
             get_dc_link(onboard_adc,dc_link_measurement);
-
+            
 	    CASE st_main_states is
 			WHEN init =>
 
@@ -98,15 +92,11 @@ begin
                 led2_color <= led_color_red;
                 led3_color <= led_color_red;
 
-				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
 
-				start_dly <= '0';
-
+                st_main_states := init;
 				if system_clocks.pll_lock = '1' then
 				    st_main_states := charge_dc_link;
-				else
-				    st_main_states := init;
 				end if;
 
 			WHEN charge_dc_link=> 
@@ -115,10 +105,7 @@ begin
                 led2_color <= led_color_yellow;
                 led3_color <= led_color_yellow;
 
-
-				number_of_delays <= 0;
 				system_control_FPGA_out.bypass_relay <= '0';
-				start_dly <= '1';
 
 				-- wait until DC link above 100V
                 st_main_states := charge_dc_link; 
@@ -131,34 +118,31 @@ begin
                 led2_color <= led_color_pink;
                 led3_color <= led_color_pink;
 
-				-- r_si_tcmd_system_cmd <= bypass_relay;
-				number_of_delays <= 6;
 				system_control_FPGA_out.bypass_relay <= '0';
 
-				if delay_is_complete then
-				    st_main_states := start_aux;
-				system_control_FPGA_out.bypass_relay <= '1';
-				    start_dly <= '0';
-				else
-				    st_main_states := bypass_relay; 
-				    start_dly <= '1';
+                request_delay(delay_timer_data_in,delay_timer_data_out,6);
+
+                st_main_states := bypass_relay; 
+				if timer_is_ready(delay_timer_data_out) then
+				    st_main_states := start_pfc;
+                    system_control_FPGA_out.bypass_relay <= '1';
+                    init_timer(delay_timer_data_in);
 				end if;
 
-			WHEN start_aux =>
+			WHEN start_pfc =>
 
                 led1_color <= led_color_purple; 
                 led2_color <= led_color_purple;
                 led3_color <= led_color_purple;
 
-				number_of_delays <= 50;
 				system_control_FPGA_out.bypass_relay <= '1';
+
+                request_delay(delay_timer_data_in,delay_timer_data_out,50);
 				
-				if delay_is_complete OR zero_cross_event = '1' then
+                st_main_states := start_pfc; 
+				if timer_is_ready(delay_timer_data_out) OR zero_cross_event = '1' then
 				    st_main_states := system_running;
-				    start_dly <= '0';
-				else
-				    st_main_states := start_aux; 
-				    start_dly <= '1';
+                    init_timer(delay_timer_data_in);
 				end if;
 				
 			WHEN system_running =>
@@ -167,10 +151,14 @@ begin
                 led2_color <= led_color_blu;
                 led3_color <= led_color_blu;
 
-				start_dly <= '0';
 				system_control_FPGA_out.bypass_relay <= '1';
-				number_of_delays <= 0;
+                request_delay(delay_timer_data_in,delay_timer_data_out,50);
+
 				st_main_states := system_running; 
+                if timer_is_ready(delay_timer_data_out) then
+                    st_main_states := start_pfc; 
+                    init_timer(delay_timer_data_in);
+                end if;
 
 			WHEN others=>
 				start_dly <= '0';
