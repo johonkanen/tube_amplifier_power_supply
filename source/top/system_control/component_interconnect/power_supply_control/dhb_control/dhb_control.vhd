@@ -4,6 +4,9 @@ library ieee;
 
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;
+    use onboard_adc_library.measurement_interface_pkg.all;
+    use onboard_adc_library.psu_measurement_interface_pkg.all;
+
 
 library common_library;
     use common_library.timing_pkg.all;
@@ -12,7 +15,6 @@ library work;
     use work.dhb_control_pkg.all;
     use work.phase_modulator_pkg.all;
     use work.multiplier_pkg.all;
-
 
 entity dhb_control is
     generic (
@@ -32,6 +34,7 @@ architecture rtl of dhb_control is
     alias core_clock      is dhb_control_clocks.core_clock;
     alias modulator_clock is dhb_control_clocks.modulator_clock;
     alias reset_n is dhb_control_clocks.pll_lock;
+    alias measurement_interface_data is dhb_control_data_in.measurement_interface_data_out;
 
     signal phase_modulator_clocks : phase_modulator_clock_group;
     signal phase_modulator_data_in : phase_modulator_data_input_group;
@@ -46,6 +49,9 @@ architecture rtl of dhb_control is
 
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
+
+    signal dhb_voltage : int18;
+
 begin
 ------------------------------------------------------------------------
     delay_10us : delay_timer
@@ -86,8 +92,12 @@ begin
                 integrator := 0;
                 radix := 16;
                 init_timer(delay_timer_data_in);
+                process_counter := 0;
+                dhb_voltage <= 0;
     
             else
+
+                get_dhb_voltage(measurement_interface_data,dhb_voltage);
 
                 CASE st_dhb_states is
                     WHEN idle =>
@@ -98,6 +108,8 @@ begin
                         
 
                     WHEN running =>
+
+                        --PI control:
 
                     WHEN trip =>
                 end CASE;
