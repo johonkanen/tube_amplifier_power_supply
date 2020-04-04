@@ -4,6 +4,7 @@ library ieee;
 
 library work;
     use work.phase_modulator_pkg.all;
+    use work.deadtime_pkg.all;
 
 entity phase_modulator is
     generic (g_carrier_max_value : integer);
@@ -19,43 +20,26 @@ architecture rtl of phase_modulator is
 
     subtype uint12 is integer range 0 to 2**12-1;
 
-    alias core_clock : std_logic is phase_modulator_clocks.core_clock;
+    alias core_clock      : std_logic is phase_modulator_clocks.core_clock;
     alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
-    signal reset_n : std_logic;
+    signal reset_n        : std_logic;
 
-    signal dhb_master_carrier : uint12 := 0;
-    signal dhb_primary_carrier : uint12 := 0;
+    signal dhb_master_carrier    : uint12 := 0;
+    signal dhb_primary_carrier   : uint12 := 0;
     signal dhb_secondary_carrier : uint12 := 0;
-    signal primary_phase_shift : uint12;
+    signal primary_phase_shift   : uint12;
     signal secondary_phase_shift : uint12;
 
-    type t_voltage is (high, low);
+    signal primary_voltage : std_logic;
+    signal secondary_voltage : std_logic;
 
-    type dhb_modulator_clocked_signals is record
-        primary_voltage : t_voltage;
-        secondary_voltage : t_voltage;
-    end record;
+    constant high : std_logic := '1';
+    constant low : std_logic := '0';
 
-    signal dhb_signals : dhb_modulator_clocked_signals;
-------------------------------------------------------------------------
-    procedure set_primary_bridge_voltage
-    (
-        signal dhb : out dhb_modulator_clocked_signals;
-        voltage_state : t_voltage
-    ) is
-    begin
-        dhb.primary_voltage <= voltage_state;
-    end set_primary_bridge_voltage;
-------------------------------------------------------------------------
-    procedure set_secondary_bridge_voltage
-    (
-        signal dhb : out dhb_modulator_clocked_signals;
-        voltage_state : t_voltage
-    ) is
-    begin
-        dhb.secondary_voltage <= voltage_state;
-    end set_secondary_bridge_voltage;
-------------------------------------------------------------------------
+    signal deadtime_clocks   : deadtime_clock_group;
+    signal deadtime_FPGA_out : deadtime_FPGA_output_group;
+    signal deadtime_data_in  : deadtime_data_input_group;
+
 begin
 
     create_carriers : process(modulator_clock)
@@ -87,28 +71,46 @@ begin
             end if;
 ------------------------------------------------------------------------
             if dhb_primary_carrier > g_carrier_max_value/2 then
-                phase_modulator_FPGA_out.primary <= positive_vector;
+                primary_voltage <= high;
             else
-                phase_modulator_FPGA_out.primary <= negative_vector;
+                primary_voltage <= low;
             end if;
 ------------------------------------------------------------------------
             if dhb_secondary_carrier > g_carrier_max_value/2 then
-                phase_modulator_FPGA_out.secondary <= positive_vector;
+                secondary_voltage <= high;
             else
-                phase_modulator_FPGA_out.secondary <= negative_vector;
+                secondary_voltage <= low;
             end if;
 ------------------------------------------------------------------------
         end if; --rising_edge
     end process create_carriers;	
+------------------------------------------------------------------------
+    deadtime_clocks <= (modulator_clock => modulator_clock);
+    phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out.half_bridge_gates(1),
+                                        low_gate => deadtime_FPGA_out.half_bridge_gates(0));
 
+    deadtime_data_in <= (half_bridge_voltage => primary_voltage,
+                        deadtime_cycles => 50);
+    u_deadtime : deadtime
+    port map( deadtime_clocks,
+    	  deadtime_FPGA_out,
+    	  deadtime_data_in);
+------------------------------------------------------------------------
     deadtime_generator : process(modulator_clock)
         
     begin
         if rising_edge(modulator_clock) then
             if reset_n = '0' then
             -- reset state
-    
             else
+
+                if secondary_voltage = high then
+                    phase_modulator_FPGA_out.secondary <= positive_vector;
+                end if;
+
+                if secondary_voltage = low then
+                    phase_modulator_FPGA_out.secondary <= negative_vector;
+                end if;
     
             end if; -- rstn
         end if; --rising_edge

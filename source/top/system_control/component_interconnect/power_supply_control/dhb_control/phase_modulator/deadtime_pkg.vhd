@@ -19,7 +19,7 @@ package deadtime_pkg is
         half_bridge_voltage : std_logic;
         deadtime_cycles : uint12;
     end record;
-    
+
     component deadtime is
         port (
             deadtime_clocks : in deadtime_clock_group; 
