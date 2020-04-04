@@ -53,6 +53,14 @@ begin
     port map( core_clock,
     	  delay_timer_data_in,
     	  delay_timer_data_out);
+------------------------------------------------------------------------
+    multiplier_clocks.dsp_clock <= core_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
 ----------------------------------------------------------------------
     dhb_control : process(core_clock)
         constant kp : int18 := 22e3;
@@ -77,13 +85,17 @@ begin
                 st_dhb_states <= idle;
                 integrator := 0;
                 radix := 16;
+                init_timer(delay_timer_data_in);
     
             else
 
                 CASE st_dhb_states is
                     WHEN idle =>
 
+                        set_phase(0,phase_modulator_data_in);
+
                     WHEN ramping_up =>
+                        
 
                     WHEN running =>
 
@@ -93,14 +105,6 @@ begin
             end if; -- rstn
         end if; --rising_edge
     end process dhb_control;	
-------------------------------------------------------------------------
-    multiplier_clocks.dsp_clock <= core_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
 ------------------------------------------------------------------------
     phase_modulator_clocks <= (core_clock => core_clock, 
                               modulator_clock => modulator_clock);

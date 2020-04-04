@@ -23,7 +23,6 @@ package timing_pkg is
         );
     end component delay_timer;
     
-    -- signal delay_timer_clock   : std_logic;
     -- signal delay_timer_data_in  : delay_timer_data_input_group;
     -- signal delay_timer_data_out : delay_timer_data_output_group;
     

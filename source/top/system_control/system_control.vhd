@@ -27,17 +27,12 @@ end entity system_control;
 
 architecture rtl of system_control is
 
-    signal start_dly : std_logic;
-    signal delay_is_complete : boolean;
-                                
     signal r_so_uart_ready_event : std_logic;
     signal r_so16_uart_rx_data : std_logic_vector(15 downto 0);
 
     signal zero_cross_event : std_logic;
 
-    signal number_of_delays : integer;
     signal dc_link_measurement : integer;
-
 
     signal component_interconnect_data_in  : component_interconnect_data_input_group;
     signal component_interconnect_data_out : component_interconnect_data_output_group;
@@ -61,7 +56,7 @@ begin
         type t_system_states is (init,
                         charge_dc_link,
                         bypass_relay, 
-                        start_pfc, 
+                        start_power_supplies, 
                         start_heaters, 
                         start_dhb, 
                         system_running,
@@ -77,8 +72,6 @@ begin
             led1_color <= led_color_red; 
             led2_color <= led_color_red;
             led3_color <= led_color_red;
-            start_dly <= '0';
-            number_of_delays <= 0;
             dc_link_measurement <= 0;
             st_main_states := init;
         else
@@ -124,12 +117,12 @@ begin
 
                 st_main_states := bypass_relay; 
 				if timer_is_ready(delay_timer_data_out) then
-				    st_main_states := start_pfc;
+				    st_main_states := start_power_supplies;
                     system_control_FPGA_out.bypass_relay <= '1';
                     init_timer(delay_timer_data_in);
 				end if;
 
-			WHEN start_pfc =>
+			WHEN start_power_supplies =>
 
                 led1_color <= led_color_purple; 
                 led2_color <= led_color_purple;
@@ -137,9 +130,10 @@ begin
 
 				system_control_FPGA_out.bypass_relay <= '1';
 
+                -- TODO, add signal for indicating PFC running
                 request_delay(delay_timer_data_in,delay_timer_data_out,50);
 				
-                st_main_states := start_pfc; 
+                st_main_states := start_power_supplies; 
 				if timer_is_ready(delay_timer_data_out) OR zero_cross_event = '1' then
 				    st_main_states := system_running;
                     init_timer(delay_timer_data_in);
@@ -156,13 +150,11 @@ begin
 
 				st_main_states := system_running; 
                 if timer_is_ready(delay_timer_data_out) then
-                    st_main_states := start_pfc; 
+                    st_main_states := start_power_supplies; 
                     init_timer(delay_timer_data_in);
                 end if;
 
 			WHEN others=>
-				start_dly <= '0';
-				number_of_delays <= 0;
 				st_main_states := init;
 	    end CASE;
     end if;
