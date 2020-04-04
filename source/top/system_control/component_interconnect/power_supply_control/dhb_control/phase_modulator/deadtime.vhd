@@ -22,6 +22,10 @@ architecture rtl of deadtime is
     
     constant positive_vector : std_logic_vector(1 downto 0) := "10";
     constant negative_vector : std_logic_vector(1 downto 0) := "01";
+    constant all_off : std_logic_vector(1 downto 0) := "00";
+
+    signal voltage_buffer : std_logic;
+    signal deadtime_counter : integer range 0 to 2**12-1;
 
 begin
 
@@ -33,10 +37,26 @@ begin
             -- -- reset state
             -- else
             --
-            if half_bridge_voltage = '1' then
+            voltage_buffer <= half_bridge_voltage;
+
+            if voltage_buffer = '1' then
                 half_bridge_gates <= positive_vector;
             else
                 half_bridge_gates <= negative_vector;
+            end if;
+
+            if deadtime_counter /= 0 then
+                half_bridge_gates <= all_off;
+            end if;
+
+            if deadtime_counter > 1 then
+                deadtime_counter <= deadtime_counter - 1;
+            else
+                deadtime_counter <= 0;
+            end if;
+
+            if voltage_buffer /= half_bridge_voltage then 
+                deadtime_counter <= deadtime_data_in.deadtime_cycles;
             end if;
     
             -- end if; -- rstn
