@@ -104,10 +104,29 @@ begin
 
                         set_phase(0,phase_modulator_data_in);
 
+                    request_delay(delay_timer_data_in,delay_timer_data_out,50);
+
+                    st_dhb_states <= idle;
+                    if timer_is_ready(delay_timer_data_out) then
+                        init_timer(delay_timer_data_in);
+                        st_dhb_states <= ramping_up;
+                    end if;
+
                     WHEN ramping_up =>
                         
+                    st_dhb_states <= ramping_up;
+                    if timer_is_ready(delay_timer_data_out) then
+                        init_timer(delay_timer_data_in);
+                        st_dhb_states <= running;
+                    end if;
 
                     WHEN running =>
+
+                    st_dhb_states <= ramping_up;
+                    if timer_is_ready(delay_timer_data_out) then
+                        init_timer(delay_timer_data_in);
+                        st_dhb_states <= idle;
+                    end if;
 
                         --PI control:
 
