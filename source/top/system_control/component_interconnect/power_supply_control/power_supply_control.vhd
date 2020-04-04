@@ -52,16 +52,36 @@ begin
 
 ------------------------------------------------------------------------
     power_supply_sequencer : process(core_clock)
+
+        type t_power_supply_sequencer is (wait_for_start, ramp_up_pfc, ramp_up_llc, ramp_up_dhb, psu_running);
+        variable st_power_supply_sequencer : t_power_supply_sequencer;
+        --------------------------------------------------
+        procedure change_state_to (
+            variable state : out t_power_supply_sequencer;
+            next_state : t_power_supply_sequencer;
+            next_state_is_requested : boolean) is
+        begin
+            if next_state_is_requested then
+                state := next_state;
+            end if; 
+        end change_state_to;
+        --------------------------------------------------
         
     begin
         if rising_edge(core_clock) then
             if pll_lock = '0' then
             -- reset state
                 pfc_control_data_in.start_pfc <= false;
+                st_power_supply_sequencer := wait_for_start;
 
             else
                 -- pfc start is commanded from system control when precharge is done
                 pfc_control_data_in.start_pfc <= true;
+
+            -- if power_supply_is_started(power_supply_control_data_in) then
+                -- change_state_to(st_power_supply_sequencer, ramp_up_pfc, power_supply_is_started(power_supply_control_data_in));
+
+
             end if; -- rstn
         end if; --rising_edge
     end process power_supply_sequencer;	
@@ -106,6 +126,7 @@ begin
                         --heater_I
                         trigger_adc(ada_triggers,4);
                         trigger_adc(adb_triggers,6);
+
                         trigger_ext_ad(llc_trigger);
                         trigger_ext_ad(dhb_trigger);
                     WHEN 1200 =>
@@ -117,6 +138,7 @@ begin
                         trigger_adc(ada_triggers,3);
                         trigger_adc(adb_triggers,3);
                     WHEN others =>
+                        -- do nothing
                 end CASE;
         end if; --rising_edge
     end process carrier_generation;	
