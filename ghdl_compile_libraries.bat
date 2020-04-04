@@ -1,3 +1,4 @@
+ECHO off
 set source=source/
 
 ghdl -a --ieee=synopsys %source%/top/system_clocks_pkg.vhd
@@ -11,7 +12,6 @@ ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos.vhd
 
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_internal_pkg.vhd
-ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/onboard_ad_control/psu_measurement_interface_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/measurement_interface_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/psu_measurement_interface_pkg.vhd
 
@@ -23,6 +23,7 @@ ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
 
+ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd
