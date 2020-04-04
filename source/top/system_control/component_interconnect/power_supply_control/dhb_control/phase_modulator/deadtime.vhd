@@ -33,10 +33,7 @@ begin
         
     begin
         if rising_edge(modulator_clock) then
-            -- if reset_n = '0' then
-            -- -- reset state
-            -- else
-            --
+
             voltage_buffer <= half_bridge_voltage;
 
             if voltage_buffer = '1' then
