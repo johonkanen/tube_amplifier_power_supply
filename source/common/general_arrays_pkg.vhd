@@ -8,7 +8,6 @@ package common_types is
     subtype std16 is std_logic_vector(15 downto 0);
 
     type integer_array is array (integer range <> ) of integer;
-    type bool_array is array (integer range <> ) of boolean;
     type std16_vector_array is array (integer range <> ) of std16;
 
 end package common_types;

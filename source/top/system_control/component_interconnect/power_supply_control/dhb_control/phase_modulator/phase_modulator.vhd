@@ -24,6 +24,8 @@ architecture rtl of phase_modulator is
     alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
     signal reset_n        : std_logic;
 
+    signal input_phase_buffer : uint12;
+
     signal dhb_master_carrier    : uint12 := 0;
     signal dhb_primary_carrier   : uint12 := 0;
     signal dhb_secondary_carrier : uint12 := 0;
@@ -41,12 +43,35 @@ architecture rtl of phase_modulator is
     signal deadtime_FPGA_out : deadtime_FPGA_output_array(1 to number_of_half_bridge_modules); 
     signal deadtime_data_in : deadtime_data_input_array(1 to number_of_half_bridge_modules);
 
+    signal trigger_buffer : std_logic_vector(2 downto 0);
+
+    procedure shift_register
+    (
+        signal data_vector : inout std_logic_vector;
+        input_data : std_logic
+    ) is
+    begin
+
+        data_vector <= data_vector(data_vector'left-1 downto 0) & input_data;
+        
+    end shift_register;
+
 begin
 
     create_carriers : process(modulator_clock)
         
     begin
         if rising_edge(modulator_clock) then
+
+
+            -- clock domain crossing for input phase
+            shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
+
+            if trigger_buffer(2) /= trigger_buffer(1) then
+                input_phase_buffer <= phase_modulator_data_in.phase;
+            end if;
+
+
             if phase_modulator_data_in.phase < 0 then
                 primary_phase_shift <= -phase_modulator_data_in.phase;
                 secondary_phase_shift <= 0;
