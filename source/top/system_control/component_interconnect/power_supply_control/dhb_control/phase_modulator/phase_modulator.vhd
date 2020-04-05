@@ -64,17 +64,18 @@ begin
         if rising_edge(modulator_clock) then
 
 
+            -- clock domain crossing
             shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
             if trigger_buffer(2) /= trigger_buffer(1) then
                 input_phase_buffer <= phase_modulator_data_in.phase;
             end if;
 
 
-            if phase_modulator_data_in.phase < 0 then
-                primary_phase_shift <= -phase_modulator_data_in.phase;
+            if input_phase_buffer < 0 then
+                primary_phase_shift <= -input_phase_buffer;
                 secondary_phase_shift <= 0;
             else
-                secondary_phase_shift <= phase_modulator_data_in.phase;
+                secondary_phase_shift <= input_phase_buffer;
                 primary_phase_shift <= 0;
             end if;
 ------------------------------------------------------------------------

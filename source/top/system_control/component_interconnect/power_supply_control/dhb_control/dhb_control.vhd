@@ -104,7 +104,9 @@ begin
                 CASE st_dhb_states is
                     WHEN idle =>
 
-                    set_phase(0,phase_modulator_data_in);
+                    -- set_phase(0,phase_modulator_data_in);
+                    phase_modulator_data_in.phase <= 0;
+                    trigger(phase_modulator_data_in.tg_load_phase);
 
                     request_delay(delay_timer_data_in,delay_timer_data_out,50);
 
@@ -131,7 +133,12 @@ begin
                     st_dhb_states <= ramping_up;
                     if timer_is_ready(delay_timer_data_out) then
                         init_timer(delay_timer_data_in);
-                        st_dhb_states <= idle;
+
+                        phase_modulator_data_in.phase <= phase_modulator_data_in.phase + 1;
+                        if phase_modulator_data_in.phase = 250 then
+                            phase_modulator_data_in.phase <= -250;
+                        end if;
+                        trigger(phase_modulator_data_in.tg_load_phase);
                     end if;
 
                         --PI control:
