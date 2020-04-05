@@ -43,7 +43,7 @@ architecture rtl of phase_modulator is
     signal deadtime_FPGA_out : deadtime_FPGA_output_array(1 to number_of_half_bridge_modules); 
     signal deadtime_data_in : deadtime_data_input_array(1 to number_of_half_bridge_modules);
 
-    signal trigger_buffer : std_logic_vector(2 downto 0);
+    signal trigger_buffer : std_logic_vector(2 downto 0) := (others => '0');
 
     procedure shift_register
     (
@@ -64,12 +64,13 @@ begin
         if rising_edge(modulator_clock) then
 
 
-            -- clock domain crossing for input phase
-            shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
-
-            if trigger_buffer(2) /= trigger_buffer(1) then
-                input_phase_buffer <= phase_modulator_data_in.phase;
-            end if;
+            -- -- clock domain crossing for input phase
+            -- shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
+            trigger_buffer <= trigger_buffer(1 downto 0) & phase_modulator_data_in.tg_load_phase;
+            --
+            -- if trigger_buffer(2) /= trigger_buffer(1) then
+            --     input_phase_buffer <= phase_modulator_data_in.phase;
+            -- end if;
 
 
             if phase_modulator_data_in.phase < 0 then

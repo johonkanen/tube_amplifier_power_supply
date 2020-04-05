@@ -46,7 +46,6 @@ begin
     begin
         simulator_clock <= '0';
         rstn <= '0';
-        simulator_clock <= '0';
         wait for clock_half_per;
         while simulation_running loop
             wait for clock_half_per;
@@ -61,28 +60,40 @@ begin
         if rstn = '0' then
         -- reset state
             master_carrier <= 0;
-            phase_modulator_data_in.carrier <= 0;
+            -- phase_modulator_data_in.carrier <= 0;
+            phase_modulator_data_in.tg_load_phase <= '0';
     
         elsif rising_edge(simulator_clock) then
-            phase_modulator_data_in.carrier <= master_carrier;
+            -- phase_modulator_data_in.tg_load_phase <= not phase_modulator_data_in.tg_load_phase;
 
-            master_carrier <= master_carrier + 1;
-            if master_carrier = 1896 then
+            phase_modulator_data_in.tg_load_phase <= '1';
+            if phase_modulator_data_in.tg_load_phase = '1' then
+                phase_modulator_data_in.tg_load_phase <= '0';
+            end if;
+
+            if master_carrier = 1895 then
                 master_carrier <= 0;
+            else
+                master_carrier <= master_carrier + 1;
             end if;
         end if; -- rstn
     end process create_carrier;	
+    phase_modulator_data_in.carrier <= master_carrier;
 ------------------------------------------------------------------------
     change_phase : process
         
     begin
         phase_modulator_data_in.phase <= 0;
+        -- trigger(phase_modulator_data_in.tg_load_phase);
         wait for 15 us;
         phase_modulator_data_in.phase <= -250;
+        -- trigger(phase_modulator_data_in.tg_load_phase);
         wait for 15 us;
         phase_modulator_data_in.phase <= 250;
+        -- trigger(phase_modulator_data_in.tg_load_phase);
         wait for 15 us;
         phase_modulator_data_in.phase <= -250;
+        -- trigger(phase_modulator_data_in.tg_load_phase);
     
         wait;
     end process change_phase;	
@@ -90,7 +101,7 @@ begin
 
     primary <= (phase_modulator_FPGA_out.primary.high_gate, phase_modulator_FPGA_out.primary.low_gate);
     secondary <= (phase_modulator_FPGA_out.secondary.high_gate, phase_modulator_FPGA_out.secondary.low_gate);
-    phase_modulator_data_in.dhb_is_enabled <= true;
+    -- phase_modulator_data_in.dhb_is_enabled <= true;
     u_phase_modulator : phase_modulator
     generic map(g_carrier_max_value)
     port map

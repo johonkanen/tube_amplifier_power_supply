@@ -42,8 +42,8 @@ package phase_modulator_pkg is
     end component phase_modulator;
 
 ------------------------------------------------------------------------
-    procedure set_phase ( phase : in integer;
-        signal dhb_input : inout phase_modulator_data_input_group);
+    procedure set_phase ( signal dhb_input : inout phase_modulator_data_input_group;
+        phase : in integer);
 ------------------------------------------------------------------------         
     procedure enable_dhb_modulator (
         signal dhb_input : inout phase_modulator_data_input_group);
@@ -51,13 +51,24 @@ package phase_modulator_pkg is
     procedure disable_dhb_modulator (
         signal dhb_input : out phase_modulator_data_input_group);
 ------------------------------------------------------------------------         
+    procedure trigger ( signal trig : inout std_logic);
+------------------------------------------------------------------------         
 
 end package phase_modulator_pkg;
 
 package body phase_modulator_pkg is
 ------------------------------------------------------------------------
-    procedure set_phase ( phase : in integer;
-        signal dhb_input : inout phase_modulator_data_input_group
+    procedure trigger
+    (
+       signal trig : inout std_logic
+    ) is
+    begin
+        trig <= not trig;
+    end trigger;
+------------------------------------------------------------------------
+    procedure set_phase ( 
+        signal dhb_input : inout phase_modulator_data_input_group;
+        phase : in integer
     )
     is
     begin
