@@ -24,7 +24,7 @@ architecture rtl of phase_modulator is
     alias modulator_clock : std_logic is phase_modulator_clocks.modulator_clock;
     signal reset_n        : std_logic;
 
-    signal input_phase_buffer : uint12;
+    signal input_phase_buffer : integer range -2**11 to 2**11-1;
 
     signal dhb_master_carrier    : uint12 := 0;
     signal dhb_primary_carrier   : uint12 := 0;
@@ -64,13 +64,10 @@ begin
         if rising_edge(modulator_clock) then
 
 
-            -- -- clock domain crossing for input phase
-            -- shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
-            trigger_buffer <= trigger_buffer(1 downto 0) & phase_modulator_data_in.tg_load_phase;
-            --
-            -- if trigger_buffer(2) /= trigger_buffer(1) then
-            --     input_phase_buffer <= phase_modulator_data_in.phase;
-            -- end if;
+            shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
+            if trigger_buffer(2) /= trigger_buffer(1) then
+                input_phase_buffer <= phase_modulator_data_in.phase;
+            end if;
 
 
             if phase_modulator_data_in.phase < 0 then
