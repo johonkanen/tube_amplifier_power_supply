@@ -68,6 +68,8 @@ begin
             multiplier_data_out 
         );
 ----------------------------------------------------------------------
+
+----------------------------------------------------------------------
     dhb_control : process(core_clock)
         constant kp : int18 := 22e3;
         constant ki : int18 := 2500;
@@ -102,7 +104,7 @@ begin
                 CASE st_dhb_states is
                     WHEN idle =>
 
-                        set_phase(0,phase_modulator_data_in);
+                    set_phase(0,phase_modulator_data_in);
 
                     request_delay(delay_timer_data_in,delay_timer_data_out,50);
 
@@ -113,6 +115,8 @@ begin
                     end if;
 
                     WHEN ramping_up =>
+
+                    request_delay(delay_timer_data_in,delay_timer_data_out,1);
                         
                     st_dhb_states <= ramping_up;
                     if timer_is_ready(delay_timer_data_out) then
@@ -121,6 +125,8 @@ begin
                     end if;
 
                     WHEN running =>
+
+                    request_delay(delay_timer_data_in,delay_timer_data_out,13);
 
                     st_dhb_states <= ramping_up;
                     if timer_is_ready(delay_timer_data_out) then

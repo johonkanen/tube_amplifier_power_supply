@@ -22,7 +22,8 @@ package phase_modulator_pkg is
     type phase_modulator_data_input_group is record
         carrier : integer;
         phase : integer range -2**10 to 2**10-1;
-        dhb_is_enabled : boolean;
+        tg_load_phase : std_logic;
+        dhb_is_enabled : std_logic;
     end record;
     
     type phase_modulator_data_output_group is record
@@ -40,16 +41,12 @@ package phase_modulator_pkg is
         );
     end component phase_modulator;
 
-    constant positive_vector : half_bridge := (high_gate => '1', low_gate => '0');
-    constant negative_vector : half_bridge := (high_gate => '0', low_gate => '1');
-    constant all_off : half_bridge := (high_gate => '0', low_gate => '0');
-
 ------------------------------------------------------------------------
     procedure set_phase ( phase : in integer;
-        signal dhb_input : out phase_modulator_data_input_group);
+        signal dhb_input : inout phase_modulator_data_input_group);
 ------------------------------------------------------------------------         
     procedure enable_dhb_modulator (
-        signal dhb_input : out phase_modulator_data_input_group);
+        signal dhb_input : inout phase_modulator_data_input_group);
 ------------------------------------------------------------------------         
     procedure disable_dhb_modulator (
         signal dhb_input : out phase_modulator_data_input_group);
@@ -60,25 +57,26 @@ end package phase_modulator_pkg;
 package body phase_modulator_pkg is
 ------------------------------------------------------------------------
     procedure set_phase ( phase : in integer;
-        signal dhb_input : out phase_modulator_data_input_group
+        signal dhb_input : inout phase_modulator_data_input_group
     )
     is
     begin
         dhb_input.phase <= phase;
+        dhb_input.tg_load_phase <= not dhb_input.tg_load_phase;
     end set_phase;
 ------------------------------------------------------------------------
     procedure enable_dhb_modulator ( 
-        signal dhb_input : out phase_modulator_data_input_group
+        signal dhb_input : inout phase_modulator_data_input_group
     ) is
     begin
-        dhb_input.dhb_is_enabled <= true;
+        dhb_input.dhb_is_enabled <= '1';
     end enable_dhb_modulator;
 ------------------------------------------------------------------------
     procedure disable_dhb_modulator ( 
         signal dhb_input : out phase_modulator_data_input_group
     ) is
     begin
-        dhb_input.dhb_is_enabled <= false;
+        dhb_input.dhb_is_enabled <= '0';
     end disable_dhb_modulator;
 ------------------------------------------------------------------------
 end package body phase_modulator_pkg;
