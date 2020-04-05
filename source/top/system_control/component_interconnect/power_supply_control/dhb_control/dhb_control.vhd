@@ -134,11 +134,11 @@ begin
                     if timer_is_ready(delay_timer_data_out) then
                         init_timer(delay_timer_data_in);
 
+                        trigger(phase_modulator_data_in.tg_load_phase);
                         phase_modulator_data_in.phase <= phase_modulator_data_in.phase + 1;
                         if phase_modulator_data_in.phase = 250 then
                             phase_modulator_data_in.phase <= -250;
                         end if;
-                        trigger(phase_modulator_data_in.tg_load_phase);
                     end if;
 
                         --PI control:
