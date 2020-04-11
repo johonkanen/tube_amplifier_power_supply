@@ -85,20 +85,29 @@ begin
             end if;
 ------------------------------------------------------------------------
             dhb_primary_carrier <= dhb_primary_carrier + 1;
-            dhb_secondary_carrier <= dhb_secondary_carrier + 1;
-------------------------------------------------------------------------
-            if dhb_master_carrier = primary_phase_shift then
+            if dhb_primary_carrier > g_carrier_max_value then
                 dhb_primary_carrier <= 0;
             end if;
 ------------------------------------------------------------------------
-            if dhb_master_carrier = secondary_phase_shift then
-                dhb_secondary_carrier <= 0;
+            if dhb_master_carrier = primary_phase_shift then
+                dhb_primary_carrier <= 0;
             end if;
 ------------------------------------------------------------------------
             if dhb_primary_carrier > g_carrier_max_value/2 then
                 primary_voltage <= high;
             else
                 primary_voltage <= low;
+            end if;
+
+
+
+            dhb_secondary_carrier <= dhb_secondary_carrier + 1;
+            if dhb_secondary_carrier > g_carrier_max_value then
+                dhb_secondary_carrier <= 0;
+            end if;
+------------------------------------------------------------------------
+            if dhb_master_carrier = secondary_phase_shift then
+                dhb_secondary_carrier <= 0;
             end if;
 ------------------------------------------------------------------------
             if dhb_secondary_carrier > g_carrier_max_value/2 then

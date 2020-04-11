@@ -31,6 +31,7 @@ architecture sim of tb_phase_modulator is
 
     signal primary : std_logic_vector(1 downto 0);
     signal secondary : std_logic_vector(1 downto 0);
+    signal sim_counter : integer;
 
 begin
 ------------------------------------------------------------------------
@@ -56,17 +57,18 @@ begin
     end process;
 ------------------------------------------------------------------------
     create_carrier : process(simulator_clock, rstn)
-        variable sim_counter : integer;
     begin
         if rstn = '0' then
         -- reset state
             master_carrier <= 0;
-            sim_counter := 0; 
+            sim_counter <= 0; 
             phase_modulator_data_in.tg_load_phase <= '0';
+            phase_modulator_data_in.phase <= 0;
+
     
         elsif rising_edge(simulator_clock) then
             -- phase_modulator_data_in.tg_load_phase <= not phase_modulator_data_in.tg_load_phase;
-            sim_counter := sim_counter + 1;
+            sim_counter <= sim_counter + 1;
 
             CASE sim_counter is
                 WHEN 5 =>
@@ -81,7 +83,7 @@ begin
                 WHEN 7500 => 
                     phase_modulator_data_in.phase <= 250;
                     trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 10e3 => 
+                WHEN 9952 => 
                     phase_modulator_data_in.phase <= -250;
                     trigger(phase_modulator_data_in.tg_load_phase);
                 WHEN 12e3 => 
@@ -91,7 +93,7 @@ begin
 
 
             master_carrier <= master_carrier + 1;
-            if master_carrier = 1895 then
+            if master_carrier = g_carrier_max_value then
                 master_carrier <= 0;
             end if;
         end if; -- rstn

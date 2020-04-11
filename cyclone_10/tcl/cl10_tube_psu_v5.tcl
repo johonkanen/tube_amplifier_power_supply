@@ -196,7 +196,6 @@ set_global_assignment -name SDC_FILE $tcl_scripts/cl10_tubepsu_constraints.sdc
 execute_flow -compile
 
 #call external executables to generate flash image and program cfi flash
-exec quartus_cpf -c $tcl_scripts/generate_flash_image_$fpga_device.cof
 
 if {$opts(load_program_to) == "ram"} \
 {
@@ -206,6 +205,7 @@ if {$opts(load_program_to) == "ram"} \
 else \
 {
     # program fpga flash
+    exec quartus_cpf -c $tcl_scripts/generate_flash_image_$fpga_device.cof
     exec quartus_pgm -i -c "USB-Blaster \[USB-0\]" -m JTAG -o "ipv;./output_files/tube_psu_flash.jic"
 }
 
