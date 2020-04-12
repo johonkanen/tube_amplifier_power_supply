@@ -27,17 +27,16 @@ package require cmdline
 set options \
 {\
     { "source_path.arg"} \
-    { "card_version.arg"}
+    { "card_version.arg"} \
     { "load_program_to.arg"} \
+    { "clean_all.arg"} \
 }
 
 #possible versions, u10, u25
 
 array set opts [::cmdline::getoptions quartus(args) $options]
 
-set jihuu $opts(source_path)
-
-set tcl_scripts $jihuu
+set tcl_scripts $opts(source_path)
 set source_folder $tcl_scripts/../../source
 
 set need_to_close_project 0

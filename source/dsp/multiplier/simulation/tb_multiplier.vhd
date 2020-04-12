@@ -29,13 +29,52 @@ architecture sim of tb_multiplier is
     signal signal_counter : int18;
     signal jihuu_y : int18;
 
+------------------------------------------------------------------------
+    procedure pi_control
+    (
+        variable uin, y, mem, radix, process_counter : inout int18;
+        constant b0, b1 : int18;
+        signal alu_in : out multiplier_data_input_group;
+        signal alu_out : in multiplier_data_output_group
+    ) is
+    begin
+        CASE process_counter is
+           WHEN 0 => 
+                alu_mpy(uin, b0, alu_in);
+                increment(process_counter);
+            WHEN 1 => 
+                alu_mpy(uin, b1, alu_in);
+                increment(process_counter);
+            WHEN 2 => 
+                increment(process_counter);
+                y := mem + get_result(alu_out,radix);
+                if y >= 2**15 then
+                    y := 2**15;
+                    mem :=  2**15-get_result(alu_out,radix);
+                    process_counter := 0;
+                end if;
+
+                if y <= -2**15 then
+                    y := -2**15;
+                    mem := -2**15-get_result(alu_out,radix);
+                    process_counter := 0;
+                end if; 
+            WHEN 3 =>
+                mem := mem + get_result(alu_out,radix);
+                process_counter := 0;
+            WHEN others =>
+                process_counter := 0;
+        end CASE;
+    end pi_control;
+------------------------------------------------------------------------
+
 begin
 
     simtime : process
     begin
-        simulation_running <= true;
+            simulation_running <= true;
         wait for simtime_in_clocks*clock_per;
-        simulation_running <= false;
+            simulation_running <= false;
         wait;
     end process simtime;	
 
@@ -53,7 +92,7 @@ begin
             end loop;
         wait;
     end process;
-
+------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= simulator_clock;
     u_multiplier : multiplier
         port map(
@@ -61,13 +100,13 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
-
+------------------------------------------------------------------------
     test_multiplier : process(simulator_clock, rstn)
 
         constant b1 : int18 := 7800;
         constant a1 : int18 := 11e3;
         constant b0 : int18 := 2**15-a1-b1;
-        constant uin : int18 := -10e3;
+        variable uin : int18 := -10e3;
         variable mem1, mem2, y : int18;
         variable a, b: int18;
         variable mpy_result : sign36;
@@ -101,29 +140,10 @@ begin
             signal_counter <= process_counter;
             testcounter <= process_counter;
             mpy_test <=multiplier_data_out.multiplier_result; 
+            jihuu_y <= y;
 
-            radix := 15;
-            case process_counter is
-               WHEN 0 => 
-                    y := uin * b0 + mem1;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        jihuu_y <= y;
-                    end if;
-                WHEN 1 => 
-                    mem1 := b1 * uin;
-                    increment(process_counter);
-                WHEN 2 => 
-                    mem1 := a1 * y;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        mem1 := get_result(multiplier_data_out,radix);
-                        increment(process_counter);
-                    end if;
-                when 3 =>
-                    mem1 := mem1 + get_result(multiplier_data_out,radix);
-                    process_counter := 0;
-                when others =>
-            end CASE;
+            radix := 14;
+            pi_control(uin,y,mem1,radix,process_counter,b0,b1,multiplier_data_in,multiplier_data_out); 
 
         end if; -- rstn
     end process test_multiplier;	

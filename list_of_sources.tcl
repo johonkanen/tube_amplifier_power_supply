@@ -3,6 +3,7 @@ proc read_sources {source_folder} \
     return \
     {
         /top/system_clocks_pkg.vhd
+
         /dsp/multiplier/multiplier_pkg.vhd
         /dsp/multiplier/multiplier.vhd
         /dsp/sincos/sincos_pkg.vhd

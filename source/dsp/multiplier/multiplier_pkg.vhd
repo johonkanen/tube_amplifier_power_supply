@@ -35,7 +35,7 @@ package multiplier_pkg is
             multiplier_data_out : out multiplier_data_output_group
         );
     end component multiplier;
---------------------------------------------------
+------------------------------------------------------------------------
     procedure alu_mpy
     (
         mult_a : in int18;
@@ -43,6 +43,9 @@ package multiplier_pkg is
         signal alu_input : out multiplier_data_input_group;
         signal alu_out : in multiplier_data_output_group
     );
+------------------------------------------------------------------------
+    procedure alu_mpy ( mult_a,mult_b : in int18;
+        signal alu_input : out multiplier_data_input_group);
 ------------------------------------------------------------------------
     function get_result ( mpy_out : multiplier_data_output_group; radix : integer)
     return int18;
@@ -52,9 +55,32 @@ package multiplier_pkg is
 ------------------------------------------------------------------------
     procedure increment ( variable counter : inout int18);
 ------------------------------------------------------------------------
+    procedure init_multiplier ( signal multiplier_in : out multiplier_data_input_group);
+------------------------------------------------------------------------
 end package multiplier_pkg;
 
 package body multiplier_pkg is
+------------------------------------------------------------------------
+    procedure init_multiplier
+    (
+        signal multiplier_in : out multiplier_data_input_group
+    ) is
+    begin
+        multiplier_in.mult_a <= 0;
+        multiplier_in.mult_b <= 0;
+        multiplier_in.multiplication_is_requested <= false;
+    end init_multiplier;
+------------------------------------------------------------------------
+    procedure alu_mpy
+    (
+        mult_a,mult_b : in int18;
+        signal alu_input : out multiplier_data_input_group
+    ) is
+    begin
+        alu_input.mult_a <= mult_a;
+        alu_input.mult_b <= mult_b;
+        alu_input.multiplication_is_requested <= true;
+    end alu_mpy;
 ------------------------------------------------------------------------
     procedure alu_mpy
     (

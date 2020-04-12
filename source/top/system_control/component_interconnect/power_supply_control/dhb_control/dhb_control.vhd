@@ -51,11 +51,18 @@ architecture rtl of dhb_control is
     signal delay_timer_data_out : delay_timer_data_output_group;
 
     signal dhb_voltage : int18;
+    signal dhb_voltage_is_buffered : boolean;
+
+    constant dhb_ref_410v : integer := 19770/400*410;
+    constant dhb_ref_400v : integer := 19770/400*400;
+    constant dhb_ref_350v : integer := 19770/400*350;
+    constant dhb_ref_300v : integer := 19770/400*300;
+    constant dhb_ref_200v : integer := 19770/400*200;
 
 begin
 ------------------------------------------------------------------------
-    delay_10us : delay_timer
-    generic map (count_up_to => 1280)
+    delay_50us : delay_timer
+    generic map (count_up_to => 5*1280)
     port map( core_clock,
     	  delay_timer_data_in,
     	  delay_timer_data_out);
@@ -74,8 +81,11 @@ begin
         constant kp : int18 := 22e3;
         constant ki : int18 := 2500;
 
+        variable pi_out : int18;
+        variable mult : int18;
+        variable err : int18;
         variable integrator : int18;
-        variable radix : int18;
+        constant radix : int18 := 15;
 
         variable process_counter : int18;
         ------------------------------------------------------------------------
@@ -92,14 +102,20 @@ begin
             -- reset state
                 st_dhb_states <= idle;
                 integrator := 0;
-                radix := 16;
+                -- radix := 16;
                 init_timer(delay_timer_data_in);
                 process_counter := 0;
                 dhb_voltage <= 0;
+                multiplier_data_in.mult_a <= 0;
+                multiplier_data_in.mult_b <= 0;
+                multiplier_data_in.multiplication_is_requested <= false;
     
             else
 
+                dhb_voltage_is_buffered <= dhb_voltage_is_ready(measurement_interface_data);
                 get_dhb_voltage(measurement_interface_data,dhb_voltage);
+                multiplier_data_in.multiplication_is_requested <= false;
+
 
                 CASE st_dhb_states is
                     WHEN idle =>
@@ -119,6 +135,7 @@ begin
                     WHEN ramping_up =>
 
                     request_delay(delay_timer_data_in,delay_timer_data_out,1);
+                    -- TODO, add rampup for pwm
                         
                     st_dhb_states <= ramping_up;
                     if timer_is_ready(delay_timer_data_out) then
@@ -128,20 +145,57 @@ begin
 
                     WHEN running =>
 
-                    request_delay(delay_timer_data_in,delay_timer_data_out,13);
+                    -- PI controller for dhb voltage
+                    -- TODO, refactor PI control to own procedure
+                    CASE process_counter is 
+                        WHEN 0 =>
+                            if dhb_voltage_is_buffered then
+                                increment(process_counter);
+                                err := dhb_ref_200v - dhb_voltage;
+                            end if;
 
-                    st_dhb_states <= ramping_up;
-                    if timer_is_ready(delay_timer_data_out) then
-                        init_timer(delay_timer_data_in);
+                        WHEN 1 => 
+                            -- TODO, add rampup from measured voltage to reference
+                            alu_mpy(kp,err,multiplier_data_in);
+                            increment(process_counter);
 
-                        trigger(phase_modulator_data_in.tg_load_phase);
-                        phase_modulator_data_in.phase <= phase_modulator_data_in.phase + 1;
-                        if phase_modulator_data_in.phase = 250 then
-                            phase_modulator_data_in.phase <= -250;
-                        end if;
-                    end if;
+                        WHEN 2 => 
+                            -- pipeline integrator calculation
+                            alu_mpy(ki,err,multiplier_data_in);
+                            increment(process_counter);
 
-                        --PI control:
+                        WHEN 3 => 
+                                
+                            increment(process_counter);
+                            pi_out := get_result(multiplier_data_out,radix) + integrator;
+                            
+                        WHEN 4 =>
+
+                            if pi_out > 32768 then
+                                pi_out := 32768;
+                                integrator := 32768-get_result(multiplier_data_out,radix);
+                            elsif pi_out < -32768 then
+                                pi_out := -32768;
+                                integrator := -32768-get_result(multiplier_data_out,radix);
+                            else
+                                integrator := integrator + get_result(multiplier_data_out,radix);
+                            end if;
+                            increment(process_counter);
+
+                        WHEN 5 =>
+                            alu_mpy(pi_out,250,multiplier_data_in);
+                            increment(process_counter);
+
+                        WHEN 6 =>
+                            if multiplier_is_ready(multiplier_data_out) then
+                                phase_modulator_data_in.phase <= get_result(multiplier_data_out,radix);
+                                trigger(phase_modulator_data_in.tg_load_phase);
+                                process_counter := 0;
+                            end if;
+
+                        WHEN others =>
+                            process_counter := 0;
+                    end CASE;
 
                     WHEN trip =>
                 end CASE;

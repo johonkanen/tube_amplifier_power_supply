@@ -108,7 +108,7 @@ begin
                                 angle <= 0;
                             end if;
                             sincos_data_in.sincos_is_requested <= true;
-                            si16_uart_tx_data <= std_logic_vector(to_signed(sincos_data_out.cosine,16));
+                            si16_uart_tx_data <= std_logic_vector(shift_right(to_signed(sincos_data_out.sine/2,16),1));
                             increment(process_counter);
                             uin := get_ada_measurement(measurement_interface_data_out);
                         end if;
@@ -175,17 +175,14 @@ begin
 	    si_uart_start_event,
 	    si16_uart_tx_data,
 	    so_uart_ready_event,
-	    so16_uart_rx_data
-	);
+	    so16_uart_rx_data);
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= system_clocks.core_clock;
     u_multiplier : multiplier
         port map(
             multiplier_clocks, 
             multiplier_data_in,
-            multiplier_data_out 
-        );
-
+            multiplier_data_out);
 ------------------------------------------------------------------------
         power_supply_control_clocks <= (core_clock      => system_clocks.core_clock,
                                         modulator_clock => system_clocks.modulator_clock,
