@@ -28,6 +28,7 @@ package llc_control_pkg is
     type llc_control_data_output_group is record
         st_llc_control_states : t_llc_control_states;
         measurement_interface_data_in : measurement_interface_data_input_group;
+        llc_is_ready : boolean;
     end record;
     
     component llc_control is
@@ -63,5 +64,15 @@ package body llc_control_pkg is
     begin
         llc_control_input.enable_llc <= true;
     end enable_llc;
+------------------------------------------------------------------------
+    function llc_is_ready
+    (
+        llc_control_output : llc_control_data_output_group
+    )
+    return boolean
+    is
+    begin
+        return llc_control_output.llc_is_ready;
+    end llc_is_ready;
 ------------------------------------------------------------------------
 end package body llc_control_pkg;

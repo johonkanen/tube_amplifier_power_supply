@@ -47,6 +47,9 @@ package dhb_control_pkg is
 ------------------------------------------------------------------------
     procedure enable_dhb (signal dhb_control_input : out dhb_control_data_input_group);
 ------------------------------------------------------------------------
+    function dhb_is_ready ( dhb_control_output : dhb_control_data_output_group)
+        return boolean;
+------------------------------------------------------------------------
 
 end package dhb_control_pkg;
 
@@ -67,5 +70,15 @@ package body dhb_control_pkg is
     begin
         dhb_control_input.enable_dhb <= true;
     end enable_dhb;
+------------------------------------------------------------------------
+    function dhb_is_ready
+    (
+        dhb_control_output : dhb_control_data_output_group
+    )
+    return boolean
+    is
+    begin
+        return dhb_control_output.dhb_is_ready;
+    end dhb_is_ready;
 ------------------------------------------------------------------------
 end package body dhb_control_pkg;

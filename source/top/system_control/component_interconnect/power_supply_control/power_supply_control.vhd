@@ -78,13 +78,17 @@ begin
 
             else
                 -- pfc start is commanded from system control when precharge is done
-                enable_pfc(pfc_control_data_in);
-                enable_llc(llc_control_data_in);
-                enable_dhb(dhb_control_data_in);
 
                 -- if power_supply_is_started(power_supply_control_data_in) then
                 -- change_state_to(st_power_supply_sequencer, ramp_up_pfc, power_supply_is_started(power_supply_control_data_in));
+                enable_pfc(pfc_control_data_in);
 
+                -- if pfc_control_data_in
+                enable_llc(llc_control_data_in);
+
+                enable_dhb(dhb_control_data_in);
+
+            -- if all power supplies are operational, signal all is good
 
             end if; -- rstn
         end if; --rising_edge

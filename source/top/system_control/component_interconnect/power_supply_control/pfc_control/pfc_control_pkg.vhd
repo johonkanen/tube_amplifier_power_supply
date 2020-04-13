@@ -27,7 +27,7 @@ package pfc_control_pkg is
     end record;
     
     type pfc_control_data_output_group is record
-        pfc_state_is : t_pfc_states;
+        pfc_is_ready : boolean;
     end record;
 
     component pfc_control is
@@ -43,6 +43,9 @@ package pfc_control_pkg is
     procedure disable_pfc (signal pfc_control_input : out pfc_control_data_input_group);
 ------------------------------------------------------------------------
     procedure enable_pfc (signal pfc_control_input : out pfc_control_data_input_group);
+------------------------------------------------------------------------
+    function pfc_is_ready ( pfc_control_output : pfc_control_data_output_group)
+        return boolean;
 ------------------------------------------------------------------------
 
 end package pfc_control_pkg;
@@ -64,5 +67,15 @@ package body pfc_control_pkg is
     begin
         pfc_control_input.enable_pfc <= true;
     end enable_pfc;
+------------------------------------------------------------------------
+    function pfc_is_ready
+    (
+        pfc_control_output : pfc_control_data_output_group
+    )
+    return boolean
+    is
+    begin
+        return pfc_control_output.pfc_is_ready;
+    end pfc_is_ready;
 ------------------------------------------------------------------------
 end package body pfc_control_pkg;
