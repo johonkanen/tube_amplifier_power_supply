@@ -6,6 +6,9 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
+library common_library;
+    use common_library.timing_pkg.all;
+
 library work;
     use work.llc_control_pkg.all;
     use work.llc_modulator_pkg.all;
@@ -36,6 +39,9 @@ architecture rtl of llc_control is
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
     signal llc_modulator_data_out : llc_modulator_data_output_group;
 ------------------------------------------------------------------------
+    signal delay_timer_data_in  : delay_timer_data_input_group;
+    signal delay_timer_data_out : delay_timer_data_output_group;
+------------------------------------------------------------------------
     function std_to_bool
     (
         check_for_1 : std_logic
@@ -52,6 +58,21 @@ architecture rtl of llc_control is
     end std_to_bool;
 ------------------------------------------------------------------------
 begin
+------------------------------------------------------------------------
+    delay_50us : delay_timer
+    generic map (count_up_to => 5*1280)
+    port map( core_clock,
+    	  delay_timer_data_in,
+    	  delay_timer_data_out);
+------------------------------------------------------------------------
+    multiplier_clocks.dsp_clock <= core_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
+------------------------------------------------------------------------
     heater_control : process(core_clock)
         type t_heater_control_states is (idle, precharge, rampup, tripped);
         variable st_heater_control_states : t_heater_control_states;
@@ -96,14 +117,6 @@ begin
             end CASE;
         end if; --rising_edge
     end process heater_control;	
-------------------------------------------------------------------------
-    multiplier_clocks.dsp_clock <= core_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
 ------------------------------------------------------------------------
     --TODO, create control logic for safe llc start
     llc_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
