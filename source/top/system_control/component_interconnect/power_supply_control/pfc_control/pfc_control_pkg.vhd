@@ -21,7 +21,7 @@ package pfc_control_pkg is
     end record;
     
     type pfc_control_data_input_group is record
-        start_pfc : boolean;
+        enable_pfc : boolean;
         measurement_interface_data_out : measurement_interface_data_output_group;
         pfc_carrier : integer;
     end record;
@@ -40,35 +40,29 @@ package pfc_control_pkg is
         );
     end component pfc_control;
 ------------------------------------------------------------------------
-                -- pfc control interface
+    procedure disable_pfc (signal pfc_control_input : out pfc_control_data_input_group);
 ------------------------------------------------------------------------
-    type pfc is record
-        pfc_control_data_in : pfc_control_data_input_group;
-        pfc_control_data_out : pfc_control_data_output_group;
-    end record;
+    procedure enable_pfc (signal pfc_control_input : out pfc_control_data_input_group);
 ------------------------------------------------------------------------
-    procedure enable_pfc ( signal pfc_signals : out pfc);
-------------------------------------------------------------------------
-    procedure disable_pfc ( signal pfc_signals : out pfc);
-------------------------------------------------------------------------
+
 end package pfc_control_pkg;
 
 package body pfc_control_pkg is
 ------------------------------------------------------------------------
-    procedure enable_pfc
-    (
-        signal pfc_signals : out pfc
-    ) is
-    begin
-        pfc_signals.pfc_control_data_in.start_pfc <= true;
-    end enable_pfc;
-------------------------------------------------------------------------
     procedure disable_pfc
     (
-        signal pfc_signals : out pfc
+        signal pfc_control_input : out pfc_control_data_input_group
     ) is
     begin
-        pfc_signals.pfc_control_data_in.start_pfc <= false;
+        pfc_control_input.enable_pfc <= false;
     end disable_pfc;
+------------------------------------------------------------------------
+    procedure enable_pfc
+    (
+        signal pfc_control_input : out pfc_control_data_input_group
+    ) is
+    begin
+        pfc_control_input.enable_pfc <= true;
+    end enable_pfc;
 ------------------------------------------------------------------------
 end package body pfc_control_pkg;

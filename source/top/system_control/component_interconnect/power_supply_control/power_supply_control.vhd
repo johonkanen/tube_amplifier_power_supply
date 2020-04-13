@@ -13,9 +13,9 @@ library work;
 
 entity power_supply_control is
     port (
-        power_supply_control_clocks : in power_supply_control_clock_group; 
-        power_supply_control_FPGA_out : out power_supply_control_FPGA_output_group; 
-        power_supply_control_data_in : in power_supply_control_data_input_group;
+        power_supply_control_clocks   : in power_supply_control_clock_group;
+        power_supply_control_FPGA_out : out power_supply_control_FPGA_output_group;
+        power_supply_control_data_in  : in power_supply_control_data_input_group;
         power_supply_control_data_out : out power_supply_control_data_output_group
     );
 end entity power_supply_control;
@@ -48,12 +48,13 @@ architecture rtl of power_supply_control is
     signal dhb_control_data_in  : dhb_control_data_input_group;
     signal dhb_control_data_out : dhb_control_data_output_group;
 ------------------------------------------------------------------------
+    constant carrier_maximum : integer := 1896;
 begin
 
 ------------------------------------------------------------------------
     power_supply_sequencer : process(core_clock)
 
-        type t_power_supply_sequencer is (wait_for_start, ramp_up_pfc, ramp_up_llc, ramp_up_dhb, psu_running);
+        type t_power_supply_sequencer is (wait_for_start, start_pfc, start_llc, start_dhb, psu_running);
         variable st_power_supply_sequencer : t_power_supply_sequencer;
         --------------------------------------------------
         procedure change_state_to (
@@ -65,20 +66,23 @@ begin
                 state := next_state;
             end if; 
         end change_state_to;
-        --------------------------------------------------
-        
+        -------------------------------------------------- 
     begin
         if rising_edge(core_clock) then
             if pll_lock = '0' then
             -- reset state
-                pfc_control_data_in.start_pfc <= false;
+                disable_pfc(pfc_control_data_in);
+                disable_llc(llc_control_data_in);
+                disable_dhb(dhb_control_data_in);
                 st_power_supply_sequencer := wait_for_start;
 
             else
                 -- pfc start is commanded from system control when precharge is done
-                pfc_control_data_in.start_pfc <= true;
+                enable_pfc(pfc_control_data_in);
+                enable_llc(llc_control_data_in);
+                enable_dhb(dhb_control_data_in);
 
-            -- if power_supply_is_started(power_supply_control_data_in) then
+                -- if power_supply_is_started(power_supply_control_data_in) then
                 -- change_state_to(st_power_supply_sequencer, ramp_up_pfc, power_supply_is_started(power_supply_control_data_in));
 
 
@@ -101,7 +105,7 @@ begin
                 dhb_control_data_in.dhb_carrier <= master_carrier;
 
                 master_carrier <= master_carrier + 1;
-                if master_carrier > 1896 then
+                if master_carrier > carrier_maximum then
                     master_carrier <= 0;
                 end if;
 
@@ -150,7 +154,7 @@ begin
                             pll_lock => pll_lock);
     pfc_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_pfc_control : pfc_control
-        generic map(1896)
+        generic map(carrier_maximum)
         port map
         (
             pfc_control_clocks, 
@@ -177,7 +181,7 @@ begin
                             pll_lock => pll_lock);
     dhb_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_dhb_control : dhb_control
-        generic map(1896)
+        generic map(carrier_maximum)
         port map
         (
             dhb_control_clocks,

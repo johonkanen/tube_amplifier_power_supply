@@ -50,7 +50,7 @@ begin
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
-                        if pfc_control_data_in.start_pfc then
+                        if pfc_control_data_in.enable_pfc then
                             enable_pfc_modulator(pfc_modulator_data_in);
                             st_pfc_control_state := precharge;
                         end if;

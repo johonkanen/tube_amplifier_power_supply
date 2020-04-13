@@ -38,6 +38,30 @@ package llc_control_pkg is
             llc_control_data_out : out llc_control_data_output_group
         );
     end component llc_control;
-        
+------------------------------------------------------------------------         
+    procedure disable_llc (signal llc_control_input : out llc_control_data_input_group);
+------------------------------------------------------------------------
+    procedure enable_llc (signal llc_control_input : out llc_control_data_input_group);
+------------------------------------------------------------------------
 
 end package llc_control_pkg;
+
+package body llc_control_pkg is
+------------------------------------------------------------------------
+    procedure disable_llc
+    (
+        signal llc_control_input : out llc_control_data_input_group
+    ) is
+    begin
+        llc_control_input.enable_llc <= false;
+    end disable_llc;
+------------------------------------------------------------------------
+    procedure enable_llc
+    (
+        signal llc_control_input : out llc_control_data_input_group
+    ) is
+    begin
+        llc_control_input.enable_llc <= true;
+    end enable_llc;
+------------------------------------------------------------------------
+end package body llc_control_pkg;
