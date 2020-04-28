@@ -28,9 +28,10 @@ package timing_pkg is
     
     -- u_delay_timer : delay_timer
     -- generic map (count_up_to => 2560000)
-    -- port map( delay_timer_clocks,
+    -- port map( std_clock,
     --	  delay_timer_data_in,
     --	  delay_timer_data_out);
+    -- request_delay(delay_timer_data_in,delay_timer_data_out,6);
 ------------------------------------------------------------------------
     procedure init_timer (
         signal timer_control : out delay_timer_data_input_group);

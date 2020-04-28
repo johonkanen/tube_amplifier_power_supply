@@ -16,6 +16,10 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
+library common_library;
+    use common_library.timing_pkg.all;
+    use common_library.typedefines_pkg.all;
+
 entity component_interconnect is
     port (
         system_clocks : in work.system_clocks_pkg.system_clock_group;    
@@ -29,16 +33,7 @@ entity component_interconnect is
 end entity component_interconnect;
 
 architecture rtl of component_interconnect is
-
-    function "<"
-    (
-        left : std_logic_vector; right : integer
-    )
-    return boolean
-    is
-    begin
-        return to_integer(unsigned(left)) < right;
-    end "<";
+    alias core_clock is system_clocks.core_clock;
 
 ------------------------------------------------------------------------
     signal si_uart_start_event : std_logic;
@@ -63,92 +58,103 @@ architecture rtl of component_interconnect is
     signal sincos_data_out : sincos_data_output_group;
 ------------------------------------------------------------------------
     signal angle : int18;
+------------------------------------------------------------------------
+    signal delay_timer_data_in  : delay_timer_data_input_group;
+    signal delay_timer_data_out : delay_timer_data_output_group;
+------------------------------------------------------------------------     
+    signal measurement_container : uint16_array(0 to 12);
+    signal index : uint8;
+    signal ada_meas_buffer : uint16;
+    signal adb_meas_buffer : uint16;
+    signal send_index : uint8;
+
+    procedure send_data_to_uart
+    (
+        uart_is_requested : boolean;
+        signal start_uart : out std_logic;
+        signal uart_tx_data : out std_logic_vector(15 downto 0);
+        data_array : uint16_array;
+        signal tx_index : inout integer
+    ) is
+        variable data_to_stream : integer;
+    begin
+        data_to_stream := data_array(tx_index);
+
+        if uart_is_requested then
+            start_uart <= '1';
+            uart_tx_data <= std_logic_vector(to_unsigned(data_to_stream,16));
+
+            tx_index <= tx_index + 1;
+            if tx_index > 11 then
+                tx_index <= 0;
+            end if;
+
+        else
+            start_uart <= '0';
+        end if;
+        
+    end send_data_to_uart;
+
 begin
 ------------------------------------------------------------------------
-    test_multiplier : process(system_clocks.core_clock)
-        constant b1 : int18 := 2500;
-        constant a1 : int18 := 22e3;
-        constant b0 : int18 := 2**15-a1-b1;
-        variable uin : int18;
-        constant radix : integer := 15;
-        variable mem, mem1, y : int18;
-        variable process_counter : int18;
-        ------------------------------------------------------------------------
-        impure function "*" (left, right : int18) return int18
-        is
-        begin
-            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
-            return get_result(multiplier_data_out,radix);
-        end "*";
-        ------------------------------------------------------------------------
+    u_1us_timer : delay_timer
+    generic map (count_up_to => 1280)
+    port map( core_clock,
+              delay_timer_data_in,
+              delay_timer_data_out);
+
+    test_uart : process(core_clock)
+        type t_uart_data_log_states is (idle, stream_data);
+        variable st_uart_data_log_states : t_uart_data_log_states;
+
     begin
-        if rising_edge(system_clocks.core_clock) then
+        if rising_edge(core_clock) then
             if system_clocks.pll_lock = '0' then
             -- reset state
-                process_counter := 0;
-                multiplier_data_in.mult_a <= 0;
-                multiplier_data_in.mult_b <= 0;
-                multiplier_data_in.multiplication_is_requested <= false;
-                mem1 := 0;
-                uin := 0;
-                angle <= 0;
-                sincos_data_in.sincos_is_requested <= false;
+    
             else
-                si_uart_start_event <= '0';
-                multiplier_data_in.multiplication_is_requested <= false;
-                sincos_data_in.sincos_is_requested <= false;
-            case process_counter is
-                WHEN 0 => 
-                    if so16_uart_rx_data < 7 then
-                        if ad_channel_is_ready(measurement_interface_data_out.onboard_ad_control_data_out.ada_measurements,
-                           to_integer(unsigned(so16_uart_rx_data))) then
 
-                            angle <= angle + 1;
-                            if angle > 2**16-1 then
-                                angle <= 0;
-                            end if;
-                            sincos_data_in.sincos_is_requested <= true;
-                            si16_uart_tx_data <= std_logic_vector(shift_right(to_signed(sincos_data_out.sine/2,16),1));
-                            increment(process_counter);
-                            uin := get_ada_measurement(measurement_interface_data_out);
+                get_ada_measurement(measurement_interface_data_out,ada_meas_buffer);
+                get_adb_measurement(measurement_interface_data_out,adb_meas_buffer);
+                if ada_is_ready(measurement_interface_data_out) then
+                    measurement_container(index) <= ada_meas_buffer;
+                    index <= index + 1;
+                    if index > 11 then
+                        index <= 0;
+                    end if;
+                end if;
+
+                CASE st_uart_data_log_states is
+                    WHEN idle =>
+
+                        st_uart_data_log_states := idle;
+
+                        request_delay(delay_timer_data_in,delay_timer_data_out,800e2);
+
+                        if timer_is_ready(delay_timer_data_out) then
+                            st_uart_data_log_states := stream_data;
                         end if;
-                    elsif so16_uart_rx_data < 8 then 
-                        if measurement_interface_data_out.dhb_ad_is_done then
-                            uin := measurement_interface_data_out.dhb_ad_measurement;
-                            increment(process_counter);
+                    WHEN stream_data =>
+                        request_delay(delay_timer_data_in,delay_timer_data_out,1);
+
+                        send_data_to_uart(timer_is_ready(delay_timer_data_out), 
+                                            si_uart_start_event, 
+                                            si16_uart_tx_data, 
+                                            measurement_container,
+                                            send_index);
+
+                        if timer_is_ready(delay_timer_data_out) and send_index > 11 then
+                            st_uart_data_log_states := idle;
                         end if;
-                    else
-                        if measurement_interface_data_out.llc_ad_is_done then
-                            uin := measurement_interface_data_out.llc_ad_measurement;
-                            increment(process_counter);
-                        end if;
-                    end if;
-               WHEN 1 => 
-                    y := uin * b0 + mem1;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        increment(process_counter);
-                        si_uart_start_event <= '1';
-                        
-                    end if;
-                WHEN 2 => 
-                    mem1 := b1 * uin;
-                    increment(process_counter);
-                WHEN 3 => 
-                    mem1 := a1 * y;
-                    if multiplier_is_ready(multiplier_data_out) then
-                        mem1 := get_result(multiplier_data_out,radix);
-                        increment(process_counter);
-                    end if;
-                when 4 =>
-                    if multiplier_is_ready(multiplier_data_out) then
-                        mem1 := mem1 + get_result(multiplier_data_out,radix);
-                        process_counter := 0;
-                    end if;
-                when others =>
+
+                        -- si_uart_start_event
+                    WHEN others => 
+                        -- do nothing
                 end CASE;
+    
             end if; -- rstn
         end if; --rising_edge
-    end process test_multiplier;
+    end process test_uart;	
 
 ------------------------------------------------------------------------  
 -- measurement_interface_data_in <= component_interconnect_data_in.measurement_interface_data_in;

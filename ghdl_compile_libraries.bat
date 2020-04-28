@@ -11,6 +11,7 @@ ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos_pkg.vhd
 ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos.vhd
 
 ghdl -a --ieee=synopsys --work=common_library %source%/common/timing/timing_pkg.vhd
+ghdl -a --ieee=synopsys --work=common_library %source%/common/typesdefs/typedefs_pkg.vhd
 
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_pkg.vhd
 ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/component_interconnect/measurement_interface/onboard_ad_control/onboard_ad_control_internal_pkg.vhd

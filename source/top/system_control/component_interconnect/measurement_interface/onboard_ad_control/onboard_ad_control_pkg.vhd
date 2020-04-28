@@ -62,10 +62,13 @@ package onboard_ad_control_pkg is
     procedure trigger_adc (signal adc_controls : inout muxed_ad_control; next_ad_channel : integer);
 ------------------------------------------------------------------------
     function ad_channel_is_ready ( adc_data : ad_measurement_group; adc_channel : integer)
-            return boolean;
+        return boolean;
+------------------------------------------------------------------------
+    function ad_channel_is_ready ( adc_data : ad_measurement_group)
+        return boolean;
 ------------------------------------------------------------------------
     function get_ad_measurement ( adc_data : ad_measurement_group) 
-            return integer;
+        return integer;
 ------------------------------------------------------------------------
 end package onboard_ad_control_pkg;
 
@@ -92,6 +95,16 @@ package body onboard_ad_control_pkg is
     is
     begin
         return adc_data.ad_data_is_ready and adc_data.ad_channel = adc_channel;
+    end ad_channel_is_ready;
+------------------------------------------------------------------------
+    function ad_channel_is_ready
+    (
+        adc_data : ad_measurement_group
+    )
+    return boolean
+    is
+    begin
+        return adc_data.ad_data_is_ready;
     end ad_channel_is_ready;
 ------------------------------------------------------------------------
     function get_ad_measurement
