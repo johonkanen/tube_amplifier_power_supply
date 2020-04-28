@@ -23,7 +23,7 @@ begin
 -- TODO, refactor into a component
     delay_20ms : process(delay_timer_clocks)
         variable u22_init_dly_cnt : integer; 
-        variable v_number_of_delays : integer;
+        variable v_number_of_delays : natural;
     begin
         if rising_edge(delay_timer_clocks) then
 

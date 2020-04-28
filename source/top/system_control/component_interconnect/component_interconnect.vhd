@@ -111,8 +111,11 @@ begin
         if rising_edge(core_clock) then
             if system_clocks.pll_lock = '0' then
             -- reset state
+                st_uart_data_log_states := idle;
     
             else
+
+                si_uart_start_event <= '0';
 
                 get_ada_measurement(measurement_interface_data_out,ada_meas_buffer);
                 get_adb_measurement(measurement_interface_data_out,adb_meas_buffer);
