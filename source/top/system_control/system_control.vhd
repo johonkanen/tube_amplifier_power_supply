@@ -124,7 +124,7 @@ begin
 
 			WHEN start_power_supplies =>
 
-                led1_color <= led_color_purple; 
+                led1_color <= led_color_purple;
                 led2_color <= led_color_purple;
                 led3_color <= led_color_purple;
 

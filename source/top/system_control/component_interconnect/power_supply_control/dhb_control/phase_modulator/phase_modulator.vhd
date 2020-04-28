@@ -44,7 +44,7 @@ architecture rtl of phase_modulator is
     signal deadtime_data_in : deadtime_data_input_array(1 to number_of_half_bridge_modules);
 
     signal trigger_buffer : std_logic_vector(2 downto 0) := (others => '0');
-
+------------------------------------------------------------------------
     procedure shift_register
     (
         signal data_vector : inout std_logic_vector;
@@ -55,7 +55,7 @@ architecture rtl of phase_modulator is
         data_vector <= data_vector(data_vector'left-1 downto 0) & input_data;
         
     end shift_register;
-
+------------------------------------------------------------------------
 begin
 
     create_carriers : process(modulator_clock)
@@ -63,14 +63,13 @@ begin
     begin
         if rising_edge(modulator_clock) then
 
-
             -- clock domain crossing
             shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
             if trigger_buffer(2) /= trigger_buffer(1) then
                 input_phase_buffer <= phase_modulator_data_in.phase;
-            end if;
+            end if; 
 
-
+        --------------------------------------------------
             if input_phase_buffer < 0 then
                 primary_phase_shift <= -input_phase_buffer;
                 secondary_phase_shift <= 0;
@@ -78,46 +77,49 @@ begin
                 secondary_phase_shift <= input_phase_buffer;
                 primary_phase_shift <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             dhb_master_carrier <= dhb_master_carrier + 1;
             if phase_modulator_data_in.carrier = g_carrier_max_value/4 then
                 dhb_master_carrier <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             dhb_primary_carrier <= dhb_primary_carrier + 1;
             if dhb_primary_carrier > g_carrier_max_value then
                 dhb_primary_carrier <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             if dhb_master_carrier = primary_phase_shift then
                 dhb_primary_carrier <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             if dhb_primary_carrier > g_carrier_max_value/2 then
                 primary_voltage <= high;
             else
                 primary_voltage <= low;
             end if;
+        --------------------------------------------------
 
 
 
+        --------------------------------------------------
             dhb_secondary_carrier <= dhb_secondary_carrier + 1;
             if dhb_secondary_carrier > g_carrier_max_value then
                 dhb_secondary_carrier <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             if dhb_master_carrier = secondary_phase_shift then
                 dhb_secondary_carrier <= 0;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
             if dhb_secondary_carrier > g_carrier_max_value/2 then
                 secondary_voltage <= high;
             else
                 secondary_voltage <= low;
             end if;
-------------------------------------------------------------------------
+        --------------------------------------------------
         end if; --rising_edge
     end process create_carriers;	
+
 ------------------------------------------------------------------------
     deadtime_clocks <= (modulator_clock => modulator_clock);
     phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out(1).half_bridge_gates(1),
