@@ -67,8 +67,7 @@ architecture rtl of component_interconnect is
     signal ada_meas_buffer : uint16;
     signal adb_meas_buffer : uint16;
     signal send_index : uint8;
-    constant indexes : uint16_array(0 to 14) := (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14);
-
+--------------------------------------------------
     procedure send_data_to_uart
     (
         uart_is_requested : boolean;
@@ -95,6 +94,7 @@ architecture rtl of component_interconnect is
         end if;
         
     end send_data_to_uart;
+--------------------------------------------------
 
 begin
 ------------------------------------------------------------------------
@@ -110,13 +110,19 @@ begin
 
     begin
         if rising_edge(core_clock) then
-            -- if system_clocks.pll_lock = '0' then
-            -- -- reset state
-            --     -- st_uart_data_log_states := idle;
-            --     -- send_index <= 0;
-            --
-            -- else
-            --
+            if system_clocks.pll_lock = '0' then
+            -- reset state
+                st_uart_data_log_states := idle;
+                send_index <= 0;
+                si_uart_start_event <= '0';
+
+                reset_measurements :
+                for i in 0 to measurement_container'right loop
+                    measurement_container(i) <= 0;
+                end loop;
+
+            else
+
 
                 get_pfc_I1      (measurement_interface_data_out , measurement_container (0));
                 get_pfc_I2      (measurement_interface_data_out , measurement_container (10));
@@ -149,14 +155,13 @@ begin
                                             measurement_container,
                                             send_index);
 
-                        if timer_is_ready(delay_timer_data_out) and send_index = 12 then
+                        if timer_is_ready(delay_timer_data_out) and send_index = measurement_container'right then
                             st_uart_data_log_states := idle;
                         end if;
 
-                        -- si_uart_start_event
                 end CASE;
     
-            -- end if; -- rstn
+            end if; -- rstn
         end if; --rising_edge
     end process test_uart;	
 
