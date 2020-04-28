@@ -67,6 +67,7 @@ architecture rtl of component_interconnect is
     signal ada_meas_buffer : uint16;
     signal adb_meas_buffer : uint16;
     signal send_index : uint8;
+    constant indexes : uint16_array(0 to 14) := (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14);
 
     procedure send_data_to_uart
     (
@@ -74,7 +75,7 @@ architecture rtl of component_interconnect is
         signal start_uart : out std_logic;
         signal uart_tx_data : out std_logic_vector(15 downto 0);
         data_array : uint16_array;
-        signal tx_index : inout integer
+        signal tx_index : inout natural
     ) is
         variable data_to_stream : integer;
     begin
@@ -109,27 +110,29 @@ begin
 
     begin
         if rising_edge(core_clock) then
-            if system_clocks.pll_lock = '0' then
-            -- reset state
-                st_uart_data_log_states := idle;
-    
-            else
+            -- if system_clocks.pll_lock = '0' then
+            -- -- reset state
+            --     -- st_uart_data_log_states := idle;
+            --     -- send_index <= 0;
+            --
+            -- else
+            --
+
+                get_pfc_I1      (measurement_interface_data_out , measurement_container (0));
+                get_pfc_I2      (measurement_interface_data_out , measurement_container (10));
+                get_vac         (measurement_interface_data_out , measurement_container (2));
+                get_dc_link     (measurement_interface_data_out , measurement_container (3));
+                get_LLC_current (measurement_interface_data_out , measurement_container (4));
+                get_llc_voltage (measurement_interface_data_out , measurement_container (5));
+                get_DHB_current (measurement_interface_data_out , measurement_container (6));
+                get_dhb_voltage (measurement_interface_data_out , measurement_container (7));
+
 
                 si_uart_start_event <= '0';
-
-                get_ada_measurement(measurement_interface_data_out,ada_meas_buffer);
-                get_adb_measurement(measurement_interface_data_out,adb_meas_buffer);
-                if ada_is_ready(measurement_interface_data_out) then
-                    measurement_container(index) <= ada_meas_buffer;
-                    index <= index + 1;
-                    if index > 11 then
-                        index <= 0;
-                    end if;
-                end if;
-
                 CASE st_uart_data_log_states is
                     WHEN idle =>
 
+                        send_index <= 0;
                         st_uart_data_log_states := idle;
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,800e2);
@@ -146,16 +149,14 @@ begin
                                             measurement_container,
                                             send_index);
 
-                        if timer_is_ready(delay_timer_data_out) and send_index > 11 then
+                        if timer_is_ready(delay_timer_data_out) and send_index = 12 then
                             st_uart_data_log_states := idle;
                         end if;
 
                         -- si_uart_start_event
-                    WHEN others => 
-                        -- do nothing
                 end CASE;
     
-            end if; -- rstn
+            -- end if; -- rstn
         end if; --rising_edge
     end process test_uart;	
 

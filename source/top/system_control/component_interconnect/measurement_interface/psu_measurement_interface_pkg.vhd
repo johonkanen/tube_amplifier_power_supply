@@ -149,7 +149,7 @@ package body psu_measurement_interface_pkg is
     is
     begin
         if ad_channel_is_ready(adc_data.onboard_ad_control_data_out.ada_measurements,3) then
-            pfc_I2 <= get_ad_measurement(adc_data.onboard_ad_control_data_out.adb_measurements);
+            pfc_I2 <= get_ad_measurement(adc_data.onboard_ad_control_data_out.ada_measurements);
         end if;
     end get_pfc_I2;
 ------------------------------------------------------------------------
