@@ -62,7 +62,7 @@ architecture rtl of component_interconnect is
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------     
-    signal measurement_container : uint16_array(0 to 12);
+    signal measurement_container : uint16_array(0 to 7);
     signal index : uint8;
     signal ada_meas_buffer : uint16;
     signal adb_meas_buffer : uint16;
@@ -84,8 +84,9 @@ architecture rtl of component_interconnect is
             start_uart <= '1';
             uart_tx_data <= std_logic_vector(to_unsigned(data_to_stream,16));
 
-            tx_index <= tx_index + 1;
-            if tx_index > 11 then
+            if tx_index < measurement_container'right then
+                tx_index <= tx_index + 1;
+            else
                 tx_index <= 0;
             end if;
 
@@ -124,15 +125,14 @@ begin
             else
 
 
-                get_pfc_I1      (measurement_interface_data_out , measurement_container (0));
-                get_pfc_I2      (measurement_interface_data_out , measurement_container (10));
-                get_vac         (measurement_interface_data_out , measurement_container (2));
-                get_dc_link     (measurement_interface_data_out , measurement_container (3));
-                get_LLC_current (measurement_interface_data_out , measurement_container (4));
-                get_llc_voltage (measurement_interface_data_out , measurement_container (5));
-                get_DHB_current (measurement_interface_data_out , measurement_container (6));
-                get_dhb_voltage (measurement_interface_data_out , measurement_container (7));
-
+                get_vac         (measurement_interface_data_out , measurement_container (0));
+                get_dc_link     (measurement_interface_data_out , measurement_container (1));
+                get_pfc_I1      (measurement_interface_data_out , measurement_container (2));
+                get_pfc_I2      (measurement_interface_data_out , measurement_container (3));
+                get_dhb_voltage (measurement_interface_data_out , measurement_container (4));
+                get_DHB_current (measurement_interface_data_out , measurement_container (5));
+                get_llc_voltage (measurement_interface_data_out , measurement_container (6));
+                get_LLC_current (measurement_interface_data_out , measurement_container (7));
 
                 si_uart_start_event <= '0';
                 CASE st_uart_data_log_states is

@@ -59,9 +59,10 @@ architecture rtl of phase_modulator is
 begin
 
     create_carriers : process(modulator_clock)
-        
+
     begin
         if rising_edge(modulator_clock) then
+
 
             -- clock domain crossing
             shift_register(trigger_buffer,phase_modulator_data_in.tg_load_phase); 
@@ -125,8 +126,9 @@ begin
     phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out(1).half_bridge_gates(1),
                                         low_gate => deadtime_FPGA_out(1).half_bridge_gates(0));
 
-    deadtime_data_in(1) <= (half_bridge_voltage => primary_voltage,
-                        deadtime_cycles => 50);
+    deadtime_data_in(1) <= (gates_are_enabled => phase_modulator_data_in.dhb_is_enabled,
+                            half_bridge_voltage => primary_voltage,
+                            deadtime_cycles => 50);
     primary_deadtime : deadtime
     port map( deadtime_clocks,
     	  deadtime_FPGA_out(1),
@@ -135,7 +137,8 @@ begin
     phase_modulator_FPGA_out.secondary <= (high_gate => deadtime_FPGA_out(2).half_bridge_gates(1),
                                         low_gate => deadtime_FPGA_out(2).half_bridge_gates(0));
 
-    deadtime_data_in(2) <= (half_bridge_voltage => secondary_voltage,
+    deadtime_data_in(2) <= (gates_are_enabled => phase_modulator_data_in.dhb_is_enabled, 
+                           half_bridge_voltage => secondary_voltage,
                         deadtime_cycles => 50);
 
     secondary_deadtime : deadtime

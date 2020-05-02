@@ -55,6 +55,11 @@ begin
             if voltage_buffer /= half_bridge_voltage then 
                 deadtime_counter <= deadtime_data_in.deadtime_cycles;
             end if;
+
+            if not deadtime_data_in.gates_are_enabled = '1' then
+                half_bridge_gates <= all_off;
+            end if;
+
     
             -- end if; -- rstn
         end if; --rising_edge

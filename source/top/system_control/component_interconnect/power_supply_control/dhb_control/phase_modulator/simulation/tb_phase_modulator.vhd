@@ -64,6 +64,7 @@ begin
             sim_counter <= 0; 
             phase_modulator_data_in.tg_load_phase <= '0';
             phase_modulator_data_in.phase <= 0;
+            phase_modulator_data_in.dhb_is_enabled <= '0';
 
     
         elsif rising_edge(simulator_clock) then
@@ -75,6 +76,7 @@ begin
                     phase_modulator_data_in.phase <= 0;
                     trigger(phase_modulator_data_in.tg_load_phase);
                 WHEN 2500 => 
+                    phase_modulator_data_in.dhb_is_enabled <= '1';
                     phase_modulator_data_in.phase <= -250;
                     trigger(phase_modulator_data_in.tg_load_phase);
                 WHEN 5000 => 

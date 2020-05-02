@@ -59,6 +59,7 @@ architecture rtl of dhb_control is
     constant dhb_ref_350v : integer := 19770/400*350;
     constant dhb_ref_300v : integer := 19770/400*300;
     constant dhb_ref_200v : integer := 19770/400*200;
+    constant dhb_ref_100v : integer := 19770/400*100;
 ------------------------------------------------------------------------
 begin
 ------------------------------------------------------------------------
@@ -104,6 +105,7 @@ begin
                 process_counter := 0;
                 dhb_voltage <= 0;
                 init_multiplier(multiplier_data_in);
+                phase_modulator_data_in.dhb_is_enabled <= '0';
     
             else
                 ------------- buffer dhb measurements --------------
@@ -121,6 +123,7 @@ begin
                         -- set_phase(0,phase_modulator_data_in);
                         phase_modulator_data_in.phase <= 0;
                         trigger(phase_modulator_data_in.tg_load_phase);
+                        phase_modulator_data_in.dhb_is_enabled <= '0';
 
                         st_dhb_states <= idle;
                         if dhb_control_data_in.enable_dhb then
@@ -132,6 +135,7 @@ begin
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
                         -- TODO, add rampup for pwm
+                        phase_modulator_data_in.dhb_is_enabled <= '1';
                             
                         st_dhb_states <= ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
@@ -140,13 +144,14 @@ begin
                         end if;
 
                     WHEN running =>
+                        phase_modulator_data_in.dhb_is_enabled <= '1';
 
                     -- PI controller for dhb voltage
                     -- TODO, refactor PI control to own procedure
                         CASE process_counter is 
                             WHEN 0 =>
                                 if dhb_voltage_is_buffered then
-                                    err := dhb_ref_200v - dhb_voltage;
+                                    err := dhb_ref_100v - dhb_voltage;
                                     increment(process_counter);
                                 end if;
 
