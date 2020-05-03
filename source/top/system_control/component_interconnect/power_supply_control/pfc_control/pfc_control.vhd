@@ -67,15 +67,16 @@ begin
             -- reset state
                 st_pfc_control_state := idle;
                 set_duty(0,pfc_modulator_data_in);
+                disable_pfc_modulator(pfc_modulator_data_in);
             else
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
                         if pfc_control_data_in.enable_pfc then
-                            enable_pfc_modulator(pfc_modulator_data_in);
                             st_pfc_control_state := precharge;
                         end if;
                     WHEN precharge =>
+                        disable_pfc_modulator(pfc_modulator_data_in);
                             set_duty(100,pfc_modulator_data_in);
                         -- wait for 50 ms
                     WHEN others =>

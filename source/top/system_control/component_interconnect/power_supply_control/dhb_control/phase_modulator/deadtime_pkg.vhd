@@ -16,7 +16,7 @@ package deadtime_pkg is
     end record;
     
     type deadtime_data_input_group is record
-        tg_deadtime_trigger : std_logic;
+        -- tg_deadtime_trigger : std_logic;
         gates_are_enabled : std_logic;
         half_bridge_voltage : std_logic;
         deadtime_cycles : uint12;

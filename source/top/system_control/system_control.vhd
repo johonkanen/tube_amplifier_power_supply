@@ -8,6 +8,8 @@ library work;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
 
+    use work.system_control_internal_pkg.all;
+
 library common_library;
     use common_library.timing_pkg.all;
 
@@ -74,6 +76,7 @@ begin
             led3_color <= led_color_red;
             dc_link_measurement <= 0;
             st_main_states := init;
+            disable_power_supplies(component_interconnect_data_in);
         else
 
             get_dc_link(onboard_adc,dc_link_measurement);
@@ -86,6 +89,7 @@ begin
                 led3_color <= led_color_red;
 
 				system_control_FPGA_out.bypass_relay <= '0';
+                disable_power_supplies(component_interconnect_data_in);
 
                 st_main_states := init;
 				if system_clocks.pll_lock = '1' then
@@ -99,10 +103,11 @@ begin
                 led3_color <= led_color_yellow;
 
 				system_control_FPGA_out.bypass_relay <= '0';
+                disable_power_supplies(component_interconnect_data_in);
 
-				-- wait until DC link above 100V
+				-- wait until DC link above 80V
                 st_main_states := charge_dc_link; 
-                if dc_link_measurement > 4900 then
+                if dc_link_measurement > 4000 then
                         st_main_states := bypass_relay;
                 end if;
 			WHEN bypass_relay=> 
@@ -112,6 +117,7 @@ begin
                 led3_color <= led_color_pink;
 
 				system_control_FPGA_out.bypass_relay <= '0';
+                disable_power_supplies(component_interconnect_data_in);
 
                 request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,60);
 
@@ -127,9 +133,12 @@ begin
                 led3_color <= led_color_purple;
 
 				system_control_FPGA_out.bypass_relay <= '1';
+                enable_power_supplies(component_interconnect_data_in);
 
                 -- TODO, add signal for indicating PFC running
                 request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
+                component_interconnect_data_in.power_supplies_are_enabled <= true;
+
 				
                 st_main_states := start_power_supplies; 
 				if timer_is_ready(delay_timer_1ms_data_out) OR zero_cross_event = '1' then
@@ -145,11 +154,11 @@ begin
 
 				system_control_FPGA_out.bypass_relay <= '1';
                 request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
+                enable_power_supplies(component_interconnect_data_in);
 
 				st_main_states := system_running; 
                 if timer_is_ready(delay_timer_1ms_data_out) then
-                    st_main_states := start_power_supplies; 
-                    init_timer(delay_timer_1ms_data_in);
+                    -- st_main_states := start_power_supplies; 
                 end if;
 
 			WHEN others=>

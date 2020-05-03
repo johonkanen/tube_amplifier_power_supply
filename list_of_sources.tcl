@@ -33,22 +33,22 @@ proc read_sources {source_folder} \
         /top/system_control/led_driver/led_driver_pkg.vhd 
         /top/system_control/led_driver/led_driver.vhd 
 
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime.vhd
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator.vhd
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/dhb_control/dhb_control.vhd
 
-        /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator.vhd
-        /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control.vhd
 
-        /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator.vhd
-        /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
-        /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control.vhd
+            /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator.vhd
+            /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control.vhd
 
         /top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd
         /top/system_control/component_interconnect/power_supply_control/power_supply_control.vhd
@@ -57,6 +57,7 @@ proc read_sources {source_folder} \
         /top/system_control/component_interconnect/component_interconnect.vhd 
 
         /top/system_control/system_control_pkg.vhd 
+        /top/system_control/system_control_internal_pkg.vhd 
         /top/system_control/system_control.vhd 
 
         /top/top.vhd

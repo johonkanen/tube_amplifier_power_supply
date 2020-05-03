@@ -21,6 +21,7 @@ package power_supply_control_pkg is
     
     type power_supply_control_data_input_group is record
         measurement_interface_data_out : measurement_interface_data_output_group;
+        power_supplies_are_enabled : boolean;
     end record;
     
     type power_supply_control_data_output_group is record
@@ -41,6 +42,9 @@ package power_supply_control_pkg is
 ------------------------------------------------------------------------         
     procedure trigger_ext_ad ( signal dhb_adc_trigger : inout std_logic);
 ------------------------------------------------------------------------
+    function power_supplies_are_enabled ( power_supply_data_input : power_supply_control_data_input_group )
+        return boolean;
+------------------------------------------------------------------------
 end package power_supply_control_pkg;
 
 package body power_supply_control_pkg is
@@ -52,6 +56,17 @@ package body power_supply_control_pkg is
     begin
         dhb_adc_trigger <= not dhb_adc_trigger;
     end trigger_ext_ad;
+------------------------------------------------------------------------
+    function power_supplies_are_enabled
+    (
+        power_supply_data_input : power_supply_control_data_input_group 
+    )
+    return boolean
+    is
+    begin
+        return power_supply_data_input.power_supplies_are_enabled;
+        
+    end power_supplies_are_enabled;
 ------------------------------------------------------------------------
 
 end package body power_supply_control_pkg;

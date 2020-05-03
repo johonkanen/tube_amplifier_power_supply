@@ -205,6 +205,8 @@ begin
 
         measurement_interface_data_in <= power_supply_control_data_out.measurement_interface_data_in;
         power_supply_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
+        power_supply_control_data_in.power_supplies_are_enabled <= component_interconnect_data_in.power_supplies_are_enabled;
+
         u_power_supply_control : power_supply_control
         port map (
             power_supply_control_clocks,

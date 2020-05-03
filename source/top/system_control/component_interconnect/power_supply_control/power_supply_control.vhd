@@ -77,16 +77,32 @@ begin
                 st_power_supply_sequencer := wait_for_start;
 
             else
-                -- pfc start is commanded from system control when precharge is done
+                CASE st_power_supply_sequencer is
+                    WHEN wait_for_start =>
+                        disable_pfc(pfc_control_data_in);
+                        disable_llc(llc_control_data_in);
+                        disable_dhb(dhb_control_data_in);
 
+                        if power_supplies_are_enabled(power_supply_control_data_in) then
+                            st_power_supply_sequencer := start_pfc;
+                        end if;
+                    WHEN start_pfc =>
+                    -- TOO, add pfc startup routing
+                        st_power_supply_sequencer := start_llc;
+                        disable_pfc(pfc_control_data_in);
+                    WHEN start_llc =>
+                    -- TOO, add llc startup routing
+                        st_power_supply_sequencer := start_dhb;
+                        disable_llc(llc_control_data_in);
+                    WHEN start_dhb =>
+                        enable_dhb(dhb_control_data_in);
+                    WHEN others =>
+                        -- do nothing
+                end CASE;
                 -- if power_supply_is_started(power_supply_control_data_in) then
                 -- change_state_to(st_power_supply_sequencer, ramp_up_pfc, power_supply_is_started(power_supply_control_data_in));
-                enable_pfc(pfc_control_data_in);
-
-                -- if pfc_control_data_in
-                enable_llc(llc_control_data_in);
-
-                enable_dhb(dhb_control_data_in);
+                -- enable_pfc(pfc_control_data_in);
+                -- enable_llc(llc_control_data_in);
 
             -- if all power supplies are operational, signal all is good
 

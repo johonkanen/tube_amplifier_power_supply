@@ -123,7 +123,7 @@ begin
                         -- set_phase(0,phase_modulator_data_in);
                         phase_modulator_data_in.phase <= 0;
                         trigger(phase_modulator_data_in.tg_load_phase);
-                        phase_modulator_data_in.dhb_is_enabled <= '0';
+                        disable_dhb_modulator(phase_modulator_data_in);
 
                         st_dhb_states <= idle;
                         if dhb_control_data_in.enable_dhb then
@@ -135,7 +135,9 @@ begin
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
                         -- TODO, add rampup for pwm
-                        phase_modulator_data_in.dhb_is_enabled <= '1';
+                        -- phase_modulator_data_in.dhb_is_enabled <= '1';
+                        -- enable_dhb_modulator(phase_modulator_data_in);
+                        disable_dhb_modulator(phase_modulator_data_in);
                             
                         st_dhb_states <= ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
@@ -144,7 +146,8 @@ begin
                         end if;
 
                     WHEN running =>
-                        phase_modulator_data_in.dhb_is_enabled <= '1';
+                        -- phase_modulator_data_in.dhb_is_enabled <= '1';
+                        disable_dhb_modulator(phase_modulator_data_in);
 
                     -- PI controller for dhb voltage
                     -- TODO, refactor PI control to own procedure

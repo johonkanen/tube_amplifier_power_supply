@@ -16,7 +16,7 @@ package pfc_modulator_pkg is
     
     type pfc_modulator_data_input_group is record
         duty : integer;
-        pfc_is_enabled : boolean;
+        pfc_is_enabled : std_logic;
         mains_voltage_measurement : integer;
         pfc_carrier : integer;
     end record;
@@ -60,14 +60,14 @@ package body pfc_modulator_pkg is
         signal pfc_input : out pfc_modulator_data_input_group
     ) is
     begin
-        pfc_input.pfc_is_enabled <= true;
+        pfc_input.pfc_is_enabled <= '1';
     end enable_pfc_modulator;
 ------------------------------------------------------------------------
     procedure disable_pfc_modulator ( 
         signal pfc_input : out pfc_modulator_data_input_group
     ) is
     begin
-        pfc_input.pfc_is_enabled <= false;
+        pfc_input.pfc_is_enabled <= '0';
     end disable_pfc_modulator;
 ------------------------------------------------------------------------
 end package body pfc_modulator_pkg;

@@ -28,6 +28,8 @@ architecture rtl of pfc_modulator is
     signal pfc_carrier : uint12;
     signal pfc_carrier1 : uint12;
 
+    signal shift_register : std_logic_vector(1 downto 0); 
+
 begin
 
     clock_crossing : process(core_clock)
@@ -61,6 +63,13 @@ begin
                 pfc_modulator_FPGA_out.ac1_switch <= '0';
                 pfc_modulator_FPGA_out.ac2_switch <= '0';
             end if;
+
+            shift_register <= shift_register(0) & pfc_modulator_data_in.pfc_is_enabled;
+            if shift_register(1) = '0' then
+                pfc_modulator_FPGA_out.ac1_switch <= '0';
+                pfc_modulator_FPGA_out.ac2_switch <= '0';
+            end if;
+
         end if; --rising_edge
     end process pwm_modulator;	
 

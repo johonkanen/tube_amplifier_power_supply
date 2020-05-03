@@ -92,29 +92,34 @@ begin
         
     begin
         if rising_edge(core_clock) then
-            -- get llc voltage measurement from measurement bus
-            get_llc_voltage(adc_interface, llc_voltage);
+            if llc_control_clocks.pll_lock = '0' then
+                disable_llc_modulator(llc_modulator_data_in);
+                st_heater_control_states := idle;
+            else
+                -- get llc voltage measurement from measurement bus
+                get_llc_voltage(adc_interface, llc_voltage);
 
-            CASE st_heater_control_states is
-                WHEN idle =>
-                    disable_llc_modulator(llc_modulator_data_in);
+                CASE st_heater_control_states is
+                    WHEN idle =>
+                        disable_llc_modulator(llc_modulator_data_in);
 
-                WHEN precharge =>
-                -- wait for precharge ready
-                    enable_llc_modulator(llc_modulator_data_in);
+                    WHEN precharge =>
+                    -- wait for precharge ready
+                        disable_llc_modulator(llc_modulator_data_in);
 
-                WHEN rampup =>
-                    -- 1. measure voltage with maximum switching frequency
-                    -- 2. set reference to match measurement
-                    -- 3. add 1 to measurement until reference matches set value
-                    enable_llc_modulator(llc_modulator_data_in);
+                    WHEN rampup =>
+                        -- 1. measure voltage with maximum switching frequency
+                        -- 2. set reference to match measurement
+                        -- 3. add 1 to measurement until reference matches set value
+                        disable_llc_modulator(llc_modulator_data_in);
 
-                WHEN tripped =>
-                    disable_llc_modulator(llc_modulator_data_in);
+                    WHEN tripped =>
+                        disable_llc_modulator(llc_modulator_data_in);
 
-                WHEN others =>
-                    disable_llc_modulator(llc_modulator_data_in);
-            end CASE;
+                    WHEN others =>
+                        disable_llc_modulator(llc_modulator_data_in);
+                end CASE;
+            end if;
         end if; --rising_edge
     end process heater_control;	
 ------------------------------------------------------------------------

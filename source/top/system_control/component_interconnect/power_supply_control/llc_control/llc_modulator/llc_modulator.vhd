@@ -167,6 +167,7 @@ startup : process(llc_modulator_clocks.modulator_clock)
                     st_dt_states := active_pulse;
             end CASE;
         end if;
+            llc_modulator_FPGA_out.llc_gates <= (others => '0');
 	end if;
     end process pri_gate_ctrl;
 ------------------------------------------------------------------------------------------

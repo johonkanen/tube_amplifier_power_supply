@@ -23,7 +23,7 @@ type component_interconnect_FPGA_output_group is record
 end record;
 
 type component_interconnect_data_input_group is record
-    clock : std_logic;
+    power_supplies_are_enabled : boolean;
     led1_color : work.led_driver_pkg.led_counters;
     led2_color : work.led_driver_pkg.led_counters;
     led3_color : work.led_driver_pkg.led_counters;
