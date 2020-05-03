@@ -29,6 +29,7 @@ set options \
     { "source_path.arg"} \
     { "card_version.arg"} \
     { "load_program_to.arg"} \
+    { "usb_cable.arg"} \
     { "clean_all.arg"} \
 }
 
@@ -199,13 +200,5 @@ execute_flow -compile
 if {$opts(load_program_to) == "ram"} \
 {
     # program fpga ram
-    exec quartus_pgm -c "USB-Blaster \[USB-2\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
-}\
-else \
-{
-    # program fpga flash
-    exec quartus_cpf -c $tcl_scripts/generate_flash_image_$fpga_device.cof
-    exec quartus_pgm -i -c "USB-Blaster \[USB-2\]" -m JTAG -o "ipv;./output_files/tube_psu_flash.jic"
+    exec quartus_pgm -c "USB-Blaster \[$opts(usb_cable)\]" -m JTAG -o "p;./output_files/cl10_tubepsu.sof"
 }
-
-

@@ -76,7 +76,7 @@ begin
                             st_pfc_control_state := precharge;
                         end if;
                     WHEN precharge =>
-                        disable_pfc_modulator(pfc_modulator_data_in);
+                        enable_pfc_modulator(pfc_modulator_data_in);
                             set_duty(100,pfc_modulator_data_in);
                         -- wait for 50 ms
                     WHEN others =>

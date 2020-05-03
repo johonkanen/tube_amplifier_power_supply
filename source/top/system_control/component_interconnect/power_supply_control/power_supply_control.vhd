@@ -87,13 +87,15 @@ begin
                             st_power_supply_sequencer := start_pfc;
                         end if;
                     WHEN start_pfc =>
-                    -- TOO, add pfc startup routing
+                        enable_pfc(pfc_control_data_in);
+
+                        -- TOO, add pfc startup routing
                         st_power_supply_sequencer := start_llc;
-                        disable_pfc(pfc_control_data_in);
                     WHEN start_llc =>
-                    -- TOO, add llc startup routing
-                        st_power_supply_sequencer := start_dhb;
+
                         disable_llc(llc_control_data_in);
+                        -- TOO, add llc startup routing
+                        st_power_supply_sequencer := start_dhb;
                     WHEN start_dhb =>
                         enable_dhb(dhb_control_data_in);
                     WHEN others =>

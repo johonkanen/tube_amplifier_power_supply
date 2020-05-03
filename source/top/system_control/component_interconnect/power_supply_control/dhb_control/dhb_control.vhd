@@ -167,12 +167,15 @@ begin
                                 -- pipeline integrator calculation
                                 alu_mpy(ki,err,multiplier_data_in);
                                 increment(process_counter);
-
                             WHEN 3 => 
-                                pi_out := get_result(multiplier_data_out,radix) + integrator;
+                                -- pipeline integrator calculation
                                 increment(process_counter);
 
                             WHEN 4 => 
+                                pi_out := get_result(multiplier_data_out,radix) + integrator;
+                                increment(process_counter);
+
+                            WHEN 5 => 
                                 if pi_out > 32768 then
                                     pi_out := 32768;
                                     integrator := 32768-get_result(multiplier_data_out,radix);
@@ -187,13 +190,13 @@ begin
                                 end if;
                                 increment(process_counter);
 
-                            WHEN 5 =>
-                                alu_mpy(pi_out,70,multiplier_data_in);
+                            WHEN 6 =>
+                                alu_mpy(pi_out,250,multiplier_data_in);
                                 increment(process_counter);
 
-                            WHEN 6 =>
+                            WHEN 7 =>
                                 if multiplier_is_ready(multiplier_data_out) then
-                                    phase_modulator_data_in.phase <= get_result(multiplier_data_out,16);
+                                    phase_modulator_data_in.phase <= get_result(multiplier_data_out,15);
                                     trigger(phase_modulator_data_in.tg_load_phase);
                                     process_counter := 0;
                                 end if;
