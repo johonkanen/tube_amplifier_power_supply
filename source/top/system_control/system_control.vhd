@@ -41,16 +41,16 @@ architecture rtl of system_control is
     alias led2_color : led_counters is component_interconnect_data_in.led2_color;
     alias led3_color : led_counters is component_interconnect_data_in.led3_color;
 
-    signal delay_timer_data_in  : delay_timer_data_input_group;
-    signal delay_timer_data_out : delay_timer_data_output_group;
+    signal delay_timer_1ms_data_in  : delay_timer_data_input_group;
+    signal delay_timer_1ms_data_out : delay_timer_data_output_group;
 
 begin
 ------------------------------------------------------------------------
     u_delay_timer : delay_timer
-    generic map (count_up_to => 2560000)
+    generic map (count_up_to => 128e3)
     port map( system_clocks.core_clock,
-    	  delay_timer_data_in,
-    	  delay_timer_data_out);
+    	  delay_timer_1ms_data_in,
+    	  delay_timer_1ms_data_out);
 ----------------------------------------------------------------------
     system_main : process(system_clocks.core_clock) is
         type t_system_states is (init,
@@ -113,13 +113,11 @@ begin
 
 				system_control_FPGA_out.bypass_relay <= '0';
 
-                request_delay(delay_timer_data_in,delay_timer_data_out,6);
+                request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,60);
 
                 st_main_states := bypass_relay; 
-				if timer_is_ready(delay_timer_data_out) then
+				if timer_is_ready(delay_timer_1ms_data_out) then
 				    st_main_states := start_power_supplies;
-                    system_control_FPGA_out.bypass_relay <= '1';
-                    init_timer(delay_timer_data_in);
 				end if;
 
 			WHEN start_power_supplies =>
@@ -131,12 +129,12 @@ begin
 				system_control_FPGA_out.bypass_relay <= '1';
 
                 -- TODO, add signal for indicating PFC running
-                request_delay(delay_timer_data_in,delay_timer_data_out,50);
+                request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
 				
                 st_main_states := start_power_supplies; 
-				if timer_is_ready(delay_timer_data_out) OR zero_cross_event = '1' then
+				if timer_is_ready(delay_timer_1ms_data_out) OR zero_cross_event = '1' then
 				    st_main_states := system_running;
-                    init_timer(delay_timer_data_in);
+                    init_timer(delay_timer_1ms_data_in);
 				end if;
 				
 			WHEN system_running =>
@@ -146,12 +144,12 @@ begin
                 led3_color <= led_color_blu;
 
 				system_control_FPGA_out.bypass_relay <= '1';
-                request_delay(delay_timer_data_in,delay_timer_data_out,50);
+                request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
 
 				st_main_states := system_running; 
-                if timer_is_ready(delay_timer_data_out) then
+                if timer_is_ready(delay_timer_1ms_data_out) then
                     st_main_states := start_power_supplies; 
-                    init_timer(delay_timer_data_in);
+                    init_timer(delay_timer_1ms_data_in);
                 end if;
 
 			WHEN others=>

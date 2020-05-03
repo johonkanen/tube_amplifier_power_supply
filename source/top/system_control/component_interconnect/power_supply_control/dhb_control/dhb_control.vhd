@@ -185,7 +185,7 @@ begin
                                 increment(process_counter);
 
                             WHEN 5 =>
-                                alu_mpy(pi_out,250,multiplier_data_in);
+                                alu_mpy(pi_out,50,multiplier_data_in);
                                 increment(process_counter);
 
                             WHEN 6 =>
