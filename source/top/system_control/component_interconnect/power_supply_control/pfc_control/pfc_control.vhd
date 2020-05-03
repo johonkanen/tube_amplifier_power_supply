@@ -77,7 +77,7 @@ begin
                         end if;
                     WHEN precharge =>
                         enable_pfc_modulator(pfc_modulator_data_in);
-                            set_duty(100,pfc_modulator_data_in);
+                            set_duty(50,pfc_modulator_data_in);
                         -- wait for 50 ms
                     WHEN others =>
                 end CASE;
