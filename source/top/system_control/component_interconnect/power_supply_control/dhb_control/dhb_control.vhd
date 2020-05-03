@@ -49,6 +49,7 @@ architecture rtl of dhb_control is
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------
+    signal DC_link_voltage : int18;
     signal dhb_voltage : int18;
     signal dhb_voltage_is_buffered : boolean;
     signal dhb_current : int18;
@@ -88,13 +89,13 @@ begin
 
         variable process_counter : int18;
         ------------------------------------------------------------------------
-        impure function "*" (left, right : int18) return int18
-        is
-        begin
-            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
-            return get_result(multiplier_data_out,radix);
-        end "*";
-        ------------------------------------------------------------------------
+        -- impure function "*" (left, right : int18) return int18
+        -- is
+        -- begin
+        --     alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
+        --     return get_result(multiplier_data_out,radix);
+        -- end "*";
+        -- ------------------------------------------------------------------------
     begin
         if rising_edge(core_clock) then
             if reset_n = '0' then
@@ -114,6 +115,8 @@ begin
 
                 dhb_current_is_buffered <= dhb_current_is_ready(measurement_interface_data);
                 get_dhb_current(measurement_interface_data,dhb_current);
+
+                get_DC_link(measurement_interface_data,DC_link_voltage);
                 ----------------------------------------------------
 
                 multiplier_data_in.multiplication_is_requested <= false;
@@ -154,7 +157,7 @@ begin
                         CASE process_counter is 
                             WHEN 0 =>
                                 if dhb_voltage_is_buffered then
-                                    err := 2000 - dhb_voltage;
+                                    err := DC_link_voltage*2 - dhb_voltage;
                                     increment(process_counter);
                                 end if;
 
