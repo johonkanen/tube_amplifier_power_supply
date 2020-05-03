@@ -192,13 +192,6 @@ begin
 	    so_uart_ready_event,
 	    so16_uart_rx_data);
 ------------------------------------------------------------------------
-    multiplier_clocks.dsp_clock <= system_clocks.core_clock;
-    u_multiplier : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out);
-------------------------------------------------------------------------
         power_supply_control_clocks <= (core_clock      => system_clocks.core_clock,
                                         modulator_clock => system_clocks.modulator_clock,
                                         pll_lock        => system_clocks.pll_lock);
@@ -215,20 +208,4 @@ begin
             power_supply_control_data_out
         );
 ------------------------------------------------------------------------
-    sincos_clocks <= (alu_clock => system_clocks.core_clock, reset_n => system_clocks.pll_lock);
-    -- sine          <= sincos_data_out.sine;
-    -- cosine        <= sincos_data_out.cosine;
-
-    sincos_data_in.angle_pirad <= angle;
-    -- sincos_data_in <= (angle_pirad => angle, 
-    --                   sincos_is_requested => sincos_is_requested, 
-    --                   multiplier_data_out => multiplier_data_out);
-    --
-    u_sincos : sincos
-    port map
-    (
-        sincos_clocks,   
-        sincos_data_in, 
-        sincos_data_out 
-    );
 end rtl;

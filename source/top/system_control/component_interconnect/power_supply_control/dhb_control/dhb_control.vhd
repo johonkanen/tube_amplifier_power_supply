@@ -147,14 +147,14 @@ begin
 
                     WHEN running =>
                         -- phase_modulator_data_in.dhb_is_enabled <= '1';
-                        disable_dhb_modulator(phase_modulator_data_in);
+                        enable_dhb_modulator(phase_modulator_data_in);
 
                     -- PI controller for dhb voltage
                     -- TODO, refactor PI control to own procedure
                         CASE process_counter is 
                             WHEN 0 =>
                                 if dhb_voltage_is_buffered then
-                                    err := dhb_ref_100v - dhb_voltage;
+                                    err := 2000 - dhb_voltage;
                                     increment(process_counter);
                                 end if;
 
@@ -188,12 +188,12 @@ begin
                                 increment(process_counter);
 
                             WHEN 5 =>
-                                alu_mpy(pi_out,50,multiplier_data_in);
+                                alu_mpy(pi_out,70,multiplier_data_in);
                                 increment(process_counter);
 
                             WHEN 6 =>
                                 if multiplier_is_ready(multiplier_data_out) then
-                                    phase_modulator_data_in.phase <= get_result(multiplier_data_out,radix);
+                                    phase_modulator_data_in.phase <= get_result(multiplier_data_out,16);
                                     trigger(phase_modulator_data_in.tg_load_phase);
                                     process_counter := 0;
                                 end if;
