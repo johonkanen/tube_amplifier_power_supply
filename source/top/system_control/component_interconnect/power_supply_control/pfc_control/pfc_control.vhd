@@ -123,19 +123,20 @@ begin
                         end if;
 
                     WHEN pfc_running => 
+
+                        -- TODO, refactor PI controller to own component
                         CASE process_counter is 
                             WHEN 0 =>
                                 if pfc_current_is_buffered then
                                     if pfc_I1_measurement > pfc_I2_measurement then
-                                        err := 18000 - pfc_I1_measurement;
+                                        err := 17000 - pfc_I1_measurement;
                                     else
-                                        err := 18000 - pfc_I2_measurement;
+                                        err := 17000 - pfc_I2_measurement;
                                     end if;
                                     increment(process_counter);
                                 end if;
 
                             WHEN 1 => 
-                                -- TODO, add rampup from measured voltage to reference
                                 alu_mpy(ikp,err,multiplier_data_in);
                                 increment(process_counter);
 
