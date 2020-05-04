@@ -75,8 +75,8 @@ begin
         variable pi_out : int18;
         variable integrator : int18;
 
-        constant kp : int18 := 22e3;
-        constant ki : int18 := 250;
+        constant ikp : int18 := 22e3;
+        constant iki : int18 := 250;
 
         constant vkp : int18 := 22e3;
         constant vki : int18 := 250;
@@ -92,10 +92,10 @@ begin
                 ------------- buffer pfc measurements --------------
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
 
-                get_pfc_I1(measurement_interface,pfc_I1_measurement);
-                get_pfc_I2(measurement_interface,pfc_I2_measurement);
+                get_pfc_I1 (measurement_interface,pfc_I1_measurement);
+                get_pfc_I2 (measurement_interface,pfc_I2_measurement);
                 get_DC_link(measurement_interface,DC_link_voltage_measurement);
-                get_vac(measurement_interface,AC_voltage_measurement);
+                get_vac    (measurement_interface,AC_voltage_measurement);
                 ----------------------------------------------------
 
                 multiplier_data_in.multiplication_is_requested <= false;
@@ -126,18 +126,22 @@ begin
                         CASE process_counter is 
                             WHEN 0 =>
                                 if pfc_current_is_buffered then
-                                    err := 15000 - pfc_I1_measurement;
+                                    if pfc_I1_measurement > pfc_I2_measurement then
+                                        err := 18000 - pfc_I1_measurement;
+                                    else
+                                        err := 18000 - pfc_I2_measurement;
+                                    end if;
                                     increment(process_counter);
                                 end if;
 
                             WHEN 1 => 
                                 -- TODO, add rampup from measured voltage to reference
-                                alu_mpy(kp,err,multiplier_data_in);
+                                alu_mpy(ikp,err,multiplier_data_in);
                                 increment(process_counter);
 
                             WHEN 2 => 
                                 -- pipeline integrator calculation
-                                alu_mpy(ki,err,multiplier_data_in);
+                                alu_mpy(iki,err,multiplier_data_in);
                                 increment(process_counter);
                             WHEN 3 => 
                                 -- pipeline integrator calculation
@@ -152,9 +156,9 @@ begin
                                     pi_out := 32768;
                                     integrator := 32768-get_result(multiplier_data_out,radix_15);
 
-                                elsif pi_out < -32768 then
-                                    pi_out := -32768;
-                                    integrator := -32768-get_result(multiplier_data_out,radix_15);
+                                elsif pi_out < 6560 then
+                                    pi_out := 6560;
+                                    integrator := 6560-get_result(multiplier_data_out,radix_15);
 
                                 else
                                     integrator := integrator + get_result(multiplier_data_out,radix_15);
