@@ -65,7 +65,6 @@ architecture rtl of dhb_control is
     constant dhb_ref_100v : integer := 19770/400*100;
 ------------------------------------------------------------------------
     signal integrator : int18;
-    signal integrator_delta : int18;
 ------------------------------------------------------------------------
 
 begin
@@ -117,7 +116,6 @@ begin
                 phase_modulator_data_in.dhb_is_enabled <= '0';
                 phase_modulator_data_in.deadtime <= 450;
                 deadtime := g_carrier_max_value/2-10;
-                integrator_delta <= 0;
     
             else
                 ------------- buffer dhb measurements --------------

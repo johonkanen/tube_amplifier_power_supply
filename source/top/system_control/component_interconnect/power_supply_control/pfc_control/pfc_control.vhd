@@ -35,7 +35,6 @@ architecture rtl of pfc_control is
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out : multiplier_data_output_group;
 ------------------------------------------------------------------------
-    signal multiplier_2_clocks   : multiplier_clock_group;
     signal multiplier_2_data_in  : multiplier_data_input_group;
     signal multiplier_2_data_out : multiplier_data_output_group;
 ------------------------------------------------------------------------
@@ -81,7 +80,7 @@ begin
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier_2 : multiplier
         port map(
-            multiplier_2_clocks, 
+            multiplier_clocks, 
             multiplier_2_data_in,
             multiplier_2_data_out 
         );
@@ -89,7 +88,7 @@ begin
     pfc_control : process(core_clock)
         type t_pfc_control_state is (idle, precharge, rampup, pfc_running);
         variable st_pfc_control_state : t_pfc_control_state;
-        variable process_counter : uint8;
+        variable current_process_counter : uint8;
         variable voltage_process_counter : uint8;
 
         variable err : int18;
@@ -116,7 +115,7 @@ begin
                 set_duty(0,pfc_modulator_data_in);
                 disable_pfc_modulator(pfc_modulator_data_in);
                 voltage_process_counter := 0;
-                process_counter := 0;
+                current_process_counter := 0;
                 voltage_integrator := 0;
 
                 voltage_err        := 0;
@@ -207,12 +206,13 @@ begin
 
 
                             WHEN 6 =>
+                                -- TODO, multiply by AC voltage measurement
                                 alu_mpy(voltage_pi_out,250,multiplier_2_data_in);
                                 increment(voltage_process_counter);
                             WHEN 7 =>
                                 if multiplier_is_ready(multiplier_2_data_out) then
                                     set_duty(get_result(multiplier_data_out,15),pfc_modulator_data_in);
-                                    process_counter := 0;
+                                    voltage_process_counter := 0;
                                 end if;
 
                             WHEN others => 
@@ -221,7 +221,7 @@ begin
 
                     ----------------- current control ----------------         
 
-                        CASE process_counter is 
+                        CASE current_process_counter is 
                             WHEN 0 =>
                                 if pfc_current_is_buffered then
                                     if pfc_I1_measurement > pfc_I2_measurement then
@@ -229,56 +229,56 @@ begin
                                     else
                                         err := 17000 - pfc_I2_measurement;
                                     end if;
-                                    increment(process_counter);
+                                    increment(current_process_counter);
                                 end if;
 
                             WHEN 1 => 
                                 alu_mpy(ikp,err,multiplier_data_in);
-                                increment(process_counter);
+                                increment(current_process_counter);
 
                             WHEN 2 => 
                                 -- pipeline integrator calculation
-                                increment(process_counter);
+                                increment(current_process_counter);
                             WHEN 3 => 
                                 -- pipeline integrator calculation
                                 alu_mpy(iki,err,multiplier_data_in);
-                                increment(process_counter);
+                                increment(current_process_counter);
 
                             WHEN 4 => 
                                 pi_out := get_result(multiplier_data_out,radix_15) + integrator;
-                                increment(process_counter);
+                                increment(current_process_counter);
 
                             WHEN 5 => 
                                 if pi_out > 32768 then
                                     pi_out := 32768;
                                     integrator := 32768-get_result(multiplier_data_out,radix_15);
-                                    increment(process_counter);
+                                    increment(current_process_counter);
                                 end if;
 
                                 if pi_out < 6560 then
                                     pi_out := 6560;
                                     integrator := 6560-get_result(multiplier_data_out,radix_15);
-                                    increment(process_counter);
+                                    increment(current_process_counter);
                                 end if;
                                 
                                 if multiplier_is_ready(multiplier_data_out) then
                                     integrator := integrator + get_result(multiplier_data_out,radix_15);
-                                    increment(process_counter);
+                                    increment(current_process_counter);
                                 end if;
 
 
                             WHEN 6 =>
                                 alu_mpy(pi_out,250,multiplier_data_in);
-                                increment(process_counter);
+                                increment(current_process_counter);
 
                             WHEN 7 =>
                                 if multiplier_is_ready(multiplier_data_out) then
                                     set_duty(get_result(multiplier_data_out,15),pfc_modulator_data_in);
-                                    process_counter := 0;
+                                    current_process_counter := 0;
                                 end if;
 
                             WHEN others =>
-                                process_counter := 0;
+                                current_process_counter := 0;
                         end CASE;
 
                         -- add rampup of 
