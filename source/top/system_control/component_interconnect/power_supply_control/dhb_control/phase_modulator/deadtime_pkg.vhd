@@ -19,6 +19,7 @@ package deadtime_pkg is
         -- tg_deadtime_trigger : std_logic;
         gates_are_enabled : std_logic;
         half_bridge_voltage : std_logic;
+        tg_load_deadtime : std_logic;
         deadtime_cycles : uint12;
     end record;
 

@@ -142,10 +142,10 @@ begin
 
                             WHEN 2 => 
                                 -- pipeline integrator calculation
-                                alu_mpy(iki,err,multiplier_data_in);
                                 increment(process_counter);
                             WHEN 3 => 
                                 -- pipeline integrator calculation
+                                alu_mpy(iki,err,multiplier_data_in);
                                 increment(process_counter);
 
                             WHEN 4 => 
@@ -156,16 +156,20 @@ begin
                                 if pi_out > 32768 then
                                     pi_out := 32768;
                                     integrator := 32768-get_result(multiplier_data_out,radix_15);
+                                    increment(process_counter);
+                                end if;
 
-                                elsif pi_out < 6560 then
+                                if pi_out < 6560 then
                                     pi_out := 6560;
                                     integrator := 6560-get_result(multiplier_data_out,radix_15);
-
-                                else
-                                    integrator := integrator + get_result(multiplier_data_out,radix_15);
-
+                                    increment(process_counter);
                                 end if;
-                                increment(process_counter);
+                                
+                                if multiplier_is_ready(multiplier_data_out) then
+                                    integrator := integrator + get_result(multiplier_data_out,radix_15);
+                                    increment(process_counter);
+                                end if;
+
 
                             WHEN 6 =>
                                 alu_mpy(pi_out,250,multiplier_data_in);

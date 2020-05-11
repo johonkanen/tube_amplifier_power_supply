@@ -123,23 +123,26 @@ begin
 
 ------------------------------------------------------------------------
     deadtime_clocks <= (modulator_clock => modulator_clock);
-    phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out(1).half_bridge_gates(1),
-                                        low_gate => deadtime_FPGA_out(1).half_bridge_gates(0));
 
-    deadtime_data_in(1) <= (gates_are_enabled => phase_modulator_data_in.dhb_is_enabled,
+    phase_modulator_FPGA_out.primary <= (high_gate => deadtime_FPGA_out(1).half_bridge_gates(1),
+                                        low_gate   => deadtime_FPGA_out(1).half_bridge_gates(0));
+
+    deadtime_data_in(1) <= (gates_are_enabled   => phase_modulator_data_in.dhb_is_enabled,
                             half_bridge_voltage => primary_voltage,
-                            deadtime_cycles => 50);
+                            tg_load_deadtime    => phase_modulator_data_in.tg_load_deadtime,
+                            deadtime_cycles     => phase_modulator_data_in.deadtime);
     primary_deadtime : deadtime
     port map( deadtime_clocks,
     	  deadtime_FPGA_out(1),
     	  deadtime_data_in(1));
 ------------------------------------------------------------------------
     phase_modulator_FPGA_out.secondary <= (high_gate => deadtime_FPGA_out(2).half_bridge_gates(1),
-                                        low_gate => deadtime_FPGA_out(2).half_bridge_gates(0));
+                                        low_gate     => deadtime_FPGA_out(2).half_bridge_gates(0));
 
-    deadtime_data_in(2) <= (gates_are_enabled => phase_modulator_data_in.dhb_is_enabled, 
+    deadtime_data_in(2) <= (gates_are_enabled  => phase_modulator_data_in.dhb_is_enabled,
                            half_bridge_voltage => secondary_voltage,
-                        deadtime_cycles => 50);
+                            tg_load_deadtime   => phase_modulator_data_in.tg_load_deadtime,
+                            deadtime_cycles    => phase_modulator_data_in.deadtime);
 
     secondary_deadtime : deadtime
     port map( deadtime_clocks,

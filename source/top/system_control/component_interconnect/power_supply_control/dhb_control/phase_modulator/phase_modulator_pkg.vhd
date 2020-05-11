@@ -22,8 +22,10 @@ package phase_modulator_pkg is
     type phase_modulator_data_input_group is record
         carrier : integer;
         phase : integer range -2**10 to 2**10-1;
-        tg_load_phase : std_logic;
         dhb_is_enabled : std_logic;
+        tg_load_phase : std_logic;
+        tg_load_deadtime : std_logic;
+        deadtime : integer range 0 to 2**12-1;
     end record;
     
     type phase_modulator_data_output_group is record
@@ -52,6 +54,10 @@ package phase_modulator_pkg is
         signal dhb_input : out phase_modulator_data_input_group);
 ------------------------------------------------------------------------         
     procedure trigger ( signal trig : inout std_logic);
+------------------------------------------------------------------------         
+    procedure set_deadtime ( 
+        signal dhb_input : inout phase_modulator_data_input_group;
+        deadtime : in integer);
 ------------------------------------------------------------------------         
 
 end package phase_modulator_pkg;
@@ -89,6 +95,16 @@ package body phase_modulator_pkg is
     begin
         dhb_input.dhb_is_enabled <= '0';
     end disable_dhb_modulator;
+------------------------------------------------------------------------
+    procedure set_deadtime ( 
+        signal dhb_input : inout phase_modulator_data_input_group;
+        deadtime : in integer
+    )
+    is
+    begin
+        dhb_input.deadtime <= deadtime;
+        dhb_input.tg_load_deadtime <= not dhb_input.tg_load_deadtime;
+    end set_deadtime;
 ------------------------------------------------------------------------
 end package body phase_modulator_pkg;
 

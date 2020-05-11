@@ -29,6 +29,7 @@ architecture rtl of pfc_modulator is
     signal pfc_carrier1 : uint12;
 
     signal shift_register : std_logic_vector(1 downto 0); 
+    signal shift_register2 : std_logic_vector(2 downto 0); 
 
 begin
 
@@ -51,11 +52,12 @@ begin
                 pfc_carrier <= pfc_carrier - 1;
             end if;
 
-            pfc_carrier1 <= pfc_carrier;
-            if pfc_carrier1 = g_carrier_max_value/2 then
+            shift_register2 <= shift_register2(1 downto 0) & pfc_modulator_data_in.tg_load_pfc_duty;
+            if shift_register2(2) /= shift_register2(1) then
                 jee <= pfc_modulator_data_in.duty;
             end if;
 
+            pfc_carrier1 <= pfc_carrier;
             if pfc_carrier1 < jee then
                 pfc_modulator_FPGA_out.ac1_switch <= '1';
                 pfc_modulator_FPGA_out.ac2_switch <= '1';

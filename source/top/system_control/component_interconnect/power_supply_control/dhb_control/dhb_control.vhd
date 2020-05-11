@@ -10,6 +10,7 @@ library onboard_adc_library;
 
 library common_library;
     use common_library.timing_pkg.all;
+    use common_library.typedefines_pkg.all;
 
 library work;
     use work.dhb_control_pkg.all;
@@ -54,6 +55,7 @@ architecture rtl of dhb_control is
     signal dhb_voltage_is_buffered : boolean;
     signal dhb_current : int18;
     signal dhb_current_is_buffered : boolean;
+
 ------------------------------------------------------------------------
     constant dhb_ref_410v : integer := 19770/400*410;
     constant dhb_ref_400v : integer := 19770/400*400;
@@ -62,6 +64,10 @@ architecture rtl of dhb_control is
     constant dhb_ref_200v : integer := 19770/400*200;
     constant dhb_ref_100v : integer := 19770/400*100;
 ------------------------------------------------------------------------
+    signal integrator : int18;
+    signal integrator_delta : int18;
+------------------------------------------------------------------------
+
 begin
 ------------------------------------------------------------------------
     delay_50us : delay_timer
@@ -84,10 +90,12 @@ begin
         variable pi_out : int18;
         variable mult : int18;
         variable err : int18;
-        variable integrator : int18;
         constant radix : int18 := 15;
 
-        variable process_counter : int18;
+        variable process_counter : uint8;
+
+
+        variable deadtime : uint12;
         ------------------------------------------------------------------------
         -- impure function "*" (left, right : int18) return int18
         -- is
@@ -101,12 +109,15 @@ begin
             if reset_n = '0' then
             -- reset state
                 st_dhb_states <= idle;
-                integrator := 0;
+                integrator <= 0;
                 init_timer(delay_timer_data_in);
                 process_counter := 0;
                 dhb_voltage <= 0;
                 init_multiplier(multiplier_data_in);
                 phase_modulator_data_in.dhb_is_enabled <= '0';
+                phase_modulator_data_in.deadtime <= 450;
+                deadtime := g_carrier_max_value/2-10;
+                integrator_delta <= 0;
     
             else
                 ------------- buffer dhb measurements --------------
@@ -123,14 +134,16 @@ begin
                 CASE st_dhb_states is
                     WHEN idle =>
 
+                        deadtime := g_carrier_max_value/2-10;
                         -- set_phase(0,phase_modulator_data_in);
                         phase_modulator_data_in.phase <= 0;
                         trigger(phase_modulator_data_in.tg_load_phase);
                         disable_dhb_modulator(phase_modulator_data_in);
+                        init_timer(delay_timer_data_in);
+                        set_deadtime(phase_modulator_data_in,g_carrier_max_value/2-10);
 
                         st_dhb_states <= idle;
                         if dhb_control_data_in.enable_dhb then
-                            init_timer(delay_timer_data_in);
                             st_dhb_states <= ramping_up;
                         end if;
 
@@ -144,8 +157,12 @@ begin
                             
                         st_dhb_states <= ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
-                            init_timer(delay_timer_data_in);
-                            st_dhb_states <= running;
+                            deadtime := deadtime - 1;
+
+                            if deadtime = 26 then
+                                init_timer(delay_timer_data_in);
+                                st_dhb_states <= running;
+                            end if;
                         end if;
 
                     WHEN running =>
@@ -153,7 +170,6 @@ begin
                         enable_dhb_modulator(phase_modulator_data_in);
 
                     -- PI controller for dhb voltage
-                    -- TODO, refactor PI control to own procedure
                         CASE process_counter is 
                             WHEN 0 =>
                                 if dhb_voltage_is_buffered then
@@ -181,14 +197,14 @@ begin
                             WHEN 5 => 
                                 if pi_out > 32768 then
                                     pi_out := 32768;
-                                    integrator := 32768-get_result(multiplier_data_out,radix);
+                                    integrator <= 32768-get_result(multiplier_data_out,radix);
 
                                 elsif pi_out < -32768 then
                                     pi_out := -32768;
-                                    integrator := -32768-get_result(multiplier_data_out,radix);
+                                    integrator <= -32768-get_result(multiplier_data_out,radix);
 
                                 else
-                                    integrator := integrator + get_result(multiplier_data_out,radix);
+                                    integrator <= integrator + get_result(multiplier_data_out,radix);
 
                                 end if;
                                 increment(process_counter);

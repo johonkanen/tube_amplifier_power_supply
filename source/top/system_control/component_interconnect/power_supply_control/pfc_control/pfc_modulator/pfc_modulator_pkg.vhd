@@ -19,6 +19,7 @@ package pfc_modulator_pkg is
         pfc_is_enabled : std_logic;
         mains_voltage_measurement : integer;
         pfc_carrier : integer;
+        tg_load_pfc_duty : std_logic;
     end record;
     
     type pfc_modulator_data_output_group is record
@@ -36,7 +37,7 @@ package pfc_modulator_pkg is
     end component pfc_modulator;
 ------------------------------------------------------------------------
     procedure set_duty ( duty : in integer;
-        signal pfc_input : out pfc_modulator_data_input_group);
+        signal pfc_input : inout pfc_modulator_data_input_group);
 ------------------------------------------------------------------------         
     procedure enable_pfc_modulator (
         signal pfc_input : out pfc_modulator_data_input_group);
@@ -49,11 +50,13 @@ end package pfc_modulator_pkg;
 package body pfc_modulator_pkg is
 ------------------------------------------------------------------------
     procedure set_duty ( duty : in integer;
-        signal pfc_input : out pfc_modulator_data_input_group
+        signal pfc_input : inout pfc_modulator_data_input_group
     )
     is
     begin
         pfc_input.duty <= duty;
+        pfc_input.tg_load_pfc_duty <= not pfc_input.tg_load_pfc_duty;
+
     end set_duty;
 ------------------------------------------------------------------------
     procedure enable_pfc_modulator ( 
