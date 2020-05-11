@@ -133,6 +133,8 @@ begin
                 get_vac    (measurement_interface,AC_voltage_measurement);
                 ----------------------------------------------------
 
+                -- TODO, overvoltage trip, overcurrent trip
+
                 multiplier_data_in.multiplication_is_requested <= false;
                 CASE st_pfc_control_state is
                     WHEN idle =>
@@ -166,6 +168,7 @@ begin
                                 if vac_is_buffered then
                                     increment(voltage_process_counter);
                                     voltage_err := dc_link_ref_150V - DC_link_voltage_measurement;
+                                    AC_voltage_measurement <= AC_voltage_measurement - 16040;
                                 end if;
 
                             WHEN 1 => 
@@ -206,6 +209,11 @@ begin
                             WHEN 6 =>
                                 alu_mpy(voltage_pi_out,250,multiplier_2_data_in);
                                 increment(voltage_process_counter);
+                            WHEN 7 =>
+                                if multiplier_is_ready(multiplier_2_data_out) then
+                                    set_duty(get_result(multiplier_data_out,15),pfc_modulator_data_in);
+                                    process_counter := 0;
+                                end if;
 
                             WHEN others => 
                                 voltage_process_counter := 0;
