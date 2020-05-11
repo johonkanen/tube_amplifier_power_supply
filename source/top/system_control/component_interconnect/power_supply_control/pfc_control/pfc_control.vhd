@@ -135,6 +135,7 @@ begin
                 -- TODO, overvoltage trip, overcurrent trip
 
                 multiplier_data_in.multiplication_is_requested <= false;
+                multiplier_2_data_in.multiplication_is_requested <= false;
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
