@@ -79,6 +79,7 @@ begin
             else
                 CASE st_power_supply_sequencer is
                     WHEN wait_for_start =>
+
                         disable_pfc(pfc_control_data_in);
                         disable_llc(llc_control_data_in);
                         disable_dhb(dhb_control_data_in);
@@ -93,18 +94,17 @@ begin
                         st_power_supply_sequencer := start_llc;
                     WHEN start_llc =>
 
-                        disable_llc(llc_control_data_in);
+                        enable_llc(llc_control_data_in);
                         -- TOO, add llc startup routing
                         st_power_supply_sequencer := start_dhb;
+
                     WHEN start_dhb =>
+
                         enable_dhb(dhb_control_data_in);
+
                     WHEN others =>
                         -- do nothing
                 end CASE;
-                -- if power_supply_is_started(power_supply_control_data_in) then
-                -- change_state_to(st_power_supply_sequencer, ramp_up_pfc, power_supply_is_started(power_supply_control_data_in));
-                -- enable_pfc(pfc_control_data_in);
-                -- enable_llc(llc_control_data_in);
 
             -- if all power supplies are operational, signal all is good
 
@@ -171,9 +171,9 @@ begin
 ------------------------------------------------------------------------
 
 ---------------------- pfc control --------------------------------------
-    pfc_control_clocks <= ( core_clock => core_clock,
+    pfc_control_clocks <= ( core_clock      => core_clock,
                             modulator_clock => modulator_clock,
-                            pll_lock => pll_lock);
+                            pll_lock        => pll_lock);
     pfc_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_pfc_control : pfc_control
         generic map(carrier_maximum)
@@ -185,9 +185,9 @@ begin
             pfc_control_data_out  
         );
 ---------------------- llc control -------------------------------------
-    llc_control_clocks <= ( core_clock => core_clock,
+    llc_control_clocks <= ( core_clock      => core_clock,
                             modulator_clock => modulator_clock,
-                            pll_lock => pll_lock);
+                            pll_lock        => pll_lock);
     llc_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_llc_control : llc_control
         port map
@@ -198,9 +198,9 @@ begin
             llc_control_data_out
         );
 ---------------------- dhb control -------------------------------------
-    dhb_control_clocks <= ( core_clock => core_clock,
+    dhb_control_clocks <= ( core_clock      => core_clock,
                             modulator_clock => modulator_clock,
-                            pll_lock => pll_lock);
+                            pll_lock        => pll_lock);
     dhb_control_data_in.measurement_interface_data_out <= measurement_interface_data_out;
     u_dhb_control : dhb_control
         generic map(carrier_maximum)

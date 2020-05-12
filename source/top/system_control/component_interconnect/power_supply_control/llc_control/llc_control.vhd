@@ -11,6 +11,7 @@ library common_library;
 
 library work;
     use work.llc_control_pkg.all;
+    use work.llc_control_internal_pkg.all;
     use work.llc_modulator_pkg.all;
     use work.multiplier_pkg.all;
 
@@ -42,21 +43,6 @@ architecture rtl of llc_control is
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------
-    function std_to_bool
-    (
-        check_for_1 : std_logic
-    )
-    return boolean
-    is
-    begin
-        if check_for_1 = '1' then
-            return true;
-        else 
-            return false;
-        end if;
-        
-    end std_to_bool;
-------------------------------------------------------------------------
 begin
 ------------------------------------------------------------------------
     delay_50us : delay_timer
@@ -74,20 +60,8 @@ begin
         );
 ------------------------------------------------------------------------
     heater_control : process(core_clock)
-        type t_heater_control_states is (idle, precharge, rampup, tripped);
+        type t_heater_control_states is (idle, precharge, run, tripped);
         variable st_heater_control_states : t_heater_control_states;
-
-        type t_pi_control is (idle, pi_out, integrate);
-        variable st_pi_control : t_pi_control;
-        ------------------------------------------------------------------------
-        variable radix : int18;
-        impure function "*" (left, right : int18) return int18
-        is
-            variable result : sign36;
-        begin
-            alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
-            return get_result(multiplier_data_out,radix);
-        end "*";
         ------------------------------------------------------------------------
         
     begin
@@ -101,20 +75,33 @@ begin
 
                 CASE st_heater_control_states is
                     WHEN idle =>
+
                         disable_llc_modulator(llc_modulator_data_in);
+                        init_timer(delay_timer_data_in);
+
+                        st_heater_control_states := idle;
+                        if llc_converter_is_enabled(llc_control_data_in) then
+                            st_heater_control_states := precharge;
+                        end if;
 
                     WHEN precharge =>
                     -- wait for precharge ready
-                        disable_llc_modulator(llc_modulator_data_in);
+                        enable_llc_modulator(llc_modulator_data_in);
+                        set_period(473,llc_modulator_data_in);
 
-                    WHEN rampup =>
+                        request_delay(delay_timer_data_in,delay_timer_data_out,50);
+
+                        st_heater_control_states := precharge;
+                        if timer_is_ready(delay_timer_data_out) then
+                            st_heater_control_states := run;
+                        end if;
+
+                    WHEN run =>
+
+                        st_heater_control_states := run;
                         -- 1. measure voltage with maximum switching frequency
                         -- 2. set reference to match measurement
                         -- 3. add 1 to measurement until reference matches set value
-                        disable_llc_modulator(llc_modulator_data_in);
-
-                    WHEN tripped =>
-                        disable_llc_modulator(llc_modulator_data_in);
 
                     WHEN others =>
                         disable_llc_modulator(llc_modulator_data_in);

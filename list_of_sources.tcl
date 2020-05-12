@@ -12,6 +12,7 @@ proc read_sources {source_folder} \
         /common/timing/timing_pkg.vhd
         /common/timing/delay_timer.vhd
         /common/typesdefs/typedefs_pkg.vhd
+        /common/register_shifts/register_shifts_pkg.vhd
 
         /top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
         /top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 
@@ -43,6 +44,7 @@ proc read_sources {source_folder} \
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_internal_pkg.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control.vhd
 
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd

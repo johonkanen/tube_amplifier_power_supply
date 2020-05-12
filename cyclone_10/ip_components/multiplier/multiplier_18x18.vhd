@@ -81,7 +81,7 @@ BEGIN
 	lpm_mult_component : lpm_mult
 	GENERIC MAP (
 		lpm_hint => "MAXIMIZE_SPEED=5",
-		lpm_pipeline => 2,
+		lpm_pipeline => 1,
 		lpm_representation => "SIGNED",
 		lpm_type => "LPM_MULT",
 		lpm_widtha => 18,
@@ -106,7 +106,7 @@ END SYN;
 -- Retrieval info: PRIVATE: B_isConstant NUMERIC "0"
 -- Retrieval info: PRIVATE: ConstantB NUMERIC "0"
 -- Retrieval info: PRIVATE: INTENDED_DEVICE_FAMILY STRING "Cyclone 10 LP"
--- Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "2"
+-- Retrieval info: PRIVATE: LPM_PIPELINE NUMERIC "1"
 -- Retrieval info: PRIVATE: Latency NUMERIC "1"
 -- Retrieval info: PRIVATE: SYNTH_WRAPPER_GEN_POSTFIX STRING "0"
 -- Retrieval info: PRIVATE: SignedMult NUMERIC "1"
@@ -121,7 +121,7 @@ END SYN;
 -- Retrieval info: PRIVATE: optimize NUMERIC "0"
 -- Retrieval info: LIBRARY: lpm lpm.lpm_components.all
 -- Retrieval info: CONSTANT: LPM_HINT STRING "MAXIMIZE_SPEED=5"
--- Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "2"
+-- Retrieval info: CONSTANT: LPM_PIPELINE NUMERIC "1"
 -- Retrieval info: CONSTANT: LPM_REPRESENTATION STRING "SIGNED"
 -- Retrieval info: CONSTANT: LPM_TYPE STRING "LPM_MULT"
 -- Retrieval info: CONSTANT: LPM_WIDTHA NUMERIC "18"

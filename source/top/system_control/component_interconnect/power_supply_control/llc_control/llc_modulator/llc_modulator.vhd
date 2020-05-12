@@ -2,6 +2,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
+library common_library;
+    use common_library.register_shifts_pkg.all;
+
 library work;
     use work.llc_modulator_pkg.all;
 
@@ -39,6 +42,7 @@ architecture rtl of llc_modulator is
     signal start_dt_counter : std_logic;
 
 
+    signal tg_load_period : std_logic_vector(2 downto 0);
 
 begin
 ------------------------------------------------------------------------------------------
@@ -78,7 +82,10 @@ startup : process(llc_modulator_clocks.modulator_clock)
 
                 WHEN ready =>
 
-                    period <= llc_modulator_data_in.period;
+                    shift_register(tg_load_period, llc_modulator_data_in.tg_trigger_llc_period);
+                    if tg_load_period(2) /= tg_load_period(1) then
+                        period <= llc_modulator_data_in.period;
+                    end if;
 
                 WHEN others =>
                     st_startup <= rampup;
@@ -167,30 +174,27 @@ startup : process(llc_modulator_clocks.modulator_clock)
                     st_dt_states := active_pulse;
             end CASE;
         end if;
-            llc_modulator_FPGA_out.llc_gates <= (others => '0');
 	end if;
     end process pri_gate_ctrl;
 ------------------------------------------------------------------------------------------
-deadtime_counter : process(llc_modulator_clocks.modulator_clock)
-    variable dt_count : uint12;
-begin
-    if rising_edge(llc_modulator_clocks.modulator_clock) then
-        if llc_modulator_data_in.llc_is_enabled then
-        -- reset state
-            dt_count := 0;
-            dt_counter_ready <= '0';
-        else
-            if dt_count < r1_deadtime AND start_dt_counter = '1' then
-                dt_count := dt_count + 1;
+    deadtime_counter : process(llc_modulator_clocks.modulator_clock)
+        variable dt_count : uint12;
+    begin
+        if rising_edge(llc_modulator_clocks.modulator_clock) then
+            if llc_modulator_data_in.llc_is_enabled then
+            -- reset state
+                dt_count := 0;
                 dt_counter_ready <= '0';
             else
-                dt_count := 0;
-                dt_counter_ready <= '1';
-            end if;
-        end if; -- llc_modulator_data_in.reset_n
-    end if; --rising_edge
-end process deadtime_counter;	
-
-
+                if dt_count < r1_deadtime AND start_dt_counter = '1' then
+                    dt_count := dt_count + 1;
+                    dt_counter_ready <= '0';
+                else
+                    dt_count := 0;
+                    dt_counter_ready <= '1';
+                end if;
+            end if; -- llc_modulator_data_in.reset_n
+        end if; --rising_edge
+    end process deadtime_counter;	
 
 end rtl;
