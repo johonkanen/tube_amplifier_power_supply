@@ -44,7 +44,7 @@ begin
 
     test_multiplier : process(multiplier_clocks.dsp_clock)
 
-        variable multiplier_counter : integer range 0 to 7; 
+        variable multiplier_counter : integer range 0 to 3; 
     begin
         if rising_edge(multiplier_clocks.dsp_clock) then
 
