@@ -92,6 +92,7 @@ begin
         constant radix : int18 := 15;
 
         variable process_counter : uint8;
+        variable kp_x_error : int18;
 
 
         variable deadtime : uint12;
@@ -116,6 +117,7 @@ begin
                 phase_modulator_data_in.dhb_is_enabled <= '0';
                 phase_modulator_data_in.deadtime <= 450;
                 deadtime := g_carrier_max_value/2-10;
+                kp_x_error := 0;
     
             else
                 ------------- buffer dhb measurements --------------
@@ -190,22 +192,23 @@ begin
 
                             WHEN 4 => 
                                 pi_out := get_result(multiplier_data_out,radix) + integrator;
+                                kp_x_error := get_result(multiplier_data_out,radix);
                                 increment(process_counter);
 
                             WHEN 5 => 
+                                increment(process_counter);
+
+                                integrator <= integrator + get_result(multiplier_data_out,radix);
                                 if pi_out > 32768 then
                                     pi_out := 32768;
-                                    integrator <= 32768-get_result(multiplier_data_out,radix);
-
-                                elsif pi_out < -32768 then
-                                    pi_out := -32768;
-                                    integrator <= -32768-get_result(multiplier_data_out,radix);
-
-                                else
-                                    integrator <= integrator + get_result(multiplier_data_out,radix);
-
+                                    integrator <= 32768-kp_x_error;
                                 end if;
-                                increment(process_counter);
+
+                                if pi_out < -32768 then
+                                    pi_out := -32768;
+                                    integrator <= -32768-kp_x_error;
+                                end if;
+
 
                             WHEN 6 =>
                                 alu_mpy(pi_out,250,multiplier_data_in);
