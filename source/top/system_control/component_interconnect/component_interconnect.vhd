@@ -128,8 +128,8 @@ begin
 
         variable process_counter : uint8;
         variable control_error : int18;
-        constant kp : int18 := 22e3;
-        constant ki : int18 := 1500;
+        constant kp : int18 := 48e3;
+        constant ki : int18 := 15000;
         constant pi_saturate_high : int18 := 32760;
         constant pi_saturate_low  : int18 := -32760;
 
@@ -178,9 +178,9 @@ begin
                             -- st_uart_data_log_states := stream_data;
                             angle <= angle + 1;
                             if angle < 2**15 then
-                                control_error := 16384;
+                                control_error := -16384;
                             else
-                                control_error := -100;
+                                control_error := 100;
                             end if;
                             sincos_is_requested <= true;
                             increment(process_counter);
@@ -216,15 +216,15 @@ begin
                             WHEN 4 =>
                                 increment(process_counter);
 
-                                mem <= mem + get_result(multiplier_data_out,10);
+                                mem <= mem + get_result(multiplier_data_out,15);
                                 if pi_out >  pi_saturate_high then
                                     pi_out <= pi_saturate_high ;
-                                    mem <=    pi_saturate_high -ekp;
+                                    mem    <= pi_saturate_high -ekp;
                                 end if;
 
                                 if pi_out <  pi_saturate_low then
                                     pi_out <= pi_saturate_low ;
-                                    mem <=    pi_saturate_low -ekp;
+                                    mem    <= pi_saturate_low -ekp;
                                 end if; 
                             WHEN 5 =>
                                 process_counter := 0;
