@@ -99,7 +99,7 @@ begin
                     llc_modulator_FPGA_out.llc_gates.pri_high <= s1_pulse;
                     llc_modulator_FPGA_out.llc_gates.pri_low <= not s1_pulse;
 
-                    if sec_pwm_cntr > 614 then
+                    if sec_pwm_cntr > 614 and sec_pwm_cntr < 10 then
                         llc_modulator_FPGA_out.llc_gates.sync1 <= '0';
                         llc_modulator_FPGA_out.llc_gates.sync2 <= '0';
                     else
