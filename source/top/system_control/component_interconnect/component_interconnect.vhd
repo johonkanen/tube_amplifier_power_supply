@@ -174,7 +174,7 @@ begin
                         if timer_is_ready(delay_timer_data_out) then
                             -- st_uart_data_log_states := stream_data;
                             angle <= angle + 1;
-                            if angle < 2**14 then
+                            if angle < 2**15 then
                                 control_error := 100;
                             else
                                 control_error := -100;
@@ -194,30 +194,35 @@ begin
                                 -- do nothing
 
                             WHEN 1 => 
+                                increment(process_counter);
                                 alu_mpy(control_error, kp, multiplier_data_in);
-                                increment(process_counter);
+
                             WHEN 2 => 
-                                alu_mpy(control_error, ki, multiplier_data_in);
                                 increment(process_counter);
+                                alu_mpy(control_error, ki, multiplier_data_in);
+
                             WHEN 3 => 
                                 increment(process_counter);
+
+                            WHEN 4 => 
+                                increment(process_counter);
                                 y := mem + get_result(multiplier_data_out,15);
-                                if y >= 2**15 then
-                                    y := 2**15;
+                            WHEN 5 =>
+                                mem := mem + get_result(multiplier_data_out,15);
+
+                                if y >= 32767 then
+                                    y := 32767;
                                     mem :=  2**15-get_result(multiplier_data_out,15);
-                                    process_counter := 0;
                                 end if;
 
                                 if y <= -2**15 then
                                     y := -2**15;
-                                    mem :=  2**15-get_result(multiplier_data_out,15);
-                                    process_counter := 0;
+                                    mem :=  -2**15-get_result(multiplier_data_out,15);
                                 end if; 
 
-                                si_uart_start_event <= '1';
                                 si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
-                            WHEN 4 =>
-                                mem := mem + get_result(multiplier_data_out,15);
+                                si_uart_start_event <= '1';
+
                                 process_counter := 0;
 
                             WHEN others =>
