@@ -102,13 +102,14 @@ architecture rtl of component_interconnect is
 begin
 
 ------------------------------------------------------------------------
-multiplier_clocks.dsp_clock <= core_clock;
-u_multiplier : multiplier
-    port map(
-        multiplier_clocks, 
-        multiplier_data_in,
-        multiplier_data_out 
-    );
+    multiplier_clocks.dsp_clock <= core_clock;
+    u_multiplier : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in,
+            multiplier_data_out 
+        );
+
 ------------------------------------------------------------------------
     u_1us_timer : delay_timer
     generic map (count_up_to => 1280)
@@ -116,9 +117,18 @@ u_multiplier : multiplier
               delay_timer_data_in,
               delay_timer_data_out);
 
+------------------------------------------------------------------------
     test_uart : process(core_clock)
         type t_uart_data_log_states is (idle, stream_data);
         variable st_uart_data_log_states : t_uart_data_log_states;
+        variable process_counter : uint8;
+
+        variable control_error : int18;
+        variable y : int18;
+        variable mem : int18;
+
+        constant kp : int18 := 22e3;
+        constant ki : int18 := 1500;
 
     begin
         if rising_edge(core_clock) then
@@ -127,6 +137,10 @@ u_multiplier : multiplier
                 st_uart_data_log_states := idle;
                 send_index <= 0;
                 si_uart_start_event <= '0';
+                process_counter := 0;
+
+                control_error := 100;
+
 
                 reset_measurements :
                 for i in 0 to measurement_container'right loop
@@ -160,17 +174,55 @@ u_multiplier : multiplier
                         if timer_is_ready(delay_timer_data_out) then
                             -- st_uart_data_log_states := stream_data;
                             angle <= angle + 1;
+                            if angle < 2**14 then
+                                control_error := 100;
+                            else
+                                control_error := -100;
+                            end if;
                             sincos_is_requested <= true;
+                            increment(process_counter);
                         end if;
 
                         if sincos_is_ready(sincos_data_out) then
                             alu_mpy(get_sine(sincos_data_out), 32766,multiplier_data_in);
                         end if;
 
-                        if multiplier_is_ready(multiplier_data_out) then
-                            si_uart_start_event <= '1';
-                            si16_uart_tx_data <= std_logic_vector(to_signed(get_result(multiplier_data_out,15),16));
-                        end if;
+
+
+                        CASE process_counter is
+                            WHEN 0 =>
+                                -- do nothing
+
+                            WHEN 1 => 
+                                alu_mpy(control_error, kp, multiplier_data_in);
+                                increment(process_counter);
+                            WHEN 2 => 
+                                alu_mpy(control_error, ki, multiplier_data_in);
+                                increment(process_counter);
+                            WHEN 3 => 
+                                increment(process_counter);
+                                y := mem + get_result(multiplier_data_out,15);
+                                if y >= 2**15 then
+                                    y := 2**15;
+                                    mem :=  2**15-get_result(multiplier_data_out,15);
+                                    process_counter := 0;
+                                end if;
+
+                                if y <= -2**15 then
+                                    y := -2**15;
+                                    mem :=  2**15-get_result(multiplier_data_out,15);
+                                    process_counter := 0;
+                                end if; 
+
+                                si_uart_start_event <= '1';
+                                si16_uart_tx_data <= std_logic_vector(to_signed(y,16));
+                            WHEN 4 =>
+                                mem := mem + get_result(multiplier_data_out,15);
+                                process_counter := 0;
+
+                            WHEN others =>
+                                process_counter := 0;
+                        end CASE;
 
 
                     WHEN stream_data =>
