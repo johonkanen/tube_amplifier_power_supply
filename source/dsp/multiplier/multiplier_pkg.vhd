@@ -48,10 +48,10 @@ package multiplier_pkg is
         signal alu_input : out multiplier_data_input_group);
 ------------------------------------------------------------------------
     function get_result ( mpy_out : multiplier_data_output_group; radix : integer)
-    return int18;
+        return int18;
 ------------------------------------------------------------------------
     function multiplier_is_ready ( multiplier_in : multiplier_data_output_group)
-    return boolean;
+        return boolean;
 ------------------------------------------------------------------------
     procedure increment ( variable counter : inout int18);
 ------------------------------------------------------------------------
@@ -146,7 +146,6 @@ end package body multiplier_pkg;
 -- impure interface functions for multiplier-----
 -- impure function "*" (left, right : int18) return sign36
 -- is
---     variable result : sign36;
 -- begin
 --     alu_mpy(left, right, result, multiplier_data_in, multiplier_data_out);
 --     return result;

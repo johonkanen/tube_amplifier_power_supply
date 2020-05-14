@@ -19,7 +19,7 @@ end entity sincos;
 architecture rtl of sincos is
     alias alu_clock : std_logic is sincos_clocks.alu_clock;
     alias reset_n : std_logic is sincos_clocks.reset_n;
-    alias angle : int18 is sincos_data_in.angle_pirad;
+    alias angle : int18 is sincos_data_in.angle_uint16_pirad;
     alias sincos_is_ready : boolean is sincos_data_out.sincos_is_ready;
 
     -- TODO, move these to sincos data_in/out to use common dsp slice
@@ -79,9 +79,7 @@ begin
         variable reduced_angle : int18;
 
         ------------------------------------------------------------------------
-        impure function "*" (left, right : int18) return int18
-        is
-            variable result : sign36;
+        impure function "*" (left, right : int18) return int18 is
         begin
             alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
             return get_result(multiplier_data_out,radix);

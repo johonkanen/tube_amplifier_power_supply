@@ -116,7 +116,6 @@ begin
         ------------------------------------------------------------------------
         impure function "*" (left, right : int18) return int18
         is
-            variable result : sign36;
         begin
             alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
             return get_result(multiplier_data_out,radix);
