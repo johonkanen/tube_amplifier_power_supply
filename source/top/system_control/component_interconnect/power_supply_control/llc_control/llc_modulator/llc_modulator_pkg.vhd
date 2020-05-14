@@ -27,6 +27,7 @@ package llc_modulator_pkg is
     
     type llc_modulator_data_input_group is record
         tg_trigger_llc_period : std_logic;
+        deadtime : integer range 0 to 2**12-1;
         period : integer range 0 to 2**12-1;
         llc_is_enabled : boolean;
     end record;
@@ -57,18 +58,39 @@ package llc_modulator_pkg is
     procedure disable_llc_modulator (
         signal llc_input : inout llc_modulator_data_input_group);
 ------------------------------------------------------------------------         
+    procedure set_deadtime ( deadtime : in integer;
+        signal llc_input : inout llc_modulator_data_input_group);
+------------------------------------------------------------------------         
+    procedure trigger_modulator_changes (
+        signal llc_input : inout llc_modulator_data_input_group);
+------------------------------------------------------------------------         
 end package llc_modulator_pkg;
 
 package body llc_modulator_pkg is
+------------------------------------------------------------------------
+    procedure trigger_modulator_changes
+    (
+        signal llc_input : inout llc_modulator_data_input_group
+    ) is
+    begin
+        llc_input.tg_trigger_llc_period <= not llc_input.tg_trigger_llc_period;
+    end trigger_modulator_changes;
 ------------------------------------------------------------------------
     procedure set_period ( period : in integer;
         signal llc_input : inout llc_modulator_data_input_group
     )
     is
     begin
-        llc_input.tg_trigger_llc_period <= not llc_input.tg_trigger_llc_period;
         llc_input.period <= period;
     end set_period;
+------------------------------------------------------------------------
+    procedure set_deadtime ( deadtime : in integer;
+        signal llc_input : inout llc_modulator_data_input_group
+    )
+    is
+    begin
+        llc_input.deadtime <= deadtime;
+    end set_deadtime;
 ------------------------------------------------------------------------
     procedure enable_llc_modulator ( 
         signal llc_input : out llc_modulator_data_input_group
@@ -83,6 +105,7 @@ package body llc_modulator_pkg is
     begin
         llc_input.llc_is_enabled <= false;
         set_period(474,llc_input);
+        trigger_modulator_changes(llc_input);
     end disable_llc_modulator;
 ------------------------------------------------------------------------
 
