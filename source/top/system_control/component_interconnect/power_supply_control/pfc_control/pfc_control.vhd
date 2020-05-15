@@ -107,6 +107,9 @@ begin
 
         constant radix_15 : int18 := 15;
 
+        variable vkp_x_error : int18;
+        variable ikp_x_error : int18;
+
     begin
         if rising_edge(core_clock) then
             if pll_lock = '0' then
@@ -117,6 +120,9 @@ begin
                 voltage_process_counter := 0;
                 current_process_counter := 0;
                 voltage_integrator := 0;
+
+                vkp_x_error := 0;
+                ikp_x_error := 0;
 
                 voltage_err        := 0;
                 voltage_pi_out     := 0;
@@ -176,27 +182,27 @@ begin
                                 increment(voltage_process_counter);
 
                             WHEN 2 => 
-                                -- pipeline integrator calculation
+                                alu_mpy(vki,voltage_err,multiplier_2_data_in);
                                 increment(voltage_process_counter);
                             WHEN 3 => 
                                 -- pipeline integrator calculation
-                                alu_mpy(vki,voltage_err,multiplier_2_data_in);
                                 increment(voltage_process_counter);
 
                             WHEN 4 => 
                                 voltage_pi_out := get_result(multiplier_2_data_out,radix_15) + voltage_integrator;
+                                vkp_x_error := get_result(multiplier_2_data_out,radix_15);
                                 increment(voltage_process_counter);
 
                             WHEN 5 => 
                                 if voltage_pi_out > 32768 then
                                     voltage_pi_out := 32768;
-                                    voltage_integrator := 32768-get_result(multiplier_2_data_out,radix_15);
+                                    voltage_integrator := 32768-vkp_x_error;
                                     increment(voltage_process_counter);
                                 end if;
 
                                 if voltage_pi_out < 0 then
                                     voltage_pi_out := 0;
-                                    voltage_integrator := 0-get_result(multiplier_2_data_out,radix_15);
+                                    voltage_integrator := 0-vkp_x_error;
                                     increment(voltage_process_counter);
                                 end if;
                                 
@@ -205,14 +211,12 @@ begin
                                     increment(voltage_process_counter);
                                 end if;
 
-
                             WHEN 6 =>
-                                -- TODO, multiply by AC voltage measurement
                                 alu_mpy(voltage_pi_out,250,multiplier_2_data_in);
                                 increment(voltage_process_counter);
                             WHEN 7 =>
                                 if multiplier_is_ready(multiplier_2_data_out) then
-                                    set_duty(get_result(multiplier_data_out,15),pfc_modulator_data_in);
+                                    -- TODO, route voltage measurement to current reference
                                     voltage_process_counter := 0;
                                 end if;
 
@@ -238,15 +242,16 @@ begin
                                 increment(current_process_counter);
 
                             WHEN 2 => 
-                                -- pipeline integrator calculation
                                 increment(current_process_counter);
+                                alu_mpy(iki,err,multiplier_data_in);
+
                             WHEN 3 => 
                                 -- pipeline integrator calculation
-                                alu_mpy(iki,err,multiplier_data_in);
                                 increment(current_process_counter);
 
                             WHEN 4 => 
                                 pi_out := get_result(multiplier_data_out,radix_15) + integrator;
+                                ikp_x_error := get_result(multiplier_data_out,radix_15);
                                 increment(current_process_counter);
 
                             WHEN 5 => 

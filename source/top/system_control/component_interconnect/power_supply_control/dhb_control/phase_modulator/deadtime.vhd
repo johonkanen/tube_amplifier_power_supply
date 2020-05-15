@@ -39,7 +39,7 @@ begin
             if not deadtime_data_in.gates_are_enabled = '1' then
                 half_bridge_gates <= all_off;
                 voltage_buffer <= '0';
-                deadtime_buffer <= deadtime_data_in.deadtime_cycles;
+                deadtime_buffer <= 850;
 
             else 
                 deadtime_load_shift_register <= deadtime_load_shift_register(deadtime_load_shift_register'left-1 downto 0) & deadtime_data_in.tg_load_deadtime;
