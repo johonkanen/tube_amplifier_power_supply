@@ -89,13 +89,13 @@ begin
                 get_llc_voltage(adc_interface, llc_voltage);
                 trigger_llc_control <= llc_voltage_is_ready(adc_interface);
 
+                init_timer(delay_timer_data_in);
                 CASE st_heater_control_states is
                     WHEN idle =>
 
                         deadtime <= 474-28;
 
                         disable_llc_modulator(llc_modulator_data_in);
-                        init_timer(delay_timer_data_in);
 
                         st_heater_control_states := idle;
                         if llc_converter_is_enabled(llc_control_data_in) then

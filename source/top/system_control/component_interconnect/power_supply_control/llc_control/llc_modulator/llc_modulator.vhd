@@ -32,14 +32,12 @@ architecture rtl of llc_modulator is
     signal dly_cntr : uint12;
 
     signal dt_dly : uint12;
-    signal reset_carrier : uint12;
 
     type t_startup_states is (init, rampup, ready);
     signal st_startup : t_startup_states; 
 
     signal reset_dly_cntr : std_logic;
     signal dt_counter_ready : std_logic;
-    signal deadtime_is_requested : boolean;
 
     signal tg_load_period : std_logic_vector(2 downto 0);
     signal dt_count : uint12;
@@ -49,15 +47,24 @@ architecture rtl of llc_modulator is
 begin
 ------------------------------------------------------------------------------------------
 
-    freq_synth : process(llc_modulator_clocks.modulator_clock)
-
+------------------------------------------------------------------------------------------
+    pri_gate_ctrl : process(llc_modulator_clocks.modulator_clock)
+        variable sec_pwm_cntr : uint12;
+        type t_dt_states is (active_pulse,deadtime);
+        variable st_dt_states : t_dt_states;
     begin
 	if rising_edge(llc_modulator_clocks.modulator_clock) then
         if not llc_modulator_data_in.llc_is_enabled then
+            llc_modulator_FPGA_out.llc_gates <= (others => '0');
+            dt_dly <= 0;
+            st_dt_states := deadtime;
+            s1_pulse <= s_pulse;
+
             s_pulse <= '0';
-            reset_carrier <= 474;
             dt_count_down_from <= 474-28;
             carrier <= 0;
+            period <= 474;
+
         else
 
             shift_register(tg_load_period, llc_modulator_data_in.tg_trigger_llc_period);
@@ -67,31 +74,13 @@ begin
             end if;
 
             carrier <= carrier + 1;
-            reset_carrier <= period;
-            if carrier > reset_carrier then
+            if carrier > period then
                carrier <= 0;
                s_pulse <= NOT s_pulse;
             end if;
 
-        end if;
-	end if;
-    end process freq_synth;
-
-------------------------------------------------------------------------------------------
-    pri_gate_ctrl : process(llc_modulator_clocks.modulator_clock)
-        variable sec_pwm_cntr : uint12;
-        type t_dt_states is (active_pulse,deadtime);
-        variable st_dt_states : t_dt_states;
-    begin
-	if rising_edge(llc_modulator_clocks.modulator_clock) then
             s1_pulse <= s_pulse;
-        if not llc_modulator_data_in.llc_is_enabled then
-            llc_modulator_FPGA_out.llc_gates <= (others => '0');
-            dt_dly <= 0;
-            st_dt_states := deadtime;
-            deadtime_is_requested <= false;
-        else
-            deadtime_is_requested <= false;
+
             CASE st_dt_states is
                 WHEN active_pulse =>
                     -- gate on
@@ -110,15 +99,18 @@ begin
 
                     if s1_pulse /= s_pulse then
                         st_dt_states := deadtime;
-                        deadtime_is_requested <= true;
+                        dt_count <= dt_count_down_from;
                     end if;
 
                 WHEN deadtime => 
 
-                    st_dt_states := deadtime;
-                    if dt_counter_ready = '1' then
+                    if dt_count > 0 then
+                        dt_count <= dt_count - 1;
+                        st_dt_states := deadtime;
+                    else
                         st_dt_states := active_pulse;
                     end if;
+
 
                     llc_modulator_FPGA_out.llc_gates <= (others => '0');
                     sec_pwm_cntr := 0;
@@ -128,27 +120,4 @@ begin
 	end if;
     end process pri_gate_ctrl;
 ------------------------------------------------------------------------------------------
-    deadtime_counter : process(llc_modulator_clocks.modulator_clock)
-    begin
-        if rising_edge(llc_modulator_clocks.modulator_clock) then
-            if not llc_modulator_data_in.llc_is_enabled then
-            -- reset state
-                dt_count <= 0;
-                dt_counter_ready <= '0';
-            else
-
-                if deadtime_is_requested then
-                    dt_count <= dt_count_down_from;
-                end if;
-
-                dt_counter_ready <= '1';
-                if dt_count > 0 then
-                    dt_count <= dt_count - 1;
-                    dt_counter_ready <= '0';
-                end if;
-
-            end if; -- llc_modulator_data_in.reset_n
-        end if; --rising_edge
-    end process deadtime_counter;	
-
 end rtl;

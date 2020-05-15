@@ -157,7 +157,6 @@ begin
                         st_dhb_states <= ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
                             deadtime := deadtime - 1;
-                            trigger(phase_modulator_data_in.tg_load_phase);
                             set_deadtime(phase_modulator_data_in,deadtime);
 
                             if deadtime = 26 then
@@ -217,8 +216,7 @@ begin
 
                             WHEN 7 =>
                                 if multiplier_is_ready(multiplier_data_out) then
-                                    phase_modulator_data_in.phase <= get_result(multiplier_data_out,15);
-                                    trigger(phase_modulator_data_in.tg_load_phase);
+                                    set_phase(phase_modulator_data_in,get_result(multiplier_data_out,15));
                                     process_counter := 0;
                                 end if;
 
