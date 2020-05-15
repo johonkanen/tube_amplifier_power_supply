@@ -150,14 +150,15 @@ begin
                     WHEN ramping_up =>
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
-                        -- TODO, add rampup for pwm
                         -- phase_modulator_data_in.dhb_is_enabled <= '1';
-                        -- enable_dhb_modulator(phase_modulator_data_in);
-                        disable_dhb_modulator(phase_modulator_data_in);
+                        enable_dhb_modulator(phase_modulator_data_in);
+                        -- disable_dhb_modulator(phase_modulator_data_in);
                             
                         st_dhb_states <= ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
                             deadtime := deadtime - 1;
+                            trigger(phase_modulator_data_in.tg_load_phase);
+                            set_deadtime(phase_modulator_data_in,deadtime);
 
                             if deadtime = 26 then
                                 init_timer(delay_timer_data_in);
