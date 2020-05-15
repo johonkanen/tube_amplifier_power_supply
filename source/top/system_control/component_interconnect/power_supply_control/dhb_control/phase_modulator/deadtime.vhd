@@ -36,45 +36,33 @@ begin
         
     begin
         if rising_edge(modulator_clock) then
-
-            voltage_buffer <= half_bridge_voltage;
-
-            if voltage_buffer = '1' then
-                half_bridge_gates <= positive_vector;
-            else
-                half_bridge_gates <= negative_vector;
-            end if;
-
-            if deadtime_counter /= 0 then
-                half_bridge_gates <= all_off;
-            end if;
-
-            if deadtime_counter > 1 then
-                deadtime_counter <= deadtime_counter - 1;
-            else
-                deadtime_counter <= 0;
-            end if;
-
-
-            deadtime_load_shift_register <= deadtime_load_shift_register(deadtime_load_shift_register'left-1 downto 0) & deadtime_data_in.tg_load_deadtime;
-
-            if deadtime_load_shift_register(deadtime_load_shift_register'left) /= deadtime_load_shift_register(deadtime_load_shift_register'left-1) then
-                deadtime_buffer <= deadtime_data_in.deadtime_cycles;
-            end if;
-
-            if voltage_buffer /= half_bridge_voltage then 
-                deadtime_counter <= deadtime_buffer;
-            end if;
-
             if not deadtime_data_in.gates_are_enabled = '1' then
                 half_bridge_gates <= all_off;
-            end if;
+                voltage_buffer <= '0';
+                deadtime_buffer <= deadtime_data_in.deadtime_cycles;
 
-    
-            -- end if; -- rstn
+            else 
+                deadtime_load_shift_register <= deadtime_load_shift_register(deadtime_load_shift_register'left-1 downto 0) & deadtime_data_in.tg_load_deadtime;
+                if deadtime_load_shift_register(deadtime_load_shift_register'left) /= deadtime_load_shift_register(deadtime_load_shift_register'left-1) then
+                    deadtime_buffer <= deadtime_data_in.deadtime_cycles;
+                end if;
+
+                if deadtime_counter > 1 then
+                    deadtime_counter <= deadtime_counter - 1;
+                    half_bridge_gates <= all_off;
+                else
+                    deadtime_counter <= 0;
+                    half_bridge_gates <= voltage_buffer & not voltage_buffer;
+                end if;
+
+                voltage_buffer <= half_bridge_voltage;
+                if voltage_buffer /= half_bridge_voltage then 
+                    deadtime_counter <= deadtime_buffer;
+                end if;
+
+            end if;
         end if; --rising_edge
     end process deadtime_generator;	
-
 
 end rtl;
 

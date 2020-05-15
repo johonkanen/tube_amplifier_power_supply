@@ -44,8 +44,6 @@ architecture rtl of dhb_control is
     signal multiplier_data_in  : multiplier_data_input_group;
     signal multiplier_data_out :  multiplier_data_output_group;
 ------------------------------------------------------------------------
-    type t_dhb_states is (idle,ramping_up,running,trip);
-    signal st_dhb_states : t_dhb_states;
 ------------------------------------------------------------------------
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
@@ -94,21 +92,17 @@ begin
         variable process_counter : uint8;
         variable kp_x_error : int18;
 
-
         variable deadtime : uint12;
-        ------------------------------------------------------------------------
-        -- impure function "*" (left, right : int18) return int18
-        -- is
-        -- begin
-        --     alu_mpy(left, right, multiplier_data_in, multiplier_data_out);
-        --     return get_result(multiplier_data_out,radix);
-        -- end "*";
-        -- ------------------------------------------------------------------------
+
+        type t_dhb_states is (idle,ramping_up,running,trip);
+        variable st_dhb_states : t_dhb_states;
+
+    --------------------------------------------------
     begin
         if rising_edge(core_clock) then
             if reset_n = '0' then
             -- reset state
-                st_dhb_states <= idle;
+                st_dhb_states := idle;
                 integrator <= 0;
                 init_timer(delay_timer_data_in);
                 process_counter := 0;
@@ -130,43 +124,40 @@ begin
                 get_DC_link(measurement_interface_data,DC_link_voltage);
                 ----------------------------------------------------
 
+                init_timer(delay_timer_data_in);
                 multiplier_data_in.multiplication_is_requested <= false;
                 CASE st_dhb_states is
                     WHEN idle =>
 
-                        deadtime := g_carrier_max_value/2-10;
-                        -- set_phase(0,phase_modulator_data_in);
-                        phase_modulator_data_in.phase <= 0;
-                        trigger(phase_modulator_data_in.tg_load_phase);
                         disable_dhb_modulator(phase_modulator_data_in);
-                        init_timer(delay_timer_data_in);
+
+                        deadtime := g_carrier_max_value/2-10;
+                        set_phase(phase_modulator_data_in,0);
+
                         set_deadtime(phase_modulator_data_in,g_carrier_max_value/2-10);
 
-                        st_dhb_states <= idle;
+                        st_dhb_states := idle;
                         if dhb_control_data_in.enable_dhb then
-                            st_dhb_states <= ramping_up;
+                            st_dhb_states := ramping_up;
                         end if;
 
                     WHEN ramping_up =>
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
-                        -- phase_modulator_data_in.dhb_is_enabled <= '1';
                         enable_dhb_modulator(phase_modulator_data_in);
-                        -- disable_dhb_modulator(phase_modulator_data_in);
                             
-                        st_dhb_states <= ramping_up;
+                        st_dhb_states := ramping_up;
                         if timer_is_ready(delay_timer_data_out) then
                             deadtime := deadtime - 1;
                             set_deadtime(phase_modulator_data_in,deadtime);
 
                             if deadtime = 26 then
                                 init_timer(delay_timer_data_in);
-                                st_dhb_states <= running;
+                                st_dhb_states := running;
                             end if;
                         end if;
 
                     WHEN running =>
-                        -- phase_modulator_data_in.dhb_is_enabled <= '1';
                         enable_dhb_modulator(phase_modulator_data_in);
 
                     -- PI controller for dhb voltage
