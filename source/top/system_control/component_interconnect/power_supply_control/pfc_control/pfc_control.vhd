@@ -127,6 +127,7 @@ begin
                 voltage_err        := 0;
                 voltage_pi_out     := 0;
                 voltage_integrator := 0;
+                pfc_control_data_out.pfc_is_ready <= false;
             else
                 ------------- buffer pfc measurements --------------
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
@@ -140,6 +141,7 @@ begin
 
                 -- TODO, overvoltage trip, overcurrent trip
 
+                pfc_control_data_out.pfc_is_ready <= false;
                 multiplier_data_in.multiplication_is_requested <= false;
                 multiplier_2_data_in.multiplication_is_requested <= false;
                 CASE st_pfc_control_state is
@@ -166,6 +168,7 @@ begin
                         end if;
 
                     WHEN pfc_running => 
+                        pfc_control_data_out.pfc_is_ready <= true;
 
                     ----------------- voltage control ----------------         
                         CASE voltage_process_counter is

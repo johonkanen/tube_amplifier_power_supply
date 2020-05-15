@@ -54,7 +54,7 @@ begin
 ------------------------------------------------------------------------
     power_supply_sequencer : process(core_clock)
 
-        type t_power_supply_sequencer is (wait_for_start, start_pfc, start_llc, start_dhb, psu_running);
+        type t_power_supply_sequencer is (wait_for_start, start_pfc, start_llc, start_dhb, psu_running, system_error);
         variable st_power_supply_sequencer : t_power_supply_sequencer;
         --------------------------------------------------
         procedure change_state_to (
@@ -90,19 +90,33 @@ begin
                     WHEN start_pfc =>
                         enable_pfc(pfc_control_data_in);
 
-                        -- TOO, add pfc startup routing
-                        st_power_supply_sequencer := start_llc;
+
+                        st_power_supply_sequencer := start_pfc;
+                        if pfc_is_ready(pfc_control_data_out) then
+                            st_power_supply_sequencer := start_llc;
+                        end if;
+
                     WHEN start_llc =>
 
                         enable_llc(llc_control_data_in);
-                        -- TOO, add llc startup routing
-                        st_power_supply_sequencer := start_dhb;
+                        st_power_supply_sequencer := start_llc;
+                        if llc_is_ready(llc_control_data_out) then
+                            st_power_supply_sequencer := start_dhb;
+                        end if;
 
                     WHEN start_dhb =>
 
                         enable_dhb(dhb_control_data_in);
 
-                    WHEN others =>
+                        st_power_supply_sequencer := start_dhb;
+                        if dhb_is_ready(dhb_control_data_out) then
+                            st_power_supply_sequencer := psu_running;
+                        end if;
+
+                    WHEN psu_running =>
+                        
+
+                    WHEN system_error =>
                         -- do nothing
                 end CASE;
 
@@ -118,6 +132,9 @@ begin
     carrier_generation : process(power_supply_control_clocks.modulator_clock) 
     begin
         if rising_edge(power_supply_control_clocks.modulator_clock) then
+            if pll_lock = '0' then
+                master_carrier <= 0;
+            end if;
                 measurement_interface_data_in.onboard_ad_control_data_in.ada_triggers <= ada_triggers;
                 measurement_interface_data_in.onboard_ad_control_data_in.adb_triggers <= ada_triggers;
                 measurement_interface_data_in.dhb_ad_start_request_toggle <= dhb_trigger;

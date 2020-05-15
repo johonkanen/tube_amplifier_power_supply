@@ -84,11 +84,13 @@ begin
                 disable_llc_modulator(llc_modulator_data_in);
                 st_heater_control_states := idle;
                 trigger_llc_control <= false;
+                llc_control_data_out.llc_is_ready <= false;
             else
                 -- get llc voltage measurement from measurement bus
                 get_llc_voltage(adc_interface, llc_voltage);
                 trigger_llc_control <= llc_voltage_is_ready(adc_interface);
 
+                llc_control_data_out.llc_is_ready <= false;
                 init_timer(delay_timer_data_in);
                 CASE st_heater_control_states is
                     WHEN idle =>
@@ -122,6 +124,7 @@ begin
                         end if;
 
                     WHEN run =>
+                        llc_control_data_out.llc_is_ready <= true;
 
                         CASE process_counter is
                             WHEN 0 =>

@@ -44,6 +44,10 @@ package llc_control_pkg is
 ------------------------------------------------------------------------
     procedure enable_llc (signal llc_control_input : out llc_control_data_input_group);
 ------------------------------------------------------------------------
+    function llc_is_ready ( llc_control_output : llc_control_data_output_group)
+        return boolean;
+------------------------------------------------------------------------
+
 
 end package llc_control_pkg;
 
