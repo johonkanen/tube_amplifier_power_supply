@@ -102,6 +102,8 @@ begin
                     WHEN 5 => 
                         increment(process_counter);
 
+                        feedback_control_data_out.feedback_is_ready <= true;
+
                         mem <= mem + get_result(multiplier_data_out,15);
                         if pi_out >   pi_saturate_high then
                             pi_out <= pi_saturate_high;

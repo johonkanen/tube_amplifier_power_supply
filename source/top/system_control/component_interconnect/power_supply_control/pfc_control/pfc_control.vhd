@@ -116,7 +116,7 @@ begin
 
 ------------------------------------------------------------------------
     pfc_control : process(core_clock)
-        type t_pfc_control_state is (idle, precharge, rampup, pfc_running);
+        type t_pfc_control_state is (idle, precharge, rampup, pfc_running, pfc_tripped);
         variable st_pfc_control_state : t_pfc_control_state;
         constant radix_15 : int18 := 15;
 
@@ -170,6 +170,12 @@ begin
 
                     WHEN pfc_running => 
                         pfc_control_data_out.pfc_is_ready <= true;
+
+                        if feedback_is_ready(feedback_control_data_out) then
+                            set_duty(get_control_output(feedback_control_data_out),pfc_modulator_data_in);
+                        end if;
+
+                    WHEN pfc_tripped => 
 
                 end CASE;
             end if; -- rstn
