@@ -36,7 +36,7 @@ package feedback_control_pkg is
     end component feedback_control;
     
     -- signal feedback_control_clocks : feedback_control_clock_group;
-    -- signal feedback_control_data_in : feedback_control_data_input_group;
+    -- signal feedback_control_data_in : feedback_measurements(0 to number_of_measurements -1);;
     -- signal feedback_control_data_out : feedback_control_data_output_group;
     -- signal data_from_multiplier : multiplier_data_output_group;
     -- signal data_to_multiplier : multiplier_data_input_group;

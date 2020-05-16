@@ -9,6 +9,7 @@ rem ghdl -a --ieee=synopsys %source%/cyclone_10lp/cl10_specifics.vhd
 ghdl -a --ieee=synopsys %source%/dsp/multiplier/multiplier_pkg.vhd
 
 ghdl -a --ieee=synopsys %source%/dsp/feedback_control/feedback_control_pkg.vhd
+ghdl -a --ieee=synopsys %source%/dsp/feedback_control/feedback_control.vhd
 
 ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos_pkg.vhd
 ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos.vhd
@@ -29,6 +30,7 @@ ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power
 
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
+ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_pi_control.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_internal_pkg.vhd
 
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime_pkg.vhd

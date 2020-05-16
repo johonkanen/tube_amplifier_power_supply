@@ -15,6 +15,7 @@ library work;
     use work.llc_control_internal_pkg.all;
     use work.llc_modulator_pkg.all;
     use work.multiplier_pkg.all;
+    use work.feedback_control_pkg.all;
 
 entity llc_control is
     port (
@@ -51,6 +52,16 @@ architecture rtl of llc_control is
         signal ekp : int18;
     signal trigger_llc_control : boolean;
 ------------------------------------------------------------------------
+    for u_feedback_control : feedback_control use entity work.feedback_control(llc_pi_control);
+
+    constant number_of_measurements : natural := 1;
+    signal feedback_control_clocks : feedback_control_clock_group;
+    signal feedback_control_data_in : feedback_measurements(0 to number_of_measurements -1);
+    signal feedback_control_data_out : feedback_control_data_output_group;
+    signal data_from_multiplier : multiplier_data_output_group;
+    signal data_to_multiplier : multiplier_data_input_group;
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 begin
 ------------------------------------------------------------------------
     delay_1us : delay_timer
@@ -66,6 +77,14 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
+------------------------------------------------------------------------
+    u_feedback_control : feedback_control
+    generic map(number_of_measurements => 1)
+    port map( feedback_control_clocks,
+              feedback_control_data_in,
+              feedback_control_data_out,
+              data_from_multiplier,
+              data_to_multiplier);
 ------------------------------------------------------------------------
     heater_control : process(core_clock)
         type t_heater_control_states is (idle, precharge, run, tripped);
