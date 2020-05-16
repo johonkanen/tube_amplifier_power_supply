@@ -17,8 +17,12 @@ library work;
 --     );
 -- end entity;
 
-architecture llc_pi_control of feedback_control is
-    alias feedback_measurement is feedback_control_data_in(0).measurement;
+architecture pfc_current_control of feedback_control is
+    alias dc_link is feedback_control_data_in(0).measurement;
+    alias vac is feedback_control_data_in(1).measurement;
+    alias pfc_I1 is feedback_control_data_in(2).measurement;
+    alias pfc_I2 is feedback_control_data_in(3).measurement;
+
     alias feedback_reference is feedback_control_data_in(0).control_reference;
     alias control_is_requested is feedback_control_data_in(0).control_is_requested;
     alias multiplier_data_in is data_to_multiplier;
@@ -39,7 +43,7 @@ begin
     feedback_control_data_out.control_out <= pi_out;
 
     pi_control_calculation : process(feedback_control_clocks.clock)
-        variable process_counter : natural range 0 to 4;
+        variable process_counter : natural range 0 to 5;
         variable control_error : int18;
 
         
@@ -52,46 +56,51 @@ begin
             if feedback_control_data_in(0).feedback_control_is_enabled = false then
                 mem <= 0;
             end if;
-
-            
-                CASE process_counter is
+                CASE process_counter is 
                     WHEN 0 =>
-                        -- do nothing
-                        control_error := feedback_reference - feedback_measurement;
-
-                        if control_is_requested and 
-                           feedback_control_data_in(0).feedback_control_is_enabled then
-
+                        if control_is_requested then
+                            if pfc_I1 > pfc_I2 then
+                                control_error := 17000 - pfc_I1;
+                            else
+                                control_error := 17000 - pfc_I2;
+                            end if;
                             increment(process_counter);
-                            alu_mpy(control_error, kp, multiplier_data_in);
                         end if;
 
                     WHEN 1 => 
+                        alu_mpy(kp,control_error,multiplier_data_in);
                         increment(process_counter);
-                        alu_mpy(control_error, ki, multiplier_data_in);
 
                     WHEN 2 => 
                         increment(process_counter);
+                        alu_mpy(ki,control_error,multiplier_data_in);
 
                     WHEN 3 => 
+                        -- pipeline mem calculation
                         increment(process_counter);
-                        pi_out <= mem + get_result(multiplier_data_out,15);
+
+                    WHEN 4 => 
+                        pi_out <= get_result(multiplier_data_out,15) + mem;
                         ekp <= get_result(multiplier_data_out,15);
+                        increment(process_counter);
 
-                    WHEN 4 =>
-                        process_counter := 0;
-                        feedback_control_data_out.feedback_is_ready <= true;
-
-                        mem <= mem + get_result(multiplier_data_out,15);
-                        if pi_out >  pi_saturate_high then
-                            pi_out <= pi_saturate_high ;
-                            mem    <= pi_saturate_high -ekp;
+                    WHEN 5 => 
+                        if pi_out > 32768 then
+                            pi_out <= 32768;
+                            mem <= 32768-get_result(multiplier_data_out,15);
+                            increment(process_counter);
                         end if;
 
-                        if pi_out <  pi_saturate_low then
-                            pi_out <= pi_saturate_low ;
-                            mem    <= pi_saturate_low -ekp;
-                        end if; 
+                        if pi_out < 6560 then
+                            pi_out <= 6560;
+                            mem <= 6560-get_result(multiplier_data_out,15);
+                            increment(process_counter);
+                        end if;
+                        
+                        if multiplier_is_ready(multiplier_data_out) then
+                            mem <= mem + get_result(multiplier_data_out,15);
+                            increment(process_counter);
+                        end if;
 
                     WHEN others =>
                         process_counter := 0;
@@ -99,5 +108,5 @@ begin
         end if; --rising_edge
     end process;	
 
-end llc_pi_control;
+end pfc_current_control;
 

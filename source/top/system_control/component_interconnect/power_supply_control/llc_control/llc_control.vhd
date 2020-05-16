@@ -30,8 +30,9 @@ architecture rtl of llc_control is
 
     alias core_clock is llc_control_clocks.core_clock;
     alias modulator_clock is llc_control_clocks.modulator_clock;
+
+----------------------- adc interface ----------------------------------
     alias adc_interface is llc_control_data_in.measurement_interface_data_out;
------------------------ module internal signals ------------------------
     signal llc_voltage : int18;
 ----------------------- multiplier signals -----------------------------
     signal multiplier_clocks   : multiplier_clock_group;
@@ -41,17 +42,14 @@ architecture rtl of llc_control is
     signal llc_modulator_clocks   : llc_modulator_clock_group;
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
     signal llc_modulator_data_out : llc_modulator_data_output_group;
-------------------------------------------------------------------------
+----------------------- delay interface signals ------------------------
     signal delay_timer_data_in  : delay_timer_data_input_group;
     signal delay_timer_data_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------
     signal deadtime : uint12;
-
-        signal pi_out : int18;
-        signal mem : int18;
-        signal ekp : int18;
+----------------------- feedback control signals -----------------------
     signal trigger_llc_control : boolean;
-------------------------------------------------------------------------
+
     for u_feedback_control : feedback_control use entity work.feedback_control(llc_pi_control);
 
     constant number_of_measurements : natural := 1;
@@ -63,15 +61,16 @@ architecture rtl of llc_control is
     signal feedback_control_is_enabled : boolean;
 
 ------------------------------------------------------------------------
-------------------------------------------------------------------------
 begin
-------------------------------------------------------------------------
+
+------------------ delay timer module ----------------------------------
     delay_1us : delay_timer
     generic map (count_up_to => 128)
     port map( core_clock,
     	  delay_timer_data_in,
     	  delay_timer_data_out);
-------------------------------------------------------------------------
+
+------------------ multiplier module -----------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
         port map(
@@ -79,13 +78,15 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
-------------------------------------------------------------------------
+
+------------------ feedback control module -----------------------------
 
     feedback_control_clocks <= (clock => core_clock);
+
     feedback_control_data_in(0) <= (feedback_control_is_enabled => feedback_control_is_enabled,
-                                   measurement => llc_voltage,
-                                   control_is_requested => trigger_llc_control,
-                                   control_reference => 25e3);
+                                   measurement                  => llc_voltage,
+                                   control_is_requested         => trigger_llc_control,
+                                   control_reference            => 25e3);
 
     u_feedback_control : feedback_control
     generic map(number_of_measurements => 1)
@@ -94,6 +95,7 @@ begin
               feedback_control_data_out,
               multiplier_data_out,
               multiplier_data_in);
+
 ------------------------------------------------------------------------
     heater_control : process(core_clock)
         type t_heater_control_states is (idle, precharge, run, tripped);
@@ -109,7 +111,7 @@ begin
                 trigger_llc_control <= false;
                 llc_control_data_out.llc_is_ready <= false;
             else
-                -- get llc voltage measurement from measurement bus
+
                 get_llc_voltage(adc_interface, llc_voltage);
                 trigger_llc_control <= llc_voltage_is_ready(adc_interface);
 
@@ -129,7 +131,7 @@ begin
                         end if;
 
                     WHEN precharge =>
-                    -- wait for precharge ready
+
                         enable_llc_modulator(llc_modulator_data_in);
                         set_period(473,llc_modulator_data_in);
 
@@ -165,9 +167,7 @@ begin
         end if; --rising_edge
     end process heater_control;	
 ------------------------------------------------------------------------
-    --TODO, create control logic for safe llc start
     llc_modulator_clocks <= (core_clock => core_clock, modulator_clock => modulator_clock);
-    -- llc_modulator_data_in.llc_is_enabled <= std_to_bool(llc_control_clocks.pll_lock);
     u_llc_modulator : llc_modulator
     port map
     (
