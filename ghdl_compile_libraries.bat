@@ -7,6 +7,9 @@ ghdl -a --ieee=synopsys %source%/ecp5/ecp5_pll_wrapper.vhd
 rem ghdl -a --ieee=synopsys %source%/cyclone_10lp/cl10_specifics.vhd
 
 ghdl -a --ieee=synopsys %source%/dsp/multiplier/multiplier_pkg.vhd
+
+ghdl -a --ieee=synopsys %source%/dsp/feedback_control/feedback_control_pkg.vhd
+
 ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos_pkg.vhd
 ghdl -a --ieee=synopsys %source%/dsp/sincos/sincos.vhd
 

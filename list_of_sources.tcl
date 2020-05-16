@@ -9,6 +9,9 @@ proc read_sources {source_folder} \
         /dsp/sincos/sincos_pkg.vhd
         /dsp/sincos/sincos.vhd
 
+        /dsp/feedback_control/feedback_control_pkg.vhd
+        /dsp/multiplier/feedback_control.vhd
+
         /common/timing/timing_pkg.vhd
         /common/timing/delay_timer.vhd
         /common/typesdefs/typedefs_pkg.vhd
