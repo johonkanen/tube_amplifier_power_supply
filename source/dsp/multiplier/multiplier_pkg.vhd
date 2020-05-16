@@ -44,6 +44,9 @@ package multiplier_pkg is
         signal alu_out : in multiplier_data_output_group
     );
 ------------------------------------------------------------------------
+    procedure enable_multiplier (
+        signal multiplier_in : out multiplier_data_input_group);
+------------------------------------------------------------------------
     procedure alu_mpy ( mult_a,mult_b : in int18;
         signal alu_input : out multiplier_data_input_group);
 ------------------------------------------------------------------------
@@ -60,6 +63,14 @@ package multiplier_pkg is
 end package multiplier_pkg;
 
 package body multiplier_pkg is
+------------------------------------------------------------------------
+    procedure enable_multiplier
+    (
+        signal multiplier_in : out multiplier_data_input_group
+    ) is
+    begin
+        multiplier_in.multiplication_is_requested <= false;
+    end enable_multiplier;
 ------------------------------------------------------------------------
     procedure init_multiplier
     (

@@ -28,8 +28,8 @@ architecture llc_pi_control of feedback_control is
     signal ekp : int18;
     signal pi_out : int18;
 
-    constant pi_saturate_high : int18 :=  2**15;
-    constant pi_saturate_low : int18 := -2**15;
+    constant pi_saturate_high : int18 := 846;
+    constant pi_saturate_low : int18  := 474;
 
     constant kp : int18 := 22e3;
     constant ki : int18 := 2000;
@@ -43,49 +43,54 @@ begin
 
         
     begin
-
-        feedback_control_data_out.control_is_done <= false;
         if rising_edge(feedback_control_clocks.clock) then
-            CASE process_counter is
-                WHEN 0 =>
-                    -- do nothing
-                    control_error :=  feedback_reference - feedback_measurement;
 
-                    if control_is_requested then
+            enable_multiplier(multiplier_data_in);
+            feedback_control_data_out.feedback_is_ready <= false;
+
+            
+                CASE process_counter is
+                    WHEN 0 =>
+                        -- do nothing
+                        control_error := feedback_reference - feedback_measurement;
+
+                        if control_is_requested and 
+                           feedback_control_data_in(0).feedback_control_is_enabled then
+
+                            increment(process_counter);
+                            alu_mpy(control_error, kp, multiplier_data_in);
+                        end if;
+
+                    WHEN 1 => 
                         increment(process_counter);
-                        alu_mpy(control_error, kp, multiplier_data_in);
-                    end if;
+                        alu_mpy(control_error, ki, multiplier_data_in);
 
-                WHEN 1 => 
-                    increment(process_counter);
-                    alu_mpy(control_error, ki, multiplier_data_in);
+                    WHEN 2 => 
+                        increment(process_counter);
 
-                WHEN 2 => 
-                    increment(process_counter);
+                    WHEN 3 => 
+                        increment(process_counter);
+                        pi_out <= mem + get_result(multiplier_data_out,15);
+                        ekp <= get_result(multiplier_data_out,15);
 
-                WHEN 3 => 
-                    increment(process_counter);
-                    pi_out <= mem + get_result(multiplier_data_out,15);
-                    ekp <= get_result(multiplier_data_out,15);
+                    WHEN 4 =>
+                        process_counter := 0;
+                        feedback_control_data_out.feedback_is_ready <= true;
 
-                WHEN 4 =>
-                    process_counter := 0;
-                    feedback_control_data_out.control_is_done <= false;
+                        mem <= mem + get_result(multiplier_data_out,15);
+                        if pi_out >  pi_saturate_high then
+                            pi_out <= pi_saturate_high ;
+                            mem    <= pi_saturate_high -ekp;
+                        end if;
 
-                    mem <= mem + get_result(multiplier_data_out,15);
-                    if pi_out >  pi_saturate_high then
-                        pi_out <= pi_saturate_high ;
-                        mem    <= pi_saturate_high -ekp;
-                    end if;
+                        if pi_out <  pi_saturate_low then
+                            pi_out <= pi_saturate_low ;
+                            mem    <= pi_saturate_low -ekp;
+                        end if; 
 
-                    if pi_out <  pi_saturate_low then
-                        pi_out <= pi_saturate_low ;
-                        mem    <= pi_saturate_low -ekp;
-                    end if; 
-
-                WHEN others =>
-                    process_counter := 0;
-            end CASE;
+                    WHEN others =>
+                        process_counter := 0;
+                end CASE;
         end if; --rising_edge
     end process;	
 

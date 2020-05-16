@@ -60,6 +60,8 @@ architecture rtl of llc_control is
     signal feedback_control_data_out : feedback_control_data_output_group;
     signal data_from_multiplier : multiplier_data_output_group;
     signal data_to_multiplier : multiplier_data_input_group;
+    signal feedback_control_is_enabled : boolean;
+
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 begin
@@ -78,24 +80,26 @@ begin
             multiplier_data_out 
         );
 ------------------------------------------------------------------------
+
+    feedback_control_clocks <= (clock => core_clock);
+    feedback_control_data_in(0) <= (feedback_control_is_enabled => feedback_control_is_enabled,
+                                   measurement => llc_voltage,
+                                   control_is_requested => trigger_llc_control,
+                                   control_reference => 25e3);
+
     u_feedback_control : feedback_control
     generic map(number_of_measurements => 1)
     port map( feedback_control_clocks,
               feedback_control_data_in,
               feedback_control_data_out,
-              data_from_multiplier,
-              data_to_multiplier);
+              multiplier_data_out,
+              multiplier_data_in);
 ------------------------------------------------------------------------
     heater_control : process(core_clock)
         type t_heater_control_states is (idle, precharge, run, tripped);
         variable st_heater_control_states : t_heater_control_states;
         ------------------------------------------------------------------------
         variable process_counter : uint8;
-        variable control_error : int18;
-        constant kp : int18 := 48e3;
-        constant ki : int18 := 15000;
-        constant pi_saturate_high : int18 := 800;
-        constant pi_saturate_low  : int18 := 474;
         
     begin
         if rising_edge(core_clock) then
@@ -109,6 +113,7 @@ begin
                 get_llc_voltage(adc_interface, llc_voltage);
                 trigger_llc_control <= llc_voltage_is_ready(adc_interface);
 
+                feedback_control_is_enabled <= false;
                 llc_control_data_out.llc_is_ready <= false;
                 init_timer(delay_timer_data_in);
                 CASE st_heater_control_states is
@@ -143,60 +148,18 @@ begin
                         end if;
 
                     WHEN run =>
+                        st_heater_control_states := run;
                         llc_control_data_out.llc_is_ready <= true;
 
-                        CASE process_counter is
-                            WHEN 0 =>
-                                -- do nothing
-                                control_error := 25000 - llc_voltage;
+                        feedback_control_is_enabled <= true;
+                        if feedback_is_ready(feedback_control_data_out) then
+                            set_period(get_control_output(feedback_control_data_out),llc_modulator_data_in);
+                            trigger_modulator_changes(llc_modulator_data_in);
+                        end if;
 
-                                if trigger_llc_control then
-                                    increment(process_counter);
-                                    alu_mpy(control_error, kp, multiplier_data_in);
-                                end if;
-
-                            WHEN 1 => 
-                                increment(process_counter);
-                                alu_mpy(control_error, ki, multiplier_data_in);
-
-                            WHEN 2 => 
-                                increment(process_counter);
-
-                            WHEN 3 => 
-                                increment(process_counter);
-                                pi_out <= mem + get_result(multiplier_data_out,15);
-                                ekp <= get_result(multiplier_data_out,15);
-
-                            WHEN 4 =>
-                                increment(process_counter);
-
-                                mem <= mem + get_result(multiplier_data_out,15);
-                                if pi_out >  pi_saturate_high then
-                                    pi_out <= pi_saturate_high ;
-                                    mem    <= pi_saturate_high -ekp;
-                                end if;
-
-                                if pi_out <  pi_saturate_low then
-                                    pi_out <= pi_saturate_low ;
-                                    mem    <= pi_saturate_low -ekp;
-                                end if; 
-                            WHEN 5 =>
-                                process_counter := 0;
-
-                                set_period(pi_out,llc_modulator_data_in);
-                                trigger_modulator_changes(llc_modulator_data_in);
-
-
-                            WHEN others =>
-                                process_counter := 0;
-                        end CASE;
-                        st_heater_control_states := run;
-                        -- 1. measure voltage with maximum switching frequency
-                        -- 2. set reference to match measurement
-                        -- 3. add 1 to measurement until reference matches set value
-
-                    WHEN others =>
+                    WHEN tripped =>
                         disable_llc_modulator(llc_modulator_data_in);
+                        st_heater_control_states := idle;
                 end CASE;
             end if;
         end if; --rising_edge
