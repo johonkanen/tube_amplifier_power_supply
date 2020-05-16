@@ -101,6 +101,7 @@ begin
         );
 
 ------------------------------------------------------------------------
+    feedback_control_data_in(0).feedback_control_is_enabled <= feedback_control_is_enabled;
     feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
     feedback_control_data_in(1).measurement <= AC_voltage_measurement;
     feedback_control_data_in(2).measurement <= pfc_I1_measurement;
@@ -127,6 +128,7 @@ begin
                 st_pfc_control_state := idle;
                 set_duty(0,pfc_modulator_data_in);
                 disable_pfc_modulator(pfc_modulator_data_in);
+                feedback_control_is_enabled <= false;
 
                 pfc_control_data_out.pfc_is_ready <= false;
             else
@@ -141,6 +143,8 @@ begin
                 ----------------------------------------------------
 
                 -- TODO, overvoltage trip, overcurrent trip
+
+                feedback_control_is_enabled <= false;
 
                 pfc_control_data_out.pfc_is_ready <= false;
                 multiplier_data_in.multiplication_is_requested <= false;
@@ -170,6 +174,7 @@ begin
 
                     WHEN pfc_running => 
                         pfc_control_data_out.pfc_is_ready <= true;
+                        feedback_control_is_enabled <= true;
 
                         if feedback_is_ready(feedback_control_data_out) then
                             set_duty(get_control_output(feedback_control_data_out),pfc_modulator_data_in);
