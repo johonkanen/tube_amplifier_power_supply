@@ -30,7 +30,7 @@ ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power
 
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
-ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_pi_control.vhd
+ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/arch_llc_pi_control.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_internal_pkg.vhd
 
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/deadtime_pkg.vhd

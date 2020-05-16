@@ -50,7 +50,7 @@ architecture rtl of llc_control is
 ----------------------- feedback control signals -----------------------
     signal trigger_llc_control : boolean;
 
-    for u_feedback_control : feedback_control use entity work.feedback_control(llc_pi_control);
+    for u_feedback_control : feedback_control use entity work.feedback_control(arch_llc_pi_control);
 
     constant number_of_measurements    : natural := 1;
     signal feedback_control_clocks     : feedback_control_clock_group;

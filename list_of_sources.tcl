@@ -48,7 +48,7 @@ proc read_sources {source_folder} \
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_pkg.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control_internal_pkg.vhd
-            /top/system_control/component_interconnect/power_supply_control/llc_control/llc_pi_control.vhd
+            /top/system_control/component_interconnect/power_supply_control/llc_control/arch_llc_pi_control.vhd
             /top/system_control/component_interconnect/power_supply_control/llc_control/llc_control.vhd
 
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd

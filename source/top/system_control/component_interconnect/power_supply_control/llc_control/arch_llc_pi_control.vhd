@@ -17,7 +17,7 @@ library work;
 --     );
 -- end entity;
 
-architecture llc_pi_control of feedback_control is
+architecture arch_llc_pi_control of feedback_control is
     alias feedback_measurement is feedback_control_data_in(0).measurement;
     alias feedback_reference is feedback_control_data_in(0).control_reference;
     alias control_is_requested is feedback_control_data_in(0).control_is_requested;
@@ -99,5 +99,5 @@ begin
         end if; --rising_edge
     end process;	
 
-end llc_pi_control;
+end arch_llc_pi_control;
 
