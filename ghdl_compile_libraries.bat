@@ -2,7 +2,7 @@ ECHO off
 set source=source/
 
 ghdl -a --ieee=synopsys %source%/top/system_clocks_pkg.vhd
-ghdl -a --ieee=synopsys %source%/ecp5/ecp5_pll_wrapper.vhd
+ghdl -a --ieee=synopsys %source%/../cyclone_10/source_cl10/cl10_pll_wrapper.vhd
 
 rem ghdl -a --ieee=synopsys %source%/cyclone_10lp/cl10_specifics.vhd
 
