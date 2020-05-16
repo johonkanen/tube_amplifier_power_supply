@@ -32,8 +32,8 @@ architecture pfc_current_control of feedback_control is
     signal ekp : int18;
     signal pi_out : int18;
 
-    constant pi_saturate_high : int18 := 846;
-    constant pi_saturate_low : int18  := 474;
+    constant pi_saturate_high : int18 := 32768;
+    constant pi_saturate_low : int18  := 6560;
 
     constant kp : int18 := 22e2;
     constant ki : int18 := 200;
@@ -85,21 +85,17 @@ begin
                         increment(process_counter);
 
                     WHEN 5 => 
-                        if pi_out > 32768 then
-                            pi_out <= 32768;
-                            mem <= 32768-get_result(multiplier_data_out,15);
-                            increment(process_counter);
+                        increment(process_counter);
+
+                        mem <= mem + get_result(multiplier_data_out,15);
+                        if pi_out >   pi_saturate_high then
+                            pi_out <= pi_saturate_high;
+                            mem <=    pi_saturate_high - ekp;
                         end if;
 
-                        if pi_out < 6560 then
-                            pi_out <= 6560;
-                            mem <= 6560-get_result(multiplier_data_out,15);
-                            increment(process_counter);
-                        end if;
-                        
-                        if multiplier_is_ready(multiplier_data_out) then
-                            mem <= mem + get_result(multiplier_data_out,15);
-                            increment(process_counter);
+                        if pi_out <   pi_saturate_low then
+                            pi_out <= pi_saturate_low ;
+                            mem <=    pi_saturate_low - ekp;
                         end if;
 
                     WHEN others =>
