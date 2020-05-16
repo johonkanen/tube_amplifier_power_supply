@@ -42,8 +42,10 @@ package feedback_control_pkg is
     function get_control_output ( feedback_control_out : feedback_control_data_output_group)
         return int18;
 --------------------------------------------------     
+    -- for u_feedback_control : feedback_control use entity work.feedback_control(llc_pi_control);
+
     -- signal feedback_control_clocks : feedback_control_clock_group;
-    -- signal feedback_control_data_in : feedback_measurements(0 to number_of_measurements -1);;
+    -- signal feedback_control_data_in : feedback_measurements(0 to number_of_measurements -1);
     -- signal feedback_control_data_out : feedback_control_data_output_group;
     -- signal data_from_multiplier : multiplier_data_output_group;
     -- signal data_to_multiplier : multiplier_data_input_group;

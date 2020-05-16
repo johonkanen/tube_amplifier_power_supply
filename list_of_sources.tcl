@@ -54,6 +54,7 @@ proc read_sources {source_folder} \
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator.vhd
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
+            /top/system_control/component_interconnect/power_supply_control/pfc_control/arch_pfc_current_control.vhd
             /top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control.vhd
 
         /top/system_control/component_interconnect/power_supply_control/power_supply_control_pkg.vhd

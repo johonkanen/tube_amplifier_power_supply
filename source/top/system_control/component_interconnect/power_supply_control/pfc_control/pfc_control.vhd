@@ -13,6 +13,7 @@ library work;
     use work.pfc_control_pkg.all;
     use work.multiplier_pkg.all;
     use work.pfc_modulator_pkg.all;
+    use work.feedback_control_pkg.all;
 
 entity pfc_control is
         generic( g_carrier_max_value : integer);
@@ -59,6 +60,16 @@ architecture rtl of pfc_control is
     constant dc_link_ref_300V : int18 := 32768/663*300;
     constant dc_link_ref_350V : int18 := 32768/663*350;
     constant dc_link_ref_400V : int18 := 32768/663*400;
+------------------------ current control signals -----------------------
+    for u_pfc_current_control : feedback_control use entity work.feedback_control(arch_pfc_current_control);
+
+    constant number_of_measurements    : natural := 4;
+    signal feedback_control_clocks     : feedback_control_clock_group;
+    signal feedback_control_data_in    : feedback_measurements(0 to number_of_measurements -1);
+    signal feedback_control_data_out   : feedback_control_data_output_group;
+    signal data_from_multiplier        : multiplier_data_output_group;
+    signal data_to_multiplier          : multiplier_data_input_group;
+    signal feedback_control_is_enabled : boolean;
 
 begin
 
@@ -68,6 +79,7 @@ begin
     port map( core_clock,
     	  delay_timer_data_in,
     	  delay_timer_data_out);
+
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
@@ -76,6 +88,7 @@ begin
             multiplier_data_in,
             multiplier_data_out 
         );
+
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier_2 : multiplier
@@ -84,6 +97,21 @@ begin
             multiplier_2_data_in,
             multiplier_2_data_out 
         );
+
+------------------------------------------------------------------------
+    feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
+    feedback_control_data_in(1).measurement <= AC_voltage_measurement;
+    feedback_control_data_in(2).measurement <= pfc_I1_measurement;
+    feedback_control_data_in(3).measurement <= pfc_I2_measurement;
+
+    u_pfc_current_control : feedback_control
+    generic map(number_of_measurements)
+    port map(feedback_control_clocks,
+             feedback_control_data_in,
+             feedback_control_data_out,
+             data_from_multiplier,
+             data_to_multiplier);
+
 ------------------------------------------------------------------------
     pfc_control : process(core_clock)
         type t_pfc_control_state is (idle, precharge, rampup, pfc_running);
@@ -133,10 +161,10 @@ begin
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
                 vac_is_buffered <= vac_is_ready(measurement_interface);
 
-                get_pfc_I1 (measurement_interface,pfc_I1_measurement);
-                get_pfc_I2 (measurement_interface,pfc_I2_measurement);
                 get_DC_link(measurement_interface,DC_link_voltage_measurement);
                 get_vac    (measurement_interface,AC_voltage_measurement);
+                get_pfc_I1 (measurement_interface,pfc_I1_measurement);
+                get_pfc_I2 (measurement_interface,pfc_I2_measurement);
                 ----------------------------------------------------
 
                 -- TODO, overvoltage trip, overcurrent trip

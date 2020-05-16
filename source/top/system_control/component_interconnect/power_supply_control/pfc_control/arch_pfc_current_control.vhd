@@ -17,11 +17,25 @@ library work;
 --     );
 -- end entity;
 
-architecture pfc_current_control of feedback_control is
+    -- signal feedback_control_clocks   : feedback_control_clock_group;
+    -- signal feedback_control_data_in  : feedback_measurements(0 to number_of_measurements -1);
+    -- signal feedback_control_data_out : feedback_control_data_output_group;
+    -- signal data_from_multiplier      : multiplier_data_output_group;
+    -- signal data_to_multiplier        : multiplier_data_input_group;
+    
+    -- u_feedback_control : feedback_control
+    -- port map( feedback_control_clocks,
+    --	  feedback_control_data_in,
+    --	  feedback_control_data_out,
+    --    data_from_multiplier,
+    --    data_to_multiplier);
+
+architecture arch_pfc_current_control of feedback_control is
+
     alias dc_link is feedback_control_data_in(0).measurement;
-    alias vac is feedback_control_data_in(1).measurement;
-    alias pfc_I1 is feedback_control_data_in(2).measurement;
-    alias pfc_I2 is feedback_control_data_in(3).measurement;
+    alias vac     is feedback_control_data_in(1).measurement;
+    alias pfc_I1  is feedback_control_data_in(2).measurement;
+    alias pfc_I2  is feedback_control_data_in(3).measurement;
 
     alias feedback_reference is feedback_control_data_in(0).control_reference;
     alias control_is_requested is feedback_control_data_in(0).control_is_requested;
@@ -56,6 +70,7 @@ begin
             if feedback_control_data_in(0).feedback_control_is_enabled = false then
                 mem <= 0;
             end if;
+
                 CASE process_counter is 
                     WHEN 0 =>
                         if control_is_requested then
@@ -104,5 +119,5 @@ begin
         end if; --rising_edge
     end process;	
 
-end pfc_current_control;
+end arch_pfc_current_control;
 
