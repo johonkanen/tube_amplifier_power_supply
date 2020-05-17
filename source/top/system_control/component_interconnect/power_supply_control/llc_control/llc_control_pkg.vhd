@@ -8,8 +8,6 @@ library onboard_adc_library;
 
 package llc_control_pkg is
 
-    type t_llc_control_states is (disabled, charging, running);
-
     type llc_control_clock_group is record
         core_clock : std_logic;
         modulator_clock : std_logic;
@@ -21,12 +19,11 @@ package llc_control_pkg is
     end record;
     
     type llc_control_data_input_group is record
-        enable_llc : boolean;
         measurement_interface_data_out : measurement_interface_data_output_group;
+        enable_llc : boolean;
     end record;
     
     type llc_control_data_output_group is record
-        st_llc_control_states : t_llc_control_states;
         measurement_interface_data_in : measurement_interface_data_input_group;
         llc_is_ready : boolean;
     end record;

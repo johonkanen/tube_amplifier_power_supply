@@ -6,9 +6,7 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
 
 package dhb_control_pkg is
-------------------------------------------------------------------------
-    type t_dhb_states is (disabled, ramping_up, running);
-------------------------------------------------------------------------
+
     type dhb_control_clock_group is record
         core_clock : std_logic;
         modulator_clock : std_logic;
@@ -26,7 +24,6 @@ package dhb_control_pkg is
     end record;
     
     type dhb_control_data_output_group is record
-        dhb_state_is : t_dhb_states;
         dhb_is_ready : boolean;
     end record;
     
