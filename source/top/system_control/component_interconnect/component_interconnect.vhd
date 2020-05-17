@@ -186,59 +186,59 @@ begin
                             increment(process_counter);
                         end if;
 
-                        if sincos_is_ready(sincos_data_out) then
-                            alu_mpy(get_sine(sincos_data_out), 32766,multiplier_data_in);
-                        end if;
-
-                        if multiplier_is_ready(multiplier_data_out) then
-                            si16_uart_tx_data <= std_logic_vector(to_signed(get_result(multiplier_data_out,15),16));
-                            si_uart_start_event <= '1';
-                        end if;
+                        -- if sincos_is_ready(sincos_data_out) then
+                        --     alu_mpy(get_sine(sincos_data_out), 32766,multiplier_data_in);
+                        -- end if;
+                        --
+                        -- if multiplier_is_ready(multiplier_data_out) then
+                        -- end if;
 
 
 
-                        -- CASE process_counter is
-                        --     WHEN 0 =>
-                        --         -- do nothing
-                        --
-                        --         if timer_is_ready(delay_timer_data_out) then
-                        --             increment(process_counter);
-                        --             alu_mpy(control_error, kp, multiplier_data_in);
-                        --         end if;
-                        --
-                        --     WHEN 1 => 
-                        --         increment(process_counter);
-                        --         alu_mpy(control_error, ki, multiplier_data_in);
-                        --
-                        --     WHEN 2 => 
-                        --         increment(process_counter);
-                        --
-                        --     WHEN 3 => 
-                        --         increment(process_counter);
-                        --         pi_out <= mem + get_result(multiplier_data_out,15);
-                        --         ekp <= get_result(multiplier_data_out,15);
-                        --
-                        --     WHEN 4 =>
-                        --         increment(process_counter);
-                        --
-                        --         mem <= mem + get_result(multiplier_data_out,15);
-                        --         if pi_out >  pi_saturate_high then
-                        --             pi_out <= pi_saturate_high ;
-                        --             mem    <= pi_saturate_high -ekp;
-                        --         end if;
-                        --
-                        --         if pi_out <  pi_saturate_low then
-                        --             pi_out <= pi_saturate_low ;
-                        --             mem    <= pi_saturate_low -ekp;
-                        --         end if; 
-                        --     WHEN 5 =>
-                        --         process_counter := 0;
+                        CASE process_counter is
+                            WHEN 0 =>
+                                -- do nothing
+
+                                if timer_is_ready(delay_timer_data_out) then
+                                    increment(process_counter);
+                                    alu_mpy(control_error, kp, multiplier_data_in);
+                                end if;
+
+                            WHEN 1 => 
+                                increment(process_counter);
+                                alu_mpy(control_error, ki, multiplier_data_in);
+
+                            WHEN 2 => 
+                                increment(process_counter);
+
+                            WHEN 3 => 
+                                increment(process_counter);
+                                pi_out <= mem + get_result(multiplier_data_out,15);
+                                ekp <= get_result(multiplier_data_out,15);
+
+                            WHEN 4 =>
+                                increment(process_counter);
+
+                                mem <= mem + get_result(multiplier_data_out,15);
+                                if pi_out >  pi_saturate_high then
+                                    pi_out <= pi_saturate_high ;
+                                    mem    <= pi_saturate_high -ekp;
+                                end if;
+
+                                if pi_out <  pi_saturate_low then
+                                    pi_out <= pi_saturate_low ;
+                                    mem    <= pi_saturate_low -ekp;
+                                end if; 
+                            WHEN 5 =>
+                                process_counter := 0;
+                                si16_uart_tx_data <= std_logic_vector(to_signed(pi_out,16));
+                                si_uart_start_event <= '1';
 
 
-                        --     WHEN others =>
-                        --         process_counter := 0;
-                        -- end CASE;
-                        --
+                            WHEN others =>
+                                process_counter := 0;
+                        end CASE;
+
 
                     WHEN stream_data =>
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);

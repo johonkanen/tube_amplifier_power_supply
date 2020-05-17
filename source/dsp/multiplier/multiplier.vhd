@@ -33,12 +33,12 @@ architecture rtl of multiplier is
 	signal datab		: STD_LOGIC_VECTOR (17 DOWNTO 0);
 	signal result		:  STD_LOGIC_VECTOR (35 DOWNTO 0);
 
+    signal multiplier_counter : natural range 0 to 9; 
 
 begin
 
     test_multiplier : process(multiplier_clocks.dsp_clock)
 
-        variable multiplier_counter : integer range 0 to 3; 
     begin
         if rising_edge(multiplier_clocks.dsp_clock) then
 
@@ -46,22 +46,20 @@ begin
             mult_b(0) <= to_signed(multiplier_data_in.mult_b,18);
             multiplier_data_out.multiplier_result <= mult_a(0) * mult_b(0);
 
+
+            if multiplier_data_in.multiplication_is_requested then
+                multiplier_counter <= 3;
+            end if;
+
+            if multiplier_counter > 0 then
+                multiplier_counter <= multiplier_counter - 1;
+            end if;
+
             multiplier_data_out.multiplier_is_ready <= false;
-            CASE multiplier_counter is
-                WHEN 0 =>
-                    if multiplier_data_in.multiplication_is_requested then
-                        multiplier_counter := multiplier_counter + 1;
-                    end if;
-                WHEN 1 => 
-                    multiplier_counter := multiplier_counter + 1;
-                WHEN 2 => 
-                    multiplier_counter := multiplier_counter + 1;
-                WHEN 3 => 
-                    multiplier_data_out.multiplier_is_ready <= true;
-                    multiplier_counter := 0;
-                WHEN others =>
-                    multiplier_counter := 0;
-            end CASE;
+            if multiplier_counter = 1 then
+                multiplier_data_out.multiplier_is_ready <= true;
+            end if;
+
         end if; --rising_edge
     end process test_multiplier;	
 
