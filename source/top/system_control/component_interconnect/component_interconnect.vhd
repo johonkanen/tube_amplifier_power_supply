@@ -186,9 +186,12 @@ begin
                             increment(process_counter);
                         end if;
 
-                        if sincos_is_ready(sincos_data_out) then
-                            alu_mpy(get_sine(sincos_data_out), 32766,multiplier_data_in);
-                        end if;
+                        -- if sincos_is_ready(sincos_data_out) then
+                        --     alu_mpy(get_sine(sincos_data_out), 32766,multiplier_data_in);
+                        -- end if;
+                        --
+                        -- if multiplier_is_ready(multiplier_data_out) then
+                        -- end if;
 
 
 
@@ -228,9 +231,9 @@ begin
                                 end if; 
                             WHEN 5 =>
                                 process_counter := 0;
-
                                 si16_uart_tx_data <= std_logic_vector(to_signed(pi_out,16));
                                 si_uart_start_event <= '1';
+
 
                             WHEN others =>
                                 process_counter := 0;

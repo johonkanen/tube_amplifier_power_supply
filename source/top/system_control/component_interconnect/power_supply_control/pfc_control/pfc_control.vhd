@@ -44,8 +44,8 @@ architecture rtl of pfc_control is
     signal multiplier_2_data_in  : multiplier_data_input_group;
     signal multiplier_2_data_out : multiplier_data_output_group;
 ------------------------------------------------------------------------
-    signal delay_timer_data_in  : delay_timer_data_input_group;
-    signal delay_timer_data_out : delay_timer_data_output_group;
+    signal delay_timer_50us_in  : delay_timer_data_input_group;
+    signal delay_timer_50us_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------
     signal pfc_modulator_clocks   : pfc_modulator_clock_group;
     signal pfc_modulator_data_in  : pfc_modulator_data_input_group;
@@ -79,10 +79,13 @@ begin
     delay_50us : delay_timer
     generic map (count_up_to => 5*1280)
     port map( core_clock,
-    	  delay_timer_data_in,
-    	  delay_timer_data_out);
+    	  delay_timer_50us_in,
+    	  delay_timer_50us_out);
 
 ------------------------------------------------------------------------
+    multiplier_data_in <= data_to_multiplier;
+    data_from_multiplier <= multiplier_data_out;
+
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
         port map(
@@ -101,11 +104,14 @@ begin
         );
 
 ------------------------------------------------------------------------
+    feedback_control_data_in(0).control_is_requested <= pfc_current_is_buffered;
     feedback_control_data_in(0).feedback_control_is_enabled <= feedback_control_is_enabled;
     feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
     feedback_control_data_in(1).measurement <= AC_voltage_measurement;
     feedback_control_data_in(2).measurement <= pfc_I1_measurement;
     feedback_control_data_in(3).measurement <= pfc_I2_measurement;
+
+    feedback_control_clocks <= (clock => core_clock);
 
     u_pfc_current_control : feedback_control
     generic map(number_of_measurements)
@@ -132,6 +138,7 @@ begin
 
                 pfc_control_data_out.pfc_is_ready <= false;
             else
+
                 ------------- buffer pfc measurements --------------
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
                 vac_is_buffered <= vac_is_ready(measurement_interface);
@@ -147,11 +154,13 @@ begin
                 feedback_control_is_enabled <= false;
 
                 pfc_control_data_out.pfc_is_ready <= false;
-                multiplier_data_in.multiplication_is_requested <= false;
+                -- multiplier_data_in.multiplication_is_requested <= false;
                 multiplier_2_data_in.multiplication_is_requested <= false;
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
+
+                        st_pfc_control_state := idle;
                         if pfc_control_data_in.enable_pfc then
                             st_pfc_control_state := precharge;
                         end if;
@@ -159,33 +168,43 @@ begin
                     WHEN precharge =>
                         enable_pfc_modulator(pfc_modulator_data_in);
                         set_duty(50,pfc_modulator_data_in);
-                        request_delay(delay_timer_data_in,delay_timer_data_out,1000);
+                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1000);
 
-                        if timer_is_ready(delay_timer_data_out) then
+                        st_pfc_control_state := precharge;
+                        if timer_is_ready(delay_timer_50us_out) then
                             st_pfc_control_state := rampup;
                         end if;
 
                     WHEN rampup => 
-                        request_delay(delay_timer_data_in,delay_timer_data_out,1);
+                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1);
 
-                        if timer_is_ready(delay_timer_data_out) then
+                        st_pfc_control_state := rampup;
+                        if timer_is_ready(delay_timer_50us_out) then
                             st_pfc_control_state := pfc_running;
                         end if;
 
                     WHEN pfc_running => 
+                        st_pfc_control_state := pfc_running;
+
                         pfc_control_data_out.pfc_is_ready <= true;
                         feedback_control_is_enabled <= true;
 
                         if feedback_is_ready(feedback_control_data_out) then
-                            set_duty(get_control_output(feedback_control_data_out),pfc_modulator_data_in);
+                            alu_mpy(get_control_output(feedback_control_data_out),250,multiplier_2_data_in);
+                        end if;
+
+                        if multiplier_is_ready(multiplier_2_data_out) then
+                            set_duty(get_result(multiplier_2_data_out,15),pfc_modulator_data_in);
                         end if;
 
                     WHEN pfc_tripped => 
+                        -- TODO, go to tripped at overcurrent or overvoltage
 
                 end CASE;
             end if; -- rstn
         end if; --rising_edge
     end process pfc_control;	
+
 ------------------------------------------------------------------------
     pfc_modulator_clocks <= (modulator_clock => modulator_clock, core_clock => core_clock);
     pfc_modulator_data_in.pfc_carrier <= pfc_control_data_in.pfc_carrier;
