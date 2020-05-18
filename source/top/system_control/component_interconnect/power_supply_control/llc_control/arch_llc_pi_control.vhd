@@ -28,8 +28,8 @@ architecture arch_llc_pi_control of feedback_control is
     signal ekp : int18;
     signal pi_out : int18;
 
-    constant pi_saturate_high : int18 := 846;
-    constant pi_saturate_low : int18  := 474;
+    constant pi_saturate_high : int18 := 32768;
+    constant pi_saturate_low : int18  := 18359;
 
     constant kp : int18 := 22e2;
     constant ki : int18 := 200;
@@ -39,7 +39,7 @@ begin
     feedback_control_data_out.control_out <= pi_out;
 
     pi_control_calculation : process(feedback_control_clocks.clock)
-        variable process_counter : natural range 0 to 4;
+        variable process_counter : natural range 0 to 7;
         variable control_error : int18;
 
         
@@ -79,8 +79,7 @@ begin
                         ekp <= get_result(multiplier_data_out,15);
 
                     WHEN 4 =>
-                        process_counter := 0;
-                        feedback_control_data_out.feedback_is_ready <= true;
+                        increment(process_counter);
 
                         mem <= mem + get_result(multiplier_data_out,15);
                         if pi_out >  pi_saturate_high then
@@ -92,6 +91,16 @@ begin
                             pi_out <= pi_saturate_low ;
                             mem    <= pi_saturate_low -ekp;
                         end if; 
+                    WHEN 5 =>
+                        increment(process_counter);
+                        alu_mpy(pi_out, 846, multiplier_data_in);
+                    WHEN 6 =>
+                        if multiplier_is_ready(multiplier_data_out) then
+                            pi_out <= get_result(multiplier_data_out,15);
+                            feedback_control_data_out.feedback_is_ready <= true;
+                            process_counter := 0;
+                        end if;
+
 
                     WHEN others =>
                         process_counter := 0;

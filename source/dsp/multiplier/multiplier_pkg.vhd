@@ -26,6 +26,9 @@ package multiplier_pkg is
         multiplier_result : sign36;
         multiplier_is_ready : boolean;
     end record;
+
+    type multiplier_input_array is array (integer range <>) of multiplier_data_input_group;
+    type multiplier_output_array is array (integer range <>) of multiplier_data_output_group;
     
     component multiplier is
         port (

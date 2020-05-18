@@ -129,7 +129,7 @@ begin
         variable process_counter : uint8;
         variable control_error : int18;
         constant kp : int18 := 48e3;
-        constant ki : int18 := 15000;
+        constant ki : int18 := 5000;
         constant pi_saturate_high : int18 := 32760;
         constant pi_saturate_low  : int18 := -32760;
 

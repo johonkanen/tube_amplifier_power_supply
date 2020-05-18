@@ -36,8 +36,8 @@ architecture rtl of llc_control is
     signal llc_voltage : int18;
 ----------------------- multiplier signals -----------------------------
     signal multiplier_clocks   : multiplier_clock_group;
-    signal multiplier_data_in  : multiplier_data_input_group;
-    signal multiplier_data_out :  multiplier_data_output_group;
+    signal multiplier_data_in  : multiplier_input_array(0 to 0);
+    signal multiplier_data_out :  multiplier_output_array(0 to 0);
 ----------------------- modulator interface signals --------------------
     signal llc_modulator_clocks   : llc_modulator_clock_group;
     signal llc_modulator_data_in  : llc_modulator_data_input_group;
@@ -72,12 +72,16 @@ begin
 
 ------------------ multiplier module -----------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
+    
+    llc_multipliers:
+    for i in 0 to multiplier_data_out'right 
+    generate
     u_multiplier : multiplier
         port map(
             multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
-        );
+            multiplier_data_in(i),
+            multiplier_data_out(i));
+    end generate;
 
 ------------------ feedback control module -----------------------------
 
@@ -93,8 +97,8 @@ begin
     port map( feedback_control_clocks,
               feedback_control_data_in,
               feedback_control_data_out,
-              multiplier_data_out,
-              multiplier_data_in);
+              multiplier_data_out(0),
+              multiplier_data_in(0));
 
 ------------------------------------------------------------------------
     heater_control : process(core_clock)
