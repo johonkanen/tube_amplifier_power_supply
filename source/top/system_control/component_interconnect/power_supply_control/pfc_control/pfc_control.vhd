@@ -62,6 +62,17 @@ architecture rtl of pfc_control is
     constant dc_link_ref_350V : int18 := 32768/663*350;
     constant dc_link_ref_400V : int18 := 32768/663*400;
 
+------------------------ voltage control signals -----------------------
+    for u_pfc_voltage_control : feedback_control use entity work.feedback_control(arch_pfc_voltage_control);
+
+    constant number_of_voltage_control_measurements : natural := 2;
+    signal voltage_feedback_control_data_in : feedback_measurements(0 to number_of_voltage_control_measurements -1);
+    signal voltage_feedback_control_data_out : feedback_control_data_output_group;
+
+    signal voltage_control_data_from_multiplier        : multiplier_data_output_group;
+    signal voltage_control_data_to_multiplier          : multiplier_data_input_group;
+    signal voltage_control_feedback_control_is_enabled : boolean;
+
 ------------------------ current control signals -----------------------
     for u_pfc_current_control : feedback_control use entity work.feedback_control(arch_pfc_current_control);
 
@@ -102,6 +113,20 @@ begin
             multiplier_2_data_in,
             multiplier_2_data_out 
         );
+
+------------------------------------------------------------------------
+    voltage_feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
+    voltage_feedback_control_data_in(1).measurement <= AC_voltage_measurement;
+    voltage_feedback_control_data_in(0).control_is_requested <= pfc_current_is_buffered;
+    voltage_feedback_control_data_in(0).feedback_control_is_enabled <= feedback_control_is_enabled;
+
+    u_pfc_voltage_control : feedback_control
+    generic map(number_of_voltage_control_measurements)
+    port map(feedback_control_clocks,
+             voltage_feedback_control_data_in,
+             voltage_feedback_control_data_out,
+             voltage_control_data_from_multiplier,
+             voltage_control_data_to_multiplier);
 
 ------------------------------------------------------------------------
     feedback_control_data_in(0).control_is_requested <= pfc_current_is_buffered;

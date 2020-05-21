@@ -26,6 +26,8 @@ ghdl -a --ieee=synopsys --work=onboard_adc_library %source%/top/system_control/c
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/external_adc_driver/max_11115_pkg.vhd
 rem
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_modulator/pfc_modulator_pkg.vhd
+ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/pfc_control/arch_pfc_current_control.vhd
+ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/pfc_control/arch_pfc_voltage_control.vhd
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/pfc_control/pfc_control_pkg.vhd
 
 ghdl -a --ieee=synopsys %source%/top/system_control/component_interconnect/power_supply_control/llc_control/llc_modulator/llc_modulator_pkg.vhd
