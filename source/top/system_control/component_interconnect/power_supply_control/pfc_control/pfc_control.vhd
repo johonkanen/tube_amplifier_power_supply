@@ -106,12 +106,14 @@ begin
     multiplier_data_in(0) <= voltage_control_data_to_multiplier;
     voltage_control_data_from_multiplier <= multiplier_data_out(0);
 
-    voltage_control_input(0).control_reference <= dc_link_ref_150V;
-    voltage_control_input(0).measurement <= DC_link_voltage_measurement;
-    voltage_control_input(1).measurement <= AC_voltage_measurement;
-    voltage_control_input(0).control_is_requested <= vac_is_buffered;
+    voltage_control_input(0).control_reference           <= dc_link_ref_150V;
+    voltage_control_input(0).measurement                 <= DC_link_voltage_measurement;
+    voltage_control_input(1).measurement                 <= AC_voltage_measurement;
+    voltage_control_input(0).control_is_requested        <= vac_is_buffered;
     voltage_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
 
+    feedback_control_clocks <= (clock => core_clock);
+    
     u_pfc_voltage_control : feedback_control
     generic map(number_of_voltage_control_measurements)
     port map(feedback_control_clocks,
@@ -131,8 +133,6 @@ begin
     current_control_input(1).measurement <= AC_voltage_measurement;
     current_control_input(2).measurement <= pfc_I1_measurement;
     current_control_input(3).measurement <= pfc_I2_measurement;
-
-    feedback_control_clocks <= (clock => core_clock);
 
     u_pfc_current_control : feedback_control
     generic map(number_of_measurements)

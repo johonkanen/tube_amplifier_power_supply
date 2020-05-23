@@ -63,9 +63,9 @@ begin
                 WHEN 0 =>
 
                     if pfc_I1 > pfc_I2 then
-                        control_error := feedback_control_data_in(0).control_reference - pfc_I1;
+                        control_error := abs(feedback_control_data_in(0).control_reference) - pfc_I1;
                     else
-                        control_error := feedback_control_data_in(0).control_reference - pfc_I2;
+                        control_error := abs(feedback_control_data_in(0).control_reference) - pfc_I2;
                     end if;
 
                     if control_is_requested and 
