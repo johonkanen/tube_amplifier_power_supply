@@ -38,11 +38,8 @@ architecture rtl of pfc_control is
     signal AC_voltage_measurement : int18;
 ------------------------------------------------------------------------
     signal multiplier_clocks   : multiplier_clock_group;
-    signal multiplier_data_in  : multiplier_data_input_group;
-    signal multiplier_data_out : multiplier_data_output_group;
-------------------------------------------------------------------------
-    signal multiplier_2_data_in  : multiplier_data_input_group;
-    signal multiplier_2_data_out : multiplier_data_output_group;
+    signal multiplier_data_in  : multiplier_input_array(0 to 2);
+    signal multiplier_data_out : multiplier_output_array(0 to 2);
 ------------------------------------------------------------------------
     signal delay_timer_50us_in  : delay_timer_data_input_group;
     signal delay_timer_50us_out : delay_timer_data_output_group;
@@ -94,31 +91,41 @@ begin
     	  delay_timer_50us_out);
 
 ------------------------------------------------------------------------
-    multiplier_data_in <= data_to_multiplier;
-    data_from_multiplier <= multiplier_data_out;
+    multiplier_data_in(0) <= data_to_multiplier;
+    data_from_multiplier <= multiplier_data_out(0);
 
     multiplier_clocks.dsp_clock <= core_clock;
-    u_multiplier : multiplier
+    u_multiplier_1 : multiplier
         port map(
             multiplier_clocks, 
-            multiplier_data_in,
-            multiplier_data_out 
+            multiplier_data_in(0),
+            multiplier_data_out(0) 
         );
 
 ------------------------------------------------------------------------
-    multiplier_clocks.dsp_clock <= core_clock;
+    multiplier_data_in(1) <= voltage_control_data_to_multiplier;
+    voltage_control_data_from_multiplier <= multiplier_data_out(1);
+
     u_multiplier_2 : multiplier
         port map(
             multiplier_clocks, 
-            multiplier_2_data_in,
-            multiplier_2_data_out 
+            multiplier_data_in(1),
+            multiplier_data_out(1) 
+        );
+
+------------------------------------------------------------------------
+    u_multiplier_3 : multiplier
+        port map(
+            multiplier_clocks, 
+            multiplier_data_in(2),
+            multiplier_data_out(2) 
         );
 
 ------------------------------------------------------------------------
     voltage_control_input(0).control_reference <= dc_link_ref_150V;
     voltage_control_input(0).measurement <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement <= AC_voltage_measurement;
-    voltage_control_input(0).control_is_requested <= pfc_current_is_buffered;
+    voltage_control_input(0).control_is_requested <= vac_is_buffered;
     voltage_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
 
     u_pfc_voltage_control : feedback_control
@@ -194,7 +201,7 @@ begin
 
                 pfc_control_data_out.pfc_is_ready <= false;
                 -- multiplier_data_in.multiplication_is_requested <= false;
-                multiplier_2_data_in.multiplication_is_requested <= false;
+                multiplier_data_in(2).multiplication_is_requested <= false;
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
@@ -229,11 +236,11 @@ begin
                         feedback_control_is_enabled <= true;
 
                         if feedback_is_ready(current_control_output) then
-                            alu_mpy(get_control_output(current_control_output),250,multiplier_2_data_in);
+                            alu_mpy(get_control_output(current_control_output),250,multiplier_data_in(2));
                         end if;
 
-                        if multiplier_is_ready(multiplier_2_data_out) then
-                            set_duty(get_result(multiplier_2_data_out,15),pfc_modulator_data_in);
+                        if multiplier_is_ready(multiplier_data_out(2)) then
+                            set_duty(get_result(multiplier_data_out(2),15),pfc_modulator_data_in);
                         end if;
 
                     WHEN pfc_tripped => 
