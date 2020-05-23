@@ -91,37 +91,21 @@ begin
     	  delay_timer_50us_out);
 
 ------------------------------------------------------------------------
-    multiplier_data_in(0) <= data_to_multiplier;
-    data_from_multiplier <= multiplier_data_out(0);
-
     multiplier_clocks.dsp_clock <= core_clock;
-    u_multiplier_1 : multiplier
+
+    pfc_multiplier_generator : for i in 0 to 2 generate
+    u_multiplier : multiplier
         port map(
             multiplier_clocks, 
-            multiplier_data_in(0),
-            multiplier_data_out(0) 
+            multiplier_data_in(i),
+            multiplier_data_out(i) 
         );
+    end generate;
 
 ------------------------------------------------------------------------
-    multiplier_data_in(1) <= voltage_control_data_to_multiplier;
-    voltage_control_data_from_multiplier <= multiplier_data_out(1);
+    multiplier_data_in(0) <= voltage_control_data_to_multiplier;
+    voltage_control_data_from_multiplier <= multiplier_data_out(0);
 
-    u_multiplier_2 : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in(1),
-            multiplier_data_out(1) 
-        );
-
-------------------------------------------------------------------------
-    u_multiplier_3 : multiplier
-        port map(
-            multiplier_clocks, 
-            multiplier_data_in(2),
-            multiplier_data_out(2) 
-        );
-
-------------------------------------------------------------------------
     voltage_control_input(0).control_reference <= dc_link_ref_150V;
     voltage_control_input(0).measurement <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement <= AC_voltage_measurement;
@@ -137,6 +121,9 @@ begin
              voltage_control_data_to_multiplier);
 
 ------------------------------------------------------------------------
+    multiplier_data_in(1) <= data_to_multiplier;
+    data_from_multiplier <= multiplier_data_out(1);
+
     current_control_input(0).control_reference <= voltage_control_output.control_out;
     current_control_input(0).control_is_requested <= pfc_current_is_buffered;
     current_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
