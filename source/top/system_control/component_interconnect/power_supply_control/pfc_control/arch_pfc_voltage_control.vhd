@@ -65,8 +65,7 @@ begin
                     control_error := feedback_control_data_in(0).control_reference - dc_link;
 
                     if control_is_requested and 
-                       feedback_control_data_in(0).feedback_control_is_enabled then
-
+                        feedback_control_data_in(0).feedback_control_is_enabled then
                         increment(process_counter);
                     end if;
 

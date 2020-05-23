@@ -43,6 +43,10 @@ current_load_sens = (1-current_controlled)*pfc_inductor;
 figure(4)
     bode(current_pi * pfc_current,p)
     grid on
+    
+figure(5)
+    bode(current_sensitivity,p)
+    grid on
 
 %% control gain scaling
 op_amp_meas_gain = 6800/330;
