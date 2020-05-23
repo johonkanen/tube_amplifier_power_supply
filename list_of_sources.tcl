@@ -19,7 +19,6 @@ proc read_sources {source_folder} \
 
         /top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
         /top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 
-        /top/system_control/component_interconnect/ext_ad/ad_bus_pkg.vhd 
 
         /top/system_control/component_interconnect/uart/uart_pkg.vhd 
         /top/system_control/component_interconnect/uart/uart_tx.vhd 

@@ -1,4 +1,4 @@
-BLOCK RESETPATHS ;
+:BLOCK RESETPATHS ;
 BLOCK ASYNCPATHS ;
 LOCATE COMP "xclk" SITE "L19" ;
 LOCATE COMP "system_control_FPGA_out.component_interconnect_FPGA_out.onboard_ad_control_FPGA_out.ada_mux[0]" SITE "M19" ;

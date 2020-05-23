@@ -24,13 +24,11 @@ architecture arch_pfc_voltage_control of feedback_control is
 
     alias dc_link is feedback_control_data_in(0).measurement;
     alias vac     is feedback_control_data_in(1).measurement;
-    -- alias pfc_I1  is feedback_control_data_in(2).measurement;
-    -- alias pfc_I2  is feedback_control_data_in(3).measurement;
 
-    alias feedback_reference is feedback_control_data_in(0).control_reference;
+    alias feedback_reference   is feedback_control_data_in(0).control_reference;
     alias control_is_requested is feedback_control_data_in(0).control_is_requested;
-    alias multiplier_data_in is data_to_multiplier;
-    alias multiplier_data_out is data_from_multiplier;
+    alias multiplier_data_in   is data_to_multiplier;
+    alias multiplier_data_out  is data_from_multiplier;
 
     signal mem : int18;
     signal ekp : int18;
@@ -39,8 +37,9 @@ architecture arch_pfc_voltage_control of feedback_control is
     constant pi_saturate_high : int18 := 32768;
     constant pi_saturate_low : int18  := 0;
 
-    constant kp : int18 := 22e2;
+    constant kp : int18 := 2200;
     constant ki : int18 := 200;
+    constant vac_measurement_offset : int18 := 16384;
 
 begin
 
@@ -103,7 +102,7 @@ begin
                     end if;
                 WHEN 6 => 
                     increment(process_counter);
-                    alu_mpy(pi_out,vac,multiplier_data_in); 
+                    alu_mpy(pi_out,vac-vac_measurement_offset,multiplier_data_in); 
 
                 WHEN 7 => 
                     if multiplier_is_ready(multiplier_data_out) then
