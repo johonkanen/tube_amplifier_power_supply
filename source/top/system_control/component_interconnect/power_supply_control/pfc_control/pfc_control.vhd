@@ -66,8 +66,8 @@ architecture rtl of pfc_control is
     for u_pfc_voltage_control : feedback_control use entity work.feedback_control(arch_pfc_voltage_control);
 
     constant number_of_voltage_control_measurements : natural := 2;
-    signal voltage_feedback_control_data_in : feedback_measurements(0 to number_of_voltage_control_measurements -1);
-    signal voltage_feedback_control_data_out : feedback_control_data_output_group;
+    signal voltage_control_input : feedback_measurements(0 to number_of_voltage_control_measurements -1);
+    signal voltage_control_output : feedback_control_data_output_group;
 
     signal voltage_control_data_from_multiplier        : multiplier_data_output_group;
     signal voltage_control_data_to_multiplier          : multiplier_data_input_group;
@@ -78,8 +78,8 @@ architecture rtl of pfc_control is
 
     constant number_of_measurements    : natural := 4;
     signal feedback_control_clocks     : feedback_control_clock_group;
-    signal feedback_control_data_in    : feedback_measurements(0 to number_of_measurements -1);
-    signal feedback_control_data_out   : feedback_control_data_output_group;
+    signal current_control_input    : feedback_measurements(0 to number_of_measurements -1);
+    signal current_control_output   : feedback_control_data_output_group;
     signal data_from_multiplier        : multiplier_data_output_group;
     signal data_to_multiplier          : multiplier_data_input_group;
     signal feedback_control_is_enabled : boolean;
@@ -115,34 +115,36 @@ begin
         );
 
 ------------------------------------------------------------------------
-    voltage_feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
-    voltage_feedback_control_data_in(1).measurement <= AC_voltage_measurement;
-    voltage_feedback_control_data_in(0).control_is_requested <= pfc_current_is_buffered;
-    voltage_feedback_control_data_in(0).feedback_control_is_enabled <= feedback_control_is_enabled;
+    voltage_control_input(0).control_reference <= dc_link_ref_150V;
+    voltage_control_input(0).measurement <= DC_link_voltage_measurement;
+    voltage_control_input(1).measurement <= AC_voltage_measurement;
+    voltage_control_input(0).control_is_requested <= pfc_current_is_buffered;
+    voltage_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
 
     u_pfc_voltage_control : feedback_control
     generic map(number_of_voltage_control_measurements)
     port map(feedback_control_clocks,
-             voltage_feedback_control_data_in,
-             voltage_feedback_control_data_out,
+             voltage_control_input,
+             voltage_control_output,
              voltage_control_data_from_multiplier,
              voltage_control_data_to_multiplier);
 
 ------------------------------------------------------------------------
-    feedback_control_data_in(0).control_is_requested <= pfc_current_is_buffered;
-    feedback_control_data_in(0).feedback_control_is_enabled <= feedback_control_is_enabled;
-    feedback_control_data_in(0).measurement <= DC_link_voltage_measurement;
-    feedback_control_data_in(1).measurement <= AC_voltage_measurement;
-    feedback_control_data_in(2).measurement <= pfc_I1_measurement;
-    feedback_control_data_in(3).measurement <= pfc_I2_measurement;
+    current_control_input(0).control_reference <= voltage_control_output.control_out;
+    current_control_input(0).control_is_requested <= pfc_current_is_buffered;
+    current_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
+    current_control_input(0).measurement <= DC_link_voltage_measurement;
+    current_control_input(1).measurement <= AC_voltage_measurement;
+    current_control_input(2).measurement <= pfc_I1_measurement;
+    current_control_input(3).measurement <= pfc_I2_measurement;
 
     feedback_control_clocks <= (clock => core_clock);
 
     u_pfc_current_control : feedback_control
     generic map(number_of_measurements)
     port map(feedback_control_clocks,
-             feedback_control_data_in,
-             feedback_control_data_out,
+             current_control_input,
+             current_control_output,
              data_from_multiplier,
              data_to_multiplier);
 
@@ -226,8 +228,8 @@ begin
                         pfc_control_data_out.pfc_is_ready <= true;
                         feedback_control_is_enabled <= true;
 
-                        if feedback_is_ready(feedback_control_data_out) then
-                            alu_mpy(get_control_output(feedback_control_data_out),250,multiplier_2_data_in);
+                        if feedback_is_ready(current_control_output) then
+                            alu_mpy(get_control_output(current_control_output),250,multiplier_2_data_in);
                         end if;
 
                         if multiplier_is_ready(multiplier_2_data_out) then
