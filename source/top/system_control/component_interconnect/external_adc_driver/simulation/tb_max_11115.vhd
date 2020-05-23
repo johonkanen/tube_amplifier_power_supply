@@ -18,6 +18,7 @@ architecture sim of tb_max_11115 is
    signal adc_measurement : integer range 0 to 2**16-1;
    signal simulation_running : boolean;
    signal simulator_clock : std_logic;
+   signal clocked_reset : std_logic;
    constant clock_per : time := 7.8125 ns;
    constant clock_half_per : time := 3.90625 ns;
    constant simtime_in_clocks : integer := 80;
@@ -54,6 +55,19 @@ begin
             end loop;
         wait;
     end process;
+
+    clocked_reset_generator : process(simulator_clock, rstn)
+    begin
+        if rstn = '0' then
+        -- reset state
+            clocked_reset <= '0';
+    
+        elsif rising_edge(simulator_clock) then
+            clocked_reset <= '1';
+    
+        end if; -- rstn
+    end process clocked_reset_generator;	
+    ------------------------------------------------------------------------
 ------------------------------------------------------------------------
     adc_test : process
     begin
@@ -70,13 +84,13 @@ begin
             wait;
     end process adc_test;	
 ------------------------------------------------------------------------
-    max_11115_clocks <= (adc_clock => simulator_clock, reset_n => rstn);
+    max_11115_clocks <= (adc_clock => simulator_clock, reset_n => clocked_reset);
     max_11115_FPGA_in <= (adc_serial_data => '1');
     max_11115_CS <= max_11115_FPGA_out.adc_chip_select;
     max_11115_spi_clock <= max_11115_FPGA_out.adc_spi_clock;
     adc_measurement <= max_11115_data_out.adc_measurement_data;
     u_max_11115 : max_11115
-    generic map(4, 14, 16)
+    generic map(4, 14, 16, 1)
     port map
     (
         max_11115_clocks,

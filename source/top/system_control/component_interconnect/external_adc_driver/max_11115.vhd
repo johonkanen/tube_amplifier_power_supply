@@ -193,7 +193,7 @@ begin
                             increment(adc_clock_counter);
                         end if;
 
-                        if adc_read_clock_div < g_adc_clock_divisor/2 then
+                        if adc_read_clock_div = g_adc_clock_divisor/2 then
                             adc_serial_buffer <= adc_serial_buffer(14 downto 0) & max_11115_FPGA_in.adc_serial_data;
                         end if;
 
