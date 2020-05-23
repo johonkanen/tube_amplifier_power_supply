@@ -168,10 +168,22 @@ begin
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
                 vac_is_buffered <= vac_is_ready(measurement_interface);
 
+                if vac_is_ready(measurement_interface) then
+                    AC_voltage_measurement <= get_adb_measurement(measurement_interface) - 16088;
+                end if;
+
+                if pfc_I1_is_ready(measurement_interface) then
+                    pfc_I1_measurement <= get_adb_measurement(measurement_interface) - 16050;
+                end if;
+
+                if pfc_I2_is_ready(measurement_interface) then
+                    pfc_I2_measurement <= get_ada_measurement(measurement_interface) - 16050;
+                end if;
+
                 get_DC_link(measurement_interface,DC_link_voltage_measurement);
-                get_vac    (measurement_interface,AC_voltage_measurement);
-                get_pfc_I1 (measurement_interface,pfc_I1_measurement);
-                get_pfc_I2 (measurement_interface,pfc_I2_measurement);
+                -- get_vac    (measurement_interface,AC_voltage_measurement);
+                -- get_pfc_I1 (measurement_interface,pfc_I1_measurement);
+                -- get_pfc_I2 (measurement_interface,pfc_I2_measurement);
                 ----------------------------------------------------
 
                 -- TODO, overvoltage trip, overcurrent trip

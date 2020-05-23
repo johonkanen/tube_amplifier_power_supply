@@ -39,7 +39,6 @@ architecture arch_pfc_voltage_control of feedback_control is
 
     constant kp : int18 := 2200;
     constant ki : int18 := 200;
-    constant vac_measurement_offset : int18 := 16384;
 
 begin
 
@@ -101,7 +100,7 @@ begin
                     end if;
                 WHEN 6 => 
                     increment(process_counter);
-                    alu_mpy(pi_out,vac-vac_measurement_offset,multiplier_data_in); 
+                    alu_mpy(pi_out,vac,multiplier_data_in); 
 
                 WHEN 7 => 
                     if multiplier_is_ready(multiplier_data_out) then
