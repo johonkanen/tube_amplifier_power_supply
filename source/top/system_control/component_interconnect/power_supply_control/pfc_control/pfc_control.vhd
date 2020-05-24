@@ -108,7 +108,7 @@ begin
     multiplier_data_in(0) <= voltage_control_data_to_multiplier;
     voltage_control_data_from_multiplier <= multiplier_data_out(0);
 
-    voltage_control_input(0).control_reference           <= dc_link_ref_150V;
+    voltage_control_input(0).control_reference           <= dc_link_ref_200V;
     voltage_control_input(0).measurement                 <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement                 <= AC_voltage_measurement;
     voltage_control_input(0).control_is_requested        <= trigger_voltage_control;
@@ -236,7 +236,7 @@ begin
                         feedback_control_is_enabled <= true;
 
                         if feedback_is_ready(current_control_output) then
-                            alu_mpy(get_control_output(current_control_output),250,multiplier_data_in(2));
+                            alu_mpy(get_control_output(current_control_output),600,multiplier_data_in(2));
                         end if;
 
                         if multiplier_is_ready(multiplier_data_out(2)) then

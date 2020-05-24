@@ -63,6 +63,13 @@ begin
                 WHEN 0 =>
 
                     control_error := feedback_control_data_in(0).control_reference - dc_link;
+                    if control_error > 1000 then
+                        control_error := 1000;
+                    end if;
+
+                    if control_error < -1000 then
+                        control_error := -1000;
+                    end if;
 
                     if control_is_requested and 
                         feedback_control_data_in(0).feedback_control_is_enabled then
