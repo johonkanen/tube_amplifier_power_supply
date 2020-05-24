@@ -38,8 +38,8 @@ architecture arch_pfc_current_control of feedback_control is
     constant pi_saturate_high : int18 := 32768;
     constant pi_saturate_low : int18  := 6560;
 
-    constant kp : int18 := 10272;
-    constant ki : int18 := 162*4;
+    constant kp : int18 := 10280;
+    constant ki : int18 := 193*4;
 
 begin
 
