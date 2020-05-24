@@ -84,11 +84,11 @@ begin
             wait;
     end process adc_test;	
 ------------------------------------------------------------------------
-    max_11115_clocks <= (adc_clock => simulator_clock, reset_n => clocked_reset);
-    max_11115_FPGA_in <= (adc_serial_data => '1');
-    max_11115_CS <= max_11115_FPGA_out.adc_chip_select;
+    max_11115_clocks    <= (adc_clock => simulator_clock, reset_n => clocked_reset);
+    max_11115_FPGA_in   <= (adc_serial_data => '1');
+    max_11115_CS        <= max_11115_FPGA_out.adc_chip_select;
     max_11115_spi_clock <= max_11115_FPGA_out.adc_spi_clock;
-    adc_measurement <= max_11115_data_out.adc_measurement_data;
+    adc_measurement     <= max_11115_data_out.adc_measurement_data;
     u_max_11115 : max_11115
     generic map(4, 14, 16, 1)
     port map
