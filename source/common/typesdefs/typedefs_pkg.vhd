@@ -4,6 +4,10 @@ library ieee;
 
 package typedefines_pkg is
 
+    subtype uint4 is integer range 0 to 2**4-1;
+    subtype uint5 is integer range 0 to 2**5-1;
+    subtype uint6 is integer range 0 to 2**6-1;
+    subtype uint7 is integer range 0 to 2**7-1;
     subtype uint8 is integer range 0 to 2**8-1;
     subtype uint9 is integer range 0 to 2**9-1;
     subtype uint10 is integer range 0 to 2**10-1;

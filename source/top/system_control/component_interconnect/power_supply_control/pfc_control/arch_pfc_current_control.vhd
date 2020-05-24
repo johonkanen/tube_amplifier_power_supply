@@ -38,15 +38,15 @@ architecture arch_pfc_current_control of feedback_control is
     constant pi_saturate_high : int18 := 32768;
     constant pi_saturate_low : int18  := 6560;
 
-    constant kp : int18 := 22e2;
-    constant ki : int18 := 200;
+    constant kp : int18 := 10272;
+    constant ki : int18 := 162*4;
 
 begin
 
     feedback_control_data_out.control_out <= pi_out;
 
     pi_control_calculation : process(feedback_control_clocks.clock)
-        variable process_counter : natural range 0 to 5;
+        variable process_counter : natural range 0 to 6;
         variable control_error : int18;
 
     begin
@@ -87,13 +87,17 @@ begin
                     increment(process_counter);
 
                 WHEN 4 => 
-                    pi_out <= get_result(multiplier_data_out,15) + mem;
-                    ekp <= get_result(multiplier_data_out,15);
+                    pi_out <= get_result(multiplier_data_out,15) - abs(vac) + 32768;
+                    ekp <= get_result(multiplier_data_out,15) - abs(vac) + 32768;
                     increment(process_counter);
 
                 WHEN 5 => 
                     increment(process_counter);
+                    pi_out <= pi_out  + mem/4;
+
+                WHEN 6 => 
                     feedback_control_data_out.feedback_is_ready <= true;
+                    process_counter := 0;
 
                     mem <= mem + get_result(multiplier_data_out,15);
                     if pi_out >   pi_saturate_high then
@@ -113,4 +117,3 @@ begin
     end process;	
 
 end arch_pfc_current_control;
-

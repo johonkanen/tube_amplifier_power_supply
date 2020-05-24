@@ -34,11 +34,12 @@ architecture arch_pfc_voltage_control of feedback_control is
     signal ekp : int18;
     signal pi_out : int18;
 
-    constant pi_saturate_high : int18 := 32768;
+    constant pi_saturate_high : int18 := 16384;
     constant pi_saturate_low : int18  := 0;
 
-    constant kp : int18 := 2200;
-    constant ki : int18 := 200;
+    constant kp : int18 := 3322;
+    -- note, shift by 2 to the right when added to kp
+    constant ki : int18 := 163;
 
 begin
 
@@ -81,7 +82,7 @@ begin
                     increment(process_counter);
 
                 WHEN 4 => 
-                    pi_out <= get_result(multiplier_data_out,15) + mem;
+                    pi_out <= get_result(multiplier_data_out,15) + mem/4;
                     ekp <= get_result(multiplier_data_out,15);
                     increment(process_counter);
 

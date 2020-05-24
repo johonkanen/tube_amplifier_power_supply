@@ -69,6 +69,7 @@ architecture rtl of pfc_control is
     signal voltage_control_data_from_multiplier        : multiplier_data_output_group;
     signal voltage_control_data_to_multiplier          : multiplier_data_input_group;
     signal voltage_control_feedback_control_is_enabled : boolean;
+    signal trigger_voltage_control : boolean;
 
 ------------------------ current control signals -----------------------
     for u_pfc_current_control : feedback_control use entity work.feedback_control(arch_pfc_current_control);
@@ -81,6 +82,7 @@ architecture rtl of pfc_control is
     signal data_to_multiplier          : multiplier_data_input_group;
     signal feedback_control_is_enabled : boolean;
 
+------------------------------------------------------------------------
 begin
 
 ------------------------------------------------------------------------
@@ -109,7 +111,7 @@ begin
     voltage_control_input(0).control_reference           <= dc_link_ref_150V;
     voltage_control_input(0).measurement                 <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement                 <= AC_voltage_measurement;
-    voltage_control_input(0).control_is_requested        <= vac_is_buffered;
+    voltage_control_input(0).control_is_requested        <= trigger_voltage_control;
     voltage_control_input(0).feedback_control_is_enabled <= feedback_control_is_enabled;
 
     feedback_control_clocks <= (clock => core_clock);
@@ -147,6 +149,7 @@ begin
         type t_pfc_control_state is (idle, precharge, rampup, pfc_running, pfc_tripped);
         variable st_pfc_control_state : t_pfc_control_state;
         constant radix_15 : int18 := 15;
+        variable voltage_control_trigger_delay : uint5;
 
     begin
         if rising_edge(core_clock) then
@@ -158,14 +161,25 @@ begin
                 feedback_control_is_enabled <= false;
 
                 pfc_control_data_out.pfc_is_ready <= false;
+                voltage_control_trigger_delay := 0;
+                trigger_voltage_control <= false;
             else
 
                 ------------- buffer pfc measurements --------------
                 pfc_current_is_buffered <= pfc_I1_is_ready(measurement_interface);
                 vac_is_buffered <= vac_is_ready(measurement_interface);
 
+
+
                 if vac_is_ready(measurement_interface) then
                     AC_voltage_measurement <= get_adb_measurement(measurement_interface) - 16088;
+                    increment(voltage_control_trigger_delay);
+                end if;
+
+                trigger_voltage_control <= false;
+                if voltage_control_trigger_delay = 20 then
+                    voltage_control_trigger_delay := 0;
+                    trigger_voltage_control <= true;
                 end if;
 
                 if pfc_I1_is_ready(measurement_interface) then
@@ -185,10 +199,9 @@ begin
                 -- TODO, overvoltage trip, overcurrent trip
 
                 feedback_control_is_enabled <= false;
-
                 pfc_control_data_out.pfc_is_ready <= false;
-                -- multiplier_data_in.multiplication_is_requested <= false;
                 multiplier_data_in(2).multiplication_is_requested <= false;
+
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);

@@ -55,4 +55,10 @@ measurement_range_in_volts = 1.65;
 
 current_max_value = measurement_range_in_volts/op_amp_meas_gain/shunt_resistor;
 
-vac_measurement_gain = 1/660;
+one_amp_in_integer = 16384/current_max_value;
+
+vdc_measurement_gain = 2^15/660;
+int_kp = round(one_amp_in_integer * vdc_measurement_gain*kp)
+int_ki = round(one_amp_in_integer * vdc_measurement_gain*ki/7500*4)
+
+int_ikp = round(one_amp_in_integer * vdc_measurement_gain * ikp)
