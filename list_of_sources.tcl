@@ -5,6 +5,7 @@ proc read_sources {source_folder} \
         /top/system_clocks_pkg.vhd
 
         /dsp/multiplier/multiplier_pkg.vhd
+        /dsp/multiplier/multiplier_body.vhd
         /dsp/multiplier/multiplier.vhd
         /dsp/sincos/sincos_pkg.vhd
         /dsp/sincos/sincos.vhd

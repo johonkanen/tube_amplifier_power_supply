@@ -202,7 +202,8 @@ begin
 
                 feedback_control_is_enabled <= false;
                 pfc_control_data_out.pfc_is_ready <= false;
-                multiplier_data_in(2).multiplication_is_requested <= false;
+                enable_multiplier(multiplier_data_in(2));
+                init_timer(delay_timer_50us_in);
 
                 CASE st_pfc_control_state is
                     WHEN idle =>
@@ -224,10 +225,9 @@ begin
                         end if;
 
                     WHEN rampup => 
-                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1000);
-                        -- TODO, add voltage control reference rampup from current dc link voltage to reference
-
                         st_pfc_control_state := rampup;
+
+                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1000);
                         if timer_is_ready(delay_timer_50us_out) or 
                             abs(AC_voltage_measurement) < ac_voltage_10v then
 
