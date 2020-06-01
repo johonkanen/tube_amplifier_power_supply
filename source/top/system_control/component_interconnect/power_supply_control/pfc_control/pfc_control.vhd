@@ -59,6 +59,8 @@ architecture rtl of pfc_control is
     constant dc_link_ref_350V : int18 := 32768/663*350;
     constant dc_link_ref_400V : int18 := 32768/663*400;
 
+    constant ac_voltage_10v : int18 := 32768/663/2*10;
+
 ------------------------ voltage control signals -----------------------
     for u_pfc_voltage_control : feedback_control use entity work.feedback_control(arch_pfc_voltage_control);
 
@@ -222,10 +224,13 @@ begin
                         end if;
 
                     WHEN rampup => 
-                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1);
+                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1000);
+                        -- TODO, add voltage control reference rampup from current dc link voltage to reference
 
                         st_pfc_control_state := rampup;
-                        if timer_is_ready(delay_timer_50us_out) then
+                        if timer_is_ready(delay_timer_50us_out) or 
+                            abs(AC_voltage_measurement) < ac_voltage_10v then
+
                             st_pfc_control_state := pfc_running;
                         end if;
 
