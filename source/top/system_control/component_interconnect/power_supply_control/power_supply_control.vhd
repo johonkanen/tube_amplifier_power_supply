@@ -34,7 +34,9 @@ architecture rtl of power_supply_control is
     signal dhb_trigger : std_logic;
     signal llc_trigger : std_logic;
 ------------------------------------------------------------------------
-    signal master_carrier : integer range 0 to 2**12-1;
+    signal master_carrier : natural range 0 to 2**12-1;
+    signal dhb_carrier : natural range 0 to 2**12-1;
+    signal pfc_carrier : natural range 0 to 2**12-1;
 ------------------------------------------------------------------------
     signal pfc_control_clocks   : pfc_control_clock_group;
     signal pfc_control_data_in  : pfc_control_data_input_group;
@@ -48,7 +50,7 @@ architecture rtl of power_supply_control is
     signal dhb_control_data_in  : dhb_control_data_input_group;
     signal dhb_control_data_out : dhb_control_data_output_group;
 ------------------------------------------------------------------------
-    constant carrier_maximum : integer := 1896;
+    constant carrier_maximum : natural := 1896;
 begin
 
 ------------------------------------------------------------------------
@@ -140,8 +142,8 @@ begin
                 measurement_interface_data_in.dhb_ad_start_request_toggle <= dhb_trigger;
                 measurement_interface_data_in.llc_ad_start_request_toggle <= llc_trigger;
                 -- register carrier for pfc and dhb to shorten logic path
-                pfc_control_data_in.pfc_carrier <= master_carrier;
-                dhb_control_data_in.dhb_carrier <= master_carrier;
+                pfc_carrier <= master_carrier;
+                dhb_carrier <= master_carrier;
 
                 master_carrier <= master_carrier + 1;
                 if master_carrier > carrier_maximum then
@@ -188,6 +190,7 @@ begin
 ------------------------------------------------------------------------
 
 ---------------------- pfc control --------------------------------------
+    pfc_control_data_in.pfc_carrier <= pfc_carrier;
     pfc_control_clocks <= ( core_clock      => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock        => pll_lock);
@@ -215,6 +218,7 @@ begin
             llc_control_data_out
         );
 ---------------------- dhb control -------------------------------------
+    dhb_control_data_in.dhb_carrier <= dhb_carrier;
     dhb_control_clocks <= ( core_clock      => core_clock,
                             modulator_clock => modulator_clock,
                             pll_lock        => pll_lock);

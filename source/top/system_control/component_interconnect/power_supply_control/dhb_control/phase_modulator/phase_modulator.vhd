@@ -26,9 +26,9 @@ architecture rtl of phase_modulator is
 
     signal input_phase_buffer : integer range -2**11 to 2**11-1;
 
-    signal dhb_master_carrier    : uint12 := 0;
-    signal dhb_primary_carrier   : uint12 := 0;
-    signal dhb_secondary_carrier : uint12 := 0;
+    signal dhb_master_carrier    : uint12;
+    signal dhb_primary_carrier   : uint12;
+    signal dhb_secondary_carrier : uint12;
     signal primary_phase_shift   : uint12;
     signal secondary_phase_shift : uint12;
 
@@ -72,17 +72,15 @@ begin
 
         --------------------------------------------------
             if input_phase_buffer < 0 then
-                primary_phase_shift <= input_phase_buffer;
+                primary_phase_shift <= -input_phase_buffer;
                 secondary_phase_shift <= 0;
             else
                 secondary_phase_shift <= input_phase_buffer;
                 primary_phase_shift <= 0;
             end if;
         --------------------------------------------------
-            dhb_master_carrier <= dhb_master_carrier + 1;
-            if phase_modulator_data_in.carrier = g_carrier_max_value/4 then
-                dhb_master_carrier <= 0;
-            end if;
+            dhb_master_carrier <= phase_modulator_data_in.carrier;
+
         --------------------------------------------------
             dhb_primary_carrier <= dhb_primary_carrier + 1;
             if dhb_primary_carrier >= g_carrier_max_value then

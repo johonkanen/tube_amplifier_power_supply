@@ -38,7 +38,7 @@ set_time_format -unit ns -decimal_places 3
 # Create Clock
 #**************************************************************
 
-create_clock -name {xclk32mhz} -period 31.250 -waveform { 0.000 15.625 } [get_ports {xclk32mhz}]
+create_clock -name {xclk} -period 31.250 -waveform { 0.000 15.625 } [get_ports {xclk}]
 
 
 #**************************************************************
@@ -87,6 +87,7 @@ set_false_path -from * -to [get_ports *gate*]
 set_false_path -from * -to [get_ports *led*]
 set_false_path -from * -to [get_ports *switch*]
 set_false_path -from *u_power_supply_control|master_carrier[*] -to *ad_mux*
+set_false_path -from *u_power_supply_control|master_carrier[*] -to *triggers*
 
 #**************************************************************
 # Set Multicycle Path

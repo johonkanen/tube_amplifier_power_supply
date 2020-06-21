@@ -21,7 +21,8 @@ architecture sim of tb_phase_modulator is
     constant clock_half_per : time := 2 ns;
     constant simtime_in_clocks : integer := 15e3;
 
-    signal master_carrier : integer;
+    signal master_carrier : natural;
+    signal clocked_reset : std_logic;
 
     signal phase_modulator_clocks   : phase_modulator_clock_group;
     signal phase_modulator_FPGA_out : phase_modulator_FPGA_output_group;
@@ -31,7 +32,7 @@ architecture sim of tb_phase_modulator is
 
     signal primary : std_logic_vector(1 downto 0);
     signal secondary : std_logic_vector(1 downto 0);
-    signal sim_counter : integer;
+    signal sim_counter : natural;
 
 begin
 ------------------------------------------------------------------------
@@ -56,47 +57,61 @@ begin
         wait;
     end process;
 ------------------------------------------------------------------------
-    create_carrier : process(simulator_clock, rstn)
+
+    clocked_reset_generator : process(simulator_clock, rstn)
     begin
         if rstn = '0' then
         -- reset state
-            master_carrier <= 0;
-            sim_counter <= 0; 
-            phase_modulator_data_in.tg_load_phase <= '0';
-            phase_modulator_data_in.phase <= 0;
-            phase_modulator_data_in.dhb_is_enabled <= '0';
-
+            clocked_reset <= '0';
     
         elsif rising_edge(simulator_clock) then
-            -- phase_modulator_data_in.tg_load_phase <= not phase_modulator_data_in.tg_load_phase;
-            sim_counter <= sim_counter + 1;
-
-            CASE sim_counter is
-                WHEN 5 =>
-                    phase_modulator_data_in.phase <= 0;
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 2500 => 
-                    phase_modulator_data_in.dhb_is_enabled <= '1';
-                    phase_modulator_data_in.phase <= -250;
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 5000 => 
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 7500 => 
-                    phase_modulator_data_in.phase <= 250;
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 9952 => 
-                    phase_modulator_data_in.phase <= -250;
-                    trigger(phase_modulator_data_in.tg_load_phase);
-                WHEN 12e3 => 
-
-                WHEN others =>
-            end CASE;
-
-
-            master_carrier <= master_carrier + 1;
-            if master_carrier = g_carrier_max_value then
+            clocked_reset <= '1';
+    
+        end if; -- rstn
+    end process clocked_reset_generator;	
+------------------------------------------------------------------------
+    create_carrier : process(simulator_clock, rstn)
+    begin
+        if rising_edge(simulator_clock) then
+            if clocked_reset = '0' then
+            -- reset state
                 master_carrier <= 0;
+                sim_counter <= 0; 
+                phase_modulator_data_in.tg_load_phase <= '0';
+                phase_modulator_data_in.phase <= 0;
+                phase_modulator_data_in.dhb_is_enabled <= '0';
+                phase_modulator_data_in.phase <= 0;
+            else
+                -- phase_modulator_data_in.tg_load_phase <= not phase_modulator_data_in.tg_load_phase;
+                sim_counter <= sim_counter + 1;
+
+                CASE sim_counter is
+                    WHEN 5 =>
+                        phase_modulator_data_in.phase <= 0;
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                    WHEN 2500 => 
+                        phase_modulator_data_in.dhb_is_enabled <= '1';
+                        phase_modulator_data_in.phase <= -250;
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                    WHEN 5000 => 
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                    WHEN 7500 => 
+                        phase_modulator_data_in.phase <= 250;
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                    WHEN 9952 => 
+                        phase_modulator_data_in.phase <= -250;
+                        trigger(phase_modulator_data_in.tg_load_phase);
+                    WHEN 12e3 => 
+
+                    WHEN others =>
+                end CASE;
+
+
+                master_carrier <= master_carrier + 1;
+                if master_carrier > g_carrier_max_value-1 then
+                    master_carrier <= 0;
+                end if;
             end if;
         end if; -- rstn
     end process create_carrier;	

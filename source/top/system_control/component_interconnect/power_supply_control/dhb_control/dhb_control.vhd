@@ -99,6 +99,7 @@ begin
 
     --------------------------------------------------
     begin
+        phase_modulator_data_in.carrier <= dhb_control_data_in.dhb_carrier;
         if rising_edge(core_clock) then
             if reset_n = '0' then
             -- reset state
