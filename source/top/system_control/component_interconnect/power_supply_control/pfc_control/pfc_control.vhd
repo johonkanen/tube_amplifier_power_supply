@@ -30,6 +30,7 @@ architecture rtl of pfc_control is
     alias core_clock      is pfc_control_clocks.core_clock;
     alias modulator_clock is pfc_control_clocks.modulator_clock;
     alias pll_lock        is pfc_control_clocks.pll_lock;
+    alias pfc_data_to_uart is pfc_control_data_out.pfc_data_to_uart;
 -------------------- feedback measurements -----------------------------
     alias measurement_interface is pfc_control_data_in.measurement_interface_data_out;
     signal pfc_I1_measurement : int18;
@@ -83,6 +84,8 @@ architecture rtl of pfc_control is
     signal data_from_multiplier        : multiplier_data_output_group;
     signal data_to_multiplier          : multiplier_data_input_group;
     signal feedback_control_is_enabled : boolean;
+
+    signal pfc_duty_during_ramp_up : int8;
 
 ------------------------------------------------------------------------
 begin
@@ -161,6 +164,7 @@ begin
                 set_duty(0,pfc_modulator_data_in);
                 disable_pfc_modulator(pfc_modulator_data_in);
                 feedback_control_is_enabled <= false;
+                pfc_duty_during_ramp_up <= 50;
 
                 pfc_control_data_out.pfc_is_ready <= false;
                 voltage_control_trigger_delay := 0;
@@ -192,6 +196,13 @@ begin
                     pfc_I2_measurement <= get_ada_measurement(measurement_interface) - 16050;
                 end if;
 
+                -- route pfc current measurement to uart
+                if pfc_I2_measurement > pfc_I2_measurement then
+                    pfc_data_to_uart.current_measurement <= pfc_I2_measurement;
+                else
+                    pfc_data_to_uart.current_measurement <= pfc_I1_measurement;
+                end if;
+
                 get_DC_link(measurement_interface,DC_link_voltage_measurement);
                 -- get_vac    (measurement_interface,AC_voltage_measurement);
                 -- get_pfc_I1 (measurement_interface,pfc_I1_measurement);
@@ -208,21 +219,29 @@ begin
                 CASE st_pfc_control_state is
                     WHEN idle =>
                         disable_pfc_modulator(pfc_modulator_data_in);
+                        pfc_duty_during_ramp_up <= 10;
+
 
                         st_pfc_control_state := idle;
                         if pfc_control_data_in.enable_pfc then
                             st_pfc_control_state := precharge;
+                            set_duty(10,pfc_modulator_data_in);
                         end if;
 
                     WHEN precharge =>
                         enable_pfc_modulator(pfc_modulator_data_in);
-                        set_duty(50,pfc_modulator_data_in);
-                        request_delay(delay_timer_50us_in,delay_timer_50us_out,1000);
+                        request_delay(delay_timer_50us_in,delay_timer_50us_out,20);
+
+                        if timer_is_ready(delay_timer_50us_out) then
+                            set_duty(pfc_duty_during_ramp_up,pfc_modulator_data_in);
+                            pfc_duty_during_ramp_up <= pfc_duty_during_ramp_up + 1;
+                        end if;
 
                         st_pfc_control_state := precharge;
-                        if timer_is_ready(delay_timer_50us_out) then
+                        if pfc_duty_during_ramp_up = 120 then
                             st_pfc_control_state := rampup;
                         end if;
+
 
                     WHEN rampup => 
                         st_pfc_control_state := rampup;
@@ -241,7 +260,7 @@ begin
                         feedback_control_is_enabled <= true;
 
                         if feedback_is_ready(current_control_output) then
-                            alu_mpy(get_control_output(current_control_output),600,multiplier_data_in(2));
+                            alu_mpy(get_control_output(current_control_output),920,multiplier_data_in(2));
                         end if;
 
                         if multiplier_is_ready(multiplier_data_out(2)) then

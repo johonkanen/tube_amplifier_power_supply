@@ -5,6 +5,9 @@ library ieee;
 library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
 
+library common_library;
+    use common_library.typedefines_pkg.all;
+
 package pfc_control_pkg is
 ------------------------------------------------------------------------
     type t_pfc_states is (disabled, ramping_up, running);
@@ -24,9 +27,17 @@ package pfc_control_pkg is
         enable_pfc : boolean;
         measurement_interface_data_out : measurement_interface_data_output_group;
         pfc_carrier : integer;
+        data : std_logic;
+    end record;
+
+    type pfc_test_data is record
+        current_measurement : int16;
+        pfc_duty : int16;
+        current_Reference : int16;
     end record;
     
     type pfc_control_data_output_group is record
+        pfc_data_to_uart : pfc_test_data;
         pfc_is_ready : boolean;
     end record;
 

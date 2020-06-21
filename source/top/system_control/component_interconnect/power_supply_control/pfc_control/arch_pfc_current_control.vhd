@@ -36,7 +36,7 @@ architecture arch_pfc_current_control of feedback_control is
     signal pi_out : int18;
 
     constant pi_saturate_high : int18 := 32768;
-    constant pi_saturate_low : int18  := 6560;
+    constant pi_saturate_low : int18  := 3550;
 
     constant kp : int18 := 10280;
     constant ki : int18 := 193*4;
@@ -56,7 +56,7 @@ begin
             feedback_control_data_out.feedback_is_ready <= false;
 
             if feedback_control_data_in(0).feedback_control_is_enabled = false then
-                mem <= 0;
+                mem <= -131072;
             end if;
 
             CASE process_counter is 

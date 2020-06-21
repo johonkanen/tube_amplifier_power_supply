@@ -82,9 +82,11 @@ derive_clock_uncertainty
 # Set False Path
 #**************************************************************
 
-#set_false_path -from * -to [get_ports *ad*_mux*]
+set_false_path -from * -to [get_ports *relay*]
 set_false_path -from * -to [get_ports *gate*]
 set_false_path -from * -to [get_ports *led*]
+set_false_path -from * -to [get_ports *switch*]
+set_false_path -from *u_power_supply_control|master_carrier[*] -to *ad_mux*
 
 #**************************************************************
 # Set Multicycle Path
