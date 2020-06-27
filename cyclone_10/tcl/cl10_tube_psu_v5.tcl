@@ -78,6 +78,7 @@ source ../list_of_sources.tcl
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_fifo_control_pkg.vhd
 
 	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/two_port_ram/ram_2_port.qip
+	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/ram_control_pkg.vhd
 
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_specifics.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_pll_wrapper.vhd

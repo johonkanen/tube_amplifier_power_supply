@@ -4,6 +4,7 @@ set source=source/
 ghdl -a --ieee=synopsys %source%/top/system_clocks_pkg.vhd
 ghdl -a --ieee=synopsys %source%/../cyclone_10/source_cl10/cl10_pll_wrapper.vhd
 ghdl -a --ieee=synopsys %source%/../cyclone_10/source_cl10/cl10_fifo_control_pkg.vhd
+ghdl -a --ieee=synopsys %source%/../cyclone_10/source_cl10/ram_control_pkg.vhd
 
 rem ghdl -a --ieee=synopsys %source%/cyclone_10lp/cl10_specifics.vhd
 

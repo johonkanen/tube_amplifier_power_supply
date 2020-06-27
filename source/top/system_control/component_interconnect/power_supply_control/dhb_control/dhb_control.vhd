@@ -152,7 +152,7 @@ begin
                             deadtime := deadtime - 1;
                             set_deadtime(phase_modulator_data_in,deadtime);
 
-                            if deadtime = 26 then
+                            if deadtime = 64 then
                                 init_timer(delay_timer_data_in);
                                 st_dhb_states := running;
                             end if;

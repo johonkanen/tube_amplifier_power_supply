@@ -10,6 +10,7 @@ library work;
     use work.power_supply_control_pkg.all;
     use work.sincos_pkg.all;
     use work.cl10_fifo_control_pkg.all;
+    use work.ram_control_pkg.all;
     
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.get_ad_measurement;
@@ -109,73 +110,9 @@ architecture rtl of component_interconnect is
     signal fifo_control_input : fifo_input_control_group;
 
 --------------------------------------------------
-    component ram_2_port IS
-	PORT
-	(
-		clock     : IN STD_LOGIC;
-		data      : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
-		rdaddress : IN STD_LOGIC_VECTOR (10 DOWNTO 0);
-		wraddress : IN STD_LOGIC_VECTOR (10 DOWNTO 0);
-		wren      : IN STD_LOGIC;
-		q         : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
-	);
-    END component;
-
-    type ram_2_port_input_group is record
-		wren      : STD_LOGIC;
-		data      : STD_LOGIC_VECTOR (15 DOWNTO 0);
-		wraddress : STD_LOGIC_VECTOR (10 DOWNTO 0);
-		rdaddress : STD_LOGIC_VECTOR (10 DOWNTO 0);
-    end record;
-
-    type ram_2_port_output_group is record
-		q         : STD_LOGIC_VECTOR (15 DOWNTO 0);
-    end record;
-
     signal ram_input : ram_2_port_input_group;
     signal ram_output : ram_2_port_output_group;
 
-------------------------------------------------------------------------
-    procedure enable_ram_write_control
-    (
-        signal ram : out ram_2_port_input_group
-    ) is
-    begin
-        ram.wren <= '0';
-    end enable_ram_write_control;
-------------------------------------------------------------------------
-    function get_data_from_ram
-    (
-        ram : ram_2_port_output_group
-    )
-    return integer
-    is
-    begin
-        return to_integer(signed(ram.q));
-    end get_data_from_ram;
-
-------------------------------------------------------------------------
-    procedure load_data_from_ram
-    (
-        signal ram : out ram_2_port_input_group;
-        address : in natural
-    ) is
-    begin
-        ram.rdaddress <= std_logic_vector(to_unsigned(address,11));
-    end load_data_from_ram;
-
-------------------------------------------------------------------------
-    procedure write_data_to_ram
-    (
-        signal ram : out ram_2_port_input_group;
-        address : natural;
-        data : integer
-    ) is
-    begin
-        ram.wren <= '1';
-        ram.wraddress <= std_logic_vector(to_unsigned(address,11));
-        ram.data <= std_logic_vector(to_signed(data,16));
-    end write_data_to_ram;
     
 --------------------------------------------------
 begin
@@ -242,7 +179,6 @@ begin
                 end loop;
 
             else
-
 
                 get_vac         (measurement_interface_data_out , measurement_container (0));
                 get_dc_link     (measurement_interface_data_out , measurement_container (1));
