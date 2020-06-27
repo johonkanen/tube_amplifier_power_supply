@@ -37,7 +37,7 @@ architecture rtl of component_interconnect is
     alias reset_n is system_clocks.pll_lock;
 
 ------------------------------------------------------------------------
-    signal si_uart_start_event : std_logic;
+    signal si_uart_start_event : std_logic_vector(1 downto 0);
     signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
     signal so_uart_ready_event :  std_logic;
     signal so16_uart_rx_data   :  std_logic_vector(15 downto 0);
@@ -101,10 +101,115 @@ architecture rtl of component_interconnect is
         end if;
         
     end send_data_to_uart;
---------------------------------------------------
 
+--------------------------------------------------
+--------------------------------------------------
+    component uart_fifo IS
+	PORT
+	(
+		clock        : IN STD_LOGIC ;
+		data         : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+		rdreq        : IN STD_LOGIC ;
+		wrreq        : IN STD_LOGIC ;
+		almost_empty : OUT STD_LOGIC ;
+		almost_full  : OUT STD_LOGIC ;
+		empty        : OUT STD_LOGIC ;
+		full         : OUT STD_LOGIC ;
+		q            : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+		usedw        : OUT STD_LOGIC_VECTOR (11 DOWNTO 0)
+	);
+    end component;
+
+--------------------------------------------------
+    type fifo_input_control_group is record
+        data  : STD_LOGIC_VECTOR (15 DOWNTO 0);
+        wrreq : STD_LOGIC ;
+        rdreq : STD_LOGIC ;
+    end record;
+
+    type fifo_output_control_group is record
+		almost_empty : STD_LOGIC ;
+		almost_full  : STD_LOGIC ;
+		empty        : STD_LOGIC ;
+		full         : STD_LOGIC ;
+		q            : STD_LOGIC_VECTOR (15 DOWNTO 0);
+		usedw        : STD_LOGIC_VECTOR (11 DOWNTO 0);
+    end record;
+
+------------------------------------------------------------------------
+    procedure enable_fifo_read_and_write
+    (
+        signal fifo_read_control : out fifo_input_control_group
+    ) is
+    begin
+        fifo_read_control.rdreq <= '0';
+        fifo_read_control.wrreq <= '0';
+    end enable_fifo_read_and_write;
+
+------------------------------------------------------------------------
+    procedure write_data_to_fifo
+    (
+        signal fifo_in : out fifo_input_control_group;
+        data_to_fifo   : in integer
+    ) is
+    begin
+        fifo_in.wrreq <= '1';
+        fifo_in.data <= std_logic_vector(to_signed(data_to_fifo,16));
+    end write_data_to_fifo;
+
+------------------------------------------------------------------------
+    procedure load_data_from_fifo
+    (
+        signal fifo_in : out fifo_input_control_group
+    ) is
+    begin
+        fifo_in.rdreq <= '1';
+    end load_data_from_fifo;
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+    function fifo_is_empty
+    (
+        fifo_out : fifo_output_control_group
+    )
+    return boolean
+    is
+    begin
+        return fifo_out.empty = '1';
+    end fifo_is_empty;
+------------------------------------------------------------------------
+    function fifo_is_full
+    (
+        fifo_out : fifo_output_control_group
+    )
+    return boolean
+    is
+    begin
+        return fifo_out.full = '1';
+    end fifo_is_full;
+
+    signal fifo_output_control : fifo_output_control_group;
+    signal fifo_control_input : fifo_input_control_group;
+    
 begin
 
+    component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
+------------------------------------------------------------------------
+
+    uart_fifo_inst : uart_fifo 
+    PORT MAP (
+		clock        => core_clock,
+		data         => fifo_control_input.data,
+		rdreq        => fifo_control_input.rdreq,
+		wrreq        => fifo_control_input.wrreq,
+		almost_empty => fifo_output_control.almost_empty,
+		almost_full  => fifo_output_control.almost_full,
+		empty        => fifo_output_control.empty,
+		full         => fifo_output_control.full,
+		q            => fifo_output_control.q,
+		usedw        => fifo_output_control.usedw
+	);
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
@@ -123,15 +228,10 @@ begin
 
 ------------------------------------------------------------------------
     test_uart : process(core_clock)
-        type t_uart_data_log_states is (idle, stream_data);
+        type t_uart_data_log_states is (idle, pack_fifo, stream_data);
         variable st_uart_data_log_states : t_uart_data_log_states;
 
         variable process_counter : uint8;
-        variable control_error : int18;
-        constant kp : int18 := 48e3;
-        constant ki : int18 := 5000;
-        constant pi_saturate_high : int18 := 32760;
-        constant pi_saturate_low  : int18 := -32760;
 
     begin
         if rising_edge(core_clock) then
@@ -139,11 +239,8 @@ begin
             -- reset state
                 st_uart_data_log_states := idle;
                 send_index <= 0;
-                si_uart_start_event <= '0';
+                si_uart_start_event <= (others => '0');
                 process_counter := 0;
-
-                control_error := 100;
-
 
                 reset_measurements :
                 for i in 0 to measurement_container'right loop
@@ -153,7 +250,6 @@ begin
             else
 
 
-                st_uart_data_log_states := idle;
                 get_vac         (measurement_interface_data_out , measurement_container (0));
                 get_dc_link     (measurement_interface_data_out , measurement_container (1));
                 get_pfc_I1      (measurement_interface_data_out , measurement_container (2));
@@ -163,27 +259,58 @@ begin
                 get_llc_voltage (measurement_interface_data_out , measurement_container (6));
                 get_LLC_current (measurement_interface_data_out , measurement_container (7));
 
-                si_uart_start_event <= '0';
+                -- init_multiplier(multiplier_data_in);
+                -- case process_counter is
+                --     WHEN 0 => 
+                --         alu_mpy(32768, 11, multiplier_data_in);
+                --         increment(process_counter);
+                --         
+                --     WHEN 1 => 
+                --         alu_mpy(32768, 12, multiplier_data_in);
+                --         increment(process_counter);
+                --
+                --     WHEN 2 => 
+                --         alu_mpy(32768, 13, multiplier_data_in);
+                --         increment(process_counter);
+                --
+                --     WHEN 3 =>
+                --         measurement_container(4) <= get_result(multiplier_data_out, 15);
+                --         alu_mpy(32768, 14, multiplier_data_in);
+                --         increment(process_counter);
+                --
+                --     WHEN 4 =>
+                --         measurement_container(5) <= get_result(multiplier_data_out, 15);
+                --         increment(process_counter);
+                --
+                --     WHEN 5 =>
+                --         measurement_container(6) <= get_result(multiplier_data_out, 15);
+                --         increment(process_counter);
+                --
+                --     WHEN 6 =>
+                --         measurement_container(7) <= get_result(multiplier_data_out, 15);
+                --         increment(process_counter);
+                --
+                --     WHEN others =>
+                --         process_counter := 0;
+                -- end CASE;
+                --
+                init_timer(delay_timer_data_in);
+                si_uart_start_event <= si_uart_start_event(0) & '0';
                 sincos_is_requested <= false;
-                multiplier_data_in.multiplication_is_requested <= false;
+
+                enable_fifo_read_and_write(fifo_control_input);
                 CASE st_uart_data_log_states is
                     WHEN idle =>
 
                         send_index <= 0;
                         st_uart_data_log_states := idle;
+                        process_counter := 0;
 
-                        request_delay(delay_timer_data_in,delay_timer_data_out,1);
+                        request_delay(delay_timer_data_in,delay_timer_data_out,80e3);
 
                         if timer_is_ready(delay_timer_data_out) then
-                            -- st_uart_data_log_states := stream_data;
-                            angle <= angle + 1;
-                            if angle < 2**15 then
-                                control_error := -16384;
-                            else
-                                control_error := 100;
-                            end if;
-                            sincos_is_requested <= true;
-                            increment(process_counter);
+                            st_uart_data_log_states := pack_fifo;
+                            write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
                         end if;
 
                         -- if sincos_is_ready(sincos_data_out) then
@@ -192,64 +319,25 @@ begin
                         --
                         -- if multiplier_is_ready(multiplier_data_out) then
                         -- end if;
+                    WHEN pack_fifo =>
+                        increment(process_counter);
+                        write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
 
-
-
-                        CASE process_counter is
-                            WHEN 0 =>
-                                -- do nothing
-
-                                if timer_is_ready(delay_timer_data_out) then
-                                    increment(process_counter);
-                                    alu_mpy(control_error, kp, multiplier_data_in);
-                                end if;
-
-                            WHEN 1 => 
-                                increment(process_counter);
-                                alu_mpy(control_error, ki, multiplier_data_in);
-
-                            WHEN 2 => 
-                                increment(process_counter);
-
-                            WHEN 3 => 
-                                increment(process_counter);
-                                pi_out <= mem + get_result(multiplier_data_out,15);
-                                ekp <= get_result(multiplier_data_out,15);
-
-                            WHEN 4 =>
-                                increment(process_counter);
-
-                                mem <= mem + get_result(multiplier_data_out,15);
-                                if pi_out >  pi_saturate_high then
-                                    pi_out <= pi_saturate_high ;
-                                    mem    <= pi_saturate_high -ekp;
-                                end if;
-
-                                if pi_out <  pi_saturate_low then
-                                    pi_out <= pi_saturate_low ;
-                                    mem    <= pi_saturate_low -ekp;
-                                end if; 
-                            WHEN 5 =>
-                                process_counter := 0;
-                                si16_uart_tx_data <= std_logic_vector(to_signed(pi_out,16));
-                                si_uart_start_event <= '1';
-
-
-                            WHEN others =>
-                                process_counter := 0;
-                        end CASE;
+                        if process_counter = 7 then
+                            st_uart_data_log_states := stream_data;
+                        end if;
 
 
                     WHEN stream_data =>
+                        st_uart_data_log_states := stream_data;
+
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
+                        if timer_is_ready(delay_timer_data_out) then
+                            load_data_from_fifo(fifo_control_input);
+                            si_uart_start_event(0) <= '1';
+                        end if;
 
-                        send_data_to_uart(timer_is_ready(delay_timer_data_out), 
-                                            si_uart_start_event, 
-                                            si16_uart_tx_data, 
-                                            measurement_container,
-                                            send_index);
-
-                        if timer_is_ready(delay_timer_data_out) and send_index = measurement_container'right then
+                        if fifo_is_empty(fifo_output_control) then
                             st_uart_data_log_states := idle;
                         end if;
 
@@ -273,8 +361,6 @@ begin
     );
 
 ------------------------------------------------------------------------  
--- measurement_interface_data_in <= component_interconnect_data_in.measurement_interface_data_in;
-    component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
     measurement_interface_clocks <= (system_clocks.core_clock, system_clocks.core_clock, system_clocks.pll_lock);
     u_measurement_interface : measurement_interface 
     port map(
@@ -284,9 +370,17 @@ begin
         measurement_interface_data_in,
         measurement_interface_data_out 
     );
+
 ------------------------------------------------------------------------
     burn_leds : led_driver
-    port map(system_clocks.core_clock, component_interconnect_FPGA_out.po3_led1, component_interconnect_FPGA_out.po3_led2, component_interconnect_FPGA_out.po3_led3, component_interconnect_data_in.led1_color, component_interconnect_data_in.led2_color, component_interconnect_data_in.led3_color);
+    port map(system_clocks.core_clock, 
+            component_interconnect_FPGA_out.po3_led1, 
+            component_interconnect_FPGA_out.po3_led2, 
+            component_interconnect_FPGA_out.po3_led3, 
+            component_interconnect_data_in.led1_color, 
+            component_interconnect_data_in.led2_color, 
+            component_interconnect_data_in.led3_color);
+
 ------------------------------------------------------------------------
     u_uart_event_ctrl : uart_event_ctrl
 	generic map(25,2,2)
@@ -294,10 +388,11 @@ begin
 	    system_clocks.core_clock,
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
-	    si_uart_start_event,
-	    si16_uart_tx_data,
+	    si_uart_start_event(1),
+	    fifo_output_control.q,
 	    so_uart_ready_event,
 	    so16_uart_rx_data);
+
 ------------------------------------------------------------------------
         power_supply_control_clocks <= (core_clock      => system_clocks.core_clock,
                                         modulator_clock => system_clocks.modulator_clock,

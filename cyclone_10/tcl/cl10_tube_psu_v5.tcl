@@ -73,7 +73,7 @@ source ../list_of_sources.tcl
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
 	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/$opts(card_version)_clocks/main_pll.qip
-	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/multiplier/multiplier_18x18.qip
+	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/fifo/uart_fifo.qip
 
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_specifics.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_pll_wrapper.vhd
@@ -176,13 +176,6 @@ source ../list_of_sources.tcl
 	set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "main_pll:core_clocks|altpll:altpll_component|main_pll_altpll:auto_generated|wire_pll1_clk[0]"
 	set_instance_assignment -name GLOBAL_SIGNAL GLOBAL_CLOCK -to "main_pll:core_clocks|altpll:altpll_component|main_pll_altpll:auto_generated|wire_pll1_clk[1]"
 	set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
-
-	# Commit assignments
-
-	# Close project
-	#if {$need_to_close_project} {
-	#	project_close
-	#}
 
 source $tcl_scripts/route_fpga_pins.tcl
 place_fpga_pins_for_$fpga_device
