@@ -38,7 +38,7 @@ architecture rtl of component_interconnect is
     alias reset_n is system_clocks.pll_lock;
 
 ------------------------------------------------------------------------
-    signal si_uart_start_event : std_logic_vector(1 downto 0);
+    signal si_uart_start_event : std_logic_vector(2 downto 0);
     signal si16_uart_tx_data   : std_logic_vector(15 downto 0);
     signal so_uart_ready_event :  std_logic;
     signal so16_uart_rx_data   :  std_logic_vector(15 downto 0);
@@ -222,7 +222,7 @@ begin
 
 ------------------------------------------------------------------------
     test_uart : process(core_clock)
-        type t_uart_data_log_states is (idle, pack_fifo, stream_data);
+        type t_uart_data_log_states is (idle, pack_fifo, init_uart_stream, stream_data);
         variable st_uart_data_log_states : t_uart_data_log_states;
 
         variable process_counter : uint8;
@@ -289,7 +289,7 @@ begin
                 -- end CASE;
                 --
                 init_timer(delay_timer_data_in);
-                si_uart_start_event <= si_uart_start_event(0) & '0';
+                si_uart_start_event <= si_uart_start_event(si_uart_start_event'left-1 downto 0) & '0';
                 sincos_is_requested <= false;
 
                 enable_ram_write_control(ram_input);
@@ -305,7 +305,6 @@ begin
 
                         if timer_is_ready(delay_timer_data_out) then
                             st_uart_data_log_states := pack_fifo;
-                            write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
                             write_data_to_ram(ram_input,process_counter,measurement_container(process_counter));
                         end if;
 
@@ -317,24 +316,24 @@ begin
                         -- end if;
                     WHEN pack_fifo =>
                         increment(process_counter);
-                        write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
                         write_data_to_ram(ram_input,process_counter,measurement_container(process_counter));
 
                         if process_counter = 7 then
-                            st_uart_data_log_states := stream_data;
-                            process_counter := 8;
+                            st_uart_data_log_states := init_uart_stream;
                         end if;
 
+                    WHEN init_uart_stream => 
+                        st_uart_data_log_states := stream_data;
+                        load_data_from_ram(ram_input,7-process_counter);
+                        si_uart_start_event(0) <= '1';
 
                     WHEN stream_data =>
                         st_uart_data_log_states := stream_data;
 
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
                         if timer_is_ready(delay_timer_data_out) then
-                            load_data_from_fifo(fifo_control_input);
-
                             process_counter := process_counter - 1;
-                            load_data_from_ram(ram_input,process_counter);
+                            load_data_from_ram(ram_input,7-process_counter);
                             si_uart_start_event(0) <= '1';
                         end if;
 
@@ -389,7 +388,7 @@ begin
 	    system_clocks.core_clock,
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
-	    si_uart_start_event(1),
+	    si_uart_start_event(2),
 	    ram_output.q,
 	    so_uart_ready_event,
 	    so16_uart_rx_data);
