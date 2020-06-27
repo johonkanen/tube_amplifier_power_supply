@@ -107,8 +107,86 @@ architecture rtl of component_interconnect is
 
     signal fifo_output_control : fifo_output_control_group;
     signal fifo_control_input : fifo_input_control_group;
+
+--------------------------------------------------
+    component ram_2_port IS
+	PORT
+	(
+		clock     : IN STD_LOGIC;
+		data      : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+		rdaddress : IN STD_LOGIC_VECTOR (10 DOWNTO 0);
+		wraddress : IN STD_LOGIC_VECTOR (10 DOWNTO 0);
+		wren      : IN STD_LOGIC;
+		q         : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+	);
+    END component;
+
+    type ram_2_port_input_group is record
+		wren      : STD_LOGIC;
+		data      : STD_LOGIC_VECTOR (15 DOWNTO 0);
+		wraddress : STD_LOGIC_VECTOR (10 DOWNTO 0);
+		rdaddress : STD_LOGIC_VECTOR (10 DOWNTO 0);
+    end record;
+
+    type ram_2_port_output_group is record
+		q         : STD_LOGIC_VECTOR (15 DOWNTO 0);
+    end record;
+
+    signal ram_input : ram_2_port_input_group;
+    signal ram_output : ram_2_port_output_group;
+
+------------------------------------------------------------------------
+    procedure enable_ram_write_control
+    (
+        signal ram : out ram_2_port_input_group
+    ) is
+    begin
+        ram.wren <= '0';
+    end enable_ram_write_control;
+------------------------------------------------------------------------
+    function get_data_from_ram
+    (
+        ram : ram_2_port_output_group
+    )
+    return integer
+    is
+    begin
+        return to_integer(signed(ram.q));
+    end get_data_from_ram;
+
+------------------------------------------------------------------------
+    procedure load_data_from_ram
+    (
+        signal ram : out ram_2_port_input_group;
+        address : in natural
+    ) is
+    begin
+        ram.rdaddress <= std_logic_vector(to_unsigned(address,11));
+    end load_data_from_ram;
+
+------------------------------------------------------------------------
+    procedure write_data_to_ram
+    (
+        signal ram : out ram_2_port_input_group;
+        address : natural;
+        data : integer
+    ) is
+    begin
+        ram.wren <= '1';
+        ram.wraddress <= std_logic_vector(to_unsigned(address,11));
+        ram.data <= std_logic_vector(to_signed(data,16));
+    end write_data_to_ram;
     
+--------------------------------------------------
 begin
+    ram_2_port_inst : ram_2_port PORT MAP (
+		clock     => core_clock,
+		data      => ram_input.data,
+		rdaddress => ram_input.rdaddress,
+		wraddress => ram_input.wraddress,
+		wren      => ram_input.wren,
+		q         => ram_output.q
+	);
 
     component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
 ------------------------------------------------------------------------
@@ -214,6 +292,7 @@ begin
                 si_uart_start_event <= si_uart_start_event(0) & '0';
                 sincos_is_requested <= false;
 
+                enable_ram_write_control(ram_input);
                 enable_fifo_read_and_write(fifo_control_input);
                 CASE st_uart_data_log_states is
                     WHEN idle =>
@@ -227,6 +306,7 @@ begin
                         if timer_is_ready(delay_timer_data_out) then
                             st_uart_data_log_states := pack_fifo;
                             write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
+                            write_data_to_ram(ram_input,process_counter,measurement_container(process_counter));
                         end if;
 
                         -- if sincos_is_ready(sincos_data_out) then
@@ -238,9 +318,11 @@ begin
                     WHEN pack_fifo =>
                         increment(process_counter);
                         write_data_to_fifo(fifo_control_input,measurement_container(process_counter));
+                        write_data_to_ram(ram_input,process_counter,measurement_container(process_counter));
 
                         if process_counter = 7 then
                             st_uart_data_log_states := stream_data;
+                            process_counter := 8;
                         end if;
 
 
@@ -250,10 +332,13 @@ begin
                         request_delay(delay_timer_data_in,delay_timer_data_out,1);
                         if timer_is_ready(delay_timer_data_out) then
                             load_data_from_fifo(fifo_control_input);
+
+                            process_counter := process_counter - 1;
+                            load_data_from_ram(ram_input,process_counter);
                             si_uart_start_event(0) <= '1';
                         end if;
 
-                        if fifo_is_empty(fifo_output_control) then
+                        if process_counter = 0 then
                             st_uart_data_log_states := idle;
                         end if;
 
@@ -305,7 +390,7 @@ begin
 	    component_interconnect_FPGA_out.po_uart_tx_serial,
 	    component_interconnect_FPGA_in.pi_uart_rx_serial,
 	    si_uart_start_event(1),
-	    fifo_output_control.q,
+	    ram_output.q,
 	    so_uart_ready_event,
 	    so16_uart_rx_data);
 
