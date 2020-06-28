@@ -112,7 +112,7 @@ source ../list_of_sources.tcl
 	set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
 	set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
 	set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
-	set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE" 
+	set_global_assignment -name OPTIMIZATION_MODE "BALANCED" 
 	set_global_assignment -name DEVICE_FILTER_PIN_COUNT 256
 	set_global_assignment -name EDA_DESIGN_ENTRY_SYNTHESIS_TOOL "Synplify Pro"
 	set_global_assignment -name TOP_LEVEL_ENTITY top

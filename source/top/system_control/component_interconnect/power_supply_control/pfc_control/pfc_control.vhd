@@ -113,7 +113,7 @@ begin
     multiplier_data_in(0) <= voltage_control_data_to_multiplier;
     voltage_control_data_from_multiplier <= multiplier_data_out(0);
 
-    voltage_control_input(0).control_reference           <= dc_link_ref_250V;
+    voltage_control_input(0).control_reference           <= dc_link_ref_300V;
     voltage_control_input(0).measurement                 <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement                 <= AC_voltage_measurement;
     voltage_control_input(0).control_is_requested        <= trigger_voltage_control;

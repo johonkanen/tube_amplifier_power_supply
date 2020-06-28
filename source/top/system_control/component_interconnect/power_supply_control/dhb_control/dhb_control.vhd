@@ -45,8 +45,8 @@ architecture rtl of dhb_control is
     signal multiplier_data_out :  multiplier_data_output_group;
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
-    signal delay_timer_data_in  : delay_timer_data_input_group;
-    signal delay_timer_data_out : delay_timer_data_output_group;
+    signal delay_timer_50us_data_in  : delay_timer_data_input_group;
+    signal delay_timer_50us_data_out : delay_timer_data_output_group;
 ------------------------------------------------------------------------
     signal DC_link_voltage : int18;
     signal dhb_voltage : int18;
@@ -70,8 +70,8 @@ begin
     delay_50us : delay_timer
     generic map (count_up_to => 5*1280)
     port map( core_clock,
-    	  delay_timer_data_in,
-    	  delay_timer_data_out);
+    	  delay_timer_50us_data_in,
+    	  delay_timer_50us_data_out);
 ------------------------------------------------------------------------
     multiplier_clocks.dsp_clock <= core_clock;
     u_multiplier : multiplier
@@ -105,7 +105,7 @@ begin
             -- reset state
                 st_dhb_states := idle;
                 integrator <= 0;
-                init_timer(delay_timer_data_in);
+                init_timer(delay_timer_50us_data_in);
                 process_counter := 0;
                 dhb_voltage <= 0;
                 init_multiplier(multiplier_data_in);
@@ -125,7 +125,7 @@ begin
                 get_DC_link(measurement_interface_data,DC_link_voltage);
                 ----------------------------------------------------
 
-                init_timer(delay_timer_data_in);
+                init_timer(delay_timer_50us_data_in);
                 multiplier_data_in.multiplication_is_requested <= false;
                 CASE st_dhb_states is
                     WHEN idle =>
@@ -144,16 +144,16 @@ begin
 
                     WHEN ramping_up =>
 
-                        request_delay(delay_timer_data_in,delay_timer_data_out,1);
+                        request_delay(delay_timer_50us_data_in,delay_timer_50us_data_out,1);
                         enable_dhb_modulator(phase_modulator_data_in);
                             
                         st_dhb_states := ramping_up;
-                        if timer_is_ready(delay_timer_data_out) then
+                        if timer_is_ready(delay_timer_50us_data_out) then
                             deadtime := deadtime - 1;
                             set_deadtime(phase_modulator_data_in,deadtime);
 
                             if deadtime = 64 then
-                                init_timer(delay_timer_data_in);
+                                init_timer(delay_timer_50us_data_in);
                                 st_dhb_states := running;
                             end if;
                         end if;

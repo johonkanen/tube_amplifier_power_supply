@@ -42,6 +42,7 @@ architecture rtl of llc_modulator is
     signal tg_load_period : std_logic_vector(2 downto 0);
     signal dt_count : uint12;
     signal dt_count_down_from : uint12;
+    signal sec_pwm_cntr : uint12;
 
 
 begin
@@ -49,7 +50,6 @@ begin
 
 ------------------------------------------------------------------------------------------
     pri_gate_ctrl : process(llc_modulator_clocks.modulator_clock)
-        variable sec_pwm_cntr : uint12;
         type t_dt_states is (active_pulse,deadtime);
         variable st_dt_states : t_dt_states;
     begin
@@ -64,6 +64,8 @@ begin
             dt_count_down_from <= 474-28;
             carrier <= 0;
             period <= 474;
+            sec_pwm_cntr <= 0;
+
 
         else
 
@@ -88,11 +90,11 @@ begin
                     llc_modulator_FPGA_out.llc_gates.pri_high <= s1_pulse;
                     llc_modulator_FPGA_out.llc_gates.pri_low <= not s1_pulse;
 
-                    if sec_pwm_cntr > 614 and sec_pwm_cntr < 10 then
+                    sec_pwm_cntr <= sec_pwm_cntr + 1;
+                    if sec_pwm_cntr > 550 or sec_pwm_cntr < 60 then
                         llc_modulator_FPGA_out.llc_gates.sync1 <= '0';
                         llc_modulator_FPGA_out.llc_gates.sync2 <= '0';
                     else
-                        sec_pwm_cntr := sec_pwm_cntr + 1;
                         llc_modulator_FPGA_out.llc_gates.sync1 <= s1_pulse;
                         llc_modulator_FPGA_out.llc_gates.sync2 <= not s1_pulse;
                     end if;
@@ -103,6 +105,8 @@ begin
                     end if;
 
                 WHEN deadtime => 
+                    llc_modulator_FPGA_out.llc_gates <= (others => '0');
+                    sec_pwm_cntr <= 0;
 
                     if dt_count > 0 then
                         dt_count <= dt_count - 1;
@@ -110,10 +114,6 @@ begin
                     else
                         st_dt_states := active_pulse;
                     end if;
-
-
-                    llc_modulator_FPGA_out.llc_gates <= (others => '0');
-                    sec_pwm_cntr := 0;
 
             end CASE;
         end if;
