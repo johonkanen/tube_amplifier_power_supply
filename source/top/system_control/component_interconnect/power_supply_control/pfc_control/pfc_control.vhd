@@ -59,6 +59,7 @@ architecture rtl of pfc_control is
     constant dc_link_ref_300V : int18 := 32768/663*300;
     constant dc_link_ref_350V : int18 := 32768/663*350;
     constant dc_link_ref_400V : int18 := 32768/663*400;
+    constant dc_link_ref_420V : int18 := 32768/663*420;
 
     constant ac_voltage_10v : int18 := 32768/663/2*10;
 
@@ -113,7 +114,7 @@ begin
     multiplier_data_in(0) <= voltage_control_data_to_multiplier;
     voltage_control_data_from_multiplier <= multiplier_data_out(0);
 
-    voltage_control_input(0).control_reference           <= dc_link_ref_300V;
+    voltage_control_input(0).control_reference           <= dc_link_ref_350V;
     voltage_control_input(0).measurement                 <= DC_link_voltage_measurement;
     voltage_control_input(1).measurement                 <= AC_voltage_measurement;
     voltage_control_input(0).control_is_requested        <= trigger_voltage_control;
@@ -269,8 +270,24 @@ begin
 
                     WHEN pfc_tripped => 
                         -- TODO, go to tripped at overcurrent or overvoltage
+                        disable_pfc_modulator(pfc_modulator_data_in);
+                        pfc_control_data_out.pfc_is_ready <= false;
+                        feedback_control_is_enabled <= false;
 
                 end CASE;
+
+                --------------------- overvoltage trip ---------------------
+                if DC_link_voltage_measurement > dc_link_ref_420V then
+                    -- turn off pfc
+                    st_pfc_control_state := pfc_tripped;
+                end if;
+
+                --------------------- overcurrent trip ---------------------
+                -- if pfc_I1_measurement > dc_link_ref_420V then
+                --     -- turn off pfc
+                --     st_pfc_control_state := pfc_tripped;
+                -- end if;
+
             end if; -- rstn
         end if; --rising_edge
     end process pfc_control;	

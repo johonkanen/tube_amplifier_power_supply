@@ -98,7 +98,7 @@ begin
     feedback_control_data_in(0) <= (feedback_control_is_enabled => feedback_control_is_enabled,
                                    measurement                  => llc_voltage,
                                    control_is_requested         => trigger_llc_control,
-                                   control_reference            => heater_ref_5v1);
+                                   control_reference            => heater_ref_5v7);
 
     u_feedback_control : feedback_control
     generic map(number_of_measurements => 1)

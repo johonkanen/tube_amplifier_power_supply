@@ -67,10 +67,6 @@ begin
                         control_error := 1000;
                     end if;
 
-                    if control_error < -1000 then
-                        control_error := -1000;
-                    end if;
-
                     if control_is_requested and 
                         feedback_control_data_in(0).feedback_control_is_enabled then
                         increment(process_counter);

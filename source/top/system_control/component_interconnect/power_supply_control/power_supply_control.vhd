@@ -100,9 +100,9 @@ begin
 
                         enable_llc(llc_control_data_in);
                         st_power_supply_sequencer := start_llc;
-                        if llc_is_ready(llc_control_data_out) then
-                            st_power_supply_sequencer := start_dhb;
-                        end if;
+                        -- if llc_is_ready(llc_control_data_out) then
+                        --     st_power_supply_sequencer := start_dhb;
+                        -- end if;
 
                     WHEN start_dhb =>
 

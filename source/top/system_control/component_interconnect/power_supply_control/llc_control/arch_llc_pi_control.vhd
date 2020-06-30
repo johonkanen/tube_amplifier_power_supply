@@ -29,9 +29,9 @@ architecture arch_llc_pi_control of feedback_control is
     signal pi_out : int18;
 
     constant pi_saturate_high : int18 := 32768;
-    constant pi_saturate_low : int18  := 18359;
+    constant pi_saturate_low : int18  := 0;
 
-    constant kp : int18 := 22e2;
+    constant kp : int18 := 7e3;
     constant ki : int18 := 200;
 
 begin
@@ -61,42 +61,47 @@ begin
 
                         if control_is_requested and 
                            feedback_control_data_in(0).feedback_control_is_enabled then
-
                             increment(process_counter);
-                            alu_mpy(control_error, kp, multiplier_data_in);
                         end if;
 
-                    WHEN 1 => 
-                        increment(process_counter);
-                        alu_mpy(control_error, ki, multiplier_data_in);
+                WHEN 1 => 
+                    alu_mpy(kp,control_error,multiplier_data_in);
+                    increment(process_counter);
 
-                    WHEN 2 => 
-                        increment(process_counter);
+                WHEN 2 => 
+                    increment(process_counter);
+                    alu_mpy(ki,control_error,multiplier_data_in);
 
-                    WHEN 3 => 
-                        increment(process_counter);
-                        pi_out <= mem + get_result(multiplier_data_out,15);
-                        ekp <= get_result(multiplier_data_out,15);
+                WHEN 3 => 
+                    -- pipeline mem calculation
+                    increment(process_counter);
 
-                    WHEN 4 =>
-                        increment(process_counter);
+                WHEN 4 => 
+                    pi_out <= get_result(multiplier_data_out,15) + mem;
+                    ekp <= get_result(multiplier_data_out,15);
+                    increment(process_counter);
 
-                        mem <= mem + get_result(multiplier_data_out,15);
-                        if pi_out >  pi_saturate_high then
-                            pi_out <= pi_saturate_high ;
-                            mem    <= pi_saturate_high -ekp;
-                        end if;
+                WHEN 5 => 
+                    increment(process_counter);
 
-                        if pi_out <  pi_saturate_low then
-                            pi_out <= pi_saturate_low ;
-                            mem    <= pi_saturate_low -ekp;
-                        end if; 
-                    WHEN 5 =>
-                        increment(process_counter);
-                        alu_mpy(pi_out, 846, multiplier_data_in);
+                    mem <= mem + get_result(multiplier_data_out,15);
+                    if pi_out >   pi_saturate_high then
+                        pi_out <= pi_saturate_high;
+                        mem <=    pi_saturate_high - ekp;
+                    end if;
+
+                    if pi_out <   pi_saturate_low then
+                        pi_out <= pi_saturate_low;
+                        mem <=    pi_saturate_low - ekp;
+                    end if;
+
                     WHEN 6 =>
+                        increment(process_counter);
+                        alu_mpy(pi_out, 372, multiplier_data_in);
+
+                    WHEN 7 =>
                         if multiplier_is_ready(multiplier_data_out) then
-                            pi_out <= get_result(multiplier_data_out,15);
+                            pi_out <= get_result(multiplier_data_out,15) + 474;
                             feedback_control_data_out.feedback_is_ready <= true;
                             process_counter := 0;
                         end if;
