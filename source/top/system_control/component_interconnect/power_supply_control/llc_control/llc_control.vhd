@@ -60,13 +60,13 @@ architecture rtl of llc_control is
     signal data_to_multiplier          : multiplier_data_input_group;
     signal feedback_control_is_enabled : boolean;
 
-    constant heater_ref_4v9 : integer := 47e3;
-    constant heater_ref_5v1 : integer := 49151;
-    constant heater_ref_5v3 : integer := 51078;
-    constant heater_ref_5v7 : integer := 54933;
-    constant heater_ref_6v0 : integer := 55148;
-    constant heater_ref_6v3 : integer := 57906;
-    constant heater_ref_6v5 : integer := 59744;
+    constant heater_ref_4v9 : integer := 44912;
+    constant heater_ref_5v1 : integer := 46745;
+    constant heater_ref_5v3 : integer := 48578;
+    constant heater_ref_5v7 : integer := 52244;
+    constant heater_ref_6v0 : integer := 54933;
+    constant heater_ref_6v3 : integer := 57744;
+    constant heater_ref_6v5 : integer := 59577;
 
 ------------------------------------------------------------------------
 begin
@@ -98,7 +98,7 @@ begin
     feedback_control_data_in(0) <= (feedback_control_is_enabled => feedback_control_is_enabled,
                                    measurement                  => llc_voltage,
                                    control_is_requested         => trigger_llc_control,
-                                   control_reference            => heater_ref_5v7);
+                                   control_reference            => heater_ref_6v0);
 
     u_feedback_control : feedback_control
     generic map(number_of_measurements => 1)
