@@ -52,13 +52,18 @@ mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/memory_processo
 
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/simple_processor/float_example_program_pkg.vhd")
 
+mcu.add_source_files(ROOT / "source/fpga_communication/hVHDL_fpga_interconnect/interconnect_configuration/data_15_address_15_bit_pkg.vhd")
+mcu.add_source_files(ROOT / "source/fpga_communication/hVHDL_fpga_interconnect/fpga_interconnect_pkg.vhd")
+
 
 mcu.add_source_files(ROOT / "source/hVHDL_dynamic_model_verification_library/simulator_utilities/write_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/supply_model/pfc_model_pkg.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/supply_model/boost_model_pkg.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/supply_model/supply_model_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/supply_model/rtl_model_tube_power_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/supply_model/boost_rtl_tb.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/supply_model/boost_entity_tb.vhd")
 
 dhb = VU.add_library("dhb")
 dhb.add_source_files(ROOT / "source/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd")

@@ -23,7 +23,7 @@ run.setNline(4999)
 df = run.LoadQRAW(["V(vdc)", "I(L1)", "V(sampled_current)"])
 
 # load vhdl simulation data
-vhdl_data = pd.read_csv(path_to_this_file + '/../vunit_out/boost_rtl_tb.dat', delim_whitespace=True)
+vhdl_data = pd.read_csv(path_to_this_file + '/../vunit_out/boost_entity_tb.dat', delim_whitespace=True)
 
 fig1, (axT, axB) = plt.subplots(2,1,sharex=True,constrained_layout=True)
 

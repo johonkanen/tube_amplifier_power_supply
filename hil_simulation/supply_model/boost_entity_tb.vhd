@@ -1,12 +1,3 @@
-
-------------------------------------------------------------------------
-
-LIBRARY ieee  ; 
-    USE ieee.NUMERIC_STD.all  ; 
-    USE ieee.std_logic_1164.all  ; 
-    use ieee.math_real.all;
-    use std.textio.all;
-
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
@@ -14,9 +5,6 @@ LIBRARY ieee  ;
     use std.textio.all;
 
     use work.write_pkg.all;
-
-library vunit_lib;
-context vunit_lib.vunit_context;
 
     use work.multi_port_ram_pkg.all;
 
@@ -33,24 +21,22 @@ context vunit_lib.vunit_context;
 
     use work.boost_model_pkg.all;
 
-entity boost_rtl_tb is
-  generic (runner_cfg : string);
-end;
+    use work.fpga_interconnect_pkg.all;
+entity boost_model is
+    port (
+        simulator_clock : in std_logic	;
 
-architecture vunit_simulation of boost_rtl_tb is
+        bus_to_boost_model   : in fpga_interconnect_record;
+        bus_from_boost_model : out fpga_interconnect_record;
+        
+        real_time : out real 
+    );
+end entity boost_model;
 
 
-    constant clock_period      : time    := 1 ns;
-    
-    signal simulator_clock     : std_logic := '0';
+architecture rtl of boost_model is
     signal simulation_counter  : natural   := 0;
-    -----------------------------------
-    -- simulation specific signals ----
-    ------------------------------------------------------------------------
-
-------------------------------------------------------------------------
     signal realtime   : real := 0.0;
-    constant stoptime : real := 10.0e-3;
 
     constant initial_voltage : real := 100.0;
 
@@ -88,19 +74,9 @@ architecture vunit_simulation of boost_rtl_tb is
 
     signal sequence_counter : natural := 0;
 
+
 begin
-
-------------------------------------------------------------------------
-    simtime : process
-    begin
-        test_runner_setup(runner, runner_cfg);
-        wait until realtime > stoptime;
-        test_runner_cleanup(runner); -- Simulation ends here
-        wait;
-    end process simtime;	
-
-    simulator_clock <= not simulator_clock after clock_period/2.0;
-------------------------------------------------------------------------
+    real_time <= realtime;
 
     stimulus : process(simulator_clock)
 
@@ -113,7 +89,7 @@ begin
         variable used_instruction : t_instruction;
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
-        file file_handler         : text open write_mode is "boost_rtl_tb.dat";
+        file file_handler         : text open write_mode is "boost_entity_tb.dat";
 
 
     begin
@@ -220,4 +196,65 @@ begin
     ram_read_3_data_out      ,
     ram_write_port);
 ------------------------------------------------------------------------
+
+
+end rtl;
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+LIBRARY ieee  ; 
+    USE ieee.NUMERIC_STD.all  ; 
+    USE ieee.std_logic_1164.all  ; 
+    use ieee.math_real.all;
+
+library vunit_lib;
+context vunit_lib.vunit_context;
+
+    use work.fpga_interconnect_pkg.all;
+
+entity boost_entity_tb is
+  generic (runner_cfg : string);
+end;
+
+architecture vunit_simulation of boost_entity_tb is
+
+    constant clock_period      : time    := 1 ns;
+    constant stoptime : real := 10.0e-3;
+    
+    signal simulator_clock     : std_logic := '0';
+    -----------------------------------
+    -- simulation specific signals ----
+    ------------------------------------------------------------------------
+
+    signal realtime   : real := 0.0;
+    signal bus_from_stimulus : fpga_interconnect_record := init_fpga_interconnect;
+    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
+
+------------------------------------------------------------------------
+begin
+
+------------------------------------------------------------------------
+    simtime : process
+    begin
+        test_runner_setup(runner, runner_cfg);
+        wait until realtime > stoptime;
+        test_runner_cleanup(runner); -- Simulation ends here
+        wait;
+    end process simtime;	
+
+    simulator_clock <= not simulator_clock after clock_period/2.0;
+------------------------------------------------------------------------
+    stimulus : process(simulator_clock)
+    begin
+        if rising_edge(simulator_clock) then
+            init_bus(bus_from_stimulus);
+        end if; --rising_edge
+    end process stimulus;	
+
+    u_boost_model : entity work.boost_model
+    port map(
+        simulator_clock      => simulator_clock,
+        bus_to_boost_model   => bus_from_stimulus,
+        bus_from_boost_model => bus_from_boost_model,
+        real_time            => realtime);
 end vunit_simulation;
