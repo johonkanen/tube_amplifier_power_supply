@@ -1,6 +1,18 @@
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
+
+package boost_model_entity_pkg is
+
+    type boost_entity_input_record is record
+        duty_0_to_1 : unsigned(15 downto 0);
+    end record;
+
+end package boost_model_entity_pkg;
+
+LIBRARY ieee  ; 
+    USE ieee.NUMERIC_STD.all  ; 
+    USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
     use std.textio.all;
 
@@ -22,14 +34,17 @@ LIBRARY ieee  ;
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
+
 entity boost_model is
     port (
-        simulator_clock : in std_logic	;
+        simulator_clock        : in std_logic	;
+        bus_to_boost_model     : in fpga_interconnect_record;
+        bus_from_boost_model   : out fpga_interconnect_record;
+        duty_0_to_1            : in natural range 0 to 2**16-1;
+        input_voltage_0_to_512 : in natural range 0 to 2**16-1;
 
-        bus_to_boost_model   : in fpga_interconnect_record;
-        bus_from_boost_model : out fpga_interconnect_record;
-        
-        real_time : out real 
+        program_ready        : out boolean;
+        real_time            : out real
     );
 end entity boost_model;
 
@@ -60,7 +75,6 @@ architecture rtl of boost_model is
     signal counter  : natural range 0 to 7 := 7;
     signal counter2 : natural range 0 to 7 := 7;
 
-    signal result1 : real := 0.0;
     signal result2 : real := 0.0;
     signal result3 : real := 0.0;
 
@@ -73,7 +87,6 @@ architecture rtl of boost_model is
     signal ready_pipeline : std_logic_vector(2 downto 0) := (others => '0');
 
     signal sequence_counter : natural := 0;
-
 
 begin
     real_time <= realtime;
@@ -98,6 +111,8 @@ begin
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
             end if;
+
+            init_bus(bus_from_boost_model);
 
             --------------------
             create_simple_processor (
@@ -136,6 +151,7 @@ begin
 
             ------------------------------------------------------------------------
             ------------------------------------------------------------------------
+
             if simulation_counter = 0 then
                 request_processor(self, 128);
                 realtime <= realtime + timestep;
@@ -153,29 +169,24 @@ begin
                 boost_model := calculate_boost(boost_model, ref_duty, ref_load_current, ref_input_voltage);
                 write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 request_processor(self, 128);
-                CASE sequence_counter is
-                    WHEN 0 =>
-                        if realtime > 2.0e-3 then
-                            ref_duty := 0.25;
-                            write_data_to_ram(ram_write_port, duty, to_std_logic_vector(to_float(ref_duty)));
 
-                            sequence_counter <= sequence_counter + 1;
-                        end if;
-                    WHEN 1 =>
-                        if realtime > 4.0e-3 then
-                            ref_input_voltage := 120.0;
-                            write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(to_float(ref_input_voltage)));
-                            sequence_counter <= sequence_counter + 1;
-                        end if;
-                    WHEN 2 =>
-                        if realtime > 6.0e-3 then
-                            ref_load_current := -10.0;
-                            write_data_to_ram(ram_write_port, iload, to_std_logic_vector(to_float(ref_load_current)));
-                            sequence_counter <= sequence_counter + 1;
-                        end if;
-                    WHEN others => --do nothing
-                end CASE;
+                ref_duty := real(duty_0_to_1)/2.0**15;
+                write_data_to_ram(ram_write_port, duty, to_std_logic_vector(to_float(ref_duty)));
+                sequence_counter <= 0;
+
             end if;
+
+            CASE sequence_counter is
+                WHEN 0 =>
+                        ref_input_voltage := real(input_voltage_0_to_512) / 2.0**7;
+                        write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(to_float(ref_input_voltage)));
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 1 =>
+                        /* ref_load_current := -10.0; */
+                        /* write_data_to_ram(ram_write_port, iload, to_std_logic_vector(to_float(ref_load_current))); */
+                        sequence_counter <= sequence_counter + 1;
+                WHEN others => --do nothing
+            end CASE;
 
 
         end if; -- rising_edge
@@ -211,6 +222,7 @@ library vunit_lib;
 context vunit_lib.vunit_context;
 
     use work.fpga_interconnect_pkg.all;
+    use work.real_to_fixed_pkg.all;
 
 entity boost_entity_tb is
   generic (runner_cfg : string);
@@ -227,8 +239,14 @@ architecture vunit_simulation of boost_entity_tb is
     ------------------------------------------------------------------------
 
     signal realtime   : real := 0.0;
-    signal bus_from_stimulus : fpga_interconnect_record := init_fpga_interconnect;
+
+    signal bus_from_stimulus    : fpga_interconnect_record := init_fpga_interconnect;
     signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
+
+    signal processor_ready : boolean := false;
+
+    signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
+    signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := integer(100.0 * 2.0**7);
 
 ------------------------------------------------------------------------
 begin
@@ -244,17 +262,37 @@ begin
 
     simulator_clock <= not simulator_clock after clock_period/2.0;
 ------------------------------------------------------------------------
+
     stimulus : process(simulator_clock)
+
+        constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => -10.0, bit_width => 16, number_of_fractional_bits => 15-7);
+        constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0, bit_width => 16, number_of_fractional_bits => 15-7);
     begin
         if rising_edge(simulator_clock) then
             init_bus(bus_from_stimulus);
+            if realtime > 2.0e-3 then
+                write_data_to_address(bus_from_stimulus, 1, load_10a);
+                duty_0_to_1 <= integer(0.25*2.0**15);
+            end if;
+
+            if realtime > 4.0e-3 then
+                write_data_to_address(bus_from_stimulus, 1, load_10a);
+                input_voltage_0_to_512 <= integer(120*2.0**7);
+            end if;
         end if; --rising_edge
     end process stimulus;	
+------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
     port map(
-        simulator_clock      => simulator_clock,
-        bus_to_boost_model   => bus_from_stimulus,
-        bus_from_boost_model => bus_from_boost_model,
+        simulator_clock        => simulator_clock      ,
+        bus_to_boost_model     => bus_from_stimulus    ,
+        bus_from_boost_model   => bus_from_boost_model ,
+        duty_0_to_1            => duty_0_to_1          ,
+        input_voltage_0_to_512 => input_voltage_0_to_512,
+
+
+        program_ready        => processor_ready      ,
         real_time            => realtime);
+------------------------------------------------------------------------
 end vunit_simulation;
