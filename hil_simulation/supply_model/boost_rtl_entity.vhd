@@ -21,6 +21,7 @@ LIBRARY ieee  ;
     use work.fpga_interconnect_pkg.all;
     use work.float_to_integer_converter_pkg.all;
     use work.float_multiplier_pkg.all;
+    use work.float_arithmetic_operations_pkg.all;
 
 entity boost_model is
     port (
@@ -68,19 +69,21 @@ architecture rtl of boost_model is
     signal float_to_integer_converter : float_to_integer_converter_record := init_float_to_integer_converter;
     signal float_multiplier : float_multiplier_record := init_float_multiplier;
     signal float_to_int_counter : natural := 0;
+    signal int_to_float_counter : natural := 0;
+    signal int_to_float_ready_counter : natural := 0;
 
+    signal float_duty : float_record := to_float(0.0);
+    signal float_load_current : float_record := to_float(0.0);
+    signal float_input_voltage : float_record := to_float(0.0);
+    signal measured_current : integer range -2**15 to 2**15-1 := 0; 
+    signal measured_voltage : integer range -2**15 to 2**15-1 := 0;
 
 begin
     program_ready <= program_is_ready(self);
+    rtl_current <= measured_current;
+    rtl_voltage <= measured_voltage;
 
     stimulus : process(clock)
-
-        variable ref_input_voltage : real := 100.0;
-        variable ref_load_current  : real := 0.0;
-        variable ref_duty          : real := 0.5;
-
-        variable inductor_current : real := 0.0;
-        variable dc_link_voltage  : real := initial_voltage;
 
         variable used_instruction : t_instruction;
 
@@ -92,6 +95,8 @@ begin
             connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 1 , load_current_from_bus);
             connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 2 , voltage_from_bus);
             connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 3 , duty_0_to_1);
+            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 4 , measured_current);
+            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 5 , measured_voltage);
 
             --------------------
             create_simple_processor (
@@ -135,12 +140,12 @@ begin
              case float_to_int_counter is
                  WHEN 0 => 
                      if float_to_int_conversion_is_ready(float_to_integer_converter) then
-                         rtl_voltage <= get_converted_integer(float_to_integer_converter);
+                         measured_voltage <= get_converted_integer(float_to_integer_converter);
                          float_to_int_counter <= float_to_int_counter + 1;
                      end if;
                  WHEN 1 => 
                      if float_to_int_conversion_is_ready(float_to_integer_converter) then
-                         rtl_current <= get_converted_integer(float_to_integer_converter);
+                         measured_current <= get_converted_integer(float_to_integer_converter);
                          float_to_int_counter <= float_to_int_counter + 1;
                      end if;
                  WHEN others => 
@@ -158,13 +163,40 @@ begin
             ready_pipeline <= ready_pipeline(ready_pipeline'left-1 downto 0) & '0';
             if program_is_ready(self) then
                 ready_pipeline(0) <= '1';
+                int_to_float_counter <= 1;
+                int_to_float_ready_counter <= 0;
+                convert_integer_to_float(float_to_integer_converter, voltage_from_bus, 7);
             end if;
+
+            CASE int_to_float_counter is
+                WHEN 1 =>
+                    convert_integer_to_float(float_to_integer_converter, load_current_from_bus, 11);
+                    int_to_float_counter <= int_to_float_counter + 1;
+                WHEN 2 =>
+                    convert_integer_to_float(float_to_integer_converter, duty_0_to_1, 15);
+                    int_to_float_counter <= int_to_float_counter + 1;
+                WHEN others => -- do nothing
+            end CASE;
+
+            if int_to_float_conversion_is_ready(float_to_integer_converter) then
+                CASE int_to_float_ready_counter is
+                    WHEN 0 =>
+                        float_input_voltage <= get_converted_float(float_to_integer_converter);
+                        int_to_float_ready_counter <= int_to_float_ready_counter + 1;
+                    WHEN 1 =>
+                        float_load_current <= -get_converted_float(float_to_integer_converter);
+                        int_to_float_ready_counter <= int_to_float_ready_counter + 1;
+                    WHEN 2 =>
+                        float_duty <= get_converted_float(float_to_integer_converter);
+                        int_to_float_ready_counter <= int_to_float_ready_counter + 1;
+                    WHEN others => --do nothing
+                end CASE;
+            end if; 
+                    
 
             if ready_pipeline(ready_pipeline'left) = '1' then
                 request_processor(self, 128);
-
-                ref_duty := real(duty_0_to_1)/2.0**15;
-                write_data_to_ram(ram_write_port, duty, to_std_logic_vector(to_float(ref_duty)));
+                write_data_to_ram(ram_write_port, duty, to_std_logic_vector(float_duty));
                 sequence_counter <= 0;
 
             end if;
@@ -197,12 +229,10 @@ begin
                         sequence_counter <= sequence_counter + 1;
                 WHEN 12 =>
                         sequence_counter <= sequence_counter + 1;
-                        ref_input_voltage := real(voltage_from_bus) / 2.0**7;
-                        write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(to_float(ref_input_voltage)));
+                        write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(float_input_voltage));
                 WHEN 13 =>
                         sequence_counter <= sequence_counter + 1;
-                        ref_load_current := -real(load_current_from_bus)/2.0**11;
-                        write_data_to_ram(ram_write_port, iload, to_std_logic_vector(to_float(ref_load_current)));
+                        write_data_to_ram(ram_write_port, iload, to_std_logic_vector(float_load_current));
                         sequence_counter <= sequence_counter + 1;
                 WHEN others => --do nothing
             end CASE;
