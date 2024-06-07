@@ -1,18 +1,6 @@
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
-
-package boost_model_entity_pkg is
-
-    type boost_entity_input_record is record
-        duty_0_to_1 : unsigned(15 downto 0);
-    end record;
-
-end package boost_model_entity_pkg;
-
-LIBRARY ieee  ; 
-    USE ieee.NUMERIC_STD.all  ; 
-    USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
     use std.textio.all;
 
@@ -37,9 +25,13 @@ LIBRARY ieee  ;
 
 entity boost_model is
     port (
-        simulator_clock        : in std_logic	;
-        bus_to_boost_model     : in fpga_interconnect_record;
-        bus_from_boost_model   : out fpga_interconnect_record;
+        simulator_clock      : in std_logic	;
+        bus_to_boost_model   : in fpga_interconnect_record;
+        bus_from_boost_model : out fpga_interconnect_record;
+        rtl_current          : out real;
+        rtl_voltage          : out real;
+        ref_current          : out real;
+        ref_voltage          : out real;
 
         program_ready        : out boolean;
         real_time            : out real
@@ -93,6 +85,13 @@ architecture rtl of boost_model is
 begin
     real_time <= realtime;
 
+
+    rtl_current <= result2;
+    rtl_voltage <= result3;
+    ref_current <= 0.0;
+    ref_voltage <= 0.0;
+
+
     stimulus : process(simulator_clock)
 
         variable boost_model : boost_model_record := (0.0, initial_voltage);
@@ -108,6 +107,11 @@ begin
 
 
     begin
+
+
+
+
+
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
@@ -278,6 +282,11 @@ architecture vunit_simulation of boost_entity_tb is
     signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
     signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := integer(100.0 * 2.0**7);
 
+    signal rtl_current : real := 0.0;
+    signal rtl_voltage : real := 0.0;
+    signal ref_current : real := 0.0;
+    signal ref_voltage : real := 0.0;
+
 ------------------------------------------------------------------------
 begin
 
@@ -312,6 +321,8 @@ begin
             if realtime > 6.0e-3 then
                 write_data_to_address(bus_from_stimulus, 1, load_10a);
             end if;
+
+            /* if program_is_ready */
         end if; --rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
@@ -321,6 +332,12 @@ begin
         simulator_clock        => simulator_clock      ,
         bus_to_boost_model     => bus_from_stimulus    ,
         bus_from_boost_model   => bus_from_boost_model ,
+
+        rtl_current => rtl_current,
+        rtl_voltage => rtl_voltage,
+        ref_current => ref_current,
+        ref_voltage => ref_voltage,
+
 
         program_ready        => processor_ready      ,
         real_time            => realtime);
