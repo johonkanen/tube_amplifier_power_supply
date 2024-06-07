@@ -40,8 +40,6 @@ entity boost_model is
         simulator_clock        : in std_logic	;
         bus_to_boost_model     : in fpga_interconnect_record;
         bus_from_boost_model   : out fpga_interconnect_record;
-        duty_0_to_1            : in natural range 0 to 2**16-1;
-        input_voltage_0_to_512 : in natural range 0 to 2**16-1;
 
         program_ready        : out boolean;
         real_time            : out real
@@ -86,7 +84,11 @@ architecture rtl of boost_model is
 
     signal ready_pipeline : std_logic_vector(2 downto 0) := (others => '0');
 
-    signal sequence_counter : natural := 0;
+    signal sequence_counter      : natural := 0;
+    signal load_current_from_bus : natural range 0 to 2**16-1 := 0;
+    signal voltage_from_bus      : natural range 0 to 2**16-1 := integer(100*2.0**7);
+    signal duty_0_to_1           : natural range 0 to 2**16-1 := integer(0.5*2.0**15);
+
 
 begin
     real_time <= realtime;
@@ -113,6 +115,9 @@ begin
             end if;
 
             init_bus(bus_from_boost_model);
+            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 1 , load_current_from_bus);
+            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 2 , voltage_from_bus);
+            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 3 , duty_0_to_1);
 
             --------------------
             create_simple_processor (
@@ -178,12 +183,37 @@ begin
 
             CASE sequence_counter is
                 WHEN 0 =>
-                        ref_input_voltage := real(input_voltage_0_to_512) / 2.0**7;
-                        write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(to_float(ref_input_voltage)));
                         sequence_counter <= sequence_counter + 1;
                 WHEN 1 =>
-                        /* ref_load_current := -10.0; */
-                        /* write_data_to_ram(ram_write_port, iload, to_std_logic_vector(to_float(ref_load_current))); */
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 2 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 3 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 4 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 5 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 6 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 7 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 8 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 9 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 10 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 11 =>
+                        sequence_counter <= sequence_counter + 1;
+                WHEN 12 =>
+                        sequence_counter <= sequence_counter + 1;
+                        ref_input_voltage := real(voltage_from_bus) / 2.0**7;
+                        write_data_to_ram(ram_write_port, input_voltage_addr, to_std_logic_vector(to_float(ref_input_voltage)));
+                WHEN 13 =>
+                        sequence_counter <= sequence_counter + 1;
+                        ref_load_current := -real(load_current_from_bus)/2.0**11;
+                        write_data_to_ram(ram_write_port, iload, to_std_logic_vector(to_float(ref_load_current)));
                         sequence_counter <= sequence_counter + 1;
                 WHEN others => --do nothing
             end CASE;
@@ -265,19 +295,22 @@ begin
 
     stimulus : process(simulator_clock)
 
-        constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => -10.0, bit_width => 16, number_of_fractional_bits => 15-7);
+        constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => 10.0, bit_width => 16, number_of_fractional_bits => 11);
         constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0, bit_width => 16, number_of_fractional_bits => 15-7);
     begin
         if rising_edge(simulator_clock) then
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
-                write_data_to_address(bus_from_stimulus, 1, load_10a);
-                duty_0_to_1 <= integer(0.25*2.0**15);
+                write_data_to_address(bus_from_stimulus, 3, integer(0.25*2.0**15));
             end if;
 
             if realtime > 4.0e-3 then
-                write_data_to_address(bus_from_stimulus, 1, load_10a);
+                write_data_to_address(bus_from_stimulus, 2, integer(120*2.0**7));
                 input_voltage_0_to_512 <= integer(120*2.0**7);
+            end if;
+
+            if realtime > 6.0e-3 then
+                write_data_to_address(bus_from_stimulus, 1, load_10a);
             end if;
         end if; --rising_edge
     end process stimulus;	
@@ -288,9 +321,6 @@ begin
         simulator_clock        => simulator_clock      ,
         bus_to_boost_model     => bus_from_stimulus    ,
         bus_from_boost_model   => bus_from_boost_model ,
-        duty_0_to_1            => duty_0_to_1          ,
-        input_voltage_0_to_512 => input_voltage_0_to_512,
-
 
         program_ready        => processor_ready      ,
         real_time            => realtime);
