@@ -25,20 +25,17 @@ entity boost_model is
         simulator_clock      : in std_logic	;
         bus_to_boost_model   : in fpga_interconnect_record;
         bus_from_boost_model : out fpga_interconnect_record;
+
         rtl_current          : out real;
         rtl_voltage          : out real;
-        ref_current          : out real;
-        ref_voltage          : out real;
 
-        program_ready        : out boolean;
-        real_time            : out real
+        program_ready        : out boolean
     );
 end entity boost_model;
 
 
 architecture rtl of boost_model is
     signal simulation_counter  : natural   := 0;
-    signal realtime   : real := 0.0;
 
     constant initial_voltage : real := 100.0;
 
@@ -57,19 +54,7 @@ architecture rtl of boost_model is
     signal ram_read_3_data_out      : ram_read_out_record ;
     signal ram_write_port           : ram_write_in_record ;
 
-    signal processor_is_ready : boolean := false;
-
-    signal counter  : natural range 0 to 7 := 7;
-    signal counter2 : natural range 0 to 7 := 7;
-
-    signal result2 : real := 0.0;
-    signal result3 : real := 0.0;
-
     signal float_alu : float_alu_record := init_float_alu;
-
-
-    signal testi1 : real := 0.0;
-    signal testi2 : real := 0.0;
 
     signal ready_pipeline : std_logic_vector(2 downto 0) := (others => '0');
 
@@ -80,12 +65,9 @@ architecture rtl of boost_model is
 
 
 begin
-    real_time <= realtime;
     program_ready <= program_is_ready(self);
 
     stimulus : process(simulator_clock)
-
-        variable boost_model : boost_model_record := (0.0, initial_voltage);
 
         variable ref_input_voltage : real := 100.0;
         variable ref_load_current  : real := 0.0;
@@ -94,7 +76,6 @@ begin
         variable used_instruction : t_instruction;
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
-
 
     begin
 
@@ -134,11 +115,11 @@ begin
              ram_write_port          );
 
              if ram_write_port.write_requested = '1' and ram_write_port.address = udc then
-                 result3 <= to_real(to_float(ram_write_port.data));
+                 rtl_voltage <= to_real(to_float(ram_write_port.data));
              end if;
 
              if ram_write_port.write_requested = '1' and ram_write_port.address = current_addr then
-                 result2 <= to_real(to_float(ram_write_port.data));
+                 rtl_current <= to_real(to_float(ram_write_port.data));
              end if;
 
             ------------------------------------------------------------------------
@@ -146,8 +127,6 @@ begin
 
             if simulation_counter = 0 then
                 request_processor(self, 128);
-                realtime <= realtime + timestep;
-                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             ready_pipeline <= ready_pipeline(ready_pipeline'left-1 downto 0) & '0';
@@ -156,8 +135,6 @@ begin
             end if;
 
             if ready_pipeline(ready_pipeline'left) = '1' then
-                realtime <= realtime + timestep;
-                boost_model := calculate_boost(boost_model, ref_duty, ref_load_current, ref_input_voltage);
                 request_processor(self, 128);
 
                 ref_duty := real(duty_0_to_1)/2.0**15;
@@ -202,10 +179,6 @@ begin
                         sequence_counter <= sequence_counter + 1;
                 WHEN others => --do nothing
             end CASE;
-            rtl_current <= result2;
-            rtl_voltage <= result3;
-            ref_voltage <= boost_model.dc_link_voltage; 
-            ref_current <= boost_model.inductor_current;
 
 
         end if; -- rising_edge
@@ -244,6 +217,7 @@ context vunit_lib.vunit_context;
     use work.fpga_interconnect_pkg.all;
     use work.real_to_fixed_pkg.all;
     use work.write_pkg.all;
+    use work.boost_model_pkg.all;
 
 entity boost_entity_tb is
   generic (runner_cfg : string);
@@ -295,29 +269,47 @@ begin
         constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => 10.0, bit_width => 16, number_of_fractional_bits => 11);
         constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0, bit_width => 16, number_of_fractional_bits => 15-7);
         file file_handler         : text open write_mode is "boost_entity_tb.dat";
+
+
+        variable ref_input_voltage : real := 100.0;
+        variable ref_load_current  : real := 0.0;
+        variable ref_duty          : real := 0.5;
+
+        constant initial_voltage : real := 100.0;
+
+        variable inductor_current : real := 0.0;
+        variable dc_link_voltage  : real := initial_voltage;
+        variable boost_model : boost_model_record := (0.0, initial_voltage);
+
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
+                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
-                write_data_to_address(bus_from_stimulus, 3, integer(0.25*2.0**15));
+                ref_duty := 0.25;
+                write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
             end if;
 
             if realtime > 4.0e-3 then
-                write_data_to_address(bus_from_stimulus, 2, integer(120*2.0**7));
+                ref_input_voltage := 120.0;
+                write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7));
                 input_voltage_0_to_512 <= integer(120*2.0**7);
             end if;
 
             if realtime > 6.0e-3 then
-                write_data_to_address(bus_from_stimulus, 1, load_10a);
+                ref_load_current := -10.0;
+                write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11));
             end if;
 
             if processor_ready then
-                write_to(file_handler,(realtime, rtl_voltage, rtl_current, ref_voltage, ref_current));
+                write_to(file_handler,(realtime, rtl_voltage, rtl_current, boost_model.dc_link_voltage, boost_model.inductor_current));
+                realtime <= realtime + work.boost_model_pkg.timestep;
+                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
         end if; --rising_edge
     end process stimulus;	
@@ -331,11 +323,7 @@ begin
 
         rtl_current => rtl_current,
         rtl_voltage => rtl_voltage,
-        ref_current => ref_current,
-        ref_voltage => ref_voltage,
 
-
-        program_ready        => processor_ready      ,
-        real_time            => realtime);
+        program_ready        => processor_ready);
 ------------------------------------------------------------------------
 end vunit_simulation;
