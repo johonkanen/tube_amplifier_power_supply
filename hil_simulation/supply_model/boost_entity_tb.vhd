@@ -2,9 +2,6 @@ LIBRARY ieee  ;
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
-    use std.textio.all;
-
-    use work.write_pkg.all;
 
     use work.multi_port_ram_pkg.all;
 
@@ -84,13 +81,7 @@ architecture rtl of boost_model is
 
 begin
     real_time <= realtime;
-
-
-    rtl_current <= result2;
-    rtl_voltage <= result3;
-    ref_current <= 0.0;
-    ref_voltage <= 0.0;
-
+    program_ready <= program_is_ready(self);
 
     stimulus : process(simulator_clock)
 
@@ -103,20 +94,12 @@ begin
         variable used_instruction : t_instruction;
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
-        file file_handler         : text open write_mode is "boost_entity_tb.dat";
 
 
     begin
 
-
-
-
-
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
-            if simulation_counter = 0 then
-                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-            end if;
 
             init_bus(bus_from_boost_model);
             connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 1 , load_current_from_bus);
@@ -164,7 +147,6 @@ begin
             if simulation_counter = 0 then
                 request_processor(self, 128);
                 realtime <= realtime + timestep;
-                write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
@@ -176,7 +158,6 @@ begin
             if ready_pipeline(ready_pipeline'left) = '1' then
                 realtime <= realtime + timestep;
                 boost_model := calculate_boost(boost_model, ref_duty, ref_load_current, ref_input_voltage);
-                write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 request_processor(self, 128);
 
                 ref_duty := real(duty_0_to_1)/2.0**15;
@@ -221,6 +202,10 @@ begin
                         sequence_counter <= sequence_counter + 1;
                 WHEN others => --do nothing
             end CASE;
+            rtl_current <= result2;
+            rtl_voltage <= result3;
+            ref_voltage <= boost_model.dc_link_voltage; 
+            ref_current <= boost_model.inductor_current;
 
 
         end if; -- rising_edge
@@ -251,12 +236,14 @@ LIBRARY ieee  ;
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
+    use std.textio.all;
 
 library vunit_lib;
 context vunit_lib.vunit_context;
 
     use work.fpga_interconnect_pkg.all;
     use work.real_to_fixed_pkg.all;
+    use work.write_pkg.all;
 
 entity boost_entity_tb is
   generic (runner_cfg : string);
@@ -266,6 +253,7 @@ architecture vunit_simulation of boost_entity_tb is
 
     constant clock_period      : time    := 1 ns;
     constant stoptime : real := 10.0e-3;
+    signal simulation_counter  : natural   := 0;
     
     signal simulator_clock     : std_logic := '0';
     -----------------------------------
@@ -306,8 +294,14 @@ begin
 
         constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => 10.0, bit_width => 16, number_of_fractional_bits => 11);
         constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0, bit_width => 16, number_of_fractional_bits => 15-7);
+        file file_handler         : text open write_mode is "boost_entity_tb.dat";
     begin
         if rising_edge(simulator_clock) then
+            simulation_counter <= simulation_counter + 1;
+            if simulation_counter = 0 then
+                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
+            end if;
+
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
                 write_data_to_address(bus_from_stimulus, 3, integer(0.25*2.0**15));
@@ -322,7 +316,9 @@ begin
                 write_data_to_address(bus_from_stimulus, 1, load_10a);
             end if;
 
-            /* if program_is_ready */
+            if processor_ready then
+                write_to(file_handler,(realtime, rtl_voltage, rtl_current, ref_voltage, ref_current));
+            end if;
         end if; --rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
