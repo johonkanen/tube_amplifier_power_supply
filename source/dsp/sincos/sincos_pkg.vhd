@@ -10,18 +10,18 @@ package sincos_pkg is
     end record;
     
     type sincos_data_input_group is record
-        angle_uint16_pirad : work.multiplier_pkg.int18;
+        angle_uint16_pirad : work.multiplier_entity_pkg.int18;
         sincos_is_requested : boolean;
-        -- multiplier_data_out : work.multiplier_pkg.multiplier_data_output_group;
+        -- multiplier_data_out : work.multiplier_entity_pkg.multiplier_data_output_group;
     end record;
     
     type sincos_data_output_group is record
         sincos_is_ready : boolean;
         sincos_is_busy : boolean;
 
-        sine : work.multiplier_pkg.int18;
-        cosine : work.multiplier_pkg.int18;
-        -- multiplier_data_in  : work.multiplier_pkg.multiplier_data_input_group;
+        sine : work.multiplier_entity_pkg.int18;
+        cosine : work.multiplier_entity_pkg.int18;
+        -- multiplier_data_in  : work.multiplier_entity_pkg.multiplier_data_input_group;
     end record;
     
     component sincos is
@@ -36,7 +36,7 @@ package sincos_pkg is
         return boolean;
 ------------------------------------------------------------------------
     function get_sine ( sincos_out : sincos_data_output_group)
-        return work.multiplier_pkg.int18;
+        return work.multiplier_entity_pkg.int18;
 ------------------------------------------------------------------------
 end package sincos_pkg;
 
@@ -56,7 +56,7 @@ package body sincos_pkg is
     function get_sine
     (
         sincos_out : sincos_data_output_group
-    )return work.multiplier_pkg.int18 is 
+    )return work.multiplier_entity_pkg.int18 is 
     begin
         return sincos_out.sine;
     end function get_sine;

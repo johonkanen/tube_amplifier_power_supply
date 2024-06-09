@@ -10,7 +10,7 @@ library common_library;
     use common_library.typedefines_pkg.all;
 
     use work.pfc_control_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
     use work.pfc_modulator_pkg.all;
     use work.feedback_control_pkg.all;
 

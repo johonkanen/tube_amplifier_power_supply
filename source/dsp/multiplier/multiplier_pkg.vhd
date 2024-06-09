@@ -2,7 +2,7 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-package multiplier_pkg is
+package multiplier_entity_pkg is
 
     subtype int18 is integer range -2**17 to 2**17-1;
     subtype sign18 is signed(17 downto 0);
@@ -63,7 +63,7 @@ package multiplier_pkg is
 ------------------------------------------------------------------------
     procedure init_multiplier ( signal multiplier_in : out multiplier_data_input_group);
 ------------------------------------------------------------------------
-end package multiplier_pkg;
+end package multiplier_entity_pkg;
 ------------------------------------------------------------------------
     -- signal multiplier_clocks   : multiplier_clock_group;
     -- signal multiplier_data_in  : multiplier_data_input_group;

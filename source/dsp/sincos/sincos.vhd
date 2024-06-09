@@ -3,7 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
     use work.sincos_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
 
 entity sincos is
     port 

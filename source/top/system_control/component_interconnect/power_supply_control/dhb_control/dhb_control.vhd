@@ -14,7 +14,7 @@ library common_library;
 
     use work.dhb_control_pkg.all;
     use work.phase_modulator_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
 
 entity dhb_control is
     generic (g_carrier_max_value : integer);

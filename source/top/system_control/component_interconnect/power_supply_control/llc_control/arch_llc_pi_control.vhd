@@ -3,7 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
     use work.feedback_control_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
 
 -- entity feedback_control is
 --     generic(number_of_measurements : natural);

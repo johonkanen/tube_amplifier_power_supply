@@ -3,7 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
     use work.feedback_control_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
 
     -- signal feedback_control_clocks   : feedback_control_clock_group;
     -- signal feedback_control_data_in  : feedback_measurements(0 to number_of_measurements -1);

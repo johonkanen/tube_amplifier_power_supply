@@ -1,6 +1,6 @@
 
 
-package body multiplier_pkg is
+package body multiplier_entity_pkg is
 ------------------------------------------------------------------------
     procedure enable_multiplier
     (
@@ -86,4 +86,4 @@ package body multiplier_pkg is
                         + mpy_out.multiplier_result(radix -1);
     end get_result;
 ------------------------------------------------------------------------
-end package body multiplier_pkg;
+end package body multiplier_entity_pkg;

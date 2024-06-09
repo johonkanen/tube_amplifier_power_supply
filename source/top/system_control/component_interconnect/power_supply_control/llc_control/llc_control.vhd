@@ -13,7 +13,7 @@ library common_library;
     use work.llc_control_pkg.all;
     use work.llc_control_internal_pkg.all;
     use work.llc_modulator_pkg.all;
-    use work.multiplier_pkg.all;
+    use work.multiplier_entity_pkg.all;
     use work.feedback_control_pkg.all;
 
 entity llc_control is
