@@ -18,6 +18,11 @@ architecture rtl of component_interconnect is
     signal bus_from_communications : fpga_interconnect_record;
     signal bus_out : fpga_interconnect_record;
 ------------------------------------------------------------------------
+    signal rtl_current : integer range -2**15 to 2**15-1 := 0;
+    signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
+    signal processor_ready : boolean := false;
+    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
+------------------------------------------------------------------------
 begin
 
     component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
@@ -78,8 +83,21 @@ begin
                 connect_read_only_data_to_address(bus_from_communications, bus_out, interconnect_test_address, 44252);
 
                 bus_to_communications <= bus_out and 
+                                         bus_from_boost_model and 
                                          bus_to_component_interconnect;
             end if;
         end process;
+------------------------------------------------------------------------
+
+    u_boost_model : entity work.boost_model
+    port map(
+        clock        => system_clocks.core_clock          ,
+        bus_to_boost_model     => bus_from_communications ,
+        bus_from_boost_model   => bus_from_boost_model    ,
+
+        rtl_current => rtl_current,
+        rtl_voltage => rtl_voltage,
+
+        program_ready        => processor_ready);
 ------------------------------------------------------------------------
 end rtl;
