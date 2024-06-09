@@ -64,7 +64,7 @@ begin
     component_interconnect_data_out.measurement_interface_data_out <= measurement_interface_data_out;
 ------------------------------------------------------------------------
     measurement_interface_clocks <= (system_clocks.core_clock, system_clocks.core_clock, system_clocks.pll_lock);
-    u_measurement_interface : entity work.measurement_interface 
+    u_measurement_interface : entity onboard_adc_library.measurement_interface 
     port map(
         measurement_interface_clocks,   
         component_interconnect_FPGA_in.measurement_interface_FPGA_in,  

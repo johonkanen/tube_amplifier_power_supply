@@ -62,6 +62,8 @@ proc add_vhdl_file_to_library {vhdl_file library} {
 }
 source $tube_psu_v5_dir/fpga_communication_sources.tcl
 source $tube_psu_v5_dir/list_of_sources.tcl
+add_vhdl_file_to_project $source_folder/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_2_stage_pipe_pkg.vhd
+add_vhdl_file_to_project $source_folder/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_2_stage_pipe_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/top/ecp5_top.vhd
 

@@ -104,25 +104,3 @@ package body measurement_interface_pkg is
     end get_adb_measurement;
 ------------------------------------------------------------------------
 end package body measurement_interface_pkg;
-
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-
-library ieee;
-    use ieee.std_logic_1164.all;
-    use ieee.numeric_std.all;
-
-library onboard_adc_library;
-    use onboard_adc_library.onboard_ad_control_pkg.all;
-    use onboard_adc_library.measurement_interface_pkg.all;
-
-entity measurement_interface is
-    port 
-    (
-        measurement_interface_clocks : in measurement_interface_clock_group; 
-        measurement_interface_FPGA_in : in measurement_interface_FPGA_input_group;
-        measurement_interface_FPGA_out : out measurement_interface_FPGA_output_group; 
-        measurement_interface_data_in : in measurement_interface_data_input_group;
-        measurement_interface_data_out : out measurement_interface_data_output_group
-    );
-end entity;

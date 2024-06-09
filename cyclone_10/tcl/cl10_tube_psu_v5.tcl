@@ -78,6 +78,8 @@ else \
         set_global_assignment -name VHDL_FILE $vhdl_file -library $library
     }
 add_vhdl_file_to_project $source_folder/top/top.vhd
+add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_2_stage_pipe_pkg.vhd
+add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_2_stage_pipe_pkg.vhd
 
 source $source_folder/../list_of_sources.tcl
 source $source_folder/../fpga_communication_sources.tcl
