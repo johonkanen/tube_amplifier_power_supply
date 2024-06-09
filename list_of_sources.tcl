@@ -25,7 +25,6 @@ add_vhdl_file_to_library $source_folder/top/system_control/component_interconnec
 add_vhdl_file_to_library $source_folder/top/system_control/component_interconnect/measurement_interface/measurement_interface.vhd                              onboard_adc_library
 add_vhdl_file_to_library $source_folder/top/system_control/component_interconnect/measurement_interface/psu_measurement_interface_pkg.vhd                      onboard_adc_library
 
-
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_type_definitions/float_word_length_24_bit_pkg.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_type_definitions/float_type_definitions_pkg.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_arithmetic_operations/float_arithmetic_operations_pkg.vhd
@@ -101,4 +100,3 @@ add_vhdl_file_to_project $source_folder/top/system_control/component_interconnec
 add_vhdl_file_to_project $source_folder/top/system_control/system_control_pkg.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/system_control_internal_pkg.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/system_control.vhd 
-
