@@ -51,6 +51,8 @@ package body system_control_pkg is
 ------------------------------------------------------------------------
 end package body system_control_pkg;
 
+------------------------------------------------------------------------
+
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
@@ -59,6 +61,7 @@ library ieee;
     use work.system_control_pkg.all;
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
+    use work.tubepsu_addresses_pkg.all;
     use work.fpga_interconnect_pkg.all;
 
 library common_library;

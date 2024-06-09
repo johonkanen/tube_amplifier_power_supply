@@ -1,23 +1,3 @@
-library ieee;
-    use ieee.std_logic_1164.all;
-    use ieee.std_logic_unsigned.all;
-    use ieee.numeric_std.all;
-
-    use work.led_driver_pkg.all;
-
-entity led_driver is
-    port(
-			led_clk : in std_logic;
-			po3_led1 : out rgb_led;
-			po3_led2 : out rgb_led;
-			po3_led3 : out rgb_led;
-
-            led1_ctrl : in led_counters;
-            led2_ctrl : in led_counters;
-            led3_ctrl : in led_counters
-
-        );
-end led_driver;
 
 architecture rtl of led_driver is
 
