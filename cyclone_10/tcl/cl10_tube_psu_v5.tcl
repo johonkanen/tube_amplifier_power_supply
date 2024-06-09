@@ -78,15 +78,12 @@ else \
         set_global_assignment -name VHDL_FILE $vhdl_file -library $library
     }
 add_vhdl_file_to_project $source_folder/top/top.vhd
-add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_2_stage_pipe_pkg.vhd
-add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_2_stage_pipe_pkg.vhd
+add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_3_stage_pipe_pkg.vhd
+add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_3_stage_pipe_pkg.vhd
 
 source $source_folder/../list_of_sources.tcl
 source $source_folder/../fpga_communication_sources.tcl
 
-	# set_global_assignment -name MIF_FILE $tcl_scripts/../intel_specifics/memory_files/sine_u16x512_halfpi.mif
-	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/memory_files/rom1port_16x512.qip
-	# set_global_assignment -name QIP_FILE $tcl_scripts/../intel_specifics/multiplier/sign_18x18_mult_dsp.qip
 	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/$opts(card_version)_clocks/main_pll.qip
 
 	set_global_assignment -name QIP_FILE $tcl_scripts/../ip_components/fifo/uart_fifo.qip
@@ -99,23 +96,6 @@ source $source_folder/../fpga_communication_sources.tcl
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_pll_wrapper.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_adc_wrapper.vhd
 	set_global_assignment -name VHDL_FILE $source_folder/../cyclone_10/source_cl10/cl10_multiplier_wrapper.vhd
-
-
-    # foreach x [read_sources ../] \
-    # { \
-    #     if {[lsearch -glob $x *measurement_interface*] == 0} \
-    #     { \
-    #         set_global_assignment -name VHDL_FILE $source_folder/$x -library onboard_adc_library
-    #     } \
-    #     elseif {[lsearch -glob $x *common*] == 0} \
-    #     { \
-    #         set_global_assignment -name VHDL_FILE $source_folder/$x -library common_library
-    #     } \
-    #     else \
-    #     { \
-    #         set_global_assignment -name VHDL_FILE $source_folder/$x \
-    #     } 
-    # }
 
 # Make assignments
 	set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.0.2
