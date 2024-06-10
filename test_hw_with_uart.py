@@ -15,30 +15,38 @@ print("system control data : ", uart.request_data_from_address(101))
 number_of_points = 2000
 uart.write_data_to_address(3, 16384);
 
-time.sleep(0.01)
-uart.request_data_stream_from_address(4, number_of_points);
-time.sleep(0.002)
-uart.write_data_to_address(3, 10000);
-time.sleep(0.002)
-uart.write_data_to_address(3, 16384);
-simulated_current = uart.get_streamed_data(number_of_points).astype(np.int16);
+def simulate_data(uart, address_to_stream, number_of_points):
+    uart.write_data_to_address(3, int(0.75*2**15))
+    time.sleep(0.01)
+    uart.request_data_stream_from_address(address_to_stream, number_of_points)
+    uart.write_data_to_address(3, int(0.5*2**15))
+    time.sleep(0.0005)
+    uart.write_data_to_address(3, int(0.25*2**15))
+    time.sleep(0.0005)
+    uart.write_data_to_address(2, int(120*2**7))
+    time.sleep(0.0005)
+    uart.write_data_to_address(1, int(10*2**11))
+    streamed_data = uart.get_streamed_data(number_of_points).astype(np.int16)
+    uart.write_data_to_address(3, int(0.75*2**15))
+    uart.write_data_to_address(2, int(100*2**7))
+    uart.write_data_to_address(1, int(0*2**11))
+    
+    return streamed_data
 
-
-time.sleep(0.01)
-uart.request_data_stream_from_address(5, number_of_points);
-time.sleep(0.002)
-uart.write_data_to_address(3, 10000);
-time.sleep(0.002)
-uart.write_data_to_address(3, 16384);
-simulated_voltage = uart.get_streamed_data(number_of_points).astype(np.int16);
+simulated_current = simulate_data(uart , 4 , 800);
+simulated_voltage = simulate_data(uart , 5 , 800);
 
 
 ad_measurement = uart.stream_data_from_address(102, number_of_points);
 
-(fig, ax) = pyplot.subplots(2, 2)
-ax[0][0].plot(simulated_voltage/2**7) 
-ax[1][0].plot(simulated_current/2**7) 
-ax[0][1].plot(simulated_voltage) 
-ax[1][1].plot(simulated_current) 
+(fig, ax) = pyplot.subplots(2, 1)
+ax[0].plot(simulated_voltage / 2**6, label='Simulated Voltage from fpga')
+ax[0].set_ylabel('Voltage (scaled)')
+ax[0].legend() 
+ax[0].set_xticklabels([])  # Remove x-axis numbers from the top figure 
+
+ax[1].plot(simulated_current / 2**7, label='Simulated Current from fpga')
+ax[1].set_ylabel('Current (scaled)')
+ax[1].legend()  # Show legend for the second plot
 
 pyplot.show()

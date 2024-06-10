@@ -15,6 +15,8 @@ Since the system is relatively complicated, a HIL simulation will be created to 
 
 The HiL simulation will be done using the hVHDL microcode processor libraries in order to run the simulation in floating point. There are various versions of the control hardware available so we will at least run it using Spartan 7 and Cyclone 10 LP.
 
+The HiL simulation is implemented in floating point and calculations are run using microprogramming. The design of the microprogram processor is documented in a [series of blog posts about processor and its software design in VHDL](https://hardwaredescriptions.com/category/processor-design/)
+
 The C++ sources for QSPICE model verification requires CMake and the .dll needs to be generated with 32bit platform. 
 Example using Visual Studio compiler
 
