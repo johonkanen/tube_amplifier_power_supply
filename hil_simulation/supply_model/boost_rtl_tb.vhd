@@ -164,7 +164,7 @@ begin
                 request_processor(self, 128);
                 realtime <= realtime + timestep;
                 write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
-                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             ready_pipeline <= ready_pipeline(ready_pipeline'left-1 downto 0) & '0';
@@ -174,7 +174,7 @@ begin
 
             if ready_pipeline(ready_pipeline'left) = '1' then
                 realtime <= realtime + timestep;
-                boost_model := calculate_boost(boost_model, ref_duty, ref_load_current, ref_input_voltage);
+                boost_model := calculate_boost(boost_model, init_parameters, ref_duty, ref_load_current, ref_input_voltage);
                 write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 request_processor(self, 128);
                 CASE sequence_counter is

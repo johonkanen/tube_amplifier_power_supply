@@ -18,11 +18,12 @@ LIBRARY ieee  ;
     use work.microinstruction_pkg.all;
 
 package boost_model_pkg is
-    constant inductance  : real := 50.0e-6;
-    constant capacitance : real := 50.0e-6;
-    constant rl          : real := 0.24;
-    constant timestep    : real := 4.0e-6;
-    constant boost_addr_offset : natural := 33;
+    constant inductance  :  real := 50.0e-6;
+    constant capacitance :  real := 50.0e-6;
+    constant rl          :  real := 0.24;
+    constant timestep    :  real := 4.0e-6;
+
+    constant boost_addr_offset :  natural := 33;
 
     constant l : real := timestep/inductance;
     constant c : real := timestep/capacitance;
@@ -32,8 +33,22 @@ package boost_model_pkg is
         dc_link_voltage : real;
     end record;
 
+    type boost_model_parameters_record is record
+        inductance  : real;
+        capacitance : real;
+        rl          : real;
+        timestep    : real;
+    end record;
+
+    constant init_parameters : boost_model_parameters_record := (
+        inductance  ,
+        capacitance ,
+        rl          ,
+        timestep    );
+
     function calculate_boost (
         self          : boost_model_record;
+        parameters    : boost_model_parameters_record;
         duty          : real;
         load_current  : real;
         input_voltage : real
@@ -94,6 +109,7 @@ package body boost_model_pkg is
     function calculate_boost
     (
         self          : boost_model_record;
+        parameters    : boost_model_parameters_record;
         duty          : real;
         load_current  : real;
         input_voltage : real

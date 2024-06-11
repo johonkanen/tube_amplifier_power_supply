@@ -79,7 +79,7 @@ begin
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             init_bus(bus_from_stimulus);
@@ -102,7 +102,7 @@ begin
             if processor_ready then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                 realtime <= realtime + work.boost_model_pkg.timestep;
-                boost_model := calculate_boost(self => boost_model, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
         end if; --rising_edge
     end process stimulus;	
@@ -110,12 +110,13 @@ begin
 
     u_boost_model : entity work.boost_model
     port map(
-        clock        => simulator_clock      ,
+        clock => simulator_clock ,
+
         bus_to_boost_model     => bus_from_stimulus    ,
         bus_from_boost_model   => bus_from_boost_model ,
 
-        rtl_current => rtl_current,
-        rtl_voltage => rtl_voltage,
+        rtl_current => rtl_current ,
+        rtl_voltage => rtl_voltage ,
 
         program_ready        => processor_ready);
 ------------------------------------------------------------------------
