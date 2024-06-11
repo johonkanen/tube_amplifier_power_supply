@@ -25,8 +25,6 @@ package boost_model_pkg is
 
     constant boost_addr_offset :  natural := 33;
 
-    constant l : real := timestep/inductance;
-    constant c : real := timestep/capacitance;
 
     type boost_model_record is record
         inductor_current : real;
@@ -117,6 +115,8 @@ package body boost_model_pkg is
     return boost_model_record
     is
         variable retval : boost_model_record := self;
+        constant l : real := timestep/inductance;
+        constant c : real := timestep/capacitance;
     begin
         retval.inductor_current := retval.inductor_current + (input_voltage - retval.dc_link_voltage*duty - rl * retval.inductor_current)*l;
         retval.dc_link_voltage := retval.dc_link_voltage + (retval.inductor_current*duty + load_current)*c;

@@ -55,6 +55,8 @@ architecture vunit_simulation of boost_rtl_tb is
     constant initial_voltage : real := 100.0;
 
 ------------------------------------------------------------------------
+    constant l : real := timestep/inductance;
+    constant c : real := timestep/capacitance;
     constant ram_contents : ram_array := build_boost_model(rl, l, c, (initial_voltage,initial_voltage, 0.5));
 ------------------------------------------------------------------------
 
