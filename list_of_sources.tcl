@@ -63,9 +63,9 @@ add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_proc
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/pfc_model_pkg.vhd
 
-add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/boost_model_pkg.vhd
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd
 
-add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/boost_rtl_entity.vhd
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd
 
 add_vhdl_file_to_project $source_folder/top/system_control/led_driver/led_driver_pkg.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/led_driver/led_driver.vhd 
