@@ -64,6 +64,17 @@ architecture vunit_simulation of boost_closed_loop_tb is
     signal pi_low_limit : integer := 0;
 
     signal divider : division_record := init_division;
+    signal divider_multiplier : multiplier_record := init_multiplier;
+
+    signal integrator : integer := 0;
+    signal i_error : int := 0;
+    signal vin : int := 0;
+    signal udc : int := 0;
+    signal ikp : int := integer(16.0 * 2.0**10);
+    signal iki : int := integer(8.0 * 2.0**10);
+    signal iref : int := integer(5.0*2.0**7);
+    signal pi_result : int := 0;
+    signal duty : int := 0;
 
 ------------------------------------------------------------------------
 begin
@@ -126,43 +137,53 @@ begin
             boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             ---------------------
             
-            create_divider_and_multiplier(divider,multiplier);
+            create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             if realtime >= calculation_interval then
                 calculation_interval <= realtime + calculation_interval;
                 counter1 <= 0;
-                request_division(divider,integer(1.0 * 2**15), integer(boost_model.dc_link_voltage*2.0**7)) ;
+
+                request_division(divider , integer(1.0 * 2**10) , integer(boost_model.dc_link_voltage*2.0**10)) ;
+
+
+                udc <= integer(boost_model.dc_link_voltage*2.0**7);
+                vin <= integer(ref_input_voltage*2.0**7);
+                i_error <= iref - integer(boost_model.inductor_current*2.0**7);
             end if;
 
-            if counter1 < 2 then
+            if counter1 < 3 then
                 counter1 <= counter1 + 1;
             end if;
             CASE counter1 is
-                /* WHEN 0 => multiply(multiplier , i_error   , ikp); */
-                /* WHEN 1 => multiply(multiplier , vin - udc , duty_min); */
-                /* WHEN 2 => multiply(multiplier , vin - udc , duty_max); */
-                /* WHEN 3 => multiply(multiplier , i_error   , iki); */
+                WHEN 0 => multiply(multiplier , i_error   , ikp);
+                WHEN 1 => multiply(multiplier , vin - udc , duty_min);
+                WHEN 2 => multiply(multiplier , vin - udc , duty_max);
+                WHEN 3 => multiply(multiplier , i_error   , iki);
                 
                 WHEN others => -- do nothing
             end CASE;
 
             if multiplier_is_ready(multiplier) then
                 CASE counter2 is
-                    /* WHEN 0 => pi_result     <= get_multiplier_result + integrator; */
-                    /* WHEN 1 => pi_high_limit <= get_multiplier_result(multiplier, 15); */
-                    /* WHEN 2 => pi_low_limit  <= get_multiplier_result(multiplier, 15); */
-                    /* WHEN 3 => */ 
-                    /*     if pi_result > pi_high_limit then */
-                    /*         pi_out <= pi_high_limit; */
-                    /*         integerator <= integrator; */
-                    /*     end if; */
-                    /* WHEN 4 => */
-                    /*     if pi_result > pi_high_limit then */
-                    /*         pi_out <= pi_high_limit; */
-                    /*         integerator <= integrator; */
-                    /*     end if; */
-                    /* WHEN 5 => */
-                    /*     duty <= multiply(multiplier, vin - voltage_over_inductor, get_division_result(divider, 15)); */
+                    WHEN 0 => pi_result     <= get_multiplier_result(multiplier, 15) + integrator;
+                    WHEN 1 => pi_high_limit <= get_multiplier_result(multiplier, 15);
+                    WHEN 2 => pi_low_limit  <= get_multiplier_result(multiplier, 15);
+                    WHEN 3 => 
+                        integrator <= integrator + get_multiplier_result(multiplier, 15);
+                        if pi_result < pi_low_limit then
+                            pi_result <= pi_low_limit;
+                            integrator <= integrator;
+                        end if;
+                        if pi_result > pi_high_limit then
+                            pi_result <= pi_high_limit;
+                            integrator <= integrator;
+                        end if;
+                    WHEN 4 =>
+                        /* multiply(multiplier, vin - pi_result, get_division_result(multiplier, divider, 15)); */
+                    WHEN 5 =>
+                        if multiplier_is_ready(multiplier) then
+                            duty <=  get_multiplier_result(multiplier, 15);
+                        end if;
                     WHEN others => --do nothing
                 end CASE;
             end if;

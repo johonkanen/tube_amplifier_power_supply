@@ -28,7 +28,7 @@ mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fl
 
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/real_to_fixed/real_to_fixed_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/configuration/multiply_with_1_input_and_output_registers_pkg.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/multiplier_base_types_20bit_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/multiplier_base_types_22bit_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/multiplier_pkg.vhd")
 
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/division/division_pkg.vhd")
