@@ -95,3 +95,4 @@ build_ecp5/
 *.obj
 *.def
 hil_simulation/build/
+build*/
