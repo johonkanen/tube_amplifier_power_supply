@@ -31,6 +31,10 @@ mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fi
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/multiplier_base_types_20bit_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/multiplier/multiplier_pkg.vhd")
 
+mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/division/division_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/division/division_internal_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_fixed_point/division/division_pkg_body.vhd")
+
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/processor_configuration/float_processor_ram_width_pkg.vhd")
 
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_memory_library/multi_port_ram/multi_port_ram_pkg.vhd")
