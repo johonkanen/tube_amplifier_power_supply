@@ -72,7 +72,7 @@ architecture vunit_simulation of boost_closed_loop_tb is
     signal udc : int := 0;
     signal ikp : int := integer(1.0 * 2.0**7);
     signal iki : int := 0*integer(8.0 * 2.0**7);
-    signal iref : int := integer(5.0*2.0**7);
+    signal iref : int := integer(5.0*2.0**11);
     signal pi_result : int := 0;
     signal pi_out : int := 0;
     signal duty : int := 0;
@@ -119,7 +119,6 @@ begin
 
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
-                ref_duty := 0.25;
                 write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
             end if;
 
@@ -130,7 +129,7 @@ begin
             end if;
 
             if realtime > 6.0e-3 then
-                ref_load_current := -10.0;
+                ref_load_current := -4.0;
                 write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11));
             end if;
 
@@ -147,7 +146,7 @@ begin
 
                 udc <= integer(boost_model.dc_link_voltage*2.0**7);
                 vin <= integer(ref_input_voltage*2.0**7);
-                i_error <= iref - integer(boost_model.inductor_current*2.0**7);
+                i_error <= iref - integer(boost_model.inductor_current*2.0**11);
             end if;
 
             if counter1 < 4 then
@@ -165,7 +164,7 @@ begin
             if multiplier_is_ready(multiplier) then
                 counter2 <= counter2 + 1;
                 if counter2 = 0 then
-                    pi_result     <= get_int_multiplier_result(multiplier, 7,7,7);
+                    pi_result <= get_int_multiplier_result(multiplier, 7,11,7);
                 end if;
             end if;
                 
@@ -186,12 +185,13 @@ begin
                 WHEN 4 =>
                     if division_is_ready(divider_multiplier, divider) then
                         multiply(multiplier, vin-pi_out, get_division_result(divider_multiplier, divider, 20));
-                        check_duty <= 1.0/(real(get_division_result(divider_multiplier, divider, 20))/2.0**20);
                         counter2 <= counter2 + 1;
                     end if;
                 WHEN 5 =>
                     if multiplier_is_ready(multiplier) then
                         duty <=  to_integer(get_multiplier_result(multiplier, 7, 20, 15));
+                        ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, 15)),15);
+
                         counter2 <= counter2 + 1;
                     end if;
                 WHEN others =>
@@ -199,9 +199,6 @@ begin
                     write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                     realtime <= realtime + work.boost_model_pkg.timestep;
             end CASE;
-
-                    
-
 
         end if; --rising_edge
     end process stimulus;	
