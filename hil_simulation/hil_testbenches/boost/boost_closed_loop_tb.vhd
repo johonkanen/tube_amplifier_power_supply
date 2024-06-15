@@ -136,18 +136,21 @@ begin
                 WHEN 1 => multiply(multiplier , udc     , duty_max);
                 WHEN 2 => multiply(multiplier , udc     , duty_min);
                 WHEN 3 => multiply(multiplier , self.i_error , iki);
-                
+
                 WHEN others => -- do nothing
             end CASE;
 
             if multiplier_is_ready(multiplier) then
-                self.counter2 <= self.counter2 + 1;
-                if self.counter2 = 0 then
-                    self.pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7);
+                if self.counter2 < 4 then
+                    self.counter2 <= self.counter2 + 1;
                 end if;
             end if;
                 
             CASE self.counter2 is
+                WHEN 0 =>
+                    if multiplier_is_ready(multiplier) then
+                        self.pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7) + self.integrator;
+                    end if;
                 WHEN 1 => pi_low_limit  <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
                 WHEN 2 => pi_high_limit <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
                 WHEN 3 => 
@@ -186,11 +189,8 @@ begin
         begin
                 self.counter1 <= 0;
                 self.counter2 <= 0;
-
-                request_division(divider , 2**7 , integer(boost_model.dc_link_voltage*2.0**7)) ;
-                
-                
                 current_control.i_error <= i_ref - inductor_current;
+                request_division(divider , to_fixed(1.0, number_of_fractional_bits => 7) , to_fixed(boost_model.dc_link_voltage,number_of_fractional_bits => 7), 1) ;
             
         end request_current_control;
 
