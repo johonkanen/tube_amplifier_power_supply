@@ -108,6 +108,56 @@ begin
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
         variable boost_model      : boost_model_record := (0.0, initial_voltage);
+    -----------------------------------------------
+        procedure create_current_control is
+        begin
+            if counter1 < 4 then
+                counter1 <= counter1 + 1;
+            end if;
+            CASE counter1 is
+                WHEN 0 => multiply(multiplier , i_error , ikp);
+                WHEN 1 => multiply(multiplier , udc     , duty_max);
+                WHEN 2 => multiply(multiplier , udc     , duty_min);
+                WHEN 3 => multiply(multiplier , i_error , iki);
+                
+                WHEN others => -- do nothing
+            end CASE;
+
+            if multiplier_is_ready(multiplier) then
+                counter2 <= counter2 + 1;
+                if counter2 = 0 then
+                    pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7);
+                end if;
+            end if;
+                
+            CASE counter2 is
+                WHEN 1 => pi_low_limit  <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                WHEN 2 => pi_high_limit <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                WHEN 3 => 
+                    integrator <= integrator + get_multiplier_result(multiplier, radix => 7);
+                    pi_out <= pi_result;
+                    if pi_result < pi_low_limit then
+                        pi_out <= pi_low_limit;
+                        integrator <= integrator;
+                    end if;
+                    if pi_result > pi_high_limit then
+                        pi_out <= pi_high_limit;
+                        integrator <= integrator;
+                    end if;
+                WHEN 4 =>
+                    if division_is_ready(divider_multiplier, divider) then
+                        multiply(multiplier, vin-pi_out, get_division_result(divider_multiplier, divider, radix => 20));
+                        counter2 <= counter2 + 1;
+                    end if;
+                WHEN 5 =>
+                    if multiplier_is_ready(multiplier) then
+                        duty <=  to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                        counter2 <= counter2 + 1;
+                    end if;
+                WHEN others =>
+            end CASE;
+            
+        end create_current_control;
 
     begin
         if rising_edge(simulator_clock) then
@@ -137,6 +187,7 @@ begin
             
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
+
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
                 counter1 <= 0;
@@ -149,56 +200,19 @@ begin
                 i_error <= iref - integer(boost_model.inductor_current*2.0**11);
             end if;
 
-            if counter1 < 4 then
-                counter1 <= counter1 + 1;
-            end if;
-            CASE counter1 is
-                WHEN 0 => multiply(multiplier , i_error , ikp);
-                WHEN 1 => multiply(multiplier , udc     , duty_max);
-                WHEN 2 => multiply(multiplier , udc     , duty_min);
-                WHEN 3 => multiply(multiplier , i_error , iki);
-                
-                WHEN others => -- do nothing
-            end CASE;
+            create_current_control;
 
-            if multiplier_is_ready(multiplier) then
-                counter2 <= counter2 + 1;
-                if counter2 = 0 then
-                    pi_result <= get_int_multiplier_result(multiplier, 7,11,7);
-                end if;
-            end if;
-                
             CASE counter2 is
-                WHEN 1 => pi_low_limit  <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
-                WHEN 2 => pi_high_limit <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
-                WHEN 3 => 
-                    integrator <= integrator + get_multiplier_result(multiplier, 7);
-                    pi_out <= pi_result;
-                    if pi_result < pi_low_limit then
-                        pi_out <= pi_low_limit;
-                        integrator <= integrator;
-                    end if;
-                    if pi_result > pi_high_limit then
-                        pi_out <= pi_high_limit;
-                        integrator <= integrator;
-                    end if;
-                WHEN 4 =>
-                    if division_is_ready(divider_multiplier, divider) then
-                        multiply(multiplier, vin-pi_out, get_division_result(divider_multiplier, divider, 20));
-                        counter2 <= counter2 + 1;
-                    end if;
                 WHEN 5 =>
                     if multiplier_is_ready(multiplier) then
-                        duty <=  to_integer(get_multiplier_result(multiplier, 7, 20, 15));
-                        ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, 15)),15);
-
-                        counter2 <= counter2 + 1;
+                        ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                     end if;
                 WHEN others =>
                     boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
-                    write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
+                    write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current));
                     realtime <= realtime + work.boost_model_pkg.timestep;
             end CASE;
+
 
         end if; --rising_edge
     end process stimulus;	
