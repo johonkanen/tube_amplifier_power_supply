@@ -52,39 +52,39 @@ architecture vunit_simulation of boost_closed_loop_tb is
 
     signal calculation_interval : real := 1.0/30.0e3;
     signal interrupt_time : real := calculation_interval;
-    signal multiplier : multiplier_record := init_multiplier;
-    signal div_multiplier : multiplier_record := init_multiplier;
-    signal counter1 : natural := 15;
-    signal counter2 : natural := 15;
 
-    constant duty_max : integer := integer(0.92 * 2**15);
-    constant duty_min  : integer := integer(0.08 * 2**15);
+    constant dutymax : integer := integer(0.92 * 2**15);
+    constant dutymin  : integer := integer(0.08 * 2**15);
 
     signal pi_high_limit : integer := 0;
     signal pi_low_limit : integer := 0;
 
-    signal divider : division_record := init_division;
-    signal divider_multiplier : multiplier_record := init_multiplier;
 
-    signal integrator : integer := 0;
-    signal i_error    : int := 0;
     signal vin        : int := 0;
-    signal udc        : int := 0;
+    signal vdc        : int := 0;
     signal ikp        : int := integer(1.0 * 2.0**7);
     signal iki        : int := 0*integer(8.0 * 2.0**7);
-    signal iref       : int := integer(5.0*2.0**11);
-    signal pi_result  : int := 0;
-    signal pi_out     : int := 0;
-    signal duty       : int := 0;
+    signal iref       : int := integer(7.0*2.0**11);
     signal check_duty : real := 0.0;
 
     type current_control_record is record
-        data : std_logic;
+        data      : std_logic;
+        i_error   : int;
+        pi_result : int;
+        pi_out    : int;
+        duty      : int;
+        integrator : integer;
+        counter1  : natural range 0 to 15;
+        counter2  : natural range 0 to 15;
     end record;
+    constant init_current_control : current_control_record := ('0', 0,0,0,0,0,  15, 15);
 
-    constant init_current_control : current_control_record := (data => '0');
 
     signal current_control : current_control_record := init_current_control;
+
+    signal multiplier         : multiplier_record := init_multiplier;
+    signal divider            : division_record := init_division;
+    signal divider_multiplier : multiplier_record := init_multiplier;
 
 ------------------------------------------------------------------------
 begin
@@ -119,52 +119,58 @@ begin
     -----------------------------------------------
         procedure create_current_control 
         ( 
-            signal self : inout current_control_record
+            signal self               : inout current_control_record;
+            signal multiplier         : inout multiplier_record;
+            signal divider            : inout division_record;
+            signal divider_multiplier : inout multiplier_record;
+            udc                       : in integer;
+            duty_max                  : in integer;
+            duty_min                  : in integer
         )
         is
         begin
-            if counter1 < 4 then
-                counter1 <= counter1 + 1;
+            if self.counter1 < 4 then
+                self.counter1 <= self.counter1 + 1;
             end if;
-            CASE counter1 is
-                WHEN 0 => multiply(multiplier , i_error , ikp);
+            CASE self.counter1 is
+                WHEN 0 => multiply(multiplier , self.i_error , ikp);
                 WHEN 1 => multiply(multiplier , udc     , duty_max);
                 WHEN 2 => multiply(multiplier , udc     , duty_min);
-                WHEN 3 => multiply(multiplier , i_error , iki);
+                WHEN 3 => multiply(multiplier , self.i_error , iki);
                 
                 WHEN others => -- do nothing
             end CASE;
 
             if multiplier_is_ready(multiplier) then
-                counter2 <= counter2 + 1;
-                if counter2 = 0 then
-                    pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7);
+                self.counter2 <= self.counter2 + 1;
+                if self.counter2 = 0 then
+                    self.pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7);
                 end if;
             end if;
                 
-            CASE counter2 is
+            CASE self.counter2 is
                 WHEN 1 => pi_low_limit  <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
                 WHEN 2 => pi_high_limit <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
                 WHEN 3 => 
-                    integrator <= integrator + get_multiplier_result(multiplier, radix => 7);
-                    pi_out <= pi_result;
-                    if pi_result < pi_low_limit then
-                        pi_out <= pi_low_limit;
-                        integrator <= integrator;
+                    self.integrator <= self.integrator + get_multiplier_result(multiplier, radix => 7);
+                    self.pi_out <= self.pi_result;
+                    if self.pi_result < pi_low_limit then
+                        self.pi_out <= pi_low_limit;
+                        self.integrator <= self.integrator;
                     end if;
-                    if pi_result > pi_high_limit then
-                        pi_out <= pi_high_limit;
-                        integrator <= integrator;
+                    if self.pi_result > pi_high_limit then
+                        self.pi_out <= pi_high_limit;
+                        self.integrator <= self.integrator;
                     end if;
                 WHEN 4 =>
                     if division_is_ready(divider_multiplier, divider) then
-                        multiply(multiplier, vin-pi_out, get_division_result(divider_multiplier, divider, radix => 20));
-                        counter2 <= counter2 + 1;
+                        multiply(multiplier, vin-self.pi_out, get_division_result(divider_multiplier, divider, radix => 20));
+                        self.counter2 <= self.counter2 + 1;
                     end if;
                 WHEN 5 =>
                     if multiplier_is_ready(multiplier) then
-                        duty <=  to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15));
-                        counter2 <= counter2 + 1;
+                        self.duty <=  to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                        self.counter2 <= self.counter2 + 1;
                     end if;
                 WHEN others =>
             end CASE;
@@ -199,22 +205,25 @@ begin
             
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
+            create_current_control(current_control,multiplier, divider, divider_multiplier,
+                                    vdc,
+                                    dutymax,
+                                    dutymin);
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
-                counter1 <= 0;
-                counter2 <= 0;
+                current_control.counter1 <= 0;
+                current_control.counter2 <= 0;
 
                 request_division(divider , 2**7 , integer(boost_model.dc_link_voltage*2.0**7)) ;
 
-                udc <= integer(boost_model.dc_link_voltage*2.0**7);
+                vdc <= integer(boost_model.dc_link_voltage*2.0**7);
                 vin <= integer(ref_input_voltage*2.0**7);
-                i_error <= iref - integer(boost_model.inductor_current*2.0**11);
+                current_control.i_error <= iref - integer(boost_model.inductor_current*2.0**11);
             end if;
 
-            create_current_control(current_control);
 
-            CASE counter2 is
+            CASE current_control.counter2 is
                 WHEN 5 =>
                     if multiplier_is_ready(multiplier) then
                         ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
