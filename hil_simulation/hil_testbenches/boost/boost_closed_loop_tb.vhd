@@ -68,22 +68,22 @@ architecture vunit_simulation of boost_closed_loop_tb is
     signal check_duty : real := 0.0;
 
     type current_control_record is record
-        data      : std_logic;
-        i_error   : int;
-        pi_result : int;
-        pi_out    : int;
-        duty      : int;
+        data       : std_logic;
+        i_error    : int;
+        pi_result  : int;
+        pi_out     : int;
+        duty       : int;
         integrator : integer;
-        counter1  : natural range 0 to 15;
-        counter2  : natural range 0 to 15;
+        counter1   : natural range 0 to 15;
+        counter2   : natural range 0 to 15;
     end record;
-    constant init_current_control : current_control_record := ('0', 0,0,0,0,0,  15, 15);
 
+    constant init_current_control : current_control_record := ('0', 0,0,0,0,0,  15, 15);
 
     signal current_control : current_control_record := init_current_control;
 
     signal multiplier         : multiplier_record := init_multiplier;
-    signal divider            : division_record := init_division;
+    signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
 ------------------------------------------------------------------------
@@ -177,6 +177,23 @@ begin
             
         end create_current_control;
 
+        procedure request_current_control
+        (
+            signal self : inout current_control_record
+        )
+        is
+        begin
+                self.counter1 <= 0;
+                self.counter2 <= 0;
+
+                request_division(divider , 2**7 , integer(boost_model.dc_link_voltage*2.0**7)) ;
+
+                vdc <= integer(boost_model.dc_link_voltage*2.0**7);
+                vin <= integer(ref_input_voltage*2.0**7);
+                self.i_error <= iref - integer(boost_model.inductor_current*2.0**11);
+            
+        end request_current_control;
+
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
@@ -212,14 +229,7 @@ begin
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
-                current_control.counter1 <= 0;
-                current_control.counter2 <= 0;
-
-                request_division(divider , 2**7 , integer(boost_model.dc_link_voltage*2.0**7)) ;
-
-                vdc <= integer(boost_model.dc_link_voltage*2.0**7);
-                vin <= integer(ref_input_voltage*2.0**7);
-                current_control.i_error <= iref - integer(boost_model.inductor_current*2.0**11);
+                request_current_control(current_control);
             end if;
 
 
