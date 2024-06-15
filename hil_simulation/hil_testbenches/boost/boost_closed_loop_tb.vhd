@@ -67,16 +67,24 @@ architecture vunit_simulation of boost_closed_loop_tb is
     signal divider_multiplier : multiplier_record := init_multiplier;
 
     signal integrator : integer := 0;
-    signal i_error : int := 0;
-    signal vin : int := 0;
-    signal udc : int := 0;
-    signal ikp : int := integer(1.0 * 2.0**7);
-    signal iki : int := 0*integer(8.0 * 2.0**7);
-    signal iref : int := integer(5.0*2.0**11);
-    signal pi_result : int := 0;
-    signal pi_out : int := 0;
-    signal duty : int := 0;
+    signal i_error    : int := 0;
+    signal vin        : int := 0;
+    signal udc        : int := 0;
+    signal ikp        : int := integer(1.0 * 2.0**7);
+    signal iki        : int := 0*integer(8.0 * 2.0**7);
+    signal iref       : int := integer(5.0*2.0**11);
+    signal pi_result  : int := 0;
+    signal pi_out     : int := 0;
+    signal duty       : int := 0;
     signal check_duty : real := 0.0;
+
+    type current_control_record is record
+        data : std_logic;
+    end record;
+
+    constant init_current_control : current_control_record := (data => '0');
+
+    signal current_control : current_control_record := init_current_control;
 
 ------------------------------------------------------------------------
 begin
@@ -109,7 +117,11 @@ begin
         variable dc_link_voltage  : real := initial_voltage;
         variable boost_model      : boost_model_record := (0.0, initial_voltage);
     -----------------------------------------------
-        procedure create_current_control is
+        procedure create_current_control 
+        ( 
+            signal self : inout current_control_record
+        )
+        is
         begin
             if counter1 < 4 then
                 counter1 <= counter1 + 1;
@@ -200,7 +212,7 @@ begin
                 i_error <= iref - integer(boost_model.inductor_current*2.0**11);
             end if;
 
-            create_current_control;
+            create_current_control(current_control);
 
             CASE counter2 is
                 WHEN 5 =>
