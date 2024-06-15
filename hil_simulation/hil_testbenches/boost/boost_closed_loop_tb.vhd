@@ -60,8 +60,6 @@ architecture vunit_simulation of boost_closed_loop_tb is
     signal pi_low_limit : integer := 0;
 
 
-    signal vin        : int := 0;
-    signal vdc        : int := 0;
     signal ikp        : int := integer(1.0 * 2.0**7);
     signal iki        : int := 0*integer(8.0 * 2.0**7);
     signal iref       : int := integer(7.0*2.0**11);
@@ -124,6 +122,7 @@ begin
             signal divider            : inout division_record;
             signal divider_multiplier : inout multiplier_record;
             udc                       : in integer;
+            uin                       : in integer;
             duty_max                  : in integer;
             duty_min                  : in integer
         )
@@ -149,8 +148,8 @@ begin
             end if;
                 
             CASE self.counter2 is
-                WHEN 1 => pi_low_limit  <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
-                WHEN 2 => pi_high_limit <= vin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                WHEN 1 => pi_low_limit  <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                WHEN 2 => pi_high_limit <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
                 WHEN 3 => 
                     self.integrator <= self.integrator + get_multiplier_result(multiplier, radix => 7);
                     self.pi_out <= self.pi_result;
@@ -164,7 +163,7 @@ begin
                     end if;
                 WHEN 4 =>
                     if division_is_ready(divider_multiplier, divider) then
-                        multiply(multiplier, vin-self.pi_out, get_division_result(divider_multiplier, divider, radix => 20));
+                        multiply(multiplier, uin-self.pi_out, get_division_result(divider_multiplier, divider, radix => 20));
                         self.counter2 <= self.counter2 + 1;
                     end if;
                 WHEN 5 =>
@@ -179,7 +178,9 @@ begin
 
         procedure request_current_control
         (
-            signal self : inout current_control_record
+            signal self : inout current_control_record;
+            i_ref            : in integer;
+            inductor_current : in integer
         )
         is
         begin
@@ -187,10 +188,9 @@ begin
                 self.counter2 <= 0;
 
                 request_division(divider , 2**7 , integer(boost_model.dc_link_voltage*2.0**7)) ;
-
-                vdc <= integer(boost_model.dc_link_voltage*2.0**7);
-                vin <= integer(ref_input_voltage*2.0**7);
-                self.i_error <= iref - integer(boost_model.inductor_current*2.0**11);
+                
+                
+                current_control.i_error <= i_ref - inductor_current;
             
         end request_current_control;
 
@@ -223,13 +223,14 @@ begin
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    vdc,
+                                    integer(boost_model.dc_link_voltage*2.0**7),
+                                    integer(ref_input_voltage*2.0**7),
                                     dutymax,
                                     dutymin);
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
-                request_current_control(current_control);
+                request_current_control(current_control, iref, integer(boost_model.inductor_current*2.0**11));
             end if;
 
 
