@@ -22,6 +22,7 @@ package half_bridge_current_control_pkg is
         pi_low_limit  : int;
         counter1      : natural range 0 to 7;
         counter2      : natural range 0 to 7;
+        is_ready : boolean;
     end record;
 
     function init_current_control (
@@ -46,6 +47,9 @@ package half_bridge_current_control_pkg is
         i_ref            : in integer;
         inductor_current : in integer);
 ---------------------------------------------
+    function current_control_is_ready ( self : current_control_record)
+        return boolean;
+---------------------------------------------
 
 end package half_bridge_current_control_pkg;
 
@@ -61,7 +65,7 @@ package body half_bridge_current_control_pkg is
     is
     begin
         
-     return (to_fixed(ikp, number_of_fractional_bits), 0* to_fixed(iki, number_of_fractional_bits), 0, 0, 0,0,0,0,0,0,  7, 7);
+     return (to_fixed(ikp, number_of_fractional_bits), to_fixed(iki, number_of_fractional_bits), 0, 0, 0,0,0,0,0,0,  7, 7, false);
     end init_current_control;
 
 ---------------------------------------------
@@ -78,6 +82,7 @@ package body half_bridge_current_control_pkg is
     )
     is
     begin
+        self.is_ready <= false;
         if self.counter1 < 4 then
             self.counter1 <= self.counter1 + 1;
         end if;
@@ -122,6 +127,7 @@ package body half_bridge_current_control_pkg is
                 if multiplier_is_ready(multiplier) then
                     self.duty     <= to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15));
                     self.counter2 <= self.counter2 + 1;
+                    self.is_ready <= true;
                 end if;
             WHEN others =>
         end CASE;
@@ -142,6 +148,16 @@ package body half_bridge_current_control_pkg is
             self.i_error <= i_ref - inductor_current;
         
     end request_current_control;
+---------------------------------------------
+    function current_control_is_ready
+    (
+        self : current_control_record
+    )
+    return boolean
+    is
+    begin
+        return self.is_ready;
+    end current_control_is_ready;
 ---------------------------------------------
 
 end package body half_bridge_current_control_pkg;
@@ -200,22 +216,22 @@ architecture vunit_simulation of boost_closed_loop_tb is
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
         rl          => 240.0e-3 ,
-        timestep    => work.boost_model_pkg.timestep);
+        timestep    => 1.0e-6);
 
     signal calculation_interval : real := 1.0/30.0e3;
     signal interrupt_time : real := 0.0;
 
-    constant dutymax : integer  := to_fixed(0.92, number_of_fractional_bits => 15);
-    constant dutymin  : integer := to_fixed(0.08, number_of_fractional_bits => 15);
+    constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
+    constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
 
 
-    signal iref       : int := to_fixed(5.0, number_of_fractional_bits => 11);
+    signal iref       : int := to_fixed(4.0, number_of_fractional_bits => 11);
     signal check_duty : real := 0.0;
 
 
 
-    signal current_control : current_control_record := init_current_control(1.0, 0.0 * 8.0, number_of_fractional_bits => 7);
+    signal current_control : current_control_record := init_current_control(1.0, 0.03125, number_of_fractional_bits => 7);
 
     signal multiplier         : multiplier_record := init_multiplier;
     signal divider            : division_record   := init_division;
@@ -258,7 +274,7 @@ begin
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             init_bus(bus_from_stimulus);
@@ -299,9 +315,9 @@ begin
                         ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                     end if;
                 WHEN 6 =>
-                    boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                    boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                     write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current));
-                    realtime <= realtime + work.boost_model_pkg.timestep;
+                    realtime <= realtime + cl_parameters.timestep;
                 WHEN others =>
             end CASE;
 
