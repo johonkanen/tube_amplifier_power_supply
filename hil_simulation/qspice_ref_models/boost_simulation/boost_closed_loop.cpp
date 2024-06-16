@@ -105,7 +105,7 @@ extern "C" __declspec(dllexport) void boost_closed_loop(void **opaque, double t,
     }
 
     if (t > 00.0e-3) vin = 100.0;
-    /* if (t > 40.0e-3) vin = 130.0; */
+    if (t > 4.0e-3)  vin = 120.0;
     if (t > 35.0e-3) vin = 10.0;
 
 }

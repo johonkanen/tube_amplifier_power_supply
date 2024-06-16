@@ -218,7 +218,7 @@ architecture vunit_simulation of boost_closed_loop_tb is
         rl          => 240.0e-3 ,
         timestep    => 1.0e-6);
 
-    signal calculation_interval : real := 1.0/30.0e3;
+    signal calculation_interval : real := 1.0/60.0e3;
     signal interrupt_time : real := 0.0;
 
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
@@ -231,7 +231,7 @@ architecture vunit_simulation of boost_closed_loop_tb is
 
 
 
-    signal current_control : current_control_record := init_current_control(1.0, 0.03125, number_of_fractional_bits => 7);
+    signal current_control : current_control_record := init_current_control(16.0, 0.0625*8.0, number_of_fractional_bits => 7);
 
     signal multiplier         : multiplier_record := init_multiplier;
     signal divider            : division_record   := init_division;
@@ -259,10 +259,10 @@ begin
         file file_handler     : text open write_mode is "boost_current_closed_loop.dat";
 
         variable ref_input_voltage : real := 100.0;
-        variable ref_load_current  : real := 0.0;
+        variable ref_load_current  : real := -2.0;
         variable ref_duty          : real := 0.5;
 
-        constant initial_voltage : real := 100.0;
+        constant initial_voltage : real := 150.0;
 
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
@@ -274,7 +274,7 @@ begin
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                /* boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage); */
             end if;
 
             init_bus(bus_from_stimulus);
@@ -288,10 +288,15 @@ begin
                 input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7);
             end if;
 
-            if realtime > 6.0e-3 then
-                ref_load_current := -4.0;
-                write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11));
+            /* if realtime > 6.0e-3 then */
+            /*     ref_load_current := -4.0; */
+            /*     write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11)); */
+            /* end if; */
+
+            if realtime > 10.0e-3 then
+                iref <= to_fixed(5.0, number_of_fractional_bits => 11);
             end if;
+
 
             ---------------------
             
@@ -315,8 +320,9 @@ begin
                         ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                     end if;
                 WHEN 6 =>
-                    boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                     write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current));
+                    boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                    /* write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current)); */
                     realtime <= realtime + cl_parameters.timestep;
                 WHEN others =>
             end CASE;
