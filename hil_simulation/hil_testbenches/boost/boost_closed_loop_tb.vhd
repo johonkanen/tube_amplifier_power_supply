@@ -36,8 +36,8 @@ architecture vunit_simulation of boost_closed_loop_tb is
 
     signal processor_ready : boolean := false;
 
-    signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
-    signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := integer(100.0 * 2.0**7);
+    signal duty_0_to_1            : natural range 0 to 2**16-1 := to_fixed(0.5, number_of_fractional_bits => 15);
+    signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := to_fixed(100.0, number_of_fractional_bits => 7);
 
     signal rtl_current : integer range -2**15 to 2**15-1 := 0;
     signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
@@ -48,35 +48,35 @@ architecture vunit_simulation of boost_closed_loop_tb is
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
         rl          => 240.0e-3 ,
-        timestep    => 4.0e-6);
+        timestep    => work.boost_model_pkg.timestep);
 
     signal calculation_interval : real := 1.0/30.0e3;
-    signal interrupt_time : real := calculation_interval;
+    signal interrupt_time : real := 0.0;
 
-    constant dutymax : integer := integer(0.92 * 2**15);
-    constant dutymin  : integer := integer(0.08 * 2**15);
-
-    signal pi_high_limit : integer := 0;
-    signal pi_low_limit : integer := 0;
+    constant dutymax : integer  := to_fixed(0.92, number_of_fractional_bits => 15);
+    constant dutymin  : integer := to_fixed(0.08, number_of_fractional_bits => 15);
 
 
-    signal ikp        : int := integer(1.0 * 2.0**7);
-    signal iki        : int := 0*integer(8.0 * 2.0**7);
-    signal iref       : int := integer(7.0*2.0**11);
+
+    signal iref       : int := to_fixed(5.0, number_of_fractional_bits => 11);
     signal check_duty : real := 0.0;
 
     type current_control_record is record
-        data       : std_logic;
+        ikp        : int;
+        iki        : int;
         i_error    : int;
         pi_result  : int;
         pi_out     : int;
         duty       : int;
-        integrator : integer;
-        counter1   : natural range 0 to 15;
-        counter2   : natural range 0 to 15;
+        udc        : int;
+        integrator : int;
+        pi_high_limit : int;
+        pi_low_limit  : int;
+        counter1   : natural range 0 to 7;
+        counter2   : natural range 0 to 7;
     end record;
 
-    constant init_current_control : current_control_record := ('0', 0,0,0,0,0,  15, 15);
+    constant init_current_control : current_control_record := (to_fixed(1.0, number_of_fractional_bits => 7), 0* to_fixed(8.0, number_of_fractional_bits => 7), 0, 0, 0,0,0,0,0,0,  7, 7);
 
     signal current_control : current_control_record := init_current_control;
 
@@ -132,36 +132,35 @@ begin
                 self.counter1 <= self.counter1 + 1;
             end if;
             CASE self.counter1 is
-                WHEN 0 => multiply(multiplier , self.i_error , ikp);
+                WHEN 0 => multiply(multiplier , self.i_error , self.ikp);
+                    request_division(divider , to_fixed(1.0, number_of_fractional_bits => 7) , udc) ;
                 WHEN 1 => multiply(multiplier , udc     , duty_max);
                 WHEN 2 => multiply(multiplier , udc     , duty_min);
-                WHEN 3 => multiply(multiplier , self.i_error , iki);
+                WHEN 3 => multiply(multiplier , self.i_error , self.iki);
 
                 WHEN others => -- do nothing
             end CASE;
 
-            if multiplier_is_ready(multiplier) then
-                if self.counter2 < 4 then
-                    self.counter2 <= self.counter2 + 1;
-                end if;
-            end if;
-                
             CASE self.counter2 is
                 WHEN 0 =>
                     if multiplier_is_ready(multiplier) then
                         self.pi_result <= get_int_multiplier_result(multiplier, 7,11, target_radix => 7) + self.integrator;
+                        self.counter2 <= self.counter2 + 1;
                     end if;
-                WHEN 1 => pi_low_limit  <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
-                WHEN 2 => pi_high_limit <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                WHEN 1 => self.pi_low_limit  <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                        self.counter2 <= self.counter2 + 1;
+                WHEN 2 => self.pi_high_limit <= uin - get_int_multiplier_result(multiplier,7,15, target_radix => 7);
+                        self.counter2 <= self.counter2 + 1;
                 WHEN 3 => 
+                    self.counter2 <= self.counter2 + 1;
                     self.integrator <= self.integrator + get_multiplier_result(multiplier, radix => 7);
                     self.pi_out <= self.pi_result;
-                    if self.pi_result < pi_low_limit then
-                        self.pi_out <= pi_low_limit;
+                    if self.pi_result < self.pi_low_limit then
+                        self.pi_out <= self.pi_low_limit;
                         self.integrator <= self.integrator;
                     end if;
-                    if self.pi_result > pi_high_limit then
-                        self.pi_out <= pi_high_limit;
+                    if self.pi_result > self.pi_high_limit then
+                        self.pi_out <= self.pi_high_limit;
                         self.integrator <= self.integrator;
                     end if;
                 WHEN 4 =>
@@ -190,7 +189,6 @@ begin
                 self.counter1 <= 0;
                 self.counter2 <= 0;
                 current_control.i_error <= i_ref - inductor_current;
-                request_division(divider , to_fixed(1.0, number_of_fractional_bits => 7) , to_fixed(boost_model.dc_link_voltage,number_of_fractional_bits => 7), 1) ;
             
         end request_current_control;
 
@@ -204,13 +202,13 @@ begin
 
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
-                write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
+                write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
             end if;
 
             if realtime > 4.0e-3 then
                 ref_input_voltage := 120.0;
-                write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7));
-                input_voltage_0_to_512 <= integer(120*2.0**7);
+                write_data_to_address(bus_from_stimulus, 2, to_fixed(ref_input_voltage, number_of_fractional_bits => 7));
+                input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7);
             end if;
 
             if realtime > 6.0e-3 then
@@ -223,14 +221,14 @@ begin
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    integer(boost_model.dc_link_voltage*2.0**7),
-                                    integer(ref_input_voltage*2.0**7),
-                                    dutymax,
+                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7) ,
+                                    to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
+                                    dutymax                              ,
                                     dutymin);
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
-                request_current_control(current_control, iref, integer(boost_model.inductor_current*2.0**11));
+                request_current_control(current_control, iref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
             end if;
 
 
@@ -239,10 +237,11 @@ begin
                     if multiplier_is_ready(multiplier) then
                         ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                     end if;
-                WHEN others =>
+                WHEN 6 =>
                     boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                     write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current));
                     realtime <= realtime + work.boost_model_pkg.timestep;
+                WHEN others =>
             end CASE;
 
 
