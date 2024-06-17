@@ -4,11 +4,15 @@ library ieee;
 
     use work.component_interconnect_pkg.all;
     use work.led_driver_pkg.all;
-    use work.multiplier_entity_pkg.all;
     use work.power_supply_control_pkg.all;
     use work.sincos_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
+
+    use work.real_to_fixed_pkg.all;
+    use work.multiplier_pkg.all;
+    use work.division_pkg.all;
+    use work.half_bridge_current_control_pkg.all;
     
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.get_ad_measurement;
@@ -58,6 +62,14 @@ architecture rtl of component_interconnect is
     signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
     signal processor_ready : boolean := false;
     signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
+------------------------------------------------------------------------
+    signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
+
+    signal multiplier         : multiplier_record := init_multiplier;
+    signal divider            : division_record   := init_division;
+    signal divider_multiplier : multiplier_record := init_multiplier;
+
+    signal control_counter : natural range 0 to 2**15-1 := 0;
 ------------------------------------------------------------------------
 begin
 
@@ -127,13 +139,38 @@ begin
 
     u_boost_model : entity work.boost_model
     port map(
-        clock        => system_clocks.core_clock          ,
+        clock => system_clocks.core_clock ,
         bus_to_boost_model     => bus_from_communications ,
         bus_from_boost_model   => bus_from_boost_model    ,
 
-        rtl_current => rtl_current,
-        rtl_voltage => rtl_voltage,
+        rtl_current => rtl_current ,
+        rtl_voltage => rtl_voltage ,
 
-        program_ready        => processor_ready);
+        program_ready => processor_ready);
+------------------------------------------------------------------------
+    test_control : process(system_clocks.core_clock)
+        constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
+        constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
+    begin
+        if rising_edge(system_clocks.core_clock) then
+
+            create_divider_and_multiplier(divider,divider_multiplier);
+            create_multiplier(multiplier);
+            create_current_control(current_control,multiplier, divider, divider_multiplier,
+                                    rtl_current ,
+                                    rtl_voltage ,
+                                    dutymax     ,
+                                    dutymin);
+
+            if control_counter < 4265 then
+                control_counter <= control_counter + 1;
+            else
+                control_counter <= 0;
+                request_current_control(current_control, to_fixed(4.0, 6), rtl_current);
+            end if;
+
+
+        end if; --rising_edge
+    end process test_control;	
 ------------------------------------------------------------------------
 end rtl;
