@@ -20,22 +20,6 @@ $commands = @(
     }
 )
 
-# # Start the jobs
-# $jobs = foreach ($command in $commands) {
-#     Start-Job -ScriptBlock $command
-# }
-
-# # Wait for all jobs to complete
-# $jobs | ForEach-Object { $_ | Wait-Job }
-
-# # Retrieve the output of the jobs
-# $jobs | ForEach-Object {
-#     $jobOutput = Receive-Job -Job $_
-#     $jobOutput
-#     # Remove the job
-#     Remove-Job -Job $_
-# }
-#
 $processes = foreach ($command in $commands) {
     Start-Process powershell.exe -ArgumentList "-NoExit", "-Command", $command
 }
