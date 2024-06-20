@@ -118,7 +118,7 @@ package body boost_model_pkg is
         constant l : real := parameters.timestep/parameters.inductance;
         constant c : real := parameters.timestep/parameters.capacitance;
     begin
-        retval.inductor_current := retval.inductor_current + (input_voltage - retval.dc_link_voltage*duty - rl * retval.inductor_current)*l;
+        retval.inductor_current := retval.inductor_current + (input_voltage - retval.dc_link_voltage*duty - parameters.rl * retval.inductor_current)*l;
         retval.dc_link_voltage := retval.dc_link_voltage + (retval.inductor_current*duty + load_current)*c;
 
         return retval;

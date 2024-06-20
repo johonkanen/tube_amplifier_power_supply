@@ -49,8 +49,8 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     constant cl_parameters : boost_model_parameters_record := (
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
-        rl          => 240.0e-3 ,
-        timestep    => 2.0e-6);
+        rl          => 100.0e-3 ,
+        timestep    => 1.5e-6);
 
     signal calculation_interval : real := 1.0/30.0e3;
     signal interrupt_time : real := 0.0;
@@ -103,9 +103,10 @@ begin
 
         constant initial_voltage : real := 150.0;
 
-        variable inductor_current : real := 0.0;
-        variable dc_link_voltage  : real := initial_voltage;
-        variable boost_model      : boost_model_record := (0.0, initial_voltage);
+        variable inductor_current  : real := 0.0;
+        variable dc_link_voltage   : real := initial_voltage;
+        variable boost_model       : boost_model_record := (0.0, initial_voltage);
+        variable voltage_reference : real := 200.0;
 
 
     begin
@@ -120,11 +121,19 @@ begin
                 write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
             end if;
 
-            if realtime > 4.0e-3 then
-                ref_input_voltage := 120.0;
-                write_data_to_address(bus_from_stimulus, 2, to_fixed(ref_input_voltage, number_of_fractional_bits => 7));
-                input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7);
-            end if;
+            /* if realtime > 4.0e-3 then */
+            /*     ref_input_voltage := 120.0; */
+            /*     write_data_to_address(bus_from_stimulus, 2, to_fixed(ref_input_voltage, number_of_fractional_bits => 7)); */
+            /*     input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7); */
+            /* end if; */
+
+            if realtime > 20.0e-3 then ref_load_current := -2.0; end if;
+            if realtime > 30.0e-3 then voltage_reference := 120.0; end if;
+            if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if;
+            if realtime > 50.0e-3 then voltage_reference := 180.0; end if;
+            if realtime > 65.0e-3 then ref_load_current := 10.0; end if;
+            if realtime > 70.0e-3 then ref_load_current := -10.0; end if;
+            if realtime > 80.0e-3 then ref_load_current := 0.0; end if;
 
             ---------------------
             
@@ -141,8 +150,8 @@ begin
                 counter1 <= counter1 + 1;
             end if;
             CASE counter1 is
-                WHEN 0 => multiply(voltage_multiplier, to_fixed(0.25, 7), to_fixed(200.0, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
-                WHEN 1 => multiply(voltage_multiplier, to_fixed(0.016125, 7), to_fixed(200.0, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
+                WHEN 0 => multiply(voltage_multiplier, to_fixed(0.25, 7), to_fixed(voltage_reference, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
+                WHEN 1 => multiply(voltage_multiplier, to_fixed(0.016125, 7), to_fixed(voltage_reference, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
                 WHEN others => --do nothing
             end CASE;
 
