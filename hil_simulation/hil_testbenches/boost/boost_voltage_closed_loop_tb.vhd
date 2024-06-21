@@ -1,3 +1,95 @@
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+
+    use work.real_to_fixed_pkg.all;
+    use work.multiplier_pkg.all;
+    use work.division_pkg.all;
+
+package voltage_control_pkg is
+
+    type voltage_control_record is record
+        v_error     : integer;
+        piout       : integer;
+        integrator  : integer;
+        current_ref : integer;
+        counter1    : natural;
+        counter2    : natural;
+    end record;
+
+    constant init_voltage_control : voltage_control_record := (0,0,0,0, counter1 => 15, counter2 => 15);
+
+    procedure create_voltage_control (
+        signal self : inout voltage_control_record;
+        signal voltage_multiplier : inout multiplier_record;
+        proportional_gain : integer;
+        integral_gain : integer
+    );
+
+    procedure request_voltage_control (
+        signal self   : inout voltage_control_record;
+        v_ref         : integer;
+        v_measurement : integer);
+
+end package voltage_control_pkg;
+
+package body voltage_control_pkg is
+
+    procedure create_voltage_control
+    (
+        signal self : inout voltage_control_record;
+        signal voltage_multiplier : inout multiplier_record;
+        proportional_gain : integer;
+        integral_gain : integer
+    ) is
+    begin
+        if self.counter1 < 2 then
+            self.counter1 <= self.counter1 + 1;
+        end if;
+        CASE self.counter1 is
+            WHEN 0 => multiply(voltage_multiplier , proportional_gain , self.v_error);
+            WHEN 1 => multiply(voltage_multiplier , integral_gain , self.v_error);
+            WHEN others => --do nothing
+        end CASE;
+
+        if multiplier_is_ready(voltage_multiplier) then
+            self.counter2 <= self.counter2 + 1;
+            CASE self.counter2 is
+                WHEN 0 => 
+                    self.piout <= get_int_multiplier_result(voltage_multiplier,15,7,11) + self.integrator;
+                WHEN 1 => 
+                    self.integrator  <= get_int_multiplier_result(voltage_multiplier,15,7,11) + self.integrator;
+                    self.current_ref <= self.piout;
+                    if self.piout > to_fixed(7.0, 11) then
+                        self.current_ref <= to_fixed(7.0, 11);
+                        self.integrator  <= self.integrator;
+                    end if;
+                    if self.piout < to_fixed(-7.0, 11) then
+                        self.current_ref <= to_fixed(-7.0, 11);
+                        self.integrator  <= self.integrator;
+                    end if;
+                WHEN others => --do nothing
+            end CASE;
+        end if;
+        
+    end create_voltage_control;
+
+    procedure request_voltage_control
+    (
+        signal self : inout voltage_control_record;
+        v_ref : integer;
+        v_measurement : integer
+    ) is
+    begin
+        self.v_error <= v_ref - v_measurement;
+        self.counter1 <= 0;
+        self.counter2 <= 0;
+    end request_voltage_control;
+
+end package body voltage_control_pkg;
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
@@ -13,6 +105,8 @@ context vunit_lib.vunit_context;
     use work.real_to_fixed_pkg.all;
     use work.multiplier_pkg.all;
     use work.division_pkg.all;
+
+    use work.voltage_control_pkg.all;
 
     use work.half_bridge_current_control_pkg.all;
 
@@ -70,17 +164,7 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     signal vkp : integer := to_fixed(0.5, 11);
     signal vki : integer := to_fixed(0.5, 11);
     signal voltage_multiplier : multiplier_record := init_multiplier;
-    signal piout : integer := 0;
-    signal integrator : integer := 0;
-    signal current_ref : integer := 0;
 
-    type voltage_control_record is record
-        v_error : integer;
-        counter1 : natural;
-        counter2 : natural;
-    end record;
-
-    constant init_voltage_control : voltage_control_record := (v_error => 0, counter1 => 15, counter2 => 15);
 
     signal self : voltage_control_record := init_voltage_control;
 
@@ -116,53 +200,6 @@ begin
         variable boost_model       : boost_model_record := (0.0, initial_voltage);
         variable voltage_reference : real := 200.0;
 
-        procedure create_voltage_control
-        (
-            signal self : inout voltage_control_record
-        ) is
-        begin
-            if self.counter1 < 2 then
-                self.counter1 <= self.counter1 + 1;
-            end if;
-            CASE self.counter1 is
-                WHEN 0 => multiply(voltage_multiplier , to_fixed(0.25     , 15) , to_fixed(voltage_reference , 7) - to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
-                WHEN 1 => multiply(voltage_multiplier , to_fixed(0.016125 , 15) , to_fixed(voltage_reference , 7) - to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
-                WHEN others => --do nothing
-            end CASE;
-
-            if multiplier_is_ready(voltage_multiplier) then
-                self.counter2 <= self.counter2 + 1;
-                CASE self.counter2 is
-                    WHEN 0 => 
-                        piout <= get_int_multiplier_result(voltage_multiplier,15,7,11) + integrator;
-                    WHEN 1 => 
-                        integrator  <= get_int_multiplier_result(voltage_multiplier,15,7,11) + integrator;
-                        current_ref <= piout;
-                        if piout > to_fixed(7.0, 11) then
-                            current_ref <= to_fixed(7.0, 11);
-                            integrator  <= integrator;
-                        end if;
-                        if piout < to_fixed(-7.0, 11) then
-                            current_ref <= to_fixed(-7.0, 11);
-                            integrator  <= integrator;
-                        end if;
-                    WHEN others => --do nothing
-                end CASE;
-            end if;
-            
-        end create_voltage_control;
-
-        procedure request_voltage_control
-        (
-            signal self : inout voltage_control_record;
-            v_ref : integer;
-            v_measurement : integer
-        ) is
-        begin
-            self.v_error <= v_ref - v_measurement;
-            self.counter1 <= 0;
-            self.counter2 <= 0;
-        end request_voltage_control;
 
 
     begin
@@ -202,11 +239,14 @@ begin
                                     dutymin);
 
             create_multiplier(voltage_multiplier);
-            create_voltage_control(self);
+            create_voltage_control(self, voltage_multiplier,
+            to_fixed(0.25     , 15),
+            to_fixed(0.016125 , 15)
+        );
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
-                request_current_control(current_control, current_ref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
+                request_current_control(current_control, self.current_ref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
                 request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
 
             end if;
