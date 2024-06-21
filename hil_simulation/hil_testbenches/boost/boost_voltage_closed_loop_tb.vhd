@@ -76,6 +76,14 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     signal integrator : integer := 0;
     signal current_ref : integer := 0;
 
+    type voltage_control_record is record
+        data : std_logic;
+    end record;
+
+    constant init_voltage_control : voltage_control_record := (data => '0');
+
+    signal self : voltage_control_record := init_voltage_control;
+
 ------------------------------------------------------------------------
 begin
 
@@ -108,44 +116,11 @@ begin
         variable boost_model       : boost_model_record := (0.0, initial_voltage);
         variable voltage_reference : real := 200.0;
 
-
-    begin
-        if rising_edge(simulator_clock) then
-            simulation_counter <= simulation_counter + 1;
-            if simulation_counter = 0 then
-                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-            end if;
-
-            init_bus(bus_from_stimulus);
-            if realtime > 2.0e-3 then
-                write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
-            end if;
-
-            /* if realtime > 4.0e-3 then */
-            /*     ref_input_voltage := 120.0; */
-            /*     write_data_to_address(bus_from_stimulus, 2, to_fixed(ref_input_voltage, number_of_fractional_bits => 7)); */
-            /*     input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7); */
-            /* end if; */
-
-            if realtime > 20.0e-3 then ref_load_current := -2.0; end if;
-            if realtime > 30.0e-3 then voltage_reference := 120.0; end if;
-            if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if;
-            if realtime > 50.0e-3 then voltage_reference := 180.0; end if;
-            if realtime > 65.0e-3 then ref_load_current := 10.0; end if;
-            if realtime > 70.0e-3 then ref_load_current := -10.0; end if;
-            if realtime > 80.0e-3 then ref_load_current := 0.0; end if;
-
-            ---------------------
-            
-            create_divider_and_multiplier(divider,divider_multiplier);
-            create_multiplier(multiplier);
-            create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7) ,
-                                    to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
-                                    dutymax                              ,
-                                    dutymin);
-
-            create_multiplier(voltage_multiplier);
+        procedure create_voltage_control
+        (
+            signal self : inout voltage_control_record
+        ) is
+        begin
             if counter1 < 2 then
                 counter1 <= counter1 + 1;
             end if;
@@ -174,6 +149,48 @@ begin
                     WHEN others => --do nothing
                 end CASE;
             end if;
+            
+        end create_voltage_control;
+
+
+    begin
+        if rising_edge(simulator_clock) then
+            simulation_counter <= simulation_counter + 1;
+            if simulation_counter = 0 then
+                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
+            end if;
+
+            init_bus(bus_from_stimulus);
+            if realtime > 2.0e-3 then
+                write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
+            end if;
+
+            /* if realtime > 4.0e-3 then */
+            /*     ref_input_voltage := 120.0; */
+            /*     write_data_to_address(bus_from_stimulus, 2, to_fixed(ref_input_voltage, number_of_fractional_bits => 7)); */
+            /*     input_voltage_0_to_512 <= to_fixed(120.0, number_of_fractional_bits => 7); */
+            /* end if; */
+
+            if realtime > 20.0e-3 then ref_load_current  := -2.0;  end if;
+            if realtime > 30.0e-3 then voltage_reference := 120.0; end if;
+            if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if;
+            if realtime > 50.0e-3 then voltage_reference := 180.0; end if;
+            if realtime > 65.0e-3 then ref_load_current  := 10.0;  end if;
+            if realtime > 70.0e-3 then ref_load_current  := -10.0; end if;
+            if realtime > 80.0e-3 then ref_load_current  := 0.0;   end if;
+
+            ---------------------
+            
+            create_divider_and_multiplier(divider,divider_multiplier);
+            create_multiplier(multiplier);
+            create_current_control(current_control,multiplier, divider, divider_multiplier,
+                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7) ,
+                                    to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
+                                    dutymax                              ,
+                                    dutymin);
+
+            create_multiplier(voltage_multiplier);
+            create_voltage_control(self);
 
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
