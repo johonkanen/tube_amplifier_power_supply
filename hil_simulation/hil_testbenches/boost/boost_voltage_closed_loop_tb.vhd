@@ -72,8 +72,8 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
-    signal vkp : integer := to_fixed(0.5, 11);
-    signal vki : integer := to_fixed(0.5, 11);
+    signal vkp : integer := to_fixed(0.25     , 15);
+    signal vki : integer := to_fixed(0.016125 , 15);
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
 
@@ -110,8 +110,6 @@ begin
         variable dc_link_voltage   : real := initial_voltage;
         variable boost_model       : boost_model_record := (0.0, initial_voltage);
         variable voltage_reference : real := 200.0;
-
-
 
     begin
         if rising_edge(simulator_clock) then
@@ -151,8 +149,8 @@ begin
 
             create_multiplier(voltage_multiplier);
             create_voltage_control(self, voltage_multiplier,
-            proportional_gain => to_fixed(0.25     , 15),
-            integral_gain     => to_fixed(0.016125 , 15)
+            proportional_gain => vkp,
+            integral_gain     => vki
         );
 
             if realtime >= interrupt_time then
