@@ -70,17 +70,17 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     signal vkp : integer := to_fixed(0.5, 11);
     signal vki : integer := to_fixed(0.5, 11);
     signal voltage_multiplier : multiplier_record := init_multiplier;
-    signal counter1 : natural := 15;
-    signal counter2 : natural := 15;
     signal piout : integer := 0;
     signal integrator : integer := 0;
     signal current_ref : integer := 0;
 
     type voltage_control_record is record
-        data : std_logic;
+        v_error : integer;
+        counter1 : natural;
+        counter2 : natural;
     end record;
 
-    constant init_voltage_control : voltage_control_record := (data => '0');
+    constant init_voltage_control : voltage_control_record := (v_error => 0, counter1 => 15, counter2 => 15);
 
     signal self : voltage_control_record := init_voltage_control;
 
@@ -121,22 +121,22 @@ begin
             signal self : inout voltage_control_record
         ) is
         begin
-            if counter1 < 2 then
-                counter1 <= counter1 + 1;
+            if self.counter1 < 2 then
+                self.counter1 <= self.counter1 + 1;
             end if;
-            CASE counter1 is
-                WHEN 0 => multiply(voltage_multiplier, to_fixed(0.25, 7), to_fixed(voltage_reference, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
-                WHEN 1 => multiply(voltage_multiplier, to_fixed(0.016125, 7), to_fixed(voltage_reference, 7) - to_fixed(boost_model.dc_link_voltage, number_of_fractional_bits => 7));
+            CASE self.counter1 is
+                WHEN 0 => multiply(voltage_multiplier , to_fixed(0.25     , 15) , to_fixed(voltage_reference , 7) - to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
+                WHEN 1 => multiply(voltage_multiplier , to_fixed(0.016125 , 15) , to_fixed(voltage_reference , 7) - to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
                 WHEN others => --do nothing
             end CASE;
 
             if multiplier_is_ready(voltage_multiplier) then
-                counter2 <= counter2 + 1;
-                CASE counter2 is
+                self.counter2 <= self.counter2 + 1;
+                CASE self.counter2 is
                     WHEN 0 => 
-                        piout <= get_int_multiplier_result(voltage_multiplier,7,7,11) + integrator;
+                        piout <= get_int_multiplier_result(voltage_multiplier,15,7,11) + integrator;
                     WHEN 1 => 
-                        integrator  <= get_int_multiplier_result(voltage_multiplier,7,7,11) + integrator;
+                        integrator  <= get_int_multiplier_result(voltage_multiplier,15,7,11) + integrator;
                         current_ref <= piout;
                         if piout > to_fixed(7.0, 11) then
                             current_ref <= to_fixed(7.0, 11);
@@ -151,6 +151,18 @@ begin
             end if;
             
         end create_voltage_control;
+
+        procedure request_voltage_control
+        (
+            signal self : inout voltage_control_record;
+            v_ref : integer;
+            v_measurement : integer
+        ) is
+        begin
+            self.v_error <= v_ref - v_measurement;
+            self.counter1 <= 0;
+            self.counter2 <= 0;
+        end request_voltage_control;
 
 
     begin
@@ -195,8 +207,8 @@ begin
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
                 request_current_control(current_control, current_ref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
-                counter1 <= 0;
-                counter2 <= 0;
+                request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
+
             end if;
 
             if current_control_is_ready(current_control) then
