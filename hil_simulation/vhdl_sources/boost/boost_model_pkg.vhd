@@ -18,13 +18,8 @@ LIBRARY ieee  ;
     use work.microinstruction_pkg.all;
 
 package boost_model_pkg is
-    constant inductance  :  real := 50.0e-6;
-    constant capacitance :  real := 50.0e-6;
-    constant rl          :  real := 0.24;
-    constant timestep    :  real := 4.0e-6;
 
     constant boost_addr_offset :  natural := 33;
-
 
     type boost_model_record is record
         inductor_current : real;
@@ -39,10 +34,10 @@ package boost_model_pkg is
     end record;
 
     constant init_parameters : boost_model_parameters_record := (
-        inductance  ,
-        capacitance ,
-        rl          ,
-        timestep    );
+        inductance  => 50.0e-6 ,
+        capacitance => 50.0e-6 ,
+        rl          => 0.24    ,
+        timestep    => 4.0e-6 );
 
     function calculate_boost (
         self          : boost_model_record;
@@ -59,7 +54,7 @@ package boost_model_pkg is
         duty            : real;
     end record;
 
-    function build_boost_model (inductor_res : real; inductor_gain : real; capacitor_gain : real; init_values : initial_boost_model_values_record)
+    function build_boost_model (parameters : boost_model_parameters_record; init_values : initial_boost_model_values_record)
     return ram_array;
 
     constant variables : variable_array := init_variables(21) + boost_addr_offset;
@@ -119,13 +114,13 @@ package body boost_model_pkg is
         constant c : real := parameters.timestep/parameters.capacitance;
     begin
         retval.inductor_current := retval.inductor_current + (input_voltage - retval.dc_link_voltage*duty - parameters.rl * retval.inductor_current)*l;
-        retval.dc_link_voltage := retval.dc_link_voltage + (retval.inductor_current*duty + load_current)*c;
+        retval.dc_link_voltage  := retval.dc_link_voltage + (retval.inductor_current*duty + load_current)*c;
 
         return retval;
         
     end calculate_boost;
 
-    function build_boost_model (inductor_res : real; inductor_gain : real; capacitor_gain : real; init_values : initial_boost_model_values_record)
+    function build_boost_model (parameters : boost_model_parameters_record; init_values : initial_boost_model_values_record)
     return ram_array
     is
         variable retval : ram_array := (others => (others => '0'));
@@ -136,9 +131,9 @@ package body boost_model_pkg is
         retval(input_voltage_addr ) := to_std_logic_vector(to_float(init_values.input_voltage)  ) ;
         retval(udc                ) := to_std_logic_vector(to_float(init_values.dc_link_voltage)  ) ;
         retval(current_addr       ) := to_std_logic_vector(to_float(0.0  )  ) ;
-        retval(c_addr             ) := to_std_logic_vector(to_float(capacitor_gain    )  ) ;
-        retval(l_addr             ) := to_std_logic_vector(to_float(inductor_gain    )  ) ;
-        retval(r_addr             ) := to_std_logic_vector(to_float(inductor_res    )  ) ;
+        retval(c_addr             ) := to_std_logic_vector(to_float(parameters.timestep/parameters.capacitance)  ) ;
+        retval(l_addr             ) := to_std_logic_vector(to_float(parameters.timestep/parameters.inductance    )  ) ;
+        retval(r_addr             ) := to_std_logic_vector(to_float(parameters.rl    )  ) ;
         retval(duty               ) := to_std_logic_vector(to_float(init_values.duty )  ) ;
         retval(iload              ) := to_std_logic_vector(to_float(0.0  )  ) ;
 

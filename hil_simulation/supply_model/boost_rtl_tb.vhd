@@ -55,9 +55,7 @@ architecture vunit_simulation of boost_rtl_tb is
     constant initial_voltage : real := 100.0;
 
 ------------------------------------------------------------------------
-    constant l : real := timestep/inductance;
-    constant c : real := timestep/capacitance;
-    constant ram_contents : ram_array := build_boost_model(rl, l, c, (initial_voltage,initial_voltage, 0.5));
+    constant ram_contents : ram_array := build_boost_model(init_parameters, (initial_voltage,initial_voltage, 0.5));
 ------------------------------------------------------------------------
 
     signal self                     : simple_processor_record := init_processor;
@@ -81,7 +79,6 @@ architecture vunit_simulation of boost_rtl_tb is
     signal result3 : real := 0.0;
 
     signal float_alu : float_alu_record := init_float_alu;
-
 
     signal testi1 : real := 0.0;
     signal testi2 : real := 0.0;
@@ -164,7 +161,7 @@ begin
             ------------------------------------------------------------------------
             if simulation_counter = 0 then
                 request_processor(self, 128);
-                realtime <= realtime + timestep;
+                realtime <= realtime + init_parameters.timestep;
                 write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
@@ -175,7 +172,7 @@ begin
             end if;
 
             if ready_pipeline(ready_pipeline'left) = '1' then
-                realtime <= realtime + timestep;
+                realtime <= realtime + init_parameters.timestep;
                 boost_model := calculate_boost(boost_model, init_parameters, ref_duty, ref_load_current, ref_input_voltage);
                 write_to(file_handler,(realtime, result3, result2, boost_model.dc_link_voltage, boost_model.inductor_current));
                 request_processor(self, 128);

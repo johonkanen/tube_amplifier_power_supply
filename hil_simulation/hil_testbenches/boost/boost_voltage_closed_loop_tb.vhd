@@ -18,7 +18,6 @@ context vunit_lib.vunit_context;
     use work.division_pkg.all;
 
     use work.voltage_control_pkg.all;
-
     use work.half_bridge_current_control_pkg.all;
 
 entity boost_voltage_closed_loop_tb is
@@ -157,7 +156,6 @@ begin
                 interrupt_time <= realtime + calculation_interval;
                 request_current_control(current_control, self.current_ref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
                 request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
-
             end if;
 
             if current_control_is_ready(current_control) then

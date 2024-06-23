@@ -9,7 +9,7 @@ import os
 path_to_this_file = os.path.dirname(os.path.realpath(__file__))
 
 #change directory to the lc filter directory
-pqs.chdir(path_to_this_file + '/../hil_simulation/qspice_ref_models/boost_simulation')
+pqs.chdir(path_to_this_file + '/../../qspice_ref_models/boost_simulation')
 
 run = pqs('rtl_boost_reference.qsch')
 
@@ -23,7 +23,7 @@ run.setNline(4999)
 df = run.LoadQRAW(["V(vdc)", "I(L1)", "V(sampled_current)"])
 
 # load vhdl simulation data
-vhdl_data = pd.read_csv(path_to_this_file + '/../vunit_out/boost_entity_tb.dat', delim_whitespace=True)
+vhdl_data = pd.read_csv(path_to_this_file + '/../../../vunit_out/boost_entity_tb.dat', delim_whitespace=True)
 
 fig1, (axT, axB) = plt.subplots(2,1,sharex=True,constrained_layout=True)
 

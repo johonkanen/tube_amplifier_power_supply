@@ -12,15 +12,18 @@ context vunit_lib.vunit_context;
     use work.write_pkg.all;
     use work.boost_model_pkg.all;
 
-entity boost_entity_tb is
+    use work.voltage_control_pkg.all;
+    use work.half_bridge_current_control_pkg.all;
+
+entity boost_rtl_closed_loop_tb is
   generic (runner_cfg : string);
 end;
 
-architecture vunit_simulation of boost_entity_tb is
+architecture vunit_simulation of boost_rtl_closed_loop_tb is
 
-    constant clock_period      : time    := 1 ns;
-    constant stoptime : real := 10.0e-3;
-    signal simulation_counter  : natural   := 0;
+    constant clock_period     : time    := 1 ns;
+    constant stoptime         : real    := 10.0e-3;
+    signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
     -----------------------------------
@@ -42,6 +45,15 @@ architecture vunit_simulation of boost_entity_tb is
     signal ref_current : real := 0.0;
     signal ref_voltage : real := 0.0;
 
+    signal calculation_interval : real := 1.0/30.0e3;
+    signal interrupt_time : real := 0.0;
+
+    constant cl_parameters : boost_model_parameters_record := (
+        inductance  => 500.0e-6 ,
+        capacitance => 320.0e-6 ,
+        rl          => 100.0e-3 ,
+        timestep    => 1.5e-6);
+
 ------------------------------------------------------------------------
 begin
 
@@ -61,7 +73,7 @@ begin
 
         constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => 10.0, bit_width => 16, number_of_fractional_bits => 11);
         constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0, bit_width => 16, number_of_fractional_bits => 15-7);
-        file file_handler         : text open write_mode is "boost_entity_tb.dat";
+        file file_handler         : text open write_mode is "boost_rtl_closed_loop_tb.dat";
 
 
         variable ref_input_voltage : real := 100.0;
@@ -79,7 +91,7 @@ begin
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             init_bus(bus_from_stimulus);
@@ -101,8 +113,8 @@ begin
 
             if processor_ready then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
-                realtime <= realtime + init_parameters.timestep;
-                boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                realtime <= realtime + cl_parameters.timestep;
             end if;
         end if; --rising_edge
     end process stimulus;	
@@ -118,6 +130,6 @@ begin
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,
 
-        program_ready        => processor_ready);
+        program_ready => processor_ready);
 ------------------------------------------------------------------------
 end vunit_simulation;
