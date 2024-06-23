@@ -121,6 +121,7 @@ begin
 ------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
+    generic map(boost_model_parameters => init_parameters)
     port map(
         clock => simulator_clock ,
 
