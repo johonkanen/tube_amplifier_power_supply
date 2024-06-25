@@ -75,7 +75,6 @@ architecture vunit_simulation of boost_voltage_closed_loop_tb is
     signal vki : integer := to_fixed(0.016125 , 15);
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
-
     signal self : voltage_control_record := init_voltage_control;
 
 ------------------------------------------------------------------------

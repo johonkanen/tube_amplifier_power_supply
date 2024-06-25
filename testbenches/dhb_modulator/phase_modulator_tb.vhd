@@ -29,6 +29,8 @@ architecture vunit_simulation of phase_modulator_tb is
 
     signal carrier : natural := 0;
 
+    signal phase_modulator_clocks : phase_modulator_clock_group := ('0','0');
+
 begin
 
 ------------------------------------------------------------------------
@@ -78,10 +80,12 @@ begin
         end if; -- rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
+    phase_modulator_clocks <= (core_clock => simulator_clock,  modulator_clock=> modulator_clock);
+
     u_phase_modulator : entity work.phase_modulator
     generic map(128e6/135e3)
     port map (
-        (simulator_clock          , modulator_clock),
+        phase_modulator_clocks,
         phase_modulator_FPGA_out ,
         phase_modulator_data_in  ,
         phase_modulator_data_out);
