@@ -6,7 +6,6 @@ from vunit import VUnit
 # ROOT
 ROOT = Path(__file__).resolve().parent
 VU = VUnit.from_argv(compile_builtins=True)
-
 # tube_amp_power = VU.add_library("tube_amp_power")
 # tube_amp_power.add_source_files(ROOT / "testbenches/measurement_interface/measurement_interface_tb.vhd")
 
@@ -87,4 +86,5 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/phase_modulator_tb.vhd")
 dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 
 
+VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()
