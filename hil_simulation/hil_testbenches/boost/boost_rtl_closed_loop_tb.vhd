@@ -72,6 +72,10 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
     constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
+    /* signal calculation_interval : real := 1.0/30.0e3; */
+    /* signal interrupt_time : real := 0.0; */
+    constant initial_voltage : real := 150.0;
+
 ------------------------------------------------------------------------
 begin
 
@@ -98,11 +102,11 @@ begin
         variable ref_load_current  : real := 0.0;
         variable ref_duty          : real := 0.5;
 
-        constant initial_voltage : real := 100.0;
 
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
         variable boost_model : boost_model_record := (0.0, initial_voltage);
+        variable voltage_reference : real := 200.0;
 
     begin
         if rising_edge(simulator_clock) then
@@ -113,26 +117,26 @@ begin
             end if;
 
             init_bus(bus_from_stimulus);
-            if realtime > 2.0e-3 then
-                ref_duty := 0.5;
-                write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
-            end if;
+            /* if realtime > 2.0e-3 then */
+            /*     ref_duty := 0.5; */
+            /*     write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15)); */
+            /* end if; */
 
-            if realtime > 4.0e-3 then
-                ref_input_voltage := 120.0;
-                write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7));
-                input_voltage_0_to_512 <= integer(120*2.0**7);
-            end if;
+            /* if realtime > 4.0e-3 then */
+            /*     ref_input_voltage := 120.0; */
+            /*     write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7)); */
+            /*     input_voltage_0_to_512 <= integer(120*2.0**7); */
+            /* end if; */
 
-            if realtime > 6.0e-3 then
-                ref_load_current := -10.0;
-                write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11));
-            end if;
+            /* if realtime > 6.0e-3 then */
+            /*     ref_load_current := -10.0; */
+            /*     write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11)); */
+            /* end if; */
 
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7) ,
+                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7),
                                     to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
                                     dutymax                              ,
                                     dutymin);
@@ -142,17 +146,21 @@ begin
             proportional_gain => vkp,
             integral_gain     => vki);
 
-            /* if realtime >= interrupt_time then */
-            /*     interrupt_time <= realtime + calculation_interval; */
-            /*     request_current_control(current_control, self.current_ref, to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11)); */
-            /*     request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7)); */
-            /* end if; */
-
+            if current_control_is_ready(current_control) then
+                ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
+            end if;
+            write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
 
             if processor_ready then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                 realtime <= realtime + cl_parameters.timestep;
+
+                if realtime >= interrupt_time then
+                    interrupt_time <= realtime + calculation_interval;
+                    request_current_control(current_control, self.current_ref, rtl_current*2**4);
+                    request_voltage_control(self, to_fixed(voltage_reference , 7) , rtl_voltage*2);
+                end if;
             end if;
 
         end if; --rising_edge
@@ -160,7 +168,7 @@ begin
 ------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => init_parameters)
+    generic map(boost_model_parameters => cl_parameters, initial_voltage => initial_voltage)
     port map(
         clock => simulator_clock ,
 

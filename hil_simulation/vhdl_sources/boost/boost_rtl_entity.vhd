@@ -24,7 +24,9 @@ LIBRARY ieee  ;
     use work.float_arithmetic_operations_pkg.all;
 
 entity boost_model is
-    generic(boost_model_parameters : boost_model_parameters_record);
+    generic(boost_model_parameters : boost_model_parameters_record;
+            initial_voltage : real := 100.0
+           );
     port (
         clock      : in std_logic	;
         bus_to_boost_model   : in fpga_interconnect_record;
@@ -41,7 +43,6 @@ end entity boost_model;
 architecture rtl of boost_model is
     signal simulation_counter  : natural range 0 to 15   := 0;
 
-    constant initial_voltage : real := 100.0;
 
 ------------------------------------------------------------------------
     constant ram_contents : ram_array := build_boost_model(boost_model_parameters, (initial_voltage,initial_voltage, 0.5));

@@ -25,9 +25,9 @@ closed_loop_results.plot(ax=axB, x="Time",  y="V(sampled_current)", label="contr
 # load vhdl simulation data
 vhdl_data = pd.read_csv(path_to_this_file + '/../../../vunit_out/boost_rtl_closed_loop_tb.dat', delim_whitespace=True)
 
-# vhdl_data.plot(ax=axT, x="time", y="volt", label="vhdl voltage")
+vhdl_data.plot(ax=axT, x="time", y="volt", label="vhdl voltage")
 vhdl_data.plot(ax=axT, x="time", y="vref", label="vhdl reference voltage")
-# vhdl_data.plot(ax=axB, x="time", y="curr", label="vhdl current")
+vhdl_data.plot(ax=axB, x="time", y="curr", label="vhdl current")
 vhdl_data.plot(ax=axB, x="time", y="iref", label="vhdl reference current")
 
 plt.show()
