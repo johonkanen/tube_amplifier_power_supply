@@ -86,5 +86,5 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/phase_modulator_tb.vhd")
 dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 
 
-VU.set_sim_option("nvc.sim_flags", ["-w"])
+# VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()

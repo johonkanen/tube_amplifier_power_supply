@@ -25,7 +25,7 @@ end;
 architecture vunit_simulation of boost_rtl_closed_loop_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 40.0e-3;
+    constant stoptime         : real    := 100.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -66,7 +66,7 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
 
-    signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
+    signal current_control : current_control_record := init_current_control(16.0, 8.0, number_of_fractional_bits => 7);
     signal self : voltage_control_record := init_voltage_control;
     
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
@@ -75,6 +75,8 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     /* signal calculation_interval : real := 1.0/30.0e3; */
     /* signal interrupt_time : real := 0.0; */
     constant initial_voltage : real := 150.0;
+    signal sequence_counter : natural := 0;
+    signal do_a_thing : boolean := true;
 
 ------------------------------------------------------------------------
 begin
@@ -117,26 +119,11 @@ begin
             end if;
 
             init_bus(bus_from_stimulus);
-            /* if realtime > 2.0e-3 then */
-            /*     ref_duty := 0.5; */
-            /*     write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15)); */
-            /* end if; */
-
-            /* if realtime > 4.0e-3 then */
-            /*     ref_input_voltage := 120.0; */
-            /*     write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7)); */
-            /*     input_voltage_0_to_512 <= integer(120*2.0**7); */
-            /* end if; */
-
-            /* if realtime > 6.0e-3 then */
-            /*     ref_load_current := -10.0; */
-            /*     write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11)); */
-            /* end if; */
 
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7),
+                                    rtl_voltage,
                                     to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
                                     dutymax                              ,
                                     dutymin);
@@ -146,10 +133,60 @@ begin
             proportional_gain => vkp,
             integral_gain     => vki);
 
+            do_a_thing <= false;
             if current_control_is_ready(current_control) then
                 ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
+                write_data_to_address(bus_from_stimulus, 3, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                do_a_thing <= true;
+
             end if;
-            write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
+
+            if do_a_thing then
+                do_a_thing <= false;
+                CASE sequence_counter is 
+                    WHEN 0 =>
+                        if realtime > 20.0e-3 then -- if (t > 20.0e-3) iload = -2.0;
+                            ref_load_current := -2.0;
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 1 =>
+                        if realtime > 30.0e-3 then -- if (t > 30.0e-3) vref = 120.0;
+                            voltage_reference := 120.0;
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 2 =>
+                        if realtime > 40.0e-3 then -- if (t > 40.0e-3) vin = 130.0;
+                            ref_input_voltage := 130.0;
+                            write_data_to_address(bus_from_stimulus, 2, std_logic_vector(to_signed(to_fixed(ref_input_voltage, 7), 16)));
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 3 =>
+                        if realtime > 50.0e-3 then -- if (t > 50.0e-3) vref = 180.0;
+                            voltage_reference := 180.0;
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 4 =>
+                        if realtime > 65.0e-3 then -- if (t > 65.0e-3) iload = 10.0;
+                            ref_load_current := -10.0;
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 5 =>
+                        if realtime > 70.0e-3 then -- if (t > 70.0e-3) iload = -10.0;
+                            ref_load_current := 10.0;
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN 6 =>
+                        if realtime > 80.0e-3 then -- if (t > 80.0e-3) iload = 0.0;
+                            ref_load_current := 0.0;
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            sequence_counter <= sequence_counter + 1;
+                        end if;
+                    WHEN others =>
+                end CASE;
+            end if;
 
             if processor_ready then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
