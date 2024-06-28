@@ -169,19 +169,19 @@ begin
                     WHEN 4 =>
                         if realtime > 65.0e-3 then -- if (t > 65.0e-3) iload = 10.0;
                             ref_load_current := -10.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 5 =>
                         if realtime > 70.0e-3 then -- if (t > 70.0e-3) iload = -10.0;
                             ref_load_current := 10.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 6 =>
                         if realtime > 80.0e-3 then -- if (t > 80.0e-3) iload = 0.0;
                             ref_load_current := 0.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN others =>

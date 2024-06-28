@@ -28,7 +28,7 @@ entity boost_model is
             initial_voltage : real := 100.0
            );
     port (
-        clock      : in std_logic	;
+        clock                : in std_logic	;
         bus_to_boost_model   : in fpga_interconnect_record;
         bus_from_boost_model : out fpga_interconnect_record;
 
@@ -42,7 +42,6 @@ end entity boost_model;
 
 architecture rtl of boost_model is
     signal simulation_counter  : natural range 0 to 15   := 0;
-
 
 ------------------------------------------------------------------------
     constant ram_contents : ram_array := build_boost_model(boost_model_parameters, (initial_voltage,initial_voltage, 0.5));
@@ -63,22 +62,22 @@ architecture rtl of boost_model is
 
     signal ready_pipeline : std_logic_vector(2 downto 0) := (others => '0');
 
-    signal sequence_counter      : natural range 0 to 31 := 0;
-    signal load_current_from_bus : natural range 0 to 2**16-1 := 0;
+    signal sequence_counter      : natural range 0 to 31      := 0;
+    signal load_current_from_bus : std_logic_vector(15 downto 0);
     signal voltage_from_bus      : natural range 0 to 2**16-1 := integer(100*2.0**7);
     signal duty_0_to_1           : natural range 0 to 2**16-1 := integer(0.5*2.0**15);
 
     signal float_to_integer_converter : float_to_integer_converter_record := init_float_to_integer_converter;
-    signal float_multiplier : float_multiplier_record := init_float_multiplier;
-    signal float_to_int_counter : natural := 0;
-    signal int_to_float_counter : natural := 0;
+    signal float_multiplier           : float_multiplier_record := init_float_multiplier;
+    signal float_to_int_counter       : natural := 0;
+    signal int_to_float_counter       : natural := 0;
     signal int_to_float_ready_counter : natural := 0;
 
-    signal float_duty : float_record := to_float(0.0);
-    signal float_load_current : float_record := to_float(0.0);
+    signal float_duty          : float_record := to_float(0.0);
+    signal float_load_current  : float_record := to_float(0.0);
     signal float_input_voltage : float_record := to_float(0.0);
-    signal measured_current : integer range -2**15 to 2**15-1 := 0; 
-    signal measured_voltage : integer range -2**15 to 2**15-1 := 0;
+    signal measured_current    : integer range -2**15 to 2**15-1 := 0;
+    signal measured_voltage    : integer range -2**15 to 2**15-1 := 0;
 
 begin
     program_ready <= program_is_ready(self);
@@ -86,19 +85,16 @@ begin
     rtl_voltage <= measured_voltage;
 
     stimulus : process(clock)
-
         variable used_instruction : t_instruction;
-
     begin
-
         if rising_edge(clock) then
 
             init_bus(bus_from_boost_model);
-            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 1 , load_current_from_bus);
-            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 2 , voltage_from_bus);
-            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 3 , duty_0_to_1);
-            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 4 , measured_current);
-            connect_data_to_address(bus_to_boost_model, bus_from_boost_model, 5 , measured_voltage);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 1 , load_current_from_bus);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 2 , voltage_from_bus);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
 
             --------------------
             create_simple_processor (
@@ -115,44 +111,43 @@ begin
             create_float_alu(float_alu);
 
             create_memory_process_pipeline(
-             self                     ,
-             float_alu                ,
-             used_instruction         ,
-             ram_read_instruction_out ,
-             ram_read_data_in         ,
-             ram_read_data_out        ,
-             ram_read_2_data_in       ,
-             ram_read_2_data_out      ,
-             ram_read_3_data_in       ,
-             ram_read_3_data_out      ,
-             ram_write_port          );
+            self                     ,
+            float_alu                ,
+            used_instruction         ,
+            ram_read_instruction_out ,
+            ram_read_data_in         ,
+            ram_read_data_out        ,
+            ram_read_2_data_in       ,
+            ram_read_2_data_out      ,
+            ram_read_3_data_in       ,
+            ram_read_3_data_out      ,
+            ram_write_port          );
 
-             create_float_to_integer_converter(float_to_integer_converter);
-             create_float_multiplier(float_multiplier);
+            create_float_to_integer_converter(float_to_integer_converter);
+            create_float_multiplier(float_multiplier);
 
-             if ram_write_port.write_requested = '1' and ram_write_port.address = udc then
-                 convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 6);
-                 float_to_int_counter <= 0;
-             end if;
+            if ram_write_port.write_requested = '1' and ram_write_port.address = udc then
+                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 6);
+                float_to_int_counter <= 0;
+            end if;
 
-             if ram_write_port.write_requested = '1' and ram_write_port.address = current_addr then
-                 convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 7);
-             end if;
+            if ram_write_port.write_requested = '1' and ram_write_port.address = current_addr then
+                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 7);
+            end if;
 
-             case float_to_int_counter is
-                 WHEN 0 => 
-                     if float_to_int_conversion_is_ready(float_to_integer_converter) then
-                         measured_voltage <= get_converted_integer(float_to_integer_converter);
-                         float_to_int_counter <= float_to_int_counter + 1;
-                     end if;
-                 WHEN 1 => 
-                     if float_to_int_conversion_is_ready(float_to_integer_converter) then
-                         measured_current <= get_converted_integer(float_to_integer_converter);
-                         float_to_int_counter <= float_to_int_counter + 1;
-                     end if;
-                 WHEN others => 
-             end case;
-
+            case float_to_int_counter is
+                WHEN 0 => 
+                    if float_to_int_conversion_is_ready(float_to_integer_converter) then
+                        measured_voltage <= get_converted_integer(float_to_integer_converter);
+                        float_to_int_counter <= float_to_int_counter + 1;
+                    end if;
+                WHEN 1 => 
+                    if float_to_int_conversion_is_ready(float_to_integer_converter) then
+                        measured_current <= get_converted_integer(float_to_integer_converter);
+                        float_to_int_counter <= float_to_int_counter + 1;
+                    end if;
+                WHEN others => 
+            end case;
 
             ------------------------------------------------------------------------
             ------------------------------------------------------------------------
@@ -172,7 +167,7 @@ begin
 
             CASE int_to_float_counter is
                 WHEN 1 =>
-                    convert_integer_to_float(float_to_integer_converter, load_current_from_bus, 11);
+                    convert_integer_to_float(float_to_integer_converter, to_integer(signed(load_current_from_bus)), 11);
                     int_to_float_counter <= int_to_float_counter + 1;
                 WHEN 2 =>
                     convert_integer_to_float(float_to_integer_converter, duty_0_to_1, 15);
