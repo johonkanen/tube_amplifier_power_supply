@@ -66,14 +66,12 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
 
-    signal current_control : current_control_record := init_current_control(16.0, 8.0, number_of_fractional_bits => 7);
+    signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
     signal self : voltage_control_record := init_voltage_control;
     
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
     constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
-    /* signal calculation_interval : real := 1.0/30.0e3; */
-    /* signal interrupt_time : real := 0.0; */
     constant initial_voltage : real := 150.0;
     signal sequence_counter : natural := 0;
     signal do_a_thing : boolean := true;
