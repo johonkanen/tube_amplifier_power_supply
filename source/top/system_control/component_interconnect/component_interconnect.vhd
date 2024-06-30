@@ -9,6 +9,7 @@ library ieee;
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
+    use work.boost_model_interface_pkg.all;
 
     use work.real_to_fixed_pkg.all;
     use work.multiplier_pkg.all;
@@ -56,13 +57,15 @@ architecture rtl of component_interconnect is
     signal power_supply_control_data_out : power_supply_control_data_output_group;
 ------------------------------------------------------------------------
     signal bus_to_communications   : fpga_interconnect_record;
-    signal bus_from_communications : fpga_interconnect_record;
     signal bus_out : fpga_interconnect_record;
 ------------------------------------------------------------------------
     signal rtl_current : integer range -2**15 to 2**15-1 := 0;
     signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
     signal processor_ready : boolean := false;
-    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
+
+    signal boost_model_bus : boost_model_interface_record := (others => init_fpga_interconnect);
+    alias bus_from_communications is boost_model_bus.bus_to_boost_model;
+    alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 ------------------------------------------------------------------------
     signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
 
@@ -148,8 +151,8 @@ begin
     generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
     port map(
         clock => system_clocks.core_clock ,
-        bus_to_boost_model     => bus_from_communications ,
-        bus_from_boost_model   => bus_from_boost_model    ,
+
+        boost_model_bus => boost_model_bus,
 
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,

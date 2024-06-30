@@ -8,6 +8,7 @@ library vunit_lib;
 context vunit_lib.vunit_context;
 
     use work.fpga_interconnect_pkg.all;
+    use work.boost_model_interface_pkg.all;
     use work.real_to_fixed_pkg.all;
     use work.write_pkg.all;
     use work.boost_model_pkg.all;
@@ -29,9 +30,6 @@ architecture vunit_simulation of boost_entity_tb is
 
     signal realtime   : real := 0.0;
 
-    signal bus_from_stimulus    : fpga_interconnect_record := init_fpga_interconnect;
-    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
-
     signal processor_ready : boolean := false;
 
     signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
@@ -41,6 +39,9 @@ architecture vunit_simulation of boost_entity_tb is
     signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
     signal ref_current : real := 0.0;
     signal ref_voltage : real := 0.0;
+    signal boost_model_bus : boost_model_interface_record := (others => init_fpga_interconnect);
+    alias bus_from_stimulus is boost_model_bus.bus_to_boost_model;
+    alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 
 ------------------------------------------------------------------------
 begin
@@ -113,8 +114,7 @@ begin
     port map(
         clock => simulator_clock ,
 
-        bus_to_boost_model     => bus_from_stimulus    ,
-        bus_from_boost_model   => bus_from_boost_model ,
+        boost_model_bus => boost_model_bus,
 
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,

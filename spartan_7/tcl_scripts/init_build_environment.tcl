@@ -4,11 +4,11 @@ file mkdir $outputDir
 set source_folder $tcl_path/../../source
 
 proc add_vhdl_file_to_project {vhdl_file} {
-    read_vhdl -vhdl2008 $vhdl_file
+    read_vhdl -vhdl2019 $vhdl_file
 }
 
 proc add_vhdl_file_to_library {vhdl_file library} {
-    read_vhdl -vhdl2008 -library $library $vhdl_file 
+    read_vhdl -vhdl2019 -library $library $vhdl_file 
 }
 
 proc set_3v3_io {pin_name_from_port package_pin_location} {

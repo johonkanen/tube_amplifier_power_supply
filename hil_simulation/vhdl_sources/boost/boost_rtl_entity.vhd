@@ -1,6 +1,27 @@
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
+
+    use work.fpga_interconnect_pkg.all;
+
+package boost_model_interface_pkg is
+
+    type boost_model_interface_record is record
+        bus_to_boost_model   : fpga_interconnect_record;
+        bus_from_boost_model : fpga_interconnect_record;
+    end record;
+
+    view boost_model_interface_view of boost_model_interface_record is 
+        bus_to_boost_model   : in;
+        bus_from_boost_model : out;
+    end view boost_model_interface_view;
+
+end package boost_model_interface_pkg;
+
+-----------------------------
+LIBRARY ieee  ; 
+    USE ieee.NUMERIC_STD.all  ; 
+    USE ieee.std_logic_1164.all  ; 
     use ieee.math_real.all;
 
     use work.multi_port_ram_pkg.all;
@@ -19,6 +40,8 @@ LIBRARY ieee  ;
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
+    use work.boost_model_interface_pkg.all;
+
     use work.float_to_integer_converter_pkg.all;
     use work.float_multiplier_pkg.all;
     use work.float_arithmetic_operations_pkg.all;
@@ -28,14 +51,13 @@ entity boost_model is
             initial_voltage : real := 100.0
            );
     port (
-        clock                : in std_logic	;
-        bus_to_boost_model   : in fpga_interconnect_record;
-        bus_from_boost_model : out fpga_interconnect_record;
+        clock           : in std_logic	;
+        boost_model_bus : view boost_model_interface_view;
 
-        rtl_current          : out integer range -2**15 to 2**15-1;
-        rtl_voltage          : out integer range -2**15 to 2**15-1;
+        rtl_current     : out integer range -2**15 to 2**15-1;
+        rtl_voltage     : out integer range -2**15 to 2**15-1;
 
-        program_ready        : out boolean
+        program_ready   : out boolean
     );
 end entity boost_model;
 
@@ -46,6 +68,8 @@ architecture rtl of boost_model is
 ------------------------------------------------------------------------
     constant ram_contents : ram_array := build_boost_model(boost_model_parameters, (initial_voltage,initial_voltage, 0.5));
 ------------------------------------------------------------------------
+    alias bus_to_boost_model is boost_model_bus.bus_to_boost_model;
+    alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 
     signal self                     : simple_processor_record := init_processor;
     signal ram_read_instruction_in  : ram_read_in_record  := (0, '0');
