@@ -6,6 +6,9 @@ For more detailed information, please refer to the [PDF documentation](docs/tube
 
 The power supply was never installed in the actual tube amplifier and the original repository was lost at some point when changing computers hence this repository picks up at the point which was recovered from some old copy that I happened find from my old hardrive.
 
+## VHDL2019 interfaces
+As of writing AMD Vivado, Efinix Efinity and Lattice Radiant (and Altera Quartus Pro) tools support interfaces that is most important rtl enchancement of VHDL2019, hence the project will be refactored to use this fantastic feature of VHDL. This allows specifying in and out directional signals in a record, hence prevents the need to have two records for each entity. This feature can also be simulated using open source NVC simulator.
+
 ## hVHDL libraries
  [hvhdl project on GitHub](https://github.com/hvhdl) has the required fixed and floating point math libraries and microcode processor libraries so we will refactor the old control code to use them. The hVHDL libraries come with VUnit tests hence the code is easier to refactor to use the existing tested libraries than to simulate the functionality with the implementations that are present in this repository.
 
