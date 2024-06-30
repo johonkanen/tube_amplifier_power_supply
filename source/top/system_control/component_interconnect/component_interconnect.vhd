@@ -6,6 +6,7 @@ library ieee;
     use work.led_driver_pkg.all;
     use work.power_supply_control_pkg.all;
     use work.sincos_pkg.all;
+    use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
 
@@ -70,6 +71,12 @@ architecture rtl of component_interconnect is
     signal divider_multiplier : multiplier_record := init_multiplier;
 
     signal control_counter : natural range 0 to 2**15-1 := 0;
+
+    constant cl_parameters : boost_model_parameters_record := (
+        inductance  => 500.0e-6 ,
+        capacitance => 320.0e-6 ,
+        rl          => 100.0e-3 ,
+        timestep    => 1.5e-6);
 ------------------------------------------------------------------------
 begin
 
@@ -138,6 +145,7 @@ begin
 ------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
+    generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
     port map(
         clock => system_clocks.core_clock ,
         bus_to_boost_model     => bus_from_communications ,
@@ -168,7 +176,6 @@ begin
                 control_counter <= 0;
                 request_current_control(current_control, to_fixed(4.0, 6), rtl_current);
             end if;
-
 
         end if; --rising_edge
     end process test_control;	

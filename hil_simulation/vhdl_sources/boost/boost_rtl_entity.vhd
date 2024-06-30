@@ -192,7 +192,7 @@ begin
                     
 
             if ready_pipeline(ready_pipeline'left) = '1' then
-                request_processor(self, 128);
+                request_processor(self, program_start_address => 128);
                 write_data_to_ram(ram_write_port, duty, to_std_logic_vector(float_duty));
                 sequence_counter <= 0;
 

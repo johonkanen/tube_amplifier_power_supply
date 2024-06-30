@@ -39,7 +39,7 @@ The QSPICE simulations can be found in hil_simulation/qspice_ref_models/
 
 The rtl simulation results can be using open source [NVC](https://github.com/nickg/nvc) simulator. This can be installed with 
 
-winget install --id=NickGasson.NVC -e
+winget install NickGasson.NVC
 
 NVC needs to be run in MSYS2 environment. To run vunit with NVC in MSYS2, three environmental variables need to be set, PATH for python which has vunit installed, VUNIT_NVC_PATH to the NVC/bin folder and VUNIT_SIMULATOR to tell vunit to use NVC
 
