@@ -34,6 +34,9 @@ package test_interface_pkg is
         signal p : view comm_bus_external;
         data : in integer);
 
+    procedure loopback_interface (
+        signal p : view comm_bus_internal);
+
 end package test_interface_pkg;
 
 
@@ -75,6 +78,18 @@ package body test_interface_pkg is
         p.data_to_entity <= std_logic_vector(to_signed(data,p.data_from_entity'length));
         p.write_data_to_entity_with_1 <= '1';
     end write_data;
+
+    procedure loopback_interface
+    (
+        signal p : view comm_bus_internal
+    ) is
+    begin
+        if p.write_data_to_entity_with_1 = '1' then
+            p.data_from_entity <= p.data_to_entity;
+            p.write_data_from_entity_with_1 <= '1';
+        end if;
+        
+    end loopback_interface;
 
 end package body test_interface_pkg;
 ------------------------------------------------
@@ -140,10 +155,7 @@ begin
     begin
         if rising_edge(simulator_clock) then
             init_rx(test_interface);
-            if test_interface.write_data_to_entity_with_1 = '1' then
-                test_interface.data_from_entity <= test_interface.data_to_entity;
-                test_interface.write_data_from_entity_with_1 <= '1';
-            end if;
+            loopback_interface(test_interface);
         end if; --rising_edge
     end process ;	
 ------------------------------------------------------------------------

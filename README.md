@@ -7,7 +7,54 @@ For more detailed information, please refer to the [PDF documentation](docs/tube
 The power supply was never installed in the actual tube amplifier and the original repository was lost at some point when changing computers hence this repository picks up at the point which was recovered from some old copy that I happened find from my old hardrive.
 
 ## VHDL2019 interfaces
-As of writing AMD Vivado, Efinix Efinity and Lattice Radiant (and Altera Quartus Pro) tools support interfaces that is most important rtl enchancement of VHDL2019, hence the project will be refactored to use this fantastic feature of VHDL. This allows specifying in and out directional signals in a record, hence prevents the need to have two records for each entity. This feature can also be simulated using open source NVC simulator.
+As of writing AMD Vivado, Efinix Efinity and Lattice Radiant with Synplify Pro (and Altera Quartus Pro which only supports mid to high end FPGAs) tools has support interfaces that is most important rtl enchancement of VHDL2019, hence the project will be refactored to use this fantastic feature of VHDL. This allows specifying in and out directional signals in a record, hence prevents the need to have two records for each entity. This feature can also be simulated using open source NVC simulator.
+
+
+```vhdl
+type comm_bus_record is record
+    data_to_entity              : std_logic_vector(15 downto 0);
+    write_data_to_entity_with_1 : std_logic;
+
+    data_from_entity              : std_logic_vector(15 downto 0);
+    write_data_from_entity_with_1 : std_logic;
+end record comm_bus_record;
+
+view comm_bus_internal of comm_bus_record is
+    data_to_entity              : in;
+    write_data_to_entity_with_1 : in;
+
+    data_from_entity              : out;
+    write_data_from_entity_with_1 : out;
+end view;
+alias comm_bus_external is comm_bus_internal'converse;
+```
+
+Since we can use procedures and functions with mode views, we can write procedures and functions to interact through the interfaces like this
+
+```vhdl
+    stimulus : process(simulator_clock)
+    begin
+        if rising_edge(simulator_clock) then
+            simulation_counter <= simulation_counter + 1;
+            init_tx(test_interface);
+            CASE simulation_counter is
+                WHEN 10 => write_data(test_interface, 10);
+                WHEN 11 => write_data(test_interface, 11);
+                WHEN 12 => write_data(test_interface, 12);
+                WHEN others =>
+            end CASE; --simulation_counter
+
+        end if; -- rising_edge
+    end process stimulus;	
+
+    testi : process(simulator_clock)
+    begin
+        if rising_edge(simulator_clock) then
+            init_rx(test_interface);
+            loopback_interface(test_interface);
+        end if; --rising_edge
+    end process ;	
+```
 
 ## hVHDL libraries
  [hvhdl project on GitHub](https://github.com/hvhdl) has the required fixed and floating point math libraries and microcode processor libraries so we will refactor the old control code to use them. The hVHDL libraries come with VUnit tests hence the code is easier to refactor to use the existing tested libraries than to simulate the functionality with the implementations that are present in this repository.
