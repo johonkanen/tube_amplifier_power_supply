@@ -148,7 +148,7 @@ begin
 ------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
+    generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
     port map(
         clock => system_clocks.core_clock ,
 

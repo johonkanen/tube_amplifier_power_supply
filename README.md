@@ -11,50 +11,40 @@ As of writing AMD Vivado, Efinix Efinity and Lattice Radiant with Synplify Pro (
 
 
 ```vhdl
-type comm_bus_record is record
-    data_to_entity              : std_logic_vector(15 downto 0);
-    write_data_to_entity_with_1 : std_logic;
+package boost_model_interface_pkg is
 
-    data_from_entity              : std_logic_vector(15 downto 0);
-    write_data_from_entity_with_1 : std_logic;
-end record comm_bus_record;
+    type boost_model_interface_record is record
+        bus_to_boost_model   : fpga_interconnect_record;
+        bus_from_boost_model : fpga_interconnect_record;
+    end record;
 
-view comm_bus_internal of comm_bus_record is
-    data_to_entity              : in;
-    write_data_to_entity_with_1 : in;
+    view boost_model_interface_view of boost_model_interface_record is 
+        bus_to_boost_model   : in;
+        bus_from_boost_model : out;
+    end view boost_model_interface_view;
 
-    data_from_entity              : out;
-    write_data_from_entity_with_1 : out;
-end view;
-alias comm_bus_external is comm_bus_internal'converse;
+end package boost_model_interface_pkg;
 ```
 
-Since we can use procedures and functions with mode views, we can write procedures and functions to interact through the interfaces like this
+This allows us to use only one signal of a record type with a view to connect to an entity
 
 ```vhdl
-    stimulus : process(simulator_clock)
-    begin
-        if rising_edge(simulator_clock) then
-            simulation_counter <= simulation_counter + 1;
-            init_tx(test_interface);
-            CASE simulation_counter is
-                WHEN 10 => write_data(test_interface, 10);
-                WHEN 11 => write_data(test_interface, 11);
-                WHEN 12 => write_data(test_interface, 12);
-                WHEN others =>
-            end CASE; --simulation_counter
+    u_boost_model : entity work.boost_model
+    generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
+    port map(
+        clock => system_clocks.core_clock ,
 
-        end if; -- rising_edge
-    end process stimulus;	
+        boost_model_bus => boost_model_bus,
+        -- bus_to_boost_model     => bus_from_communications , vhdl2008 style
+        -- bus_from_boost_model   => bus_from_boost_model    , vhdl2008 style
 
-    testi : process(simulator_clock)
-    begin
-        if rising_edge(simulator_clock) then
-            init_rx(test_interface);
-            loopback_interface(test_interface);
-        end if; --rising_edge
-    end process ;	
+        rtl_current => rtl_current ,
+        rtl_voltage => rtl_voltage ,
+
+        program_ready => processor_ready);
 ```
+
+The greater implications of the use of interfaces come from being able to use mode views with procedures and functinos. This allows using same overloaded subroutines for records and entities, which makes code refactoring substantially easier. I will expand on this once I start to further refactor the tube amp code.
 
 ## hVHDL libraries
  [hvhdl project on GitHub](https://github.com/hvhdl) has the required fixed and floating point math libraries and microcode processor libraries so we will refactor the old control code to use them. The hVHDL libraries come with VUnit tests hence the code is easier to refactor to use the existing tested libraries than to simulate the functionality with the implementations that are present in this repository.
