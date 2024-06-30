@@ -140,8 +140,8 @@ begin
                 init_bus(bus_out);
                 connect_read_only_data_to_address(bus_from_communications, bus_out, interconnect_test_address, 44252);
 
-                bus_to_communications <= bus_out and 
-                                         bus_from_boost_model and 
+                bus_to_communications <= bus_out              and
+                                         bus_from_boost_model and
                                          bus_to_component_interconnect;
             end if;
         end process;

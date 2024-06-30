@@ -57,7 +57,6 @@ mcu.add_source_files(ROOT / "source/fpga_communication/hVHDL_fpga_interconnect/f
 
 
 mcu.add_source_files(ROOT / "source/hVHDL_dynamic_model_verification_library/simulator_utilities/write_pkg.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/supply_model/pfc_model_pkg.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd")
@@ -65,11 +64,8 @@ mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd")
 
-mcu.add_source_files(ROOT / "hil_simulation/supply_model/supply_model_tb.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/supply_model/rtl_model_tube_power_tb.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/supply_model/boost_rtl_tb.vhd")
-
-mcu.add_source_files(ROOT / "hil_simulation/supply_model/boost_entity_tb.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_rtl_tb.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_entity_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_closed_loop_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_voltage_closed_loop_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_rtl_closed_loop_tb.vhd")

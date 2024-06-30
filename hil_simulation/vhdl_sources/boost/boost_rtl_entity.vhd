@@ -53,6 +53,7 @@ entity boost_model is
     port (
         clock           : in std_logic	;
         boost_model_bus : view boost_model_interface_view;
+        /* processor_requested : in boolean; */
 
         rtl_current     : out integer range -2**15 to 2**15-1;
         rtl_voltage     : out integer range -2**15 to 2**15-1;
