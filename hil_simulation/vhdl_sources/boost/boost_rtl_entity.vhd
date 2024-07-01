@@ -16,7 +16,98 @@ package boost_model_interface_pkg is
         bus_from_boost_model : out;
     end view boost_model_interface_view;
 
+    type boost_interface_record is record
+        processor_requested : boolean;
+        write_duty          : boolean;
+        dutyin              : natural range 0 to 2**16-1;
+        rtl_current         : integer range -2**15 to 2**15-1;
+        rtl_voltage         : integer range -2**15 to 2**15-1;
+        program_ready       : boolean;
+    end record;
+
+    view boost_interface_view of boost_interface_record is
+        processor_requested : in;
+        write_duty          : in;
+        dutyin              : in;
+        program_ready       : out;
+        rtl_current         : out;
+        rtl_voltage         : out;
+    end view boost_interface_view;
+
+    alias boost_interface_cview is boost_interface_view'converse;
+
+    procedure init_boost_model (
+        signal self : view boost_interface_cview);
+
+    procedure set_duty (
+        signal self : view boost_interface_cview;
+        duty : in natural range 0 to 2**16-1);
+
+    impure function get_current ( signal self : view boost_interface_cview)
+        return integer;
+
+    impure function get_voltage ( signal self : view boost_interface_cview)
+        return integer;
+
+    impure function boost_model_is_ready ( signal self : view boost_interface_cview)
+        return boolean;
+
+
 end package boost_model_interface_pkg;
+
+package body boost_model_interface_pkg is
+
+    procedure init_boost_model
+    (
+        signal self : view boost_interface_cview
+    ) is
+    begin
+        self.processor_requested <= false;
+        self.write_duty <= false;
+        
+    end init_boost_model;
+
+    procedure set_duty
+    (
+        signal self : view boost_interface_cview;
+        duty : in natural range 0 to 2**16-1
+    ) is
+    begin
+        self.write_duty <= true;
+        self.dutyin   <= duty;
+    end set_duty;
+
+    impure function get_current
+    (
+        signal self : view boost_interface_cview
+    )
+    return integer
+    is
+    begin
+        return self.rtl_current;
+    end get_current;
+
+    impure function get_voltage
+    (
+        signal self : view boost_interface_cview
+    )
+    return integer
+    is
+    begin
+        return self.rtl_voltage;
+    end get_voltage;
+
+    impure function boost_model_is_ready
+    (
+        signal self : view boost_interface_cview
+    )
+    return boolean
+    is
+    begin
+        return self.program_ready;
+    end boost_model_is_ready;
+
+end package body boost_model_interface_pkg;
 
 -----------------------------
 LIBRARY ieee  ; 
@@ -53,16 +144,7 @@ entity boost_model is
     port (
         clock           : in std_logic	;
         boost_model_bus : view boost_model_interface_view;
-
-        processor_requested : in boolean;
-
-        write_duty : in boolean;
-        dutyin       : in natural range 0 to 2**16-1;
-
-        rtl_current     : out integer range -2**15 to 2**15-1;
-        rtl_voltage     : out integer range -2**15 to 2**15-1;
-
-        program_ready   : out boolean
+        boost_interface : view boost_interface_view
     );
 end entity boost_model;
 
@@ -75,6 +157,13 @@ architecture rtl of boost_model is
 ------------------------------------------------------------------------
     alias bus_to_boost_model is boost_model_bus.bus_to_boost_model;
     alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
+
+    alias processor_requested is boost_interface.processor_requested;
+    alias write_duty          is boost_interface.write_duty;
+    alias dutyin              is boost_interface.dutyin;
+    alias rtl_current         is boost_interface.rtl_current;
+    alias rtl_voltage         is boost_interface.rtl_voltage;
+    alias program_ready       is boost_interface.program_ready;
 
     signal self                     : simple_processor_record := init_processor;
     signal ram_read_instruction_in  : ram_read_in_record  := (0, '0');

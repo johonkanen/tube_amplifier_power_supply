@@ -114,7 +114,6 @@ begin
         variable dc_link_voltage  : real := initial_voltage;
         file file_handler         : text open write_mode is "boost_rtl_tb.dat";
 
-
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;

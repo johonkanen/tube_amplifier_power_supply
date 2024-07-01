@@ -80,6 +80,7 @@ architecture rtl of component_interconnect is
         capacitance => 320.0e-6 ,
         rl          => 100.0e-3 ,
         timestep    => 1.5e-6);
+    signal boost_interface : boost_interface_record;
 ------------------------------------------------------------------------
 begin
 
@@ -153,11 +154,7 @@ begin
         clock => system_clocks.core_clock ,
 
         boost_model_bus => boost_model_bus,
-
-        rtl_current => rtl_current ,
-        rtl_voltage => rtl_voltage ,
-
-        program_ready => processor_ready);
+        boost_interface => boost_interface);
 ------------------------------------------------------------------------
     test_control : process(system_clocks.core_clock)
         constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
@@ -173,7 +170,9 @@ begin
                                     dutymax     ,
                                     dutymin);
 
-            if control_counter < 4265 then
+            init_boost_model(boost_interface);
+
+            if control_counter < 948 then
                 control_counter <= control_counter + 1;
             else
                 control_counter <= 0;

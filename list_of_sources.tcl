@@ -65,8 +65,6 @@ add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/memory_proc
 
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_processor/float_example_program_pkg.vhd
 
-add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/pfc_model_pkg.vhd
-
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd

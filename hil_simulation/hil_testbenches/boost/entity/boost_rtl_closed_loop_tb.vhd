@@ -46,8 +46,6 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
     signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := integer(100.0 * 2.0**7);
 
-    signal rtl_current : integer range -2**15 to 2**15-1 := 0;
-    signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
     signal ref_current : real := 0.0;
     signal ref_voltage : real := 0.0;
 
@@ -79,8 +77,9 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal sequence_counter : natural := 0;
     signal do_a_thing : boolean := true;
 
-    signal write_duty : boolean := false;
-    signal dutyin : natural := 0;
+    signal boost_interface : boost_interface_record;
+    alias rtl_current is boost_interface.rtl_current;
+    alias rtl_voltage is boost_interface.rtl_voltage;
 
 ------------------------------------------------------------------------
 begin
@@ -122,6 +121,7 @@ begin
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
+            init_boost_model(boost_interface);
             init_bus(bus_from_stimulus);
 
             create_divider_and_multiplier(divider,divider_multiplier);
@@ -138,13 +138,11 @@ begin
             integral_gain     => vki);
 
             do_a_thing <= false;
-            write_duty <= false;
             if current_control_is_ready(current_control) then
                 ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
-                /* write_data_to_address(bus_from_stimulus, 3, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15)); */
-                write_duty <= true;
-                dutyin <= get_int_multiplier_result(multiplier, 7, 20, target_radix => 15);
                 do_a_thing <= true;
+
+                set_duty(boost_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
 
             end if;
 
@@ -195,7 +193,7 @@ begin
                 end CASE;
             end if;
 
-            if processor_ready then
+            if boost_model_is_ready(boost_interface) then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                 realtime <= realtime + cl_parameters.timestep;
@@ -217,14 +215,6 @@ begin
         clock => simulator_clock ,
 
         boost_model_bus => boost_model_bus,
-
-        processor_requested => true,
-        write_duty => write_duty,
-        dutyin => dutyin,
-
-        rtl_current => rtl_current ,
-        rtl_voltage => rtl_voltage ,
-
-        program_ready => processor_ready);
+        boost_interface => boost_interface);
 ------------------------------------------------------------------------
 end vunit_simulation;
