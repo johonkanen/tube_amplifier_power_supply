@@ -79,6 +79,9 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal sequence_counter : natural := 0;
     signal do_a_thing : boolean := true;
 
+    signal write_duty : boolean := false;
+    signal dutyin : natural := 0;
+
 ------------------------------------------------------------------------
 begin
 
@@ -135,9 +138,12 @@ begin
             integral_gain     => vki);
 
             do_a_thing <= false;
+            write_duty <= false;
             if current_control_is_ready(current_control) then
                 ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
-                write_data_to_address(bus_from_stimulus, 3, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                /* write_data_to_address(bus_from_stimulus, 3, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15)); */
+                write_duty <= true;
+                dutyin <= get_int_multiplier_result(multiplier, 7, 20, target_radix => 15);
                 do_a_thing <= true;
 
             end if;
@@ -213,8 +219,8 @@ begin
         boost_model_bus => boost_model_bus,
 
         processor_requested => true,
-        write_duty => false,
-        dutyin => 1,
+        write_duty => write_duty,
+        dutyin => dutyin,
 
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,

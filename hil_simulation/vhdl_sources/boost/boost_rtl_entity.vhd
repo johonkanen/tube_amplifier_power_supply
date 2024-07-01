@@ -126,6 +126,9 @@ begin
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
+            if write_duty then
+                duty_0_to_1 <= dutyin;
+            end if;
 
             --------------------
             create_simple_processor (
