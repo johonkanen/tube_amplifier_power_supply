@@ -53,7 +53,11 @@ entity boost_model is
     port (
         clock           : in std_logic	;
         boost_model_bus : view boost_model_interface_view;
-        /* processor_requested : in boolean; */
+
+        processor_requested : in boolean;
+
+        duty       : in natural range 0 to 2**16-1;
+        write_duty : in boolean;
 
         rtl_current     : out integer range -2**15 to 2**15-1;
         rtl_voltage     : out integer range -2**15 to 2**15-1;
@@ -104,10 +108,12 @@ architecture rtl of boost_model is
     signal measured_current    : integer range -2**15 to 2**15-1 := 0;
     signal measured_voltage    : integer range -2**15 to 2**15-1 := 0;
 
+    signal state_counter : natural range 0 to 7 := 7;
+
 begin
     program_ready <= program_is_ready(self);
-    rtl_current <= measured_current;
-    rtl_voltage <= measured_voltage;
+    rtl_current   <= measured_current;
+    rtl_voltage   <= measured_voltage;
 
     stimulus : process(clock)
         variable used_instruction : t_instruction;
@@ -120,6 +126,9 @@ begin
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
+            if write_duty then
+                duty_0_to_1 <= duty;
+            end if;
 
             --------------------
             create_simple_processor (
@@ -185,8 +194,8 @@ begin
             ready_pipeline <= ready_pipeline(ready_pipeline'left-1 downto 0) & '0';
             if program_is_ready(self) then
                 ready_pipeline(0) <= '1';
-                int_to_float_counter <= 1;
                 int_to_float_ready_counter <= 0;
+                int_to_float_counter <= 1;
                 convert_integer_to_float(float_to_integer_converter, voltage_from_bus, 7);
             end if;
 

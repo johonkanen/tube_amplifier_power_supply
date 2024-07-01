@@ -19,8 +19,8 @@ run_closed_loop.cir2qraw()
 run_closed_loop.setNline(4999)
 
 closed_loop_results = run_closed_loop.LoadQRAW(["V(vdc)", "I(L1)", "V(sampled_current)"])
-closed_loop_results.plot(ax=axT, x="Time",  y="V(vdc)", label="controlled vout")
-closed_loop_results.plot(ax=axB, x="Time",  y="V(sampled_current)", label="controlled iin")
+closed_loop_results.plot(ax=axT, x="Time",  y="V(vdc)", label="voltage from QSPICE")
+closed_loop_results.plot(ax=axB, x="Time",  y="V(sampled_current)", label="current from QSPICE")
 
 # load vhdl simulation data
 vhdl_data = pd.read_csv(path_to_this_file + '/../../../boost_rtl_closed_loop_tb.dat', delim_whitespace=True)

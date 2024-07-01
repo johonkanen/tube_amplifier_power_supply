@@ -65,10 +65,11 @@ mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/current_control/c
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_rtl_tb.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_entity_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_closed_loop_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_voltage_closed_loop_tb.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_rtl_closed_loop_tb.vhd")
+
+mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_entity_tb.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_rtl_closed_loop_tb.vhd")
 
 dhb = VU.add_library("dhb")
 dhb.add_source_files(ROOT / "source/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd")
