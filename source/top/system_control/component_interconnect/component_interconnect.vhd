@@ -148,14 +148,6 @@ begin
         end process;
 ------------------------------------------------------------------------
 
-    u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
-    port map(
-        clock => system_clocks.core_clock ,
-
-        boost_model_bus => boost_model_bus,
-        boost_interface => boost_interface);
-------------------------------------------------------------------------
     test_control : process(system_clocks.core_clock)
         constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
         constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
@@ -170,7 +162,10 @@ begin
                                     dutymax     ,
                                     dutymin);
 
-            init_boost_model(boost_interface);
+            create_boost_interface(boost_interface);
+            if write_to_address_is_requested(bus_from_communications, 3) then
+                set_duty(boost_interface, get_data(bus_from_communications));
+            end if;
 
             if control_counter < 948 then
                 control_counter <= control_counter + 1;
@@ -181,5 +176,23 @@ begin
 
         end if; --rising_edge
     end process test_control;	
+
+------------------------------------------------------------------------
+    u_boost_model : entity work.boost_model
+    generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
+    port map(
+        clock => system_clocks.core_clock ,
+
+        boost_model_bus => boost_model_bus,
+
+        boost_interface.processor_requested => boost_interface.processor_requested,
+        boost_interface.write_duty          => boost_interface.write_duty         ,
+        boost_interface.dutyin              => boost_interface.dutyin,
+
+        boost_interface.program_ready => boost_interface.program_ready,
+        boost_interface.rtl_current   => boost_interface.rtl_current  ,
+        boost_interface.rtl_voltage   => boost_interface.rtl_voltage  
+
+    );
 ------------------------------------------------------------------------
 end rtl;

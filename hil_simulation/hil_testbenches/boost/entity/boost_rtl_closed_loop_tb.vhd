@@ -121,7 +121,7 @@ begin
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
-            init_boost_model(boost_interface);
+            create_boost_interface(boost_interface);
             init_bus(bus_from_stimulus);
 
             create_divider_and_multiplier(divider,divider_multiplier);

@@ -25,18 +25,20 @@ package boost_model_interface_pkg is
         program_ready       : boolean;
     end record;
 
-    view boost_interface_view of boost_interface_record is
-        processor_requested : in;
-        write_duty          : in;
-        dutyin              : in;
-        program_ready       : out;
-        rtl_current         : out;
-        rtl_voltage         : out;
-    end view boost_interface_view;
+    constant init_boost_interface : boost_interface_record := (false, false, 2**14, 0, 0, false);
 
-    alias boost_interface_cview is boost_interface_view'converse;
+    view boost_interface_cview of boost_interface_record is
+        processor_requested : out;
+        write_duty          : out;
+        dutyin              : out;
+        program_ready       : in;
+        rtl_current         : in;
+        rtl_voltage         : in;
+    end view boost_interface_cview;
 
-    procedure init_boost_model (
+    alias boost_interface_view is boost_interface_cview'converse;
+
+    procedure create_boost_interface (
         signal self : view boost_interface_cview);
 
     procedure set_duty (
@@ -52,12 +54,11 @@ package boost_model_interface_pkg is
     impure function boost_model_is_ready ( signal self : view boost_interface_cview)
         return boolean;
 
-
 end package boost_model_interface_pkg;
 
 package body boost_model_interface_pkg is
 
-    procedure init_boost_model
+    procedure create_boost_interface
     (
         signal self : view boost_interface_cview
     ) is
@@ -65,7 +66,7 @@ package body boost_model_interface_pkg is
         self.processor_requested <= false;
         self.write_duty <= false;
         
-    end init_boost_model;
+    end create_boost_interface;
 
     procedure set_duty
     (
@@ -158,13 +159,6 @@ architecture rtl of boost_model is
     alias bus_to_boost_model is boost_model_bus.bus_to_boost_model;
     alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 
-    alias processor_requested is boost_interface.processor_requested;
-    alias write_duty          is boost_interface.write_duty;
-    alias dutyin              is boost_interface.dutyin;
-    alias rtl_current         is boost_interface.rtl_current;
-    alias rtl_voltage         is boost_interface.rtl_voltage;
-    alias program_ready       is boost_interface.program_ready;
-
     signal self                     : simple_processor_record := init_processor;
     signal ram_read_instruction_in  : ram_read_in_record  := (0, '0');
     signal ram_read_instruction_out : ram_read_out_record ;
@@ -183,7 +177,6 @@ architecture rtl of boost_model is
     signal sequence_counter      : natural range 0 to 31      := 0;
     signal load_current_from_bus : std_logic_vector(15 downto 0);
     signal voltage_from_bus      : natural range 0 to 2**16-1 := integer(100*2.0**7);
-    signal duty_0_to_1           : natural range 0 to 2**16-1 := integer(0.5*2.0**15);
 
     signal float_to_integer_converter : float_to_integer_converter_record := init_float_to_integer_converter;
     signal float_multiplier           : float_multiplier_record := init_float_multiplier;
@@ -200,9 +193,9 @@ architecture rtl of boost_model is
     signal state_counter : natural range 0 to 7 := 7;
 
 begin
-    program_ready <= program_is_ready(self);
-    rtl_current   <= measured_current;
-    rtl_voltage   <= measured_voltage;
+    boost_interface.program_ready <= program_is_ready(self);
+    boost_interface.rtl_current   <= measured_current;
+    boost_interface.rtl_voltage   <= measured_voltage;
 
     stimulus : process(clock)
         variable used_instruction : t_instruction;
@@ -212,12 +205,9 @@ begin
             init_bus(bus_from_boost_model);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 1 , load_current_from_bus);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 2 , voltage_from_bus);
-            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1);
+            /* connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1); */
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
-            if write_duty then
-                duty_0_to_1 <= dutyin;
-            end if;
 
             --------------------
             create_simple_processor (
@@ -293,7 +283,7 @@ begin
                     convert_integer_to_float(float_to_integer_converter, to_integer(signed(load_current_from_bus)), 11);
                     int_to_float_counter <= int_to_float_counter + 1;
                 WHEN 2 =>
-                    convert_integer_to_float(float_to_integer_converter, duty_0_to_1, 15);
+                    convert_integer_to_float(float_to_integer_converter, boost_interface.dutyin, 15);
                     int_to_float_counter <= int_to_float_counter + 1;
                 WHEN others => -- do nothing
             end CASE;
