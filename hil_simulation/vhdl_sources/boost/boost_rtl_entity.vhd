@@ -56,8 +56,8 @@ entity boost_model is
 
         processor_requested : in boolean;
 
-        duty       : in natural range 0 to 2**16-1;
         write_duty : in boolean;
+        dutyin       : in natural range 0 to 2**16-1;
 
         rtl_current     : out integer range -2**15 to 2**15-1;
         rtl_voltage     : out integer range -2**15 to 2**15-1;
@@ -126,9 +126,6 @@ begin
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
-            if write_duty then
-                duty_0_to_1 <= duty;
-            end if;
 
             --------------------
             create_simple_processor (

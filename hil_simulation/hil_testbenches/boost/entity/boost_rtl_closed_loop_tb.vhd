@@ -214,7 +214,7 @@ begin
 
         processor_requested => true,
         write_duty => false,
-        duty => 0,
+        dutyin => 1,
 
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,

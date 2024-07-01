@@ -117,7 +117,7 @@ begin
         boost_model_bus => boost_model_bus,
         processor_requested => true,
         write_duty => false,
-        duty => 0,
+        dutyin => 1,
 
         rtl_current => rtl_current ,
         rtl_voltage => rtl_voltage ,
