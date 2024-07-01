@@ -181,18 +181,16 @@ begin
     u_boost_model : entity work.boost_model
     generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
     port map(
-        clock => system_clocks.core_clock ,
+        system_clocks.core_clock ,
+        boost_model_bus,
 
-        boost_model_bus => boost_model_bus,
+        boost_interface.processor_requested => boost_interface.processor_requested ,
+        boost_interface.write_duty          => boost_interface.write_duty          ,
+        boost_interface.dutyin              => boost_interface.dutyin              ,
 
-        boost_interface.processor_requested => boost_interface.processor_requested,
-        boost_interface.write_duty          => boost_interface.write_duty         ,
-        boost_interface.dutyin              => boost_interface.dutyin,
-
-        boost_interface.program_ready => boost_interface.program_ready,
-        boost_interface.rtl_current   => boost_interface.rtl_current  ,
+        boost_interface.program_ready => boost_interface.program_ready ,
+        boost_interface.rtl_current   => boost_interface.rtl_current   ,
         boost_interface.rtl_voltage   => boost_interface.rtl_voltage  
-
     );
 ------------------------------------------------------------------------
 end rtl;
