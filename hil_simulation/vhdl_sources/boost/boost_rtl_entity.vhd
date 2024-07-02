@@ -48,13 +48,13 @@ package boost_model_interface_pkg is
         signal self : view boost_interface_cview;
         duty : in natural range 0 to 2**16-1);
 
-    impure function get_current ( signal self : view boost_interface_cview)
+    function get_current ( self : boost_interface_record)
         return integer;
 
-    impure function get_voltage ( signal self : view boost_interface_cview)
+    function get_voltage ( self : boost_interface_record)
         return integer;
 
-    impure function boost_model_is_ready ( signal self : view boost_interface_cview)
+    function boost_model_is_ready ( self : boost_interface_record)
         return boolean;
 
 end package boost_model_interface_pkg;
@@ -90,9 +90,9 @@ package body boost_model_interface_pkg is
         self.dutyin   <= duty;
     end set_duty;
 
-    impure function get_current
+    function get_current
     (
-        signal self : view boost_interface_cview
+        self : boost_interface_record
     )
     return integer
     is
@@ -100,9 +100,9 @@ package body boost_model_interface_pkg is
         return self.rtl_current;
     end get_current;
 
-    impure function get_voltage
+    function get_voltage
     (
-        signal self : view boost_interface_cview
+        self : boost_interface_record
     )
     return integer
     is
@@ -110,9 +110,9 @@ package body boost_model_interface_pkg is
         return self.rtl_voltage;
     end get_voltage;
 
-    impure function boost_model_is_ready
+    function boost_model_is_ready
     (
-        signal self : view boost_interface_cview
+        self : boost_interface_record
     )
     return boolean
     is
