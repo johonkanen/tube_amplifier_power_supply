@@ -37,6 +37,10 @@ package test_interface_pkg is
     procedure loopback_interface (
         signal p : view comm_bus_internal);
 
+    function bus_feedback_is_ready ( p : comm_bus_record)
+        return boolean;
+
+
 end package test_interface_pkg;
 
 
@@ -91,6 +95,16 @@ package body test_interface_pkg is
         
     end loopback_interface;
 
+    function bus_feedback_is_ready
+    (
+        p : comm_bus_record
+    )
+    return boolean
+    is
+    begin
+        return p.write_data_from_entity_with_1 = '1';
+    end bus_feedback_is_ready;
+
 end package body test_interface_pkg;
 ------------------------------------------------
 LIBRARY ieee  ; 
@@ -119,6 +133,8 @@ architecture vunit_simulation of vhdl2019_test_tb is
     -- simulation specific signals ----
     signal test_interface : comm_bus_record;
 
+    signal result_counter : natural := 0;
+
 begin
 
 ------------------------------------------------------------------------
@@ -134,6 +150,15 @@ begin
 ------------------------------------------------------------------------
 
     stimulus : process(simulator_clock)
+        function to_integer
+        (
+            input : std_logic_vector
+        )
+        return integer
+        is
+        begin
+            return to_integer(unsigned(input));
+        end to_integer;
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
@@ -147,6 +172,18 @@ begin
                     write_data(test_interface, 12);
                 WHEN others =>
             end CASE; --simulation_counter
+            if bus_feedback_is_ready(test_interface) then
+                result_counter <= result_counter + 1;
+            end if;
+
+            if bus_feedback_is_ready(test_interface) then
+                CASE result_counter is
+                    WHEN 0 => check(to_integer(test_interface.data_from_entity) = 10, "first test resolution probably failed");
+                    WHEN 1 => check(to_integer(test_interface.data_from_entity) = 11, "second test resolution probably failed");
+                    WHEN 2 => check(to_integer(test_interface.data_from_entity) = 12, "third test resolution probably failed");
+                    when others => --do nothing
+                end CASE;
+            end if;
 
         end if; -- rising_edge
     end process stimulus;	
