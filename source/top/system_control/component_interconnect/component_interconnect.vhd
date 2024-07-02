@@ -59,8 +59,6 @@ architecture rtl of component_interconnect is
     signal bus_to_communications   : fpga_interconnect_record;
     signal bus_out : fpga_interconnect_record;
 ------------------------------------------------------------------------
-    signal rtl_current : integer range -2**15 to 2**15-1 := 0;
-    signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
     signal processor_ready : boolean := false;
 
     signal boost_model_bus : boost_model_interface_record := (others => init_fpga_interconnect);
@@ -158,8 +156,8 @@ begin
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    rtl_current ,
-                                    rtl_voltage ,
+                                    to_integer(signed(boost_interface.output.rtl_current)) ,
+                                    to_integer(signed(boost_interface.output.rtl_voltage)),
                                     dutymax     ,
                                     dutymin);
 
@@ -172,7 +170,7 @@ begin
                 control_counter <= control_counter + 1;
             else
                 control_counter <= 0;
-                request_current_control(current_control, to_fixed(4.0, 6), rtl_current);
+                request_current_control(current_control, to_fixed(4.0, 6), to_integer(signed(boost_interface.output.rtl_current)));
             end if;
 
             if model_trigger_counter < 127 then -- counter for 1us calculation time
