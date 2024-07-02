@@ -16,24 +16,28 @@ package boost_model_interface_pkg is
         bus_from_boost_model : out;
     end view boost_model_interface_view;
 
-    type boost_interface_record is record
+    type input_record is record
         processor_requested : boolean;
         write_duty          : boolean;
         dutyin              : natural range 0 to 2**16-1;
+    end record;
+
+    type output_record is record
         rtl_current         : integer range -2**15 to 2**15-1;
         rtl_voltage         : integer range -2**15 to 2**15-1;
         program_ready       : boolean;
     end record;
 
-    constant init_boost_interface : boost_interface_record := (false, false, 2**14, 0, 0, false);
+    type boost_interface_record is record
+        input : input_record;
+        output : output_record;
+    end record;
+
+    constant init_boost_interface : boost_interface_record := ((false, false, 2**14),(0, 0, false));
 
     view boost_interface_view of boost_interface_record is
-        processor_requested : in;
-        write_duty          : in;
-        dutyin              : in;
-        program_ready       : out;
-        rtl_current         : out;
-        rtl_voltage         : out;
+        input : in;
+        output : out;
     end view boost_interface_view;
 
     alias boost_interface_cview is boost_interface_view'converse;
@@ -66,8 +70,8 @@ package body boost_model_interface_pkg is
         signal self : view boost_interface_cview
     ) is
     begin
-        self.processor_requested <= false;
-        self.write_duty <= false;
+        self.input.processor_requested <= false;
+        self.input.write_duty <= false;
         
     end create_boost_interface;
 
@@ -77,7 +81,7 @@ package body boost_model_interface_pkg is
         signal self : view boost_interface_cview
     ) is
     begin
-        self.processor_requested <= true;
+        self.input.processor_requested <= true;
     end request_boost_calculation;
 
     procedure set_duty
@@ -86,8 +90,8 @@ package body boost_model_interface_pkg is
         duty : in natural range 0 to 2**16-1
     ) is
     begin
-        self.write_duty <= true;
-        self.dutyin   <= duty;
+        self.input.write_duty <= true;
+        self.input.dutyin   <= duty;
     end set_duty;
 
     function get_current
@@ -97,7 +101,7 @@ package body boost_model_interface_pkg is
     return integer
     is
     begin
-        return self.rtl_current;
+        return self.output.rtl_current;
     end get_current;
 
     function get_voltage
@@ -107,7 +111,7 @@ package body boost_model_interface_pkg is
     return integer
     is
     begin
-        return self.rtl_voltage;
+        return self.output.rtl_voltage;
     end get_voltage;
 
     function boost_model_is_ready
@@ -117,7 +121,7 @@ package body boost_model_interface_pkg is
     return boolean
     is
     begin
-        return self.program_ready;
+        return self.output.program_ready;
     end boost_model_is_ready;
 
 end package body boost_model_interface_pkg;
@@ -157,7 +161,9 @@ entity boost_model is
     port (
         clock           : in std_logic	;
         boost_model_bus : view boost_model_interface_view;
-        boost_interface : view boost_interface_view
+        boost_in : in input_record;
+        boost_out : out output_record
+        /* boost_interface : view boost_interface_view */
     );
 end entity boost_model;
 
@@ -207,9 +213,9 @@ architecture rtl of boost_model is
     signal boost_is_enabled : boolean := false;
 
 begin
-    boost_interface.program_ready <= ready_pipeline(ready_pipeline'left) = '1';
-    boost_interface.rtl_current   <= measured_current;
-    boost_interface.rtl_voltage   <= measured_voltage;
+    boost_out.program_ready <= ready_pipeline(ready_pipeline'left) = '1';
+    boost_out.rtl_current   <= measured_current;
+    boost_out.rtl_voltage   <= measured_voltage;
 
     stimulus : process(clock)
         variable used_instruction : t_instruction;
@@ -297,7 +303,7 @@ begin
                     convert_integer_to_float(float_to_integer_converter, to_integer(signed(load_current_from_bus)), 11);
                     int_to_float_counter <= int_to_float_counter + 1;
                 WHEN 2 =>
-                    convert_integer_to_float(float_to_integer_converter, boost_interface.dutyin, 15);
+                    convert_integer_to_float(float_to_integer_converter, boost_in.dutyin, 15);
                     int_to_float_counter <= int_to_float_counter + 1;
                 WHEN others => -- do nothing
             end CASE;
@@ -317,7 +323,7 @@ begin
                 end CASE;
             end if; 
                     
-            if boost_interface.processor_requested then
+            if boost_in.processor_requested then
                 request_processor(self, program_start_address => 128);
                 write_data_to_ram(ram_write_port, duty, to_std_logic_vector(float_duty));
                 sequence_counter <= 0;
