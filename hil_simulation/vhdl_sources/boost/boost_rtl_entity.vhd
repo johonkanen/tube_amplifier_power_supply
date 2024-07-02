@@ -27,18 +27,21 @@ package boost_model_interface_pkg is
 
     constant init_boost_interface : boost_interface_record := (false, false, 2**14, 0, 0, false);
 
-    view boost_interface_cview of boost_interface_record is
-        processor_requested : out;
-        write_duty          : out;
-        dutyin              : out;
-        program_ready       : in;
-        rtl_current         : in;
-        rtl_voltage         : in;
-    end view boost_interface_cview;
+    view boost_interface_view of boost_interface_record is
+        processor_requested : in;
+        write_duty          : in;
+        dutyin              : in;
+        program_ready       : out;
+        rtl_current         : out;
+        rtl_voltage         : out;
+    end view boost_interface_view;
 
-    alias boost_interface_view is boost_interface_cview'converse;
+    alias boost_interface_cview is boost_interface_view'converse;
 
     procedure create_boost_interface (
+        signal self : view boost_interface_cview);
+
+    procedure request_boost_calculation (
         signal self : view boost_interface_cview);
 
     procedure set_duty (
@@ -67,6 +70,15 @@ package body boost_model_interface_pkg is
         self.write_duty <= false;
         
     end create_boost_interface;
+
+
+    procedure request_boost_calculation
+    (
+        signal self : view boost_interface_cview
+    ) is
+    begin
+        self.processor_requested <= true;
+    end request_boost_calculation;
 
     procedure set_duty
     (
@@ -192,8 +204,10 @@ architecture rtl of boost_model is
 
     signal state_counter : natural range 0 to 7 := 7;
 
+    signal boost_is_enabled : boolean := false;
+
 begin
-    boost_interface.program_ready <= program_is_ready(self);
+    boost_interface.program_ready <= ready_pipeline(ready_pipeline'left) = '1';
     boost_interface.rtl_current   <= measured_current;
     boost_interface.rtl_voltage   <= measured_voltage;
 
@@ -303,12 +317,10 @@ begin
                 end CASE;
             end if; 
                     
-
-            if ready_pipeline(ready_pipeline'left) = '1' then
+            if boost_interface.processor_requested then
                 request_processor(self, program_start_address => 128);
                 write_data_to_ram(ram_write_port, duty, to_std_logic_vector(float_duty));
                 sequence_counter <= 0;
-
             end if;
 
             CASE sequence_counter is

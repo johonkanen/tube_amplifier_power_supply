@@ -204,6 +204,9 @@ begin
                     request_voltage_control(self, to_fixed(voltage_reference , 7) , rtl_voltage*2);
                 end if;
             end if;
+            if boost_model_is_ready(boost_interface) then
+                request_boost_calculation(boost_interface);
+            end if;
 
         end if; --rising_edge
     end process stimulus;	

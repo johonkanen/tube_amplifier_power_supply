@@ -81,6 +81,7 @@ architecture rtl of component_interconnect is
         rl          => 100.0e-3 ,
         timestep    => 1.5e-6);
     signal boost_interface : boost_interface_record;
+    signal model_trigger_counter : natural range 0 to 255 := 0;
 ------------------------------------------------------------------------
 begin
 
@@ -172,6 +173,13 @@ begin
             else
                 control_counter <= 0;
                 request_current_control(current_control, to_fixed(4.0, 6), rtl_current);
+            end if;
+
+            if model_trigger_counter < 127 then -- counter for 1us calculation time
+                model_trigger_counter <= model_trigger_counter + 1;
+            else
+                model_trigger_counter <= 0;
+                request_boost_calculation(boost_interface);
             end if;
 
         end if; --rising_edge
