@@ -192,13 +192,8 @@ begin
         system_clocks.core_clock ,
         boost_model_bus,
 
-        boost_interface.processor_requested => boost_interface.processor_requested ,
-        boost_interface.write_duty          => boost_interface.write_duty          ,
-        boost_interface.dutyin              => boost_interface.dutyin              ,
-
-        boost_interface.program_ready => boost_interface.program_ready ,
-        boost_interface.rtl_current   => boost_interface.rtl_current   ,
-        boost_interface.rtl_voltage   => boost_interface.rtl_voltage  
+        boost_in  => boost_interface.input ,
+        boost_out => boost_interface.output
     );
 ------------------------------------------------------------------------
 end rtl;
