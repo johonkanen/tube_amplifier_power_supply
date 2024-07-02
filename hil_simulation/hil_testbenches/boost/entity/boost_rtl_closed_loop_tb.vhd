@@ -27,7 +27,7 @@ end;
 architecture vunit_simulation of boost_rtl_closed_loop_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 10.0e-3;
+    constant stoptime         : real    := 100.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -77,9 +77,10 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal sequence_counter : natural := 0;
     signal do_a_thing : boolean := true;
 
-    signal boost_interface : boost_interface_record;
-    alias rtl_current is boost_interface.output.rtl_current;
-    alias rtl_voltage is boost_interface.output.rtl_voltage;
+    signal input : input_record;
+    signal output : output_record;
+    alias rtl_current is output.rtl_current;
+    alias rtl_voltage is output.rtl_voltage;
 
 ------------------------------------------------------------------------
 begin
@@ -121,7 +122,7 @@ begin
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
-            create_boost_interface(boost_interface);
+            create_boost_interface(input);
             init_bus(bus_from_stimulus);
 
             create_divider_and_multiplier(divider,divider_multiplier);
@@ -142,7 +143,7 @@ begin
                 ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                 do_a_thing <= true;
 
-                set_duty(boost_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                set_duty(input, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
 
             end if;
 
@@ -193,7 +194,7 @@ begin
                 end CASE;
             end if;
 
-            if boost_model_is_ready(boost_interface) then
+            if boost_model_is_ready(output) then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                 boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                 realtime <= realtime + cl_parameters.timestep;
@@ -204,8 +205,8 @@ begin
                     request_voltage_control(self, to_fixed(voltage_reference , 7) , rtl_voltage*2);
                 end if;
             end if;
-            if boost_model_is_ready(boost_interface) then
-                request_boost_calculation(boost_interface);
+            if boost_model_is_ready(output) then
+                request_boost_calculation(input);
             end if;
 
         end if; --rising_edge
@@ -217,9 +218,9 @@ begin
     port map(
         clock => simulator_clock ,
 
-        boost_model_bus => boost_model_bus,
-        boost_in => boost_interface.input,
-        boost_out => boost_interface.output);
+        boost_model_bus    => boost_model_bus,
+        boost_in           => input,
+        boost_out          => output);
         /* boost_interface => boost_interface); */
 
         /* boost_interface_in.processor_requested <= boost_interface.processor_requested ; */

@@ -29,7 +29,7 @@ package boost_model_interface_pkg is
     end record;
 
     type boost_interface_record is record
-        input : input_record;
+        input  : input_record;
         output : output_record;
     end record;
 
@@ -43,22 +43,22 @@ package boost_model_interface_pkg is
     alias boost_interface_cview is boost_interface_view'converse;
 
     procedure create_boost_interface (
-        signal self : view boost_interface_cview);
+        signal self : out input_record);
 
     procedure request_boost_calculation (
-        signal self : view boost_interface_cview);
+        signal self : out input_record);
 
     procedure set_duty (
-        signal self : view boost_interface_cview;
+        signal self : out input_record;
         duty : in natural range 0 to 2**16-1);
 
-    function get_current ( self : boost_interface_record)
+    function get_current ( self : output_record)
         return integer;
 
-    function get_voltage ( self : boost_interface_record)
+    function get_voltage ( self : output_record)
         return integer;
 
-    function boost_model_is_ready ( self : boost_interface_record)
+    function boost_model_is_ready ( self : output_record)
         return boolean;
 
 end package boost_model_interface_pkg;
@@ -67,61 +67,61 @@ package body boost_model_interface_pkg is
 
     procedure create_boost_interface
     (
-        signal self : view boost_interface_cview
+        signal self : out input_record
     ) is
     begin
-        self.input.processor_requested <= false;
-        self.input.write_duty <= false;
+        self.processor_requested <= false;
+        self.write_duty <= false;
         
     end create_boost_interface;
 
 
     procedure request_boost_calculation
     (
-        signal self : view boost_interface_cview
+        signal self : out input_record
     ) is
     begin
-        self.input.processor_requested <= true;
+        self.processor_requested <= true;
     end request_boost_calculation;
 
     procedure set_duty
     (
-        signal self : view boost_interface_cview;
+        signal self : out input_record;
         duty : in natural range 0 to 2**16-1
     ) is
     begin
-        self.input.write_duty <= true;
-        self.input.dutyin   <= duty;
+        self.write_duty <= true;
+        self.dutyin   <= duty;
     end set_duty;
 
     function get_current
     (
-        self : boost_interface_record
+        self : output_record
     )
     return integer
     is
     begin
-        return self.output.rtl_current;
+        return self.rtl_current;
     end get_current;
 
     function get_voltage
     (
-        self : boost_interface_record
+        self : output_record
     )
     return integer
     is
     begin
-        return self.output.rtl_voltage;
+        return self.rtl_voltage;
     end get_voltage;
 
     function boost_model_is_ready
     (
-        self : boost_interface_record
+        self : output_record
     )
     return boolean
     is
     begin
-        return self.output.program_ready;
+        return self.program_ready;
     end boost_model_is_ready;
 
 end package body boost_model_interface_pkg;
