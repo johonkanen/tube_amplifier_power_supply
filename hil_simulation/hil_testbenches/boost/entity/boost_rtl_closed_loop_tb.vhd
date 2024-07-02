@@ -78,6 +78,7 @@ architecture vunit_simulation of boost_rtl_closed_loop_tb is
     signal do_a_thing : boolean := true;
 
     signal boost_interface : boost_interface_record;
+    signal boost_interface_in : boost_interface_record;
     alias rtl_current is boost_interface.rtl_current;
     alias rtl_voltage is boost_interface.rtl_voltage;
 
@@ -218,12 +219,14 @@ begin
         clock => simulator_clock ,
 
         boost_model_bus => boost_model_bus,
-        boost_interface.processor_requested => boost_interface.processor_requested ,
-        boost_interface.write_duty          => boost_interface.write_duty          ,
-        boost_interface.dutyin              => boost_interface.dutyin              ,
+        boost_interface => boost_interface_in);
 
-        boost_interface.program_ready => boost_interface.program_ready ,
-        boost_interface.rtl_current   => boost_interface.rtl_current   ,
-        boost_interface.rtl_voltage   => boost_interface.rtl_voltage  );
+        boost_interface_in.processor_requested <= boost_interface.processor_requested ;
+        boost_interface_in.write_duty          <= boost_interface.write_duty          ;
+        boost_interface_in.dutyin              <= boost_interface.dutyin              ;
+
+        boost_interface.program_ready <= boost_interface_in.program_ready ;
+        boost_interface.rtl_current   <= boost_interface_in.rtl_current   ;
+        boost_interface.rtl_voltage   <= boost_interface_in.rtl_voltage  ;
   ----------------------------------------------------------------------
 end vunit_simulation;
