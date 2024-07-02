@@ -27,7 +27,7 @@ end;
 architecture vunit_simulation of boost_rtl_closed_loop_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 100.0e-3;
+    constant stoptime         : real    := 10.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
