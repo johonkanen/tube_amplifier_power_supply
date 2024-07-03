@@ -4,11 +4,11 @@ library ieee;
     
 package test_interface_pkg is
     type comm_bus_record is record
-        data_to_entity              : std_logic_vector(15 downto 0);
-        write_data_to_entity_with_1 : std_logic;
+        data_to_entity              : std_ulogic_vector(15 downto 0);
+        write_data_to_entity_with_1 : std_ulogic;
 
-        data_from_entity              : std_logic_vector(15 downto 0);
-        write_data_from_entity_with_1 : std_logic;
+        data_from_entity              : std_ulogic_vector(15 downto 0);
+        write_data_from_entity_with_1 : std_ulogic;
     end record comm_bus_record;
 
     view comm_bus_cview of comm_bus_record is
@@ -25,7 +25,7 @@ package test_interface_pkg is
 
     procedure write_data (
         signal p : view comm_bus_view;
-        data : in std_logic_vector);
+        data : in std_ulogic_vector);
 
     procedure write_data (
         signal p : view comm_bus_view;
@@ -66,7 +66,7 @@ package body test_interface_pkg is
     procedure write_data
     (
         signal p : view comm_bus_view;
-        data : in std_logic_vector
+        data : in std_ulogic_vector
     ) is
     begin
         p.data_to_entity <= data;
@@ -79,7 +79,7 @@ package body test_interface_pkg is
         data : in integer
     ) is
     begin
-        p.data_to_entity <= std_logic_vector(to_signed(data,p.data_from_entity'length));
+        p.data_to_entity <= std_ulogic_vector(to_signed(data,p.data_from_entity'length));
         p.write_data_to_entity_with_1 <= '1';
     end write_data;
 
@@ -118,16 +118,16 @@ library vunit_lib;
 context vunit_lib.vunit_context;
 
 
-entity vhdl2019_test_tb is
+entity vhdl2019_test_unresolved_tb is
   generic (runner_cfg : string);
 end;
 
-architecture vunit_simulation of vhdl2019_test_tb is
+architecture vunit_simulation of vhdl2019_test_unresolved_tb is
 
     constant clock_period      : time    := 1 ns;
     constant simtime_in_clocks : integer := 50;
     
-    signal simulator_clock     : std_logic := '0';
+    signal simulator_clock     : std_ulogic := '0';
     signal simulation_counter  : natural   := 0;
     -----------------------------------
     -- simulation specific signals ----
@@ -152,7 +152,7 @@ begin
     stimulus : process(simulator_clock)
         function to_integer
         (
-            input : std_logic_vector
+            input : std_ulogic_vector
         )
         return integer
         is
