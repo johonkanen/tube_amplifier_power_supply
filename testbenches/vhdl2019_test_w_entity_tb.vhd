@@ -52,6 +52,7 @@ architecture vunit_simulation of vhdl2019_test_w_entity_tb is
     signal test_interface : comm_bus_record;
 
     signal result_counter : natural := 0;
+    signal tests_were_actually_run : boolean := false;
 
 begin
 
@@ -60,6 +61,7 @@ begin
     begin
         test_runner_setup(runner, runner_cfg);
         wait for simtime_in_clocks*clock_period;
+        check(tests_were_actually_run, "tests were not run");
         test_runner_cleanup(runner); -- Simulation ends here
         wait;
     end process simtime;	
@@ -91,10 +93,12 @@ begin
                 WHEN others =>
             end CASE; --simulation_counter
             if bus_feedback_is_ready(test_interface) then
+                tests_were_actually_run <= true;
                 result_counter <= result_counter + 1;
             end if;
 
             if bus_feedback_is_ready(test_interface) then
+                tests_were_actually_run <= true;
                 CASE result_counter is
                     WHEN 0 => check(to_integer(test_interface.data_from_entity) = 10, "first test, resolution probably failed");
                     WHEN 1 => check(to_integer(test_interface.data_from_entity) = 11, "second test, resolution probably failed");
