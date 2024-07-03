@@ -41,8 +41,6 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     time.sleep(0.03)
     uart.write_data_to_address(1, int(65535-2*2**11))
     time.sleep(0.03)
-    # uart.write_data_to_address(1, int(0*2**11))
-    # time.sleep(0.03)
     uart.write_data_to_address(2, int(30*2**7))
     time.sleep(0.010)
     uart.write_data_to_address(2, int(150*2**7))
@@ -50,6 +48,11 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     uart.write_data_to_address(2, int(100*2**7))
     time.sleep(0.020)
     uart.write_data_to_address(1, int(0*2**11))
+    time.sleep(0.010)
+    uart.write_data_to_address(11, int(230*2**7))
+    time.sleep(0.020)
+    uart.write_data_to_address(11, int(200*2**7))
+    time.sleep(0.010)
 
     streamed_data = uart.get_streamed_data(number_of_points).astype(np.int16)
     # uart.write_data_to_address(3, int(0.75*2**15))
@@ -58,8 +61,8 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     
     return streamed_data
 
-simulated_current = simulate_cl_data(uart , 4 , 40000);
-simulated_voltage = simulate_cl_data(uart , 5 , 40000);
+simulated_current = simulate_cl_data(uart , 4 , 50000);
+simulated_voltage = simulate_cl_data(uart , 5 , 50000);
 
 
 ad_measurement = uart.stream_data_from_address(102, number_of_points);
