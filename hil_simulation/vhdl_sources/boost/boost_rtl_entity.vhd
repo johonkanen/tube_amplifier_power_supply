@@ -6,6 +6,8 @@ LIBRARY ieee  ;
 
 package boost_model_interface_pkg is
 
+    type list_of_model_outputs is (inductor_current, dc_link_voltage, input_voltage);
+
     type boost_model_interface_record is record
         bus_to_boost_model   : fpga_interconnect_record;
         bus_from_boost_model : fpga_interconnect_record;
@@ -25,6 +27,7 @@ package boost_model_interface_pkg is
     type output_record is record
         rtl_current          : std_logic_vector(15 downto 0);
         rtl_voltage          : std_logic_vector(15 downto 0);
+        rtl_input_voltage    : std_logic_vector(15 downto 0);
         program_ready_when_1 : std_logic;
     end record;
 
@@ -33,7 +36,7 @@ package boost_model_interface_pkg is
         output : output_record;
     end record;
 
-    constant init_boost_interface : boost_interface_record := (('0', '0', (14 => '1', others => '0')),((others => '0'), (others => '0'), '0'));
+    /* constant init_boost_interface : boost_interface_record := (('0', '0', (14 => '1', others => '0')),((others => '0'), (others => '0'), '0', (others => '0'))); */
 
     view boost_interface_view of boost_interface_record is
         input : in;
@@ -60,6 +63,11 @@ package boost_model_interface_pkg is
 
     function boost_model_is_ready ( self : boost_interface_record)
         return boolean;
+
+    function get_measurement (
+        self : boost_interface_record;
+        measurement : list_of_model_outputs)
+    return integer;
 
 end package boost_model_interface_pkg;
 
@@ -123,6 +131,28 @@ package body boost_model_interface_pkg is
     begin
         return self.output.program_ready_when_1 = '1';
     end boost_model_is_ready;
+
+    function get_measurement
+    (
+        self : boost_interface_record;
+        measurement : list_of_model_outputs
+    )
+    return integer
+    is
+        variable retval : std_logic_vector(self.output.rtl_current'range);
+    begin
+        case measurement is
+            WHEN inductor_current =>
+                retval := self.output.rtl_current;
+            WHEN dc_link_voltage =>
+                retval := self.output.rtl_voltage;
+            WHEN input_voltage =>
+                retval := self.output.rtl_input_voltage;
+        end CASE;
+                
+        return to_integer(signed(retval));
+        
+    end get_measurement;
 
 end package body boost_model_interface_pkg;
 
@@ -214,8 +244,9 @@ architecture rtl of boost_model is
 
 begin
     boost_out.program_ready_when_1 <= ready_pipeline(ready_pipeline'left);
-    boost_out.rtl_current   <= std_logic_vector(to_signed(measured_current,16));
-    boost_out.rtl_voltage   <= std_logic_vector(to_signed(measured_voltage,16));
+    boost_out.rtl_current          <= std_logic_vector(to_signed(measured_current,16));
+    boost_out.rtl_voltage          <= std_logic_vector(to_signed(measured_voltage,16));
+    boost_out.rtl_input_voltage    <= std_logic_vector(to_signed(voltage_from_bus,16));
 
     stimulus : process(clock)
         variable used_instruction : t_instruction;
@@ -225,7 +256,6 @@ begin
             init_bus(bus_from_boost_model);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 1 , load_current_from_bus);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 2 , voltage_from_bus);
-            /* connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 3 , duty_0_to_1); */
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
 

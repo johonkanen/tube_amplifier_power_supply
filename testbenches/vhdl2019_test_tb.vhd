@@ -3,6 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
     
 package test_interface_pkg is
+
     type comm_bus_record is record
         data_to_entity              : std_logic_vector(15 downto 0);
         write_data_to_entity_with_1 : std_logic;
@@ -18,6 +19,7 @@ package test_interface_pkg is
         data_from_entity              : out;
         write_data_from_entity_with_1 : out;
     end view;
+
     alias comm_bus_view is comm_bus_cview'converse;
 
     procedure init_tx (

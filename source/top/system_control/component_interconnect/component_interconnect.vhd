@@ -81,7 +81,7 @@ architecture rtl of component_interconnect is
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
         rl          => 100.0e-3 ,
-        timestep    => 1.5e-6);
+        timestep    => 1.0e-6);
     signal boost_interface : boost_interface_record;
     signal control_counter : natural range 0 to 2**15-1 := 0;
     signal model_trigger_counter : natural range 0 to 255 := 0;
@@ -168,8 +168,8 @@ begin
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_integer(signed(boost_interface.output.rtl_voltage)*2),
-                                    to_fixed(100.0 , 7),
+                                    get_measurement(boost_interface, dc_link_voltage),
+                                    get_measurement(boost_interface, input_voltage),
                                     dutymax     ,
                                     dutymin);
 
@@ -179,15 +179,15 @@ begin
                 control_counter <= control_counter + 1;
             else
                 control_counter <= 0;
-                request_current_control(current_control, self.current_ref, to_integer(signed(boost_interface.output.rtl_current))*2**4);
-                request_voltage_control(self, to_fixed(200.0 , 7) , to_integer(signed(boost_interface.output.rtl_voltage))*2);
+                request_current_control(current_control, self.current_ref, get_measurement(boost_interface,inductor_current)*2**4);
+                request_voltage_control(self, to_fixed(200.0 , 7) , get_measurement(boost_interface,dc_link_voltage)*2);
             end if;
 
             if current_control_is_ready(current_control) then
                 set_duty(boost_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
             end if;
 
-            if model_trigger_counter < integer(1.5e-6*128.0e6) then -- counter for 1us calculation time
+            if model_trigger_counter < integer(cl_parameters.timestep*128.0e6) then -- counter for 1us calculation time
                 model_trigger_counter <= model_trigger_counter + 1;
             else
                 model_trigger_counter <= 0;
