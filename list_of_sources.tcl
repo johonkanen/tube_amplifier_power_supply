@@ -69,6 +69,7 @@ add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boo
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/top/system_control/led_driver/led_driver_pkg.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/led_driver/led_driver.vhd 

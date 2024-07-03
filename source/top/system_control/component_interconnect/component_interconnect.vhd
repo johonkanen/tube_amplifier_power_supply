@@ -15,6 +15,7 @@ library ieee;
     use work.multiplier_pkg.all;
     use work.division_pkg.all;
     use work.half_bridge_current_control_pkg.all;
+    use work.voltage_control_pkg.all;
     
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.get_ad_measurement;
@@ -65,13 +66,16 @@ architecture rtl of component_interconnect is
     alias bus_from_communications is boost_model_bus.bus_to_boost_model;
     alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 ------------------------------------------------------------------------
-    signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
+    signal current_control : current_control_record := init_current_control(16.0, 8.0, number_of_fractional_bits => 7);
+    signal self : voltage_control_record := init_voltage_control;
+    signal vkp : integer := to_fixed(0.25     , 15);
+    signal vki : integer := to_fixed(0.016125 , 15);
 
     signal multiplier         : multiplier_record := init_multiplier;
+    signal voltage_multiplier : multiplier_record := init_multiplier;
     signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
-    signal control_counter : natural range 0 to 2**15-1 := 0;
 
     constant cl_parameters : boost_model_parameters_record := (
         inductance  => 500.0e-6 ,
@@ -79,6 +83,7 @@ architecture rtl of component_interconnect is
         rl          => 100.0e-3 ,
         timestep    => 1.5e-6);
     signal boost_interface : boost_interface_record;
+    signal control_counter : natural range 0 to 2**15-1 := 0;
     signal model_trigger_counter : natural range 0 to 255 := 0;
 ------------------------------------------------------------------------
 begin
@@ -150,30 +155,39 @@ begin
     test_control : process(system_clocks.core_clock)
         constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
         constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
+        constant vkp : integer := to_fixed(0.25     , 15);
+        constant vki : integer := to_fixed(0.016125 , 15);
     begin
         if rising_edge(system_clocks.core_clock) then
+
+            create_multiplier(voltage_multiplier);
+            create_voltage_control(self, voltage_multiplier,
+            proportional_gain => vkp,
+            integral_gain     => vki);
 
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_integer(signed(boost_interface.output.rtl_current)) ,
-                                    to_integer(signed(boost_interface.output.rtl_voltage)),
+                                    to_integer(signed(boost_interface.output.rtl_voltage)*2),
+                                    to_fixed(100.0 , 7),
                                     dutymax     ,
                                     dutymin);
 
             create_boost_interface(boost_interface);
-            if write_to_address_is_requested(bus_from_communications, 3) then
-                set_duty(boost_interface, get_data(bus_from_communications));
-            end if;
 
-            if control_counter < 948 then
+            if control_counter < 128e6/30e3 then
                 control_counter <= control_counter + 1;
             else
                 control_counter <= 0;
-                request_current_control(current_control, to_fixed(4.0, 6), to_integer(signed(boost_interface.output.rtl_current)));
+                request_current_control(current_control, self.current_ref, to_integer(signed(boost_interface.output.rtl_current))*2**4);
+                request_voltage_control(self, to_fixed(200.0 , 7) , to_integer(signed(boost_interface.output.rtl_voltage))*2);
             end if;
 
-            if model_trigger_counter < 127 then -- counter for 1us calculation time
+            if current_control_is_ready(current_control) then
+                set_duty(boost_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+            end if;
+
+            if model_trigger_counter < integer(1.5e-6*128.0e6) then -- counter for 1us calculation time
                 model_trigger_counter <= model_trigger_counter + 1;
             else
                 model_trigger_counter <= 0;
@@ -185,7 +199,7 @@ begin
 
 ------------------------------------------------------------------------
     u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => init_parameters, initial_voltage => 150.0)
+    generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
     port map(
         system_clocks.core_clock ,
         boost_model_bus,
