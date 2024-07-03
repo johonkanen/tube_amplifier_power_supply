@@ -65,7 +65,7 @@ simulated_current = simulate_cl_data(uart , 4 , 50000);
 simulated_voltage = simulate_cl_data(uart , 5 , 50000);
 
 
-ad_measurement = uart.stream_data_from_address(102, number_of_points);
+# ad_measurement = uart.stream_data_from_address(102, number_of_points);
 
 (fig, ax) = pyplot.subplots(2, 1)
 ax[0].plot(simulated_voltage / 2**6, label='Simulated Voltage from fpga')
