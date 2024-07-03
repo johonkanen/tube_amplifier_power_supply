@@ -8,10 +8,10 @@ double VoltageController::compute(double v_error) {
     double iref = vk_term + i_term;
 
     if (iref < lower_limit) {
-        i_term = i_term - sgn(iref - lower_limit) * 0.1;
+        /* i_term = i_term - sgn(iref - lower_limit) * 0.1; */
         iref = lower_limit;
     } else if (iref > upper_limit) {
-        i_term = i_term - sgn(iref - upper_limit) * 0.1;
+        /* i_term = i_term - sgn(iref - upper_limit) * 0.1; */
         iref = upper_limit;
     } else {
         i_term = i_term + v_error * vki;

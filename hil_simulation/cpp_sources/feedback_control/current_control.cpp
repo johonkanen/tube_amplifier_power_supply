@@ -30,10 +30,10 @@ double CurrentController::calculate_pi_out(double i_error, double lower_limit, d
     const double k_term = i_error * ikp;
     double pi_out = k_term + i_term;
     if (pi_out < lower_limit) {
-        i_term -= sgn(pi_out - lower_limit) * 0.1;
+        /* i_term -= sgn(pi_out - lower_limit) * 0.1; */
         pi_out = lower_limit;
     } else if (pi_out > upper_limit) {
-        i_term += sgn(pi_out - upper_limit) * 0.1;
+        /* i_term += sgn(pi_out - upper_limit) * 0.1; */
         pi_out = upper_limit;
     } else {
         i_term += i_error * iki;

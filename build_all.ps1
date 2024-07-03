@@ -14,11 +14,9 @@ $commands = @(
     #     D:\intelFPGA_lite\23.1std\quartus\bin64\quartus_sh.exe -t C:\dev\tube_amplifier_power_supply\cyclone_10\tcl\cl10_tube_psu_v5.tcl -card_version u10
     #     Get-Content output_files/cl10_tubepsu.sta.summary -TotalCount 20
     # },
-    # {
-    #     cd build_ecp5
-    #     Remove-Item -Recurse -Force *  # Force clean the folder
-    #     d:\lscc\diamond\3.13\bin\nt64\pnmainc.exe C:\dev\tube_amplifier_power_supply\lfe5u\tcl_scripts\ecp5_compile.tcl
-    # }
+    {
+        d:/msys64/msys2.exe ./msys2_script_w_plot.sh 
+    }
 )
 
 $processes = foreach ($command in $commands) {
