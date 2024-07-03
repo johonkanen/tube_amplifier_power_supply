@@ -98,3 +98,15 @@ hil_simulation/build/
 build*/
 *.dat
 *.fst*
+efinix_titanium_build/outflow/
+efinix_titanium_build/work_pnr/
+efinix_titanium_build/work_pt/
+efinix_titanium_build/work_syn/
+
+
+
+
+
+
+
+
