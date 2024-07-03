@@ -38,7 +38,7 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     uart.request_data_stream_from_address(address_to_stream, number_of_points)
     uart.write_data_to_address(1, int(00*2**11))
     time.sleep(0.02)
-    uart.write_data_to_address(1, int(2*2**11))
+    uart.write_data_to_address(1, int(3*2**11))
     time.sleep(0.02)
     uart.write_data_to_address(1, int(65535-2*2**11))
 
