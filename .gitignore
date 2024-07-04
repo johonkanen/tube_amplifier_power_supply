@@ -102,11 +102,6 @@ efinix_titanium_build/outflow/
 efinix_titanium_build/work_pnr/
 efinix_titanium_build/work_pt/
 efinix_titanium_build/work_syn/
-
-
-
-
-
-
-
-
+.lock
+__pycache__
+output/
