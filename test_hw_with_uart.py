@@ -11,7 +11,6 @@ from vhdl_parser import *
 
 tubepsu_addresses = VHDLParser('tubepsu_addresses_pkg.vhd')
 
-
 uart = uart_link(comport, 128e6/24)
 
 for name, address in tubepsu_addresses.constants.items():
@@ -42,8 +41,8 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     uart.write_data_to_address(11, int(200*2**7))
     time.sleep(0.010)
 
-    streamed_data = uart.get_streamed_data(number_of_points).astype(np.int16)
-    # uart.write_data_to_address(3, int(0.75*2**15))
+    # this is a hack fix due to data being received as int14
+    streamed_data = ((uart.get_streamed_data(number_of_points)*2).astype(np.int16))/2
     uart.write_data_to_address(2, int(100*2**7))
     uart.write_data_to_address(1, int(0*2**11))
     
