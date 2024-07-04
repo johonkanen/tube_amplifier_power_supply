@@ -5,17 +5,18 @@ $commands = @(
         Remove-Item -Recurse -Force *  # Force clean the folder
         d:\xilinx\Vivado\2024.1\bin\vivado.bat -mode batch -source C:\dev\tube_amplifier_power_supply\spartan_7\tcl_scripts\full_run.tcl
         d:\xilinx\Vivado\2024.1\bin\vivado.bat -mode batch -source C:\dev\tube_amplifier_power_supply\spartan_7\tcl_scripts\load_image.tcl -tclargs tube_power
-        python ..\test_hw_with_uart.py com7
-        exit
+        cd ..
+        python test_hw_with_uart.py com7
+        # exit
     } ,
     {
         d:/msys64/msys2.exe ./msys2_script_w_plot.sh 
-        exit
+        # exit
     },
     {
         Start-Process -FilePath .\test_with_titanium.bat -wait
         python test_hw_with_uart.py com14
-        exit
+        # exit
     }
 )
 
