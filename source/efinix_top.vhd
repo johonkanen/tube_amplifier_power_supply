@@ -58,7 +58,6 @@ architecture rtl of efinix_top is
     signal control_counter       : natural range 0 to 2**15-1      := 0;
     signal model_trigger_counter : natural range 0 to 255          := 0;
     signal reference_voltage     : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
-    signal testi : std_logic_vector(15 downto 0) := (others => '1');
 
 ------------------------------------------------------------------------
 begin
@@ -79,7 +78,6 @@ begin
             if rising_edge(core_clock) then
                 init_bus(bus_out);
                 connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.interconnect_test_address, 44252);
-                connect_data_to_address(bus_from_communications, bus_out, 1111, testi);
 
                 bus_to_communications <= bus_out               and
                                          bus_from_boost_model  and
