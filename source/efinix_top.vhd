@@ -2,8 +2,6 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    /* use work.led_driver_pkg.all; */
-    /* use work.power_supply_control_pkg.all; */
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;

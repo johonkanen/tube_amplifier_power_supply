@@ -1,2 +1,0 @@
-VHDL_ENTITY_ONLY multiplier_18x18 DEFIN multiplier_18x18.vhd
-MODULE multiplier_18x18 DEFIN multiplier_18x18.vhd

@@ -1,6 +1,0 @@
-Clock  i
-ClkEn  i
-Aclr  i
-DataA i
-DataB i
-Result o
