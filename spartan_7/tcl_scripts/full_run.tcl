@@ -12,8 +12,7 @@ add_vhdl_file_to_project $tcl_path/../s7_source/s7_specifics.vhd
 add_vhdl_file_to_project $tcl_path/../s7_source/s7_multiplier_wrapper.vhd
 add_vhdl_file_to_project $tcl_path/../s7_source/s7_pll_wrapper.vhd
 
-add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_2_stage_pipe_pkg.vhd
-add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_2_stage_pipe_pkg.vhd
+add_vhdl_file_to_project $source_folder/float_configuration/artix7_float_configuration_pkg.vhd
 
 source $source_folder/../list_of_sources.tcl
 source $source_folder/../fpga_communication_sources.tcl

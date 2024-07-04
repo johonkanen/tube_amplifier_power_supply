@@ -6,16 +6,16 @@ $commands = @(
         d:\xilinx\Vivado\2024.1\bin\vivado.bat -mode batch -source C:\dev\tube_amplifier_power_supply\spartan_7\tcl_scripts\full_run.tcl
         d:\xilinx\Vivado\2024.1\bin\vivado.bat -mode batch -source C:\dev\tube_amplifier_power_supply\spartan_7\tcl_scripts\load_image.tcl -tclargs tube_power
         python ..\test_hw_with_uart.py com7
-    }
-    # ,
-    # {
-    #     cd build_quartus
-    #     Remove-Item -Recurse -Force *  # Force clean the folder
-    #     D:\intelFPGA_lite\23.1std\quartus\bin64\quartus_sh.exe -t C:\dev\tube_amplifier_power_supply\cyclone_10\tcl\cl10_tube_psu_v5.tcl -card_version u10
-    #     Get-Content output_files/cl10_tubepsu.sta.summary -TotalCount 20
-    # },
+        exit
+    } ,
     {
         d:/msys64/msys2.exe ./msys2_script_w_plot.sh 
+        exit
+    },
+    {
+        Start-Process -FilePath .\test_with_titanium.bat -wait
+        python test_hw_with_uart.py com14
+        exit
     }
 )
 

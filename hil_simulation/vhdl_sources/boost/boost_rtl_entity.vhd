@@ -43,7 +43,11 @@ package boost_model_interface_pkg is
         output : out;
     end view boost_interface_view;
 
-    alias boost_interface_cview is boost_interface_view'converse;
+    --alias boost_interface_cview is boost_interface_view'converse;
+    view boost_interface_cview of boost_interface_record is
+        input : out;
+        output : in;
+    end view boost_interface_cview;
 
     procedure create_boost_interface (
         signal self : view boost_interface_cview);
