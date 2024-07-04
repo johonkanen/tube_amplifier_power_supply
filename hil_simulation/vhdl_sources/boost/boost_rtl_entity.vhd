@@ -186,20 +186,23 @@ LIBRARY ieee  ;
 
 entity boost_model is
     generic(boost_model_parameters : boost_model_parameters_record;
-            initial_voltage : real := 100.0
+            initial_voltage        : real    := 100.0 ;
+            load_current_address   : natural := 1     ;
+            input_voltage_address  : natural := 2     ;
+            boost_current_address  : natural := 4     ;
+            boost_voltage_address  : natural := 5
            );
     port (
-        clock           : in std_logic	;
-        boost_model_bus : view boost_model_interface_view;
-        boost_in : in input_record;
-        boost_out : out output_record
+        clock : in std_logic	;
+        boost_model_bus    : view boost_model_interface_view;
+        boost_in           : in input_record;
+        boost_out          : out output_record
         /* boost_interface : view boost_interface_view */
     );
 end entity boost_model;
 
 
 architecture rtl of boost_model is
-    signal simulation_counter  : natural range 0 to 15   := 0;
 
 ------------------------------------------------------------------------
     constant ram_contents : ram_array := build_boost_model(boost_model_parameters, (initial_voltage,initial_voltage, 0.5));
@@ -238,10 +241,6 @@ architecture rtl of boost_model is
     signal measured_current    : integer range -2**15 to 2**15-1 := 0;
     signal measured_voltage    : integer range -2**15 to 2**15-1 := 0;
 
-    signal state_counter : natural range 0 to 7 := 7;
-
-    signal boost_is_enabled : boolean := false;
-
 begin
     boost_out.program_ready_when_1 <= ready_pipeline(ready_pipeline'left);
     boost_out.rtl_current          <= std_logic_vector(to_signed(measured_current,16));
@@ -254,10 +253,10 @@ begin
         if rising_edge(clock) then
 
             init_bus(bus_from_boost_model);
-            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 1 , load_current_from_bus);
-            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 2 , voltage_from_bus);
-            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 4 , measured_current);
-            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , 5 , measured_voltage);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , load_current_address , load_current_from_bus);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , input_voltage_address , voltage_from_bus);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , boost_current_address , measured_current);
+            connect_data_to_address(bus_to_boost_model , bus_from_boost_model , boost_voltage_address , measured_voltage);
 
             --------------------
             create_simple_processor (
@@ -314,11 +313,6 @@ begin
 
             ------------------------------------------------------------------------
             ------------------------------------------------------------------------
-
-            if simulation_counter = 0 then
-                request_processor(self, 128);
-                simulation_counter <= simulation_counter + 1;
-            end if;
 
             ready_pipeline <= ready_pipeline(ready_pipeline'left-1 downto 0) & '0';
             if program_is_ready(self) then

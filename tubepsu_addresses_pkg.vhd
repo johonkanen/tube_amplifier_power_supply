@@ -4,9 +4,14 @@ library ieee;
 
 package tubepsu_addresses_pkg is
 
-    constant system_control_test_address : natural := 101;
+    constant system_control_test_address    : natural := 101;
     constant system_control_dc_link_address : natural := 102;
+    constant interconnect_test_address      : natural := 100;
 
-    constant interconnect_test_address : natural := 100;
+    constant reference_voltage_address : natural := 11;
+    constant load_current_address      : natural := 1;
+    constant input_voltage_address     : natural := 2;
+    constant boost_current_address     : natural := 4;
+    constant boost_voltage_address     : natural := 5;
 
 end package tubepsu_addresses_pkg;

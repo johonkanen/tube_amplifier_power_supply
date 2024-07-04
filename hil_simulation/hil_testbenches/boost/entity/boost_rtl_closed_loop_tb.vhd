@@ -204,7 +204,7 @@ begin
                     request_voltage_control(self, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
                 end if;
             end if;
-            if boost_model_is_ready(boost_interface) then
+            if boost_model_is_ready(boost_interface) or simulation_counter = 0 then
                 request_boost_calculation(boost_interface);
             end if;
 
@@ -220,14 +220,5 @@ begin
         boost_model_bus => boost_model_bus,
         boost_in => boost_interface.input,
         boost_out => boost_interface.output);
-        /* boost_interface => boost_interface); */
-
-        /* boost_interface_in.processor_requested <= boost_interface.processor_requested ; */
-        /* boost_interface_in.write_duty          <= boost_interface.write_duty          ; */
-        /* boost_interface_in.dutyin              <= boost_interface.dutyin              ; */
-
-        /* boost_interface.program_ready <= boost_interface_in.program_ready ; */
-        /* boost_interface.rtl_current   <= boost_interface_in.rtl_current   ; */
-        /* boost_interface.rtl_voltage   <= boost_interface_in.rtl_voltage  ; */
   ----------------------------------------------------------------------
 end vunit_simulation;

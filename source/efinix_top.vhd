@@ -14,7 +14,7 @@ library ieee;
     use work.division_pkg.all;
     use work.half_bridge_current_control_pkg.all;
     use work.voltage_control_pkg.all;
-    use work.tubepsu_addresses_pkg.all;
+    use work.tubepsu_addresses_pkg;
     
 entity efinix_top is
     port (
@@ -79,7 +79,7 @@ begin
         begin
             if rising_edge(core_clock) then
                 init_bus(bus_out);
-                connect_read_only_data_to_address(bus_from_communications, bus_out, interconnect_test_address, 44252);
+                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.interconnect_test_address, 44252);
 
                 bus_to_communications <= bus_out               and
                                          bus_from_boost_model  and
@@ -97,7 +97,7 @@ begin
         if rising_edge(core_clock) then
 
             init_bus(bus_from_test_control);
-            connect_data_to_address(bus_from_communications, bus_from_test_control, 11, reference_voltage);
+            connect_data_to_address(bus_from_communications, bus_from_test_control, tubepsu_addresses_pkg.reference_voltage_address, reference_voltage);
 
             create_multiplier(voltage_multiplier);
             create_voltage_control(self, voltage_multiplier,
@@ -138,7 +138,12 @@ begin
 
 ------------------------------------------------------------------------
     u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
+    generic map(boost_model_parameters => cl_parameters         ,
+                initial_voltage        => 150.0                 ,
+                load_current_address   => tubepsu_addresses_pkg.load_current_address  ,
+                input_voltage_address  => tubepsu_addresses_pkg.input_voltage_address ,
+                boost_current_address  => tubepsu_addresses_pkg.boost_current_address ,
+                boost_voltage_address  => tubepsu_addresses_pkg.boost_voltage_address)
     port map(
         core_clock ,
         boost_model_bus,

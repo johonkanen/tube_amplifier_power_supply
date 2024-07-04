@@ -11,7 +11,7 @@
 
 # PLL Constraints
 #################
-create_clock -period 8.33 clock_120mhz
+create_clock -period 7.8125 core_clock
 
 # GPIO Constraints
 ####################
