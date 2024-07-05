@@ -38,7 +38,7 @@ architecture rtl of efinix_top is
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
     signal boost_control_bus_out : fpga_interconnect_record;
-    signal model_trigger_counter : natural range 0 to 255          := 0;
+    signal model_trigger_counter : natural range 0 to 255 := 0;
 
     constant cl_parameters : boost_model_parameters_record := (
         inductance  => 500.0e-6 ,

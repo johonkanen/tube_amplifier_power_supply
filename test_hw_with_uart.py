@@ -36,12 +36,12 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     time.sleep(0.020)
     uart.write_data_to_address(1, int(0*2**11))
     time.sleep(0.010)
-    uart.write_data_to_address(11, int(230*2**7))
+    uart.write_data_to_address(11, int(250*2**7))
     time.sleep(0.020)
     uart.write_data_to_address(11, int(200*2**7))
     time.sleep(0.010)
 
-    # this is a hack fix due to data being received as int14
+    # this is a hack fix due to data being received as int14, will be fixed at some point
     streamed_data = ((uart.get_streamed_data(number_of_points)*2).astype(np.int16))/2
     uart.write_data_to_address(2, int(100*2**7))
     uart.write_data_to_address(1, int(0*2**11))
