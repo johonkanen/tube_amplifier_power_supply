@@ -218,15 +218,7 @@ begin
         clock => simulator_clock ,
 
         boost_model_bus => boost_model_bus,
-        
-        boost_in.processor_requested_when_1 => boost_interface.input.processor_requested_when_1 ,
-        boost_in.write_duty_when_1          => boost_interface.input.write_duty_when_1          ,
-        boost_in.dutyin                     => boost_interface.input.dutyin                     ,
-        
-        boost_out.rtl_current          => boost_interface.output.rtl_current          ,
-        boost_out.rtl_voltage          => boost_interface.output.rtl_voltage          ,
-        boost_out.rtl_input_voltage    => boost_interface.output.rtl_input_voltage    ,
-        boost_out.program_ready_when_1 => boost_interface.output.program_ready_when_1 
-    );
+        boost_in  => boost_interface.input,
+        boost_out => boost_interface.output);
   ----------------------------------------------------------------------
 end vunit_simulation;
