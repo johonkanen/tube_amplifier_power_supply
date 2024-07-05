@@ -21,23 +21,23 @@ package test_interface_pkg is
     alias comm_bus_view is comm_bus_cview'converse;
 
     procedure init_tx (
-        signal p : view comm_bus_view);
+        signal self : view comm_bus_view);
 
     procedure write_data (
-        signal p : view comm_bus_view;
+        signal self : view comm_bus_view;
         data : in std_ulogic_vector);
 
     procedure write_data (
-        signal p : view comm_bus_view;
+        signal self : view comm_bus_view;
         data : in integer);
 
     procedure init_rx (
-        signal p : view comm_bus_cview);
+        signal self : view comm_bus_cview);
 
     procedure loopback_interface (
-        signal p : view comm_bus_cview);
+        signal self : view comm_bus_cview);
 
-    function bus_feedback_is_ready ( p : comm_bus_record)
+    function bus_feedback_is_ready ( self : comm_bus_record)
         return boolean;
 
 
@@ -47,62 +47,62 @@ end package test_interface_pkg;
 package body test_interface_pkg is
     procedure init_tx
     (
-        signal p : view comm_bus_view
+        signal self : view comm_bus_view
     ) is
     begin
-        p.data_to_entity <= (others => '0');
-        p.write_data_to_entity_with_1 <= '0';
+        self.data_to_entity <= (others => '0');
+        self.write_data_to_entity_with_1 <= '0';
     end init_tx;
 
     procedure init_rx
     (
-        signal p : view comm_bus_cview
+        signal self : view comm_bus_cview
     ) is
     begin
-        p.data_from_entity <= (others => '0');
-        p.write_data_from_entity_with_1 <= '0';
+        self.data_from_entity <= (others => '0');
+        self.write_data_from_entity_with_1 <= '0';
     end init_rx;
 
     procedure write_data
     (
-        signal p : view comm_bus_view;
+        signal self : view comm_bus_view;
         data : in std_ulogic_vector
     ) is
     begin
-        p.data_to_entity <= data;
-        p.write_data_to_entity_with_1 <= '1';
+        self.data_to_entity <= data;
+        self.write_data_to_entity_with_1 <= '1';
     end write_data;
 
     procedure write_data
     (
-        signal p : view comm_bus_view;
+        signal self : view comm_bus_view;
         data : in integer
     ) is
     begin
-        p.data_to_entity <= std_ulogic_vector(to_signed(data,p.data_from_entity'length));
-        p.write_data_to_entity_with_1 <= '1';
+        self.data_to_entity <= std_ulogic_vector(to_signed(data,self.data_from_entity'length));
+        self.write_data_to_entity_with_1 <= '1';
     end write_data;
 
     procedure loopback_interface
     (
-        signal p : view comm_bus_cview
+        signal self : view comm_bus_cview
     ) is
     begin
-        if p.write_data_to_entity_with_1 = '1' then
-            p.data_from_entity <= p.data_to_entity;
-            p.write_data_from_entity_with_1 <= '1';
+        if self.write_data_to_entity_with_1 = '1' then
+            self.data_from_entity <= self.data_to_entity;
+            self.write_data_from_entity_with_1 <= '1';
         end if;
         
     end loopback_interface;
 
     function bus_feedback_is_ready
     (
-        p : comm_bus_record
+        self : comm_bus_record
     )
     return boolean
     is
     begin
-        return p.write_data_from_entity_with_1 = '1';
+        return self.write_data_from_entity_with_1 = '1';
     end bus_feedback_is_ready;
 
 end package body test_interface_pkg;

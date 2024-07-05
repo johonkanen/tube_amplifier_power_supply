@@ -13,6 +13,7 @@ library ieee;
     use work.half_bridge_current_control_pkg.all;
     use work.voltage_control_pkg.all;
     use work.tubepsu_addresses_pkg;
+    use work.boost_entity_pkg.all;
     
 entity efinix_top is
     port (
@@ -48,7 +49,7 @@ architecture rtl of efinix_top is
 
     signal boost_control_ready : boolean := false;
     signal duty_ratio : natural range 0 to 2**16-1;
-
+    signal boost_entity_interface : boost_entity_interface_record;
 
 ------------------------------------------------------------------------
 begin
@@ -79,6 +80,12 @@ begin
 ------------------------------------------------------------------------
 
 
+        boost_entity_interface.inductor_current <= get_measurement(boost_interface , inductor_current) ;
+        boost_entity_interface.input_voltage    <= get_measurement(boost_interface , inductor_current) ;
+        boost_entity_interface.dc_link_voltage  <= get_measurement(boost_interface , dc_link_voltage)  ;
+
+        boost_control_ready <= boost_entity_interface.boost_control_ready;
+        duty_ratio        <= boost_entity_interface.duty_ratio;
 ------------------------------------------------------------------------
     u_boost_control : entity work.boost_control
     port map (
@@ -86,11 +93,8 @@ begin
 
         boost_control_bus_in  => bus_from_communications ,
         boost_control_bus_out => boost_control_bus_out   ,
-        inductor_current      => get_measurement(boost_interface , inductor_current)      ,
-        input_voltage         => get_measurement(boost_interface , inductor_current)      ,
-        dc_link_voltage       => get_measurement(boost_interface , dc_link_voltage)       ,
-        boost_control_ready   => boost_control_ready,
-        duty_ratio            => duty_ratio
+
+        boost_entity_interface => boost_entity_interface
     );
 
 
