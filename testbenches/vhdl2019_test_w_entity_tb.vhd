@@ -4,34 +4,6 @@ LIBRARY ieee  ;
 
     use work.test_interface_pkg.all;
 
-entity test_entity is
-    port (
-        clk : in std_logic;
-        test_interface : view comm_bus_cview
-    );
-end entity test_entity;
-
-architecture rtl of test_entity is
-
-begin
-    testi : process(clk)
-    begin
-        if rising_edge(clk) then
-            init_rx(test_interface);
-            loopback_interface(test_interface);
-        end if; --rising_edge
-    end process ;	
-
-end rtl;
-
-------------------------------------------------
-------------------------------------------------
-LIBRARY ieee  ; 
-    USE ieee.std_logic_1164.all  ; 
-    use ieee.numeric_std.all;
-
-    use work.test_interface_pkg.all;
-
 library vunit_lib;
 context vunit_lib.vunit_context;
 
