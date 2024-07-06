@@ -2,87 +2,11 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    use work.boost_control_interface_pkg.all;
-
-package system_control_pkg is
-
-    type system_control_record is record
-        boost_control_interface : boost_control_interface_record;
-    end record;
-
-    view system_control_view of system_control_record is
-        boost_control_interface : view boost_control_interface_view;
-    end view system_control_view;
-
-end package system_control_pkg;
-
-------------------------------------------------------------------------
-library ieee;
-    use ieee.std_logic_1164.all;
-    use ieee.numeric_std.all;
-
-    use work.boost_model_interface_pkg.all;
-    use work.fpga_interconnect_pkg.all;
-    use work.system_control_pkg.all;
-
-entity system_control is
-    port (
-        core_clock : in std_logic;
-        bus_to_system_control    : in fpga_interconnect_record;
-        bus_from_system_control  : out fpga_interconnect_record;
-        system_control_interface : view system_control_view
-    );
-end entity system_control;
-
-architecture rtl of system_control is
-
-
-begin
-
-    u_boost_control : entity work.boost_control
-    port map (
-        core_clock => core_clock,
-
-        boost_control_bus_in   => bus_to_system_control ,
-        boost_control_bus_out  => bus_from_system_control   ,
-        boost_control_interface => system_control_interface.boost_control_interface
-    );
-
-    /*
-    u_dhb_control : entity work.dhb_control
-    port map (
-        core_clock => core_clock,
-
-        boost_control_bus_in   => bus_to_system_control ,
-        boost_control_bus_out  => bus_from_system_control   ,
-        boost_control_interface => system_control_interface.boost_control_interface
-    );
-    */
-
-    /*
-    u_LLC_control : entity work.llc_control
-    port map (
-        core_clock => core_clock,
-
-        boost_control_bus_in   => bus_to_system_control ,
-        boost_control_bus_out  => bus_from_system_control   ,
-        boost_control_interface => system_control_interface.boost_control_interface
-    );
-    */
-
-end rtl;
-
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-library ieee;
-    use ieee.std_logic_1164.all;
-    use ieee.numeric_std.all;
-
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
     use work.boost_model_interface_pkg.all;
-    use work.system_control_pkg.all;
+    use work.main_system_control_pkg.all;
 
     use work.real_to_fixed_pkg.all;
     use work.tubepsu_addresses_pkg;
@@ -107,7 +31,7 @@ architecture rtl of efinix_top is
     signal bus_out : fpga_interconnect_record := init_fpga_interconnect;
 
     signal bus_from_communications : fpga_interconnect_record := init_fpga_interconnect;
-    signal bus_from_system_control : fpga_interconnect_record := init_fpga_interconnect;
+    signal bus_from_main_system_control : fpga_interconnect_record := init_fpga_interconnect;
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
     signal model_trigger_counter : natural range 0 to 255 := 0;
@@ -120,7 +44,7 @@ architecture rtl of efinix_top is
 
     signal boost_control_ready : boolean := false;
     signal duty_ratio : natural range 0 to 2**16-1;
-    signal system_control_interface : system_control_record;
+    signal main_system_control_interface : main_system_control_record;
 
 ------------------------------------------------------------------------
 begin
@@ -144,26 +68,26 @@ begin
 
                 bus_to_communications <= bus_out              and
                                          bus_from_boost_model and
-                                         bus_from_system_control;
+                                         bus_from_main_system_control;
             end if;
         end process;
 ------------------------------------------------------------------------
 
 
-        system_control_interface.boost_control_interface.inductor_current <= get_measurement(boost_model_interface , inductor_current) ;
-        system_control_interface.boost_control_interface.input_voltage    <= get_measurement(boost_model_interface , inductor_current) ;
-        system_control_interface.boost_control_interface.dc_link_voltage  <= get_measurement(boost_model_interface , dc_link_voltage)  ;
+        main_system_control_interface.boost_control_interface.inductor_current <= get_measurement(boost_model_interface , inductor_current) ;
+        main_system_control_interface.boost_control_interface.input_voltage    <= get_measurement(boost_model_interface , inductor_current) ;
+        main_system_control_interface.boost_control_interface.dc_link_voltage  <= get_measurement(boost_model_interface , dc_link_voltage)  ;
 
-        boost_control_ready <= system_control_interface.boost_control_interface.boost_control_ready;
-        duty_ratio          <= system_control_interface.boost_control_interface.duty_ratio;
+        boost_control_ready <= main_system_control_interface.boost_control_interface.boost_control_ready;
+        duty_ratio          <= main_system_control_interface.boost_control_interface.duty_ratio;
 ------------------------------------------------------------------------
 
-        u_system_control : entity work.system_control
+        u_main_system_control : entity work.main_system_control
         port map (
             core_clock => core_clock,
-            bus_to_system_control    => bus_from_communications,
-            bus_from_system_control  => bus_from_system_control,
-            system_control_interface => system_control_interface
+            bus_to_main_system_control    => bus_from_communications,
+            bus_from_main_system_control  => bus_from_main_system_control,
+            main_system_control_interface => main_system_control_interface
         );
 ------------------------------------------------------------------------
     boost_model_control : process(core_clock)
