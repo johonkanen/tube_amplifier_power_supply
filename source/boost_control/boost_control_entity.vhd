@@ -2,9 +2,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-package boost_entity_pkg is
+package boost_control_interface_pkg is
 
-    type boost_entity_interface_record is record
+    type boost_control_interface_record is record
         inductor_current      : integer range -2**15 to 2**15-1;
         input_voltage         : integer range -2**15 to 2**15-1;
         dc_link_voltage       : integer range -2**15 to 2**15-1;
@@ -13,16 +13,16 @@ package boost_entity_pkg is
         duty_ratio            : natural range 0 to 2**16-1;
     end record;
 
-    view boost_entity_view of boost_entity_interface_record is
+    view boost_control_interface_view of boost_control_interface_record is
         inductor_current      : in;
         input_voltage         : in;
         dc_link_voltage       : in;
 
         boost_control_ready   : out;
         duty_ratio            : out;
-    end view boost_entity_view;
+    end view boost_control_interface_view;
 
-end package boost_entity_pkg;
+end package boost_control_interface_pkg;
 
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -30,7 +30,7 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    use work.boost_entity_pkg.all;
+    use work.boost_control_interface_pkg.all;
 
     use work.boost_model_pkg.all;
 
@@ -50,17 +50,17 @@ entity boost_control is
         boost_control_bus_in  : in fpga_interconnect_record;
         boost_control_bus_out : out fpga_interconnect_record;
 
-        boost_entity_interface : view boost_entity_view
+        boost_control_interface : view boost_control_interface_view
     );
 end entity boost_control;
 
 
 architecture rtl of boost_control is
-    alias inductor_current      is boost_entity_interface.inductor_current    ;
-    alias input_voltage         is boost_entity_interface.input_voltage       ;
-    alias dc_link_voltage       is boost_entity_interface.dc_link_voltage     ;
-    alias boost_control_ready   is boost_entity_interface.boost_control_ready ;
-    alias duty_ratio            is boost_entity_interface.duty_ratio          ;
+    alias inductor_current      is boost_control_interface.inductor_current    ;
+    alias input_voltage         is boost_control_interface.input_voltage       ;
+    alias dc_link_voltage       is boost_control_interface.dc_link_voltage     ;
+    alias boost_control_ready   is boost_control_interface.boost_control_ready ;
+    alias duty_ratio            is boost_control_interface.duty_ratio          ;
 
     signal current_control : current_control_record := init_current_control(16.0, 8.0/4, number_of_fractional_bits => 7);
     signal self : voltage_control_record := init_voltage_control;

@@ -62,9 +62,8 @@ architecture rtl of component_interconnect is
 ------------------------------------------------------------------------
     signal processor_ready : boolean := false;
 
-    signal boost_model_bus : boost_model_interface_record := (others => init_fpga_interconnect);
-    alias bus_from_communications is boost_model_bus.bus_to_boost_model;
-    alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
+    signal bus_from_communications : fpga_interconnect_record := init_fpga_interconnect;
+    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
     signal bus_from_test_control : fpga_interconnect_record := init_fpga_interconnect;
 ------------------------------------------------------------------------
     signal current_control : current_control_record := init_current_control(16.0, 8.0/4, number_of_fractional_bits => 7);
@@ -83,7 +82,7 @@ architecture rtl of component_interconnect is
         capacitance => 320.0e-6 ,
         rl          => 100.0e-3 ,
         timestep    => 1.0e-6);
-    signal boost_interface : boost_interface_record;
+    signal boost_model_interface : boost_model_interface_record;
     signal control_counter : natural range 0 to 2**15-1 := 0;
     signal model_trigger_counter : natural range 0 to 255 := 0;
     signal reference_voltage : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
@@ -175,30 +174,30 @@ begin
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
             create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    get_measurement(boost_interface, dc_link_voltage),
-                                    get_measurement(boost_interface, input_voltage),
+                                    get_measurement(boost_model_interface, dc_link_voltage),
+                                    get_measurement(boost_model_interface, input_voltage),
                                     dutymax     ,
                                     dutymin);
 
-            create_boost_interface(boost_interface);
+            create_boost_model_interface(boost_model_interface);
 
             if control_counter < 128e6/120e3 then
                 control_counter <= control_counter + 1;
             else
                 control_counter <= 0;
-                request_current_control(current_control, self.current_ref, get_measurement(boost_interface,inductor_current)*2**4);
-                request_voltage_control(self, reference_voltage , get_measurement(boost_interface,dc_link_voltage)*2);
+                request_current_control(current_control, self.current_ref, get_measurement(boost_model_interface,inductor_current)*2**4);
+                request_voltage_control(self, reference_voltage , get_measurement(boost_model_interface,dc_link_voltage)*2);
             end if;
 
             if current_control_is_ready(current_control) then
-                set_duty(boost_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                set_duty(boost_model_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
             end if;
 
             if model_trigger_counter < integer(cl_parameters.timestep*128.0e6) then -- counter for 1us calculation time
                 model_trigger_counter <= model_trigger_counter + 1;
             else
                 model_trigger_counter <= 0;
-                request_boost_calculation(boost_interface);
+                request_boost_calculation(boost_model_interface);
             end if;
 
         end if; --rising_edge
@@ -209,10 +208,11 @@ begin
     generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)
     port map(
         system_clocks.core_clock ,
-        boost_model_bus,
+        bus_from_communications,
+        bus_from_boost_model,
 
-        boost_in  => boost_interface.input ,
-        boost_out => boost_interface.output
+        boost_in  => boost_model_interface.input ,
+        boost_out => boost_model_interface.output
     );
 ------------------------------------------------------------------------
 end rtl;

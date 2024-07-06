@@ -89,6 +89,5 @@ vhdl2019_unresolved = VU.add_library("vhdl2019_unresolved")
 vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
 vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
 
-
 # VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()
