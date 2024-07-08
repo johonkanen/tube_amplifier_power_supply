@@ -1,9 +1,125 @@
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
 
+    use work.component_interconnect_pkg.all;
+
+library common_library;
+    use common_library.timing_pkg.all;
+
+package main_state_machine_pkg is
+
+    type t_system_states is (init,
+                    wait_for_dc_link_to_charge,
+                    bypass_relay, 
+                    start_power_supplies, 
+                    start_heaters, 
+                    start_dhb, 
+                    system_running,
+                    stop);
+
+    type main_state_machine_record is record
+        st_main_states : t_system_states;
+        data : std_logic;
+        bypass_relay_with_1 : std_logic;
+    end record;
+
+    constant init_main_state_machine : main_state_machine_record := (init, '0', '0');
+
+    procedure create_system_control (
+        signal self : inout main_state_machine_record;
+        pll_lock : in std_logic;
+        signal component_interconnect_in : out component_interconnect_data_input_group;
+        signal delay_timer_in : out delay_timer_data_input_group;
+        delay_timer_out : in delay_timer_data_output_group;
+        dc_link_voltage : in integer);
+
+end package main_state_machine_pkg;
+------------------------------------------------------------------------
+package body main_state_machine_pkg is
+
+        procedure create_system_control
+        (
+            signal self : inout main_state_machine_record;
+            pll_lock : in std_logic;
+            signal component_interconnect_in : out component_interconnect_data_input_group;
+            signal delay_timer_in : out delay_timer_data_input_group;
+            delay_timer_out : in delay_timer_data_output_group;
+            dc_link_voltage : in integer
+        ) is
+        begin
+
+            
+            CASE self.st_main_states is
+                WHEN init =>
+                    self.bypass_relay_with_1 <= '0';
+                    disable_power_supplies(component_interconnect_in);
+
+                    self.st_main_states <= init;
+                    if pll_lock = '1' then
+                        self.st_main_states <= wait_for_dc_link_to_charge;
+                    end if;
+
+                WHEN wait_for_dc_link_to_charge =>
+
+                    self.bypass_relay_with_1 <= '0';
+                    disable_power_supplies(component_interconnect_in);
+
+                    -- wait until DC link above 80V
+                    self.st_main_states <= wait_for_dc_link_to_charge; 
+                    if dc_link_voltage > 4000 then
+                            self.st_main_states <= bypass_relay;
+                    end if;
+                WHEN bypass_relay=> 
+
+                    self.bypass_relay_with_1 <= '0';
+                    disable_power_supplies(component_interconnect_in);
+
+                    request_delay(delay_timer_in,delay_timer_out,60);
+
+                    self.st_main_states <= bypass_relay; 
+                    if timer_is_ready(delay_timer_out) then
+                        self.st_main_states <= start_power_supplies;
+                    end if;
+
+                WHEN start_power_supplies =>
+
+                    self.bypass_relay_with_1 <= '1';
+                    enable_power_supplies(component_interconnect_in);
+
+                    -- TODO, add signal for indicating PFC running
+                    request_delay(delay_timer_in,delay_timer_out,800);
+                    
+                    self.st_main_states <= start_power_supplies; 
+                    if timer_is_ready(delay_timer_out) then -- OR zero_cross_event = '1' then
+                        self.st_main_states <= system_running;
+                        init_timer(delay_timer_in);
+                    end if;
+                    
+                WHEN system_running =>
+
+                    self.bypass_relay_with_1 <= '1';
+                    request_delay(delay_timer_in,delay_timer_out,800);
+                    enable_power_supplies(component_interconnect_in);
+
+                    self.st_main_states <= system_running; 
+                    if timer_is_ready(delay_timer_out) then
+                        -- self.st_main_states := start_power_supplies; 
+                    end if;
+
+                WHEN others=>
+                    self.st_main_states <= init;
+            end CASE;
+            
+        end create_system_control;
+
+end package body main_state_machine_pkg;
+------------------------------------------------------------------------
 architecture rtl of system_control is
 
-    signal zero_cross_event : std_logic := '0';
+    use work.main_state_machine_pkg.all;
 
-    signal dc_link_measurement : integer;
+    signal dc_link_measurement : integer range -2**17 to 2**17-1 := 0;
 
     signal component_interconnect_data_in  : component_interconnect_data_input_group;
     signal component_interconnect_data_out : component_interconnect_data_output_group;
@@ -15,18 +131,10 @@ architecture rtl of system_control is
     signal delay_timer_1ms_data_in  : delay_timer_data_input_group;
     signal delay_timer_1ms_data_out : delay_timer_data_output_group;
 
-    type t_system_states is (init,
-                    charge_dc_link,
-                    bypass_relay, 
-                    start_power_supplies, 
-                    start_heaters, 
-                    start_dhb, 
-                    system_running,
-                    stop);
-    signal st_main_states : t_system_states := init;
+    signal main_state_machine : main_state_machine_record := init_main_state_machine;
 
-    signal bus_from_system_control         : fpga_interconnect_record;
-    signal bus_to_system_control : fpga_interconnect_record;
+    signal bus_from_system_control : fpga_interconnect_record;
+    signal bus_to_system_control   : fpga_interconnect_record;
 
 begin
 ------------------------------------------------------------------------
@@ -43,109 +151,60 @@ begin
 
     begin
 
-	if rising_edge(system_clocks.core_clock) then
-        init_bus(bus_from_system_control);
-        connect_read_only_data_to_address(bus_to_system_control , bus_from_system_control , system_control_test_address    , 12345);
-        connect_read_only_data_to_address(bus_to_system_control , bus_from_system_control , system_control_dc_link_address , dc_link_measurement);
-
-        if system_clocks.pll_lock = '0' then
-            led1_color <= led_color_red; 
-            led2_color <= led_color_red;
-            led3_color <= led_color_red;
-            dc_link_measurement <= 0;
-            st_main_states <= init;
-            disable_power_supplies(component_interconnect_data_in);
-        else
+        if rising_edge(system_clocks.core_clock) then
+            init_bus(bus_from_system_control);
+            connect_read_only_data_to_address(bus_to_system_control , bus_from_system_control , system_control_test_address    , t_system_states'pos(main_state_machine.st_main_states));
+            connect_read_only_data_to_address(bus_to_system_control , bus_from_system_control , system_control_dc_link_address , dc_link_measurement);
 
             get_dc_link(onboard_adc,dc_link_measurement);
-            
-            CASE st_main_states is
+            CASE main_state_machine.st_main_states is
                 WHEN init =>
 
                     led1_color <= led_color_red; 
                     led2_color <= led_color_red;
                     led3_color <= led_color_red;
-
-                    system_control_FPGA_out.bypass_relay <= '0';
-                    disable_power_supplies(component_interconnect_data_in);
-
-                    st_main_states <= init;
-                    if system_clocks.pll_lock = '1' then
-                        st_main_states <= charge_dc_link;
-                    end if;
-
-                WHEN charge_dc_link=> 
+                WHEN wait_for_dc_link_to_charge=> 
 
                     led1_color <= led_color_yellow; 
                     led2_color <= led_color_yellow;
                     led3_color <= led_color_yellow;
-
-                    system_control_FPGA_out.bypass_relay <= '0';
-                    disable_power_supplies(component_interconnect_data_in);
-
-                    -- wait until DC link above 80V
-                    st_main_states <= charge_dc_link; 
-                    if dc_link_measurement > 4000 then
-                            st_main_states <= bypass_relay;
-                    end if;
                 WHEN bypass_relay=> 
 
                     led1_color <= led_color_pink; 
                     led2_color <= led_color_pink;
                     led3_color <= led_color_pink;
-
-                    system_control_FPGA_out.bypass_relay <= '0';
-                    disable_power_supplies(component_interconnect_data_in);
-
-                    request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,60);
-
-                    st_main_states <= bypass_relay; 
-                    if timer_is_ready(delay_timer_1ms_data_out) then
-                        st_main_states <= start_power_supplies;
-                    end if;
-
                 WHEN start_power_supplies =>
 
                     led1_color <= led_color_purple;
                     led2_color <= led_color_purple;
                     led3_color <= led_color_purple;
-
-                    system_control_FPGA_out.bypass_relay <= '1';
-                    enable_power_supplies(component_interconnect_data_in);
-
-                    -- TODO, add signal for indicating PFC running
-                    request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
-                    component_interconnect_data_in.power_supplies_are_enabled <= true;
-
-                    
-                    st_main_states <= start_power_supplies; 
-                    if timer_is_ready(delay_timer_1ms_data_out) OR zero_cross_event = '1' then
-                        st_main_states <= system_running;
-                        init_timer(delay_timer_1ms_data_in);
-                    end if;
-                    
                 WHEN system_running =>
 
                     led1_color <= led_color_blu; 
                     led2_color <= led_color_blu;
                     led3_color <= led_color_blu;
+                WHEN others => -- do nothing
+                
+            end CASE; --main_state_machin.st_main_states
 
-                    system_control_FPGA_out.bypass_relay <= '1';
-                    request_delay(delay_timer_1ms_data_in,delay_timer_1ms_data_out,800);
-                    enable_power_supplies(component_interconnect_data_in);
+            -- here is main system_control
+            create_system_control(main_state_machine,system_clocks.pll_lock, component_interconnect_data_in, 
+                delay_timer_1ms_data_in,
+                delay_timer_1ms_data_out,
+                dc_link_measurement);
 
-                    st_main_states <= system_running; 
-                    if timer_is_ready(delay_timer_1ms_data_out) then
-                        -- st_main_states := start_power_supplies; 
-                    end if;
+            if system_clocks.pll_lock = '0' then
+                led1_color <= led_color_red; 
+                led2_color <= led_color_red;
+                led3_color <= led_color_red;
+                main_state_machine.st_main_states <= init;
+                disable_power_supplies(component_interconnect_data_in);
+            end if;
 
-                WHEN others=>
-                    st_main_states <= init;
-            end CASE;
         end if;
-
-	end if;
     end process system_main;
+
+    system_control_FPGA_out.bypass_relay <= main_state_machine.bypass_relay_with_1;
 ------------------------------------------------------------------------
 u_component_interconnect : entity work.component_interconnect
 port map(

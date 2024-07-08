@@ -24,6 +24,10 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     time.sleep(0.02)
     uart.request_data_stream_from_address(address_to_stream, number_of_points)
     time.sleep(0.01)
+    uart.write_data_to_address(6, int(0))
+    time.sleep(0.03)
+    uart.write_data_to_address(6, int(1))
+    time.sleep(0.01)
     uart.write_data_to_address(1, int(3*2**11))
     time.sleep(0.03)
     uart.write_data_to_address(1, int(65535-2*2**11))
@@ -48,8 +52,8 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     
     return streamed_data
 
-simulated_current = simulate_cl_data(uart , 4 , 50000);
-simulated_voltage = simulate_cl_data(uart , 5 , 50000);
+simulated_current = simulate_cl_data(uart , 4 , 60000);
+simulated_voltage = simulate_cl_data(uart , 5 , 60000);
 
 
 (fig, ax) = pyplot.subplots(2, 1)

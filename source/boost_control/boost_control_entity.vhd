@@ -96,7 +96,7 @@ begin
 
             create_divider_and_multiplier(divider,divider_multiplier);
             create_multiplier(multiplier);
-            create_current_control(current_control,multiplier, divider, divider_multiplier,
+            create_current_control(current_control  , multiplier , divider , divider_multiplier ,
                                     dc_link_voltage ,
                                     input_voltage   ,
                                     dutymax         ,
@@ -114,6 +114,3 @@ begin
     end process control_procedure;	
 
 end rtl;
-------------------------------------------------------------------------
-------------------------------------------------------------------------
-

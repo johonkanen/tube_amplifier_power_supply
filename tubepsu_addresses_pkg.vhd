@@ -13,5 +13,6 @@ package tubepsu_addresses_pkg is
     constant input_voltage_address     : natural := 2;
     constant boost_current_address     : natural := 4;
     constant boost_voltage_address     : natural := 5;
+    constant boost_control_enable     : natural := 6;
 
 end package tubepsu_addresses_pkg;

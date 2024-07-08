@@ -43,8 +43,8 @@ begin
     port map (
         core_clock => core_clock,
 
-        boost_control_bus_in   => bus_to_main_system_control ,
-        boost_control_bus_out  => bus_from_main_system_control   ,
+        boost_control_bus_in    => bus_to_main_system_control   ,
+        boost_control_bus_out   => bus_from_main_system_control ,
         boost_control_interface => main_system_control_interface.boost_control_interface
     );
 

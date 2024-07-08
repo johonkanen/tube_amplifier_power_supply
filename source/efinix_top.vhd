@@ -45,6 +45,7 @@ architecture rtl of efinix_top is
     signal boost_control_ready : boolean := false;
     signal duty_ratio : natural range 0 to 2**16-1;
     signal main_system_control_interface : main_system_control_record;
+    signal boost_control_is_enabled : boolean := true;
 
 ------------------------------------------------------------------------
 begin
@@ -66,22 +67,21 @@ begin
                 init_bus(bus_out);
                 connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.interconnect_test_address, 44252);
 
+                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.boost_control_enable) then
+                    if get_data(bus_from_communications) = 0 then
+                        boost_control_is_enabled <= false;
+                    else
+                        boost_control_is_enabled <= true;
+                    end if;
+                end if;
+
                 bus_to_communications <= bus_out              and
                                          bus_from_boost_model and
                                          bus_from_main_system_control;
             end if;
         end process;
+        
 ------------------------------------------------------------------------
-
-
-        main_system_control_interface.boost_control_interface.inductor_current <= get_measurement(boost_model_interface , inductor_current) ;
-        main_system_control_interface.boost_control_interface.input_voltage    <= get_measurement(boost_model_interface , inductor_current) ;
-        main_system_control_interface.boost_control_interface.dc_link_voltage  <= get_measurement(boost_model_interface , dc_link_voltage)  ;
-
-        boost_control_ready <= main_system_control_interface.boost_control_interface.boost_control_ready;
-        duty_ratio          <= main_system_control_interface.boost_control_interface.duty_ratio;
-------------------------------------------------------------------------
-
         u_main_system_control : entity work.main_system_control
         port map (
             core_clock => core_clock,
@@ -89,6 +89,16 @@ begin
             bus_from_main_system_control  => bus_from_main_system_control,
             main_system_control_interface => main_system_control_interface
         );
+-----
+        main_system_control_interface.boost_control_interface.inductor_current <= get_measurement(boost_model_interface , inductor_current) ;
+        main_system_control_interface.boost_control_interface.input_voltage    <= get_measurement(boost_model_interface , inductor_current) ;
+        main_system_control_interface.boost_control_interface.dc_link_voltage  <= get_measurement(boost_model_interface , dc_link_voltage)  ;
+
+-----
+        boost_control_ready <= main_system_control_interface.boost_control_interface.boost_control_ready;
+        duty_ratio          <= main_system_control_interface.boost_control_interface.duty_ratio;
+
+------------------------------------------------------------------------
 ------------------------------------------------------------------------
     boost_model_control : process(core_clock)
     begin
@@ -96,8 +106,12 @@ begin
 
 
             create_boost_model_interface(boost_model_interface);
-            if boost_control_ready then
-                set_duty(boost_model_interface, duty_ratio);
+            if boost_control_is_enabled then
+                if boost_control_ready then
+                    set_duty(boost_model_interface, duty_ratio);
+                end if;
+            else
+                set_duty(boost_model_interface, to_fixed(0.7, 15));
             end if;
 
             if model_trigger_counter < integer(cl_parameters.timestep*128.0e6) then -- counter for 1us calculation time
@@ -110,6 +124,7 @@ begin
         end if; --rising_edge
     end process boost_model_control;	
 
+------------------------------------------------------------------------
     u_boost_model : entity work.boost_model
     generic map(boost_model_parameters => cl_parameters         ,
                 initial_voltage        => 150.0                 ,
@@ -124,5 +139,6 @@ begin
         boost_in  => boost_model_interface.input ,
         boost_out => boost_model_interface.output
     );
+------------------------------------------------------------------------
 ------------------------------------------------------------------------
 end rtl;
