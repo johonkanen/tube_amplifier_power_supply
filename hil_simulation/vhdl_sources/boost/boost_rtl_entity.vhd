@@ -8,16 +8,6 @@ package boost_model_interface_pkg is
 
     type list_of_model_outputs is (inductor_current, dc_link_voltage, input_voltage);
 
-    /* type boost_model_interface_record is record */
-    /*     bus_to_boost_model   : fpga_interconnect_record; */
-    /*     bus_from_boost_model : fpga_interconnect_record; */
-    /* end record; */
-
-    /* view boost_model_interface_view of boost_model_interface_record is */ 
-    /*     bus_to_boost_model   : in; */
-    /*     bus_from_boost_model : out; */
-    /* end view boost_model_interface_view; */
-
     type input_record is record
         processor_requested_when_1 : std_logic;
         write_duty_when_1          : std_logic;
@@ -55,17 +45,17 @@ package boost_model_interface_pkg is
         signal self : view boost_model_interface_cview;
         duty : in natural range 0 to 2**16-1);
 
-    function get_current ( self : boost_model_interface_record)
+    impure function get_current ( signal self : boost_model_interface_record)
         return integer;
 
-    function get_voltage ( self : boost_model_interface_record)
+    impure function get_voltage ( signal self : boost_model_interface_record)
         return integer;
 
-    function boost_model_is_ready ( self : boost_model_interface_record)
+    impure function boost_model_is_ready ( signal self : boost_model_interface_record)
         return boolean;
 
-    function get_measurement (
-        self : boost_model_interface_record;
+    impure function get_measurement (
+        signal self : boost_model_interface_record;
         measurement : list_of_model_outputs)
     return integer;
 
@@ -102,9 +92,9 @@ package body boost_model_interface_pkg is
         self.input.dutyin     <= std_logic_vector(to_unsigned(duty,16));
     end set_duty;
 
-    function get_current
+    impure function get_current
     (
-        self : boost_model_interface_record
+        signal self : boost_model_interface_record
     )
     return integer
     is
@@ -112,9 +102,9 @@ package body boost_model_interface_pkg is
         return to_integer(signed(self.output.rtl_current));
     end get_current;
 
-    function get_voltage
+    impure function get_voltage
     (
-        self : boost_model_interface_record
+        signal self : boost_model_interface_record
     )
     return integer
     is
@@ -122,9 +112,9 @@ package body boost_model_interface_pkg is
         return to_integer(signed(self.output.rtl_voltage));
     end get_voltage;
 
-    function boost_model_is_ready
+    impure function boost_model_is_ready
     (
-        self : boost_model_interface_record
+        signal self : boost_model_interface_record
     )
     return boolean
     is
@@ -132,9 +122,9 @@ package body boost_model_interface_pkg is
         return self.output.program_ready_when_1 = '1';
     end boost_model_is_ready;
 
-    function get_measurement
+    impure function get_measurement
     (
-        self : boost_model_interface_record;
+        signal self : boost_model_interface_record;
         measurement : list_of_model_outputs
     )
     return integer
@@ -193,11 +183,11 @@ entity boost_model is
             boost_voltage_address  : natural := 5
            );
     port (
-        clock : in std_logic	;
-        bus_to_boost_model   : in fpga_interconnect_record;
-        bus_from_boost_model : out fpga_interconnect_record;
-        boost_in           : in input_record;
-        boost_out          : out output_record
+        clock : in std_logic;
+        bus_to_boost_model    : in fpga_interconnect_record;
+        bus_from_boost_model  : out fpga_interconnect_record;
+        boost_in : in input_record;
+        boost_out : out output_record
         /* boost_model_interface : view boost_model_interface_view */
     );
 end entity boost_model;
@@ -208,6 +198,8 @@ architecture rtl of boost_model is
 ------------------------------------------------------------------------
     constant ram_contents : ram_array := build_boost_model(boost_model_parameters, (initial_voltage,initial_voltage, 0.5));
 ------------------------------------------------------------------------
+    /* alias boost_in is boost_model_interface.input; */
+    /* alias boost_out is boost_model_interface.output; */
 
     signal self                     : simple_processor_record := init_processor;
     signal ram_read_instruction_in  : ram_read_in_record  := (0, '0');

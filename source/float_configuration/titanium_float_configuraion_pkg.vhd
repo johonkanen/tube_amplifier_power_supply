@@ -1,14 +1,14 @@
 -- titanium
 package denormalizer_pipeline_pkg is
 
-    constant pipeline_configuration : natural := 1;
+    constant pipeline_configuration : natural := 2;
 
 end package denormalizer_pipeline_pkg;
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 package normalizer_pipeline_pkg is
 
-    constant normalizer_pipeline_configuration : natural := 1;
+    constant normalizer_pipeline_configuration : natural := 2;
 
 end package normalizer_pipeline_pkg;
 ------------------------------------------------------------------------

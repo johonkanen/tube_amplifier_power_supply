@@ -159,8 +159,8 @@ begin
         core_clock              ,
         bus_from_communications ,
         bus_from_boost_model    ,
-        boost_in  => boost_model_interface.input ,
-        boost_out => boost_model_interface.output
+        boost_model_interface.input,
+        boost_model_interface.output
     );
 ------------------------------------------------------------------------
     u_test_entity : entity work.test_entity
