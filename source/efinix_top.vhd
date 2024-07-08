@@ -11,6 +11,7 @@ library ieee;
     use work.real_to_fixed_pkg.all;
     use work.tubepsu_addresses_pkg;
     use work.boost_control_interface_pkg.all;
+    use work.test_interface_pkg.all;
     
 entity efinix_top is
     port (
@@ -47,6 +48,9 @@ architecture rtl of efinix_top is
     signal main_system_control_interface : main_system_control_record;
     signal boost_control_is_enabled : boolean := true;
 
+    signal test_interface : comm_bus_record;
+    signal data_from_test_interface : std_logic_vector(15 downto 0);
+
 ------------------------------------------------------------------------
 begin
 
@@ -62,6 +66,21 @@ begin
 
 ------------------------------------------------------------------------
         process(core_clock) is
+
+            procedure loopback
+            (
+                signal self : view comm_bus_view
+            ) is
+            begin
+                init_tx(self);
+                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
+                    write_data(self, get_data(bus_from_communications));
+                end if;
+                if bus_feedback_is_ready(self) then
+                    data_from_test_interface <= self.data_from_entity;
+                end if;
+            end loopback;
+
         begin
             if rising_edge(core_clock) then
                 init_bus(bus_out);
@@ -74,6 +93,10 @@ begin
                         boost_control_is_enabled <= true;
                     end if;
                 end if;
+
+                loopback(test_interface);
+                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
+
 
                 bus_to_communications <= bus_out              and
                                          bus_from_boost_model and
@@ -140,5 +163,7 @@ begin
         boost_out => boost_model_interface.output
     );
 ------------------------------------------------------------------------
+    u_test_entity : entity work.test_entity
+    port map(core_clock, test_interface);
 ------------------------------------------------------------------------
 end rtl;

@@ -52,8 +52,12 @@ begin
         begin
             return to_integer(unsigned(input));
         end to_integer;
-    begin
-        if rising_edge(simulator_clock) then
+
+        procedure test
+        (
+            signal test_interface : view comm_bus_view
+        ) is
+        begin
             simulation_counter <= simulation_counter + 1;
             init_tx(test_interface);
             CASE simulation_counter is
@@ -78,7 +82,10 @@ begin
                     when others => --do nothing
                 end CASE;
             end if;
-
+        end test;
+    begin
+        if rising_edge(simulator_clock) then
+            test(test_interface);
         end if; -- rising_edge
     end process stimulus;	
 

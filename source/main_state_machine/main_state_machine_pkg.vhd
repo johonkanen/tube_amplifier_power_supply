@@ -3,19 +3,18 @@ library ieee;
     use ieee.numeric_std.all;
 
     use work.component_interconnect_pkg.all;
-
     use work.timing_pkg.all;
 
 package main_state_machine_pkg is
 
     type t_system_states is (
-                    init,
-                    wait_for_dc_link_to_charge,
-                    bypass_relay, 
-                    start_power_supplies, 
-                    start_heaters, 
-                    start_dhb, 
-                    system_running,
+                    init                       ,
+                    wait_for_dc_link_to_charge ,
+                    bypass_relay               ,
+                    start_power_supplies       ,
+                    start_llc                  ,
+                    start_dhb                  ,
+                    system_running             ,
                     stop);
 
     type main_state_machine_record is record
@@ -89,8 +88,25 @@ package body main_state_machine_pkg is
 
                     -- TODO, add signal for indicating PFC running
                     request_delay(delay_timer_in,delay_timer_out,800);
-                    
                     self.st_main_states <= start_power_supplies; 
+                    if timer_is_ready(delay_timer_out) then -- OR zero_cross_event = '1' then
+                        self.st_main_states <= start_llc;
+                        init_timer(delay_timer_in);
+                    end if;
+
+                WHEN start_llc =>
+                    self.st_main_states <= start_llc; 
+
+                    request_delay(delay_timer_in,delay_timer_out,800);
+                    if timer_is_ready(delay_timer_out) then -- OR zero_cross_event = '1' then
+                        self.st_main_states <= start_dhb;
+                        init_timer(delay_timer_in);
+                    end if;
+
+                WHEN start_dhb =>
+                    self.st_main_states <= start_dhb; 
+
+                    request_delay(delay_timer_in,delay_timer_out,800);
                     if timer_is_ready(delay_timer_out) then -- OR zero_cross_event = '1' then
                         self.st_main_states <= system_running;
                         init_timer(delay_timer_in);
@@ -99,7 +115,7 @@ package body main_state_machine_pkg is
                 WHEN system_running =>
 
                     self.bypass_relay_with_1 <= '1';
-                    request_delay(delay_timer_in,delay_timer_out,800);
+                    /* request_delay(delay_timer_in,delay_timer_out,800); */
                     enable_power_supplies(component_interconnect_in);
 
                     self.st_main_states <= system_running; 

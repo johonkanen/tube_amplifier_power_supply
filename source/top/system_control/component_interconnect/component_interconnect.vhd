@@ -25,6 +25,9 @@ library onboard_adc_library;
 
     use work.timing_pkg.all;
     use work.typedefines_pkg.all;
+    use work.test_interface_pkg.all;
+
+    use work.tubepsu_addresses_pkg;
 
 entity component_interconnect is
     port (
@@ -86,6 +89,9 @@ architecture rtl of component_interconnect is
     signal model_trigger_counter : natural range 0 to 255 := 0;
     signal reference_voltage : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
 
+    signal test_interface : comm_bus_record;
+    signal data_from_test_interface : std_logic_vector(15 downto 0);
+
 ------------------------------------------------------------------------
 begin
 
@@ -141,10 +147,26 @@ begin
         bus_from_component_interconnect <= bus_from_communications;
 
         process(system_clocks.core_clock) is
+            procedure loopback
+            (
+                signal self : view comm_bus_view
+            ) is
+            begin
+                init_tx(self);
+                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
+                    write_data(self, get_data(bus_from_communications));
+                end if;
+                if bus_feedback_is_ready(self) then
+                    data_from_test_interface <= self.data_from_entity;
+                end if;
+            end loopback;
         begin
             if rising_edge(system_clocks.core_clock) then
                 init_bus(bus_out);
                 connect_read_only_data_to_address(bus_from_communications, bus_out, interconnect_test_address, 44252);
+
+                loopback(test_interface);
+                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
 
                 bus_to_communications <= bus_out              and
                                          bus_from_boost_model and
@@ -164,6 +186,7 @@ begin
 
             init_bus(bus_from_test_control);
             connect_data_to_address(bus_from_communications, bus_from_test_control, 11, reference_voltage);
+
 
             create_multiplier(voltage_multiplier);
             create_voltage_control(self, voltage_multiplier,
@@ -202,6 +225,9 @@ begin
         end if; --rising_edge
     end process test_control;	
 
+------------------------------------------------------------------------
+    u_test_entity : entity work.test_entity
+    port map(core_clock, test_interface);
 ------------------------------------------------------------------------
     u_boost_model : entity work.boost_model
     generic map(boost_model_parameters => cl_parameters, initial_voltage => 150.0)

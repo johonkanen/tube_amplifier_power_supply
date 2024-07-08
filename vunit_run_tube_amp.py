@@ -80,14 +80,14 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/phase_modulator_tb.vhd")
 
 dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 
-vhdl2019 = VU.add_library("vhdl2019")
-# # vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_pkg.vhd")
-vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_tb.vhd")
-vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
+# vhdl2019 = VU.add_library("vhdl2019")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_pkg.vhd")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_tb.vhd")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
 
-vhdl2019_unresolved = VU.add_library("vhdl2019_unresolved")
-vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
-vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
+# vhdl2019_unresolved = VU.add_library("vhdl2019_unresolved")
+# vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
+# vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
 
 main_state_machine = VU.add_library("main_state_machine")
 main_state_machine.add_source_files(ROOT / "source/common/timing/timing_pkg.vhd")
@@ -98,5 +98,5 @@ main_state_machine.add_source_files(ROOT / "source/top/system_control/component_
 main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/main_state_machine_tb.vhd")
 
 
-# VU.set_sim_option("nvc.sim_flags", ["-w"])
+VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()

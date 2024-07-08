@@ -1,4 +1,4 @@
-<efx:project xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="tube_amplifier_power_supply" description="" last_change="1720432599" sw_version="2024.1.163" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="sync" design_ood="sync" place_ood="sync" route_ood="sync" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
+<efx:project xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="tube_amplifier_power_supply" description="" last_change="1720448397" sw_version="2024.1.163" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="sync" design_ood="sync" place_ood="sync" route_ood="sync" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
     <efx:device_info>
         <efx:family name="Titanium" />
         <efx:device name="Ti60F225" />
@@ -57,6 +57,7 @@
         <efx:design_file name="../tubepsu_addresses_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/boost_control/boost_control_entity.vhd" version="default" library="default" />
         <efx:design_file name="../source/main_system_control/main_system_control.vhd" version="default" library="default" />
+        <efx:design_file name="../testbenches/vhdl2019_test_pkg.vhd" version="default" library="default" />
         <efx:top_vhdl_arch name="rtl" />
     </efx:design_info>
     <efx:constraint_info>

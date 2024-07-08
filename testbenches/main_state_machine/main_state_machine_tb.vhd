@@ -17,7 +17,7 @@ end;
 architecture vunit_simulation of main_state_machine_tb is
 
     constant clock_period      : time    := 1 ns;
-    constant simtime_in_clocks : integer := 50;
+    constant simtime_in_clocks : integer := 500000;
     
     signal simulator_clock     : std_logic := '0';
     signal simulation_counter  : natural   := 0;
@@ -29,6 +29,7 @@ architecture vunit_simulation of main_state_machine_tb is
 
     signal onehot_states : std_logic_vector(main_state_machine.st_main_states'length-1 downto 0) := (others => '0');
     signal component_interconnect_data_in : component_interconnect_data_input_group;
+    signal dc_link_voltage : integer := 500;
 
 begin
 
@@ -64,8 +65,12 @@ begin
                 component_interconnect_data_in ,
                 delay_timer_1ms_data_in        ,
                 delay_timer_1ms_data_out       ,
-                500);
+                dc_link_voltage);
 
+            CASE simulation_counter is
+                WHEN 20 => dc_link_voltage <= 4500;
+                WHEN others =>
+            end CASE;
 
         end if; -- rising_edge
     end process stimulus;	

@@ -17,7 +17,14 @@ for name, address in tubepsu_addresses.constants.items():
     data = uart.request_data_from_address(address)
     print(f"{name} (address {address}): {data}")
 
+# uart.write_data_to_address(tubepsu_addresses
+
 number_of_points = 2000
+
+uart.write_data_to_address(tubepsu_addresses.get_address('vhdl2019_interface_test_address'), 101)
+print(uart.request_data_from_address(tubepsu_addresses.get_address('vhdl2019_interface_test_address')))
+uart.write_data_to_address(tubepsu_addresses.get_address('vhdl2019_interface_test_address'), 0)
+print(uart.request_data_from_address(tubepsu_addresses.get_address('vhdl2019_interface_test_address')))
 
 
 def simulate_cl_data(uart, address_to_stream, number_of_points):

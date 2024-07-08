@@ -68,6 +68,9 @@ add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_proc
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd
+
+add_vhdl_file_to_project $source_folder/../testbenches/vhdl2019_test_pkg.vhd
+
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd
 

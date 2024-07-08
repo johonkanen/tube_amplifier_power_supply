@@ -15,4 +15,6 @@ package tubepsu_addresses_pkg is
     constant boost_voltage_address     : natural := 5;
     constant boost_control_enable     : natural := 6;
 
+    constant vhdl2019_interface_test_address     : natural := 5513;
+
 end package tubepsu_addresses_pkg;
