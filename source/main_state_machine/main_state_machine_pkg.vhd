@@ -8,7 +8,8 @@ library ieee;
 
 package main_state_machine_pkg is
 
-    type t_system_states is (init,
+    type t_system_states is (
+                    init,
                     wait_for_dc_link_to_charge,
                     bypass_relay, 
                     start_power_supplies, 
