@@ -20,8 +20,6 @@ architecture vunit_simulation of main_system_control_tb is
     -----------------------------------
     -- simulation specific signals ----
 
-    type list_of_psu_states is (idle, wait_for_init, wait_for_dc_link, run);
-    (variable|signal) psu_state : list_of_psu_states;
 
 begin
 

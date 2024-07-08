@@ -10,10 +10,10 @@ add_vhdl_file_to_project $source_folder/dsp/sincos/sincos.vhd
 add_vhdl_file_to_project $source_folder/dsp/feedback_control/feedback_control_pkg.vhd
 add_vhdl_file_to_project $source_folder/dsp/feedback_control/feedback_control.vhd
 
-add_vhdl_file_to_library $source_folder/common/timing/timing_pkg.vhd                   common_library
-add_vhdl_file_to_library $source_folder/common/timing/delay_timer.vhd                  common_library
-add_vhdl_file_to_library $source_folder/common/typesdefs/typedefs_pkg.vhd              common_library
-add_vhdl_file_to_library $source_folder/common/register_shifts/register_shifts_pkg.vhd common_library
+add_vhdl_file_to_project $source_folder/common/timing/timing_pkg.vhd                  
+add_vhdl_file_to_project $source_folder/common/timing/delay_timer.vhd                 
+add_vhdl_file_to_project $source_folder/common/typesdefs/typedefs_pkg.vhd             
+add_vhdl_file_to_project $source_folder/common/register_shifts/register_shifts_pkg.vhd 
 
 add_vhdl_file_to_project $source_folder/top/system_control/component_interconnect/ext_ad/spi3w_ads7056_driver.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/component_interconnect/ext_ad/ext_ad_spi3w.vhd 
@@ -100,6 +100,8 @@ add_vhdl_file_to_project $source_folder/top/system_control/component_interconnec
 
 add_vhdl_file_to_project $source_folder/top/system_control/component_interconnect/component_interconnect_pkg.vhd
 add_vhdl_file_to_project $source_folder/top/system_control/component_interconnect/component_interconnect.vhd
+
+add_vhdl_file_to_project $source_folder/main_state_machine/main_state_machine_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/top/system_control/system_control_pkg.vhd 
 add_vhdl_file_to_project $source_folder/top/system_control/system_control_internal_pkg.vhd 

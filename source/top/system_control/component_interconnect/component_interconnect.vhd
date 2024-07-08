@@ -23,9 +23,8 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
-library common_library;
-    use common_library.timing_pkg.all;
-    use common_library.typedefines_pkg.all;
+    use work.timing_pkg.all;
+    use work.typedefines_pkg.all;
 
 entity component_interconnect is
     port (

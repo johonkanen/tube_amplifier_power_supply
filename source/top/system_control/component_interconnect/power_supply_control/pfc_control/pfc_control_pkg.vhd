@@ -5,8 +5,7 @@ library ieee;
 library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.measurement_interface_data_output_group;
 
-library common_library;
-    use common_library.typedefines_pkg.all;
+    use work.typedefines_pkg.all;
 
 package pfc_control_pkg is
 ------------------------------------------------------------------------

@@ -2,8 +2,7 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-library common_library;
-    use common_library.register_shifts_pkg.all;
+    use work.register_shifts_pkg.all;
 
     use work.llc_modulator_pkg.all;
 
