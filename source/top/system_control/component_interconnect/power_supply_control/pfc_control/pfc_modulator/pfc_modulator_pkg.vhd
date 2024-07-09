@@ -25,16 +25,6 @@ package pfc_modulator_pkg is
     type pfc_modulator_data_output_group is record
         pfc_modulator_is_running : boolean;
     end record;
-    
-    component pfc_modulator is
-        generic( g_carrier_max_value : integer);
-        port (
-            pfc_modulator_clocks : in pfc_modulator_clock_group;
-            pfc_modulator_FPGA_out : out pfc_modulator_FPGA_output_group;
-            pfc_modulator_data_in : in pfc_modulator_data_input_group;
-            pfc_modulator_data_out : out pfc_modulator_data_output_group
-        );
-    end component pfc_modulator;
 ------------------------------------------------------------------------
     procedure set_duty ( duty : in integer;
         signal pfc_input : inout pfc_modulator_data_input_group);

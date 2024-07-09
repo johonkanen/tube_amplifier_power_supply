@@ -23,7 +23,7 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
     use work.typedefines_pkg.all;
     use work.test_interface_pkg.all;
 

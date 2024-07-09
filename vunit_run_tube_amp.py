@@ -90,7 +90,7 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 # vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
 
 main_state_machine = VU.add_library("main_state_machine")
-main_state_machine.add_source_files(ROOT / "source/common/timing/timing_pkg.vhd")
+main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer_pkg.vhd")
 main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer.vhd")
 main_state_machine.add_source_files(ROOT / "source/main_state_machine/main_state_machine_pkg.vhd")
 main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/mock_component_interconnect_pkg.vhd")

@@ -5,7 +5,7 @@ library ieee;
 library onboard_adc_library;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
     use work.typedefines_pkg.all;
 
     use work.pfc_control_pkg.all;
@@ -90,7 +90,7 @@ architecture rtl of pfc_control is
 begin
 
 ------------------------------------------------------------------------
-    delay_50us : delay_timer
+    delay_50us : entity work.delay_timer
     generic map (count_up_to => 5*1280)
     port map( core_clock,
     	  delay_timer_50us_in,
@@ -293,7 +293,7 @@ begin
 ------------------------------------------------------------------------
     pfc_modulator_clocks <= (modulator_clock => modulator_clock, core_clock => core_clock);
     pfc_modulator_data_in.pfc_carrier <= pfc_control_data_in.pfc_carrier;
-    u_pfc_modulator : pfc_modulator
+    u_pfc_modulator : entity work.pfc_modulator
         generic map( g_carrier_max_value)
         port map 
         (

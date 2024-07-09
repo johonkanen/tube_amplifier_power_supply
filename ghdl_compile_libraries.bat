@@ -21,7 +21,7 @@ ghdl -a --ieee=synopsys --std=08 %source%/dsp/feedback_control/feedback_control.
 ghdl -a --ieee=synopsys --std=08 %source%/dsp/sincos/sincos_pkg.vhd
 ghdl -a --ieee=synopsys --std=08 %source%/dsp/sincos/sincos.vhd
 
-ghdl -a --ieee=synopsys --std=08 --work=common_library %source%/common/timing/timing_pkg.vhd
+ghdl -a --ieee=synopsys --std=08 --work=common_library %source%/common/timing/delay_timer_pkg.vhd
 ghdl -a --ieee=synopsys --std=08 --work=common_library %source%/common/typesdefs/typedefs_pkg.vhd
 ghdl -a --ieee=synopsys --std=08 --work=common_library %source%/common/register_shifts/register_shifts_pkg.vhd
 

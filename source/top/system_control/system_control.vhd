@@ -21,7 +21,7 @@ architecture rtl of system_control is
 
 begin
 ------------------------------------------------------------------------
-    u_delay_timer : delay_timer
+    u_delay_timer : entity work.delay_timer
     generic map (count_up_to => 128e3)
     port map( system_clocks.core_clock,
     	  delay_timer_1ms_data_in,

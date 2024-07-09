@@ -3,7 +3,7 @@ library ieee;
     use ieee.numeric_std.all;
 
     use work.component_interconnect_pkg.all;
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
 
 package main_state_machine_pkg is
 

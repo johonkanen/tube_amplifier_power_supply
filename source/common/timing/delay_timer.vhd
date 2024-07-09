@@ -2,7 +2,7 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
 
 
 entity delay_timer is

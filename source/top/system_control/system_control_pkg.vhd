@@ -42,7 +42,7 @@ library ieee;
     use work.tubepsu_addresses_pkg.all;
     use work.fpga_interconnect_pkg.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
 
 library onboard_adc_library;
     use onboard_adc_library.onboard_ad_control_pkg.all;

@@ -10,7 +10,7 @@ add_vhdl_file_to_project $source_folder/dsp/sincos/sincos.vhd
 add_vhdl_file_to_project $source_folder/dsp/feedback_control/feedback_control_pkg.vhd
 add_vhdl_file_to_project $source_folder/dsp/feedback_control/feedback_control.vhd
 
-add_vhdl_file_to_library $source_folder/common/timing/timing_pkg.vhd                   common_library
+add_vhdl_file_to_library $source_folder/common/timing/delay_timer_pkg.vhd                   common_library
 add_vhdl_file_to_library $source_folder/common/timing/delay_timer.vhd                  common_library
 add_vhdl_file_to_library $source_folder/common/typesdefs/typedefs_pkg.vhd              common_library
 add_vhdl_file_to_library $source_folder/common/register_shifts/register_shifts_pkg.vhd common_library

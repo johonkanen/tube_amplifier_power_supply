@@ -24,6 +24,9 @@ library ieee;
     use work.boost_model_interface_pkg.all;
     use work.fpga_interconnect_pkg.all;
     use work.main_system_control_pkg.all;
+    use work.main_state_machine_pkg.all;
+
+    use work.delay_timer_pkg.all;
 
 entity main_system_control is
     port (
@@ -36,8 +39,16 @@ end entity main_system_control;
 
 architecture rtl of main_system_control is
 
+    signal main_state_machine : main_state_machine_record := init_main_state_machine;
 
 begin
+
+    main : process(core_clock)
+    begin
+        if rising_edge(core_clock) then
+            /* create_system_control(main_state_machine, '1' */
+        end if; --rising_edge
+    end process main;	
 
     u_boost_control : entity work.boost_control
     port map (
@@ -71,6 +82,3 @@ begin
     */
 
 end rtl;
-
-------------------------------------------------------------------------
-------------------------------------------------------------------------

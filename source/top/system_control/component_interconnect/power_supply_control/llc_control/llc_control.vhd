@@ -6,7 +6,7 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
     use work.typedefines_pkg.all;
 
     use work.llc_control_pkg.all;
@@ -70,7 +70,7 @@ architecture rtl of llc_control is
 begin
 
 ------------------ delay timer module ----------------------------------
-    delay_1us : delay_timer
+    delay_1us : entity work.delay_timer
     generic map (count_up_to => 128)
     port map( core_clock,
     	  delay_timer_data_in,

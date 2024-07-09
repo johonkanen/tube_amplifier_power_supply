@@ -7,7 +7,7 @@ library onboard_adc_library;
     use onboard_adc_library.measurement_interface_pkg.all;
     use onboard_adc_library.psu_measurement_interface_pkg.all;
 
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
     use work.typedefines_pkg.all;
 
     use work.dhb_control_pkg.all;
@@ -64,7 +64,7 @@ architecture rtl of dhb_control is
 
 begin
 ------------------------------------------------------------------------
-    delay_50us : delay_timer
+    delay_50us : entity work.delay_timer
     generic map (count_up_to => 5*1280)
     port map( core_clock,
     	  delay_timer_50us_data_in,

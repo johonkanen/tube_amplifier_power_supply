@@ -5,7 +5,7 @@ LIBRARY ieee  ;
 
     use work.main_state_machine_pkg.all;
     use work.component_interconnect_pkg.all;
-    use work.timing_pkg.all;
+    use work.delay_timer_pkg.all;
 
 library vunit_lib;
 context vunit_lib.vunit_context;
@@ -46,7 +46,7 @@ begin
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 
-    u_delay_timer : delay_timer
+    u_delay_timer : entity work.delay_timer
     generic map (count_up_to => 128)
     port map(simulator_clock,
     	  delay_timer_1ms_data_in,
