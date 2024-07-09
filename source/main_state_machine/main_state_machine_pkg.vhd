@@ -15,6 +15,7 @@ package main_state_machine_pkg is
                     start_llc                  ,
                     start_dhb                  ,
                     system_running             ,
+                    wait_for_fault_acknowledge ,
                     stop);
 
     type main_state_machine_record is record
@@ -123,11 +124,23 @@ package body main_state_machine_pkg is
                         -- self.st_main_states := start_power_supplies; 
                     end if;
 
+                WHEN wait_for_fault_acknowledge =>
+                    -- do nothing, wait for fault ack
+                    disable_power_supplies(component_interconnect_in);
+
                 WHEN others=>
                     self.st_main_states <= init;
             end CASE;
             
         end create_system_control;
+
+        procedure go_to_fault
+        (
+            signal self : inout main_state_machine_record
+        ) is
+        begin
+            self.st_main_states <= wait_for_fault_acknowledge;
+        end go_to_fault;
 
 end package body main_state_machine_pkg;
 ------------------------------------------------------------------------

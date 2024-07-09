@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<efxpt:design_db name="tube_amplifier_power_supply" device_def="Ti60F225" version="2024.1.163" db_version="20241999" last_change_date="Thu Jul  4 08:57:02 2024" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
+<efxpt:design_db name="tube_amplifier_power_supply" device_def="Ti60F225" version="2024.1.163" db_version="20241999" last_change_date="Tue Jul  9 15:18:38 2024" xmlns:efxpt="http://www.efinixinc.com/peri_design_db" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.efinixinc.com/peri_design_db peri_design_db.xsd ">
     <efxpt:device_info>
         <efxpt:iobank_info>
             <efxpt:iobank name="1A" iostd="1.8 V LVCMOS" is_dyn_voltage="false" mode_sel_name="1A_MODE_SEL"/>
@@ -85,6 +85,24 @@
         <efxpt:comp_gpio name="pll_input_clock" gpio_def="GPIOL_P_18" mode="input" bus_name="" io_standard="1.8 V LVCMOS">
             <efxpt:input_config name="pll_input_clock" name_ddio_lo="" conn_type="pll_clkin" is_register="false" clock_name="" is_clock_inverted="false" pull_option="none" is_schmitt_trigger="false" ddio_type="none" is_bus_hold="false" delay="0" is_serial="false" is_dyn_delay="false" fastclk_name="" pullup_ena_name="pll_input_clock_PULL_UP_ENA" dyn_delay_en_name="pll_input_clock_DLY_ENA" dyn_delay_reset_name="pll_input_clock_DLY_RST" dyn_delay_ctrl_name="pll_input_clock_DLY_CTRL" clkmux_buf_name=""/>
         </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led1[0]" gpio_def="GPIOR_P_09" mode="output" bus_name="rgb_led1" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led1[0]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led1[1]" gpio_def="GPIOR_P_08" mode="output" bus_name="rgb_led1" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led1[1]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led1[2]" gpio_def="GPIOR_P_07" mode="output" bus_name="rgb_led1" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led1[2]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led2[0]" gpio_def="GPIOR_N_09" mode="output" bus_name="rgb_led2" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led2[0]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led2[1]" gpio_def="GPIOR_N_08" mode="output" bus_name="rgb_led2" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led2[1]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
+        <efxpt:comp_gpio name="rgb_led2[2]" gpio_def="GPIOR_N_07" mode="output" bus_name="rgb_led2" io_standard="1.8 V LVCMOS">
+            <efxpt:output_config name="rgb_led2[2]" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
+        </efxpt:comp_gpio>
         <efxpt:comp_gpio name="uart_rx" gpio_def="GPIOL_01" mode="input" bus_name="" io_standard="1.8 V LVCMOS">
             <efxpt:input_config name="uart_rx" name_ddio_lo="" conn_type="normal" is_register="false" clock_name="" is_clock_inverted="false" pull_option="none" is_schmitt_trigger="false" ddio_type="none" is_bus_hold="false" delay="0" is_serial="false" is_dyn_delay="false" fastclk_name="" pullup_ena_name="uart_rx_PULL_UP_ENA" dyn_delay_en_name="uart_rx_DLY_ENA" dyn_delay_reset_name="uart_rx_DLY_RST" dyn_delay_ctrl_name="uart_rx_DLY_CTRL" clkmux_buf_name=""/>
         </efxpt:comp_gpio>
@@ -92,6 +110,8 @@
             <efxpt:output_config name="uart_tx" name_ddio_lo="" register_option="none" clock_name="" is_clock_inverted="false" is_slew_rate="false" tied_option="none" ddio_type="none" delay="0" is_serial="false" drive_strength="4" fastclk_name=""/>
         </efxpt:comp_gpio>
         <efxpt:global_unused_config state="input with weak pullup"/>
+        <efxpt:bus name="rgb_led1" mode="output" msb="2" lsb="0"/>
+        <efxpt:bus name="rgb_led2" mode="output" msb="2" lsb="0"/>
     </efxpt:gpio_info>
     <efxpt:pll_info>
         <efxpt:pll name="main_pll" pll_def="PLL_TL0" ref_clock_name="" ref_clock_freq="25.0000" multiplier="4" pre_divider="1" post_divider="1" reset_name="" locked_name="" is_ipfrz="false" is_bypass_lock="true">

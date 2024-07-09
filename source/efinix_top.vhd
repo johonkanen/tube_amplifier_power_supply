@@ -17,7 +17,10 @@ entity efinix_top is
     port (
         core_clock : in std_logic;
         uart_rx    : in std_logic;
-        uart_tx    : out std_logic
+        uart_tx    : out std_logic;
+
+        rgb_led1   : out std_logic_vector(2 downto 0);
+        rgb_led2   : out std_logic_vector(2 downto 0)
     );
 end entity efinix_top;
 
@@ -53,6 +56,9 @@ architecture rtl of efinix_top is
 
 ------------------------------------------------------------------------
 begin
+
+    rgb_led1 <= data_from_test_interface(2 downto 0);
+    rgb_led2 <= data_from_test_interface(5 downto 3);
 
 ------------------------------------------------------------------------
     u_communications : entity work.fpga_communications
@@ -103,6 +109,7 @@ begin
                                          bus_from_main_system_control;
             end if;
         end process;
+
         
 ------------------------------------------------------------------------
         u_main_system_control : entity work.main_system_control
