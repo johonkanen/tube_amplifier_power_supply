@@ -34,7 +34,7 @@ package delay_timer_pkg is
         signal delay_timer_interface : view delay_timer_cview;
         constant number_of_timer_tics : integer);
 ------------------------------------------------------------------------
-    impure function signal timer_is_ready (signal delay_timer_interface : view delay_timer_view);
+    impure function (timer_is_ready signal delay_timer_interface : view delay_timer_view);
         return boolean;
 ------------------------------------------------------------------------
 
