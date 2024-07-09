@@ -77,9 +77,10 @@ begin
                 delay_timer_1ms_data_out       ,
                 dc_link_voltage);
 
-                if write_to_address_is_requested(bus_to_main_system_control, tubepsu_addresses_pkg.system_control_test_address) then
-                    main_state_machine.st_main_states <= t_system_states'val(get_data(bus_to_main_system_control));
-                end if;
+            if write_to_address_is_requested(bus_to_main_system_control, tubepsu_addresses_pkg.system_control_test_address) then
+                main_state_machine.st_main_states <= t_system_states'val(get_data(bus_to_main_system_control));
+            end if;
+
         end if; --rising_edge
     end process main;	
 

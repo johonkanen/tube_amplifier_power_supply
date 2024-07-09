@@ -11,31 +11,31 @@ package test_interface_pkg is
         write_data_from_entity_with_1 : std_ulogic;
     end record comm_bus_record;
 
-    view comm_bus_cview of comm_bus_record is
+    view comm_bus_view of comm_bus_record is
         data_to_entity              : in;
         write_data_to_entity_with_1 : in;
 
         data_from_entity              : out;
         write_data_from_entity_with_1 : out;
     end view;
-    alias comm_bus_view is comm_bus_cview'converse;
+    alias comm_bus_cview is comm_bus_view'converse;
 
     procedure init_tx (
-        signal self : view comm_bus_view);
+        signal self : view comm_bus_cview);
 
     procedure write_data (
-        signal self : view comm_bus_view;
+        signal self : view comm_bus_cview;
         data : in std_ulogic_vector);
 
     procedure write_data (
-        signal self : view comm_bus_view;
+        signal self : view comm_bus_cview;
         data : in integer);
 
     procedure init_rx (
-        signal self : view comm_bus_cview);
+        signal self : view comm_bus_view);
 
     procedure loopback_interface (
-        signal self : view comm_bus_cview);
+        signal self : view comm_bus_view);
 
     function bus_feedback_is_ready ( self : comm_bus_record)
         return boolean;
@@ -47,7 +47,7 @@ end package test_interface_pkg;
 package body test_interface_pkg is
     procedure init_tx
     (
-        signal self : view comm_bus_view
+        signal self : view comm_bus_cview
     ) is
     begin
         self.data_to_entity <= (others => '0');
@@ -56,7 +56,7 @@ package body test_interface_pkg is
 
     procedure init_rx
     (
-        signal self : view comm_bus_cview
+        signal self : view comm_bus_view
     ) is
     begin
         self.data_from_entity <= (others => '0');
@@ -65,7 +65,7 @@ package body test_interface_pkg is
 
     procedure write_data
     (
-        signal self : view comm_bus_view;
+        signal self : view comm_bus_cview;
         data : in std_ulogic_vector
     ) is
     begin
@@ -75,7 +75,7 @@ package body test_interface_pkg is
 
     procedure write_data
     (
-        signal self : view comm_bus_view;
+        signal self : view comm_bus_cview;
         data : in integer
     ) is
     begin
@@ -85,7 +85,7 @@ package body test_interface_pkg is
 
     procedure loopback_interface
     (
-        signal self : view comm_bus_cview
+        signal self : view comm_bus_view
     ) is
     begin
         if self.write_data_to_entity_with_1 = '1' then
@@ -116,7 +116,7 @@ LIBRARY ieee  ;
 entity test_entity is
     port (
         clk : in std_logic;
-        test_interface : view comm_bus_cview
+        test_interface : view comm_bus_view
     );
 end entity test_entity;
 

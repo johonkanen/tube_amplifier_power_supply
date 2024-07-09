@@ -150,7 +150,7 @@ begin
         process(system_clocks.core_clock) is
             procedure loopback
             (
-                signal self : view comm_bus_view
+                signal self : view comm_bus_cview
             ) is
             begin
                 init_tx(self);
