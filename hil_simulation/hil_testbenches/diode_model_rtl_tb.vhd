@@ -46,13 +46,43 @@ begin
         file file_handler : text open write_mode is "diode_model_rtl_tb.dat";
 
         variable input_voltage         : real := 0.0;
-        variable capacitor_voltage     : real := 0.0;
         variable c_gain                : real := timestep/100.0e-6;
         variable L_gain                : real := timestep/100.0e-6;
         variable current               : real := 0.0;
         variable voltage_over_inductor : real := 0.0;
-        variable inductor_current      : real := 0.0;
-        variable diode_voltage         : real := 0.3;
+        variable diode_voltage         : real := 0.0;
+        variable load_resistance : real := 50.0;
+
+        type lc_record is record
+            capacitor_voltage : real;
+            inductor_current  : real;
+        end record;
+        variable lc : lc_record := (0.0, 0.0);
+
+        impure function calculate_diode_model
+        (
+            vin : real;
+            inductor_gain : real;
+            capacitor_gain : real
+        )
+        return lc_record
+        is
+            variable retval : lc_record;
+        begin
+            if vin > lc.capacitor_voltage then
+                voltage_over_inductor := vin - lc.capacitor_voltage;
+            end if;
+
+            if lc.inductor_current > 0.0 then
+                voltage_over_inductor := vin - lc.capacitor_voltage;
+            end if;
+
+            retval.inductor_current  := lc.inductor_current + (-lc.inductor_current*0.1 + voltage_over_inductor)*inductor_gain;
+            retval.capacitor_voltage := lc.capacitor_voltage + (lc.inductor_current - lc.capacitor_voltage/load_resistance)*capacitor_gain;
+
+            return retval;
+            
+        end calculate_diode_model;
 
     begin
         if rising_edge(simulator_clock) then
@@ -65,24 +95,9 @@ begin
             input_voltage := (sin(realtime * 2.0*math_pi * 1000.0))*10.0;
             voltage_over_inductor := 0.0;
 
-            if input_voltage > capacitor_voltage + diode_voltage then
-                current := (input_voltage - capacitor_voltage)*10.0;
-                voltage_over_inductor := input_voltage - capacitor_voltage - diode_voltage;
-            else
-                current := 0.0;
-            end if;
+            lc := calculate_diode_model(input_voltage, l_gain, c_gain);
 
-            if inductor_current > 0.0 then
-                voltage_over_inductor := input_voltage - capacitor_voltage - diode_voltage;
-            end if;
-
-            inductor_current  := inductor_current + (-inductor_current*0.1 + voltage_over_inductor)*L_gain;
-            if inductor_current < 0.0 then
-                inductor_current := 0.0;
-            end if;
-            capacitor_voltage := capacitor_voltage + (inductor_current - capacitor_voltage/50.0)*c_gain;
-
-            write_to(file_handler,(realtime, capacitor_voltage, current, input_voltage, inductor_current, voltage_over_inductor));
+            write_to(file_handler,(realtime, lc.capacitor_voltage, current, input_voltage, lc.inductor_current, voltage_over_inductor));
         end if; -- rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
