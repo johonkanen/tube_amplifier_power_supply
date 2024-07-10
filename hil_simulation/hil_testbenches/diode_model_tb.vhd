@@ -16,7 +16,6 @@ end;
 architecture vunit_simulation of diode_model_tb is
 
     constant clock_period      : time    := 1 ns;
-    constant simtime_in_clocks : integer := 5000;
     
     signal simulator_clock     : std_logic := '0';
     signal simulation_counter  : natural   := 0;
@@ -25,7 +24,7 @@ architecture vunit_simulation of diode_model_tb is
 
     signal realtime : real := 0.0;
     constant stoptime : real := 10.0e-3;
-    constant timestep : real := 0.10e-6;
+    constant timestep : real := 1.0e-6;
 
 begin
 
@@ -52,7 +51,7 @@ begin
         variable current               : real := 0.0;
         variable voltage_over_inductor : real := 0.0;
         variable inductor_current      : real := 0.0;
-        variable diode_voltage         : real := 0.3;
+        variable diode_voltage         : real := 0.0;
 
     begin
         if rising_edge(simulator_clock) then

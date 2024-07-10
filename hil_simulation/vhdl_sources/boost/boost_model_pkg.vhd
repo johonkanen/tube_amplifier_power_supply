@@ -57,6 +57,9 @@ package boost_model_pkg is
     function build_boost_model (parameters : boost_model_parameters_record; init_values : initial_boost_model_values_record)
     return ram_array;
 
+    function diode_voltage ( u_in : real; u_dc : real; i_ind : real)
+    return real;
+
     constant variables : variable_array := init_variables(21) + boost_addr_offset;
 
     alias input_voltage_addr is variables(0);
@@ -139,6 +142,26 @@ package body boost_model_pkg is
 
         return retval;
     end build_boost_model;
+
+
+
+    function diode_voltage
+    (
+        u_in : real; u_dc : real; i_ind : real;
+    )
+    return real
+    is
+        variable retval : real := 0.0;
+    begin
+        retval := u_in;
+
+        if (u_in > u_dc) or (i_ind > 0.0) then
+            retval := u_dc;
+        end if;
+
+        return retval;
+        
+    end diode_voltage;
 
 
 end package body boost_model_pkg;
