@@ -148,29 +148,22 @@ begin
         bus_from_component_interconnect <= bus_from_communications;
 
         process(system_clocks.core_clock) is
-            procedure loopback
-            (
-                signal self : view comm_bus_cview
-            ) is
-            begin
-                init_tx(self);
-                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
-                    write_data(self, get_data(bus_from_communications));
-                end if;
-                if bus_feedback_is_ready(self) then
-                    data_from_test_interface <= self.data_from_entity;
-                end if;
-            end loopback;
         begin
             if rising_edge(system_clocks.core_clock) then
                 init_bus(bus_out);
                 connect_read_only_data_to_address(bus_from_communications, bus_out, interconnect_test_address, 44252);
 
-                loopback(test_interface);
+                init_tx(test_interface);
+                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
+                    write_data(test_interface, get_data(bus_from_communications));
+                end if;
+                if bus_feedback_is_ready(test_interface) then
+                    data_from_test_interface <= test_interface.data_from_entity;
+                end if;
                 connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
 
-                bus_to_communications <= bus_out              and
-                                         bus_from_boost_model and
+                bus_to_communications <= bus_out               and
+                                         bus_from_boost_model  and
                                          bus_from_test_control and
                                          bus_to_component_interconnect;
             end if;
@@ -238,6 +231,7 @@ begin
         bus_from_boost_model,
         boost_model_interface.input,
         boost_model_interface.output
+        /* boost_model_interface */
     );
 ------------------------------------------------------------------------
 end rtl;

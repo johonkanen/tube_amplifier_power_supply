@@ -43,6 +43,9 @@ architecture vunit_simulation of boost_entity_tb is
     alias bus_from_stimulus is boost_model_bus.bus_to_boost_model;
     alias bus_from_boost_model is boost_model_bus.bus_from_boost_model;
 
+
+    signal boost_interface : boost_interface_record;
+
 ------------------------------------------------------------------------
 begin
 
@@ -81,18 +84,18 @@ begin
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
                 boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+                request_boost_calculation(boost_model_interface);
             end if;
 
             init_bus(bus_from_stimulus);
             if realtime > 2.0e-3 then
                 ref_duty := 0.25;
-                write_data_to_address(bus_from_stimulus, 3, integer(ref_duty*2.0**15));
+                set_duty(boost_interface,integer(ref_duty*2.0**15));
             end if;
 
             if realtime > 4.0e-3 then
                 ref_input_voltage := 120.0;
                 write_data_to_address(bus_from_stimulus, 2, integer(ref_input_voltage*2.0**7));
-                input_voltage_0_to_512 <= integer(120*2.0**7);
             end if;
 
             if realtime > 6.0e-3 then
@@ -100,28 +103,28 @@ begin
                 write_data_to_address(bus_from_stimulus, 1, to_fixed(number => abs(ref_load_current), bit_width => 16, number_of_fractional_bits => 11));
             end if;
 
-            if processor_ready then
+            if boost_model_is_ready(boost_model_interface) then
                 write_to(file_handler,(realtime, real(rtl_voltage)/2.0**6, real(rtl_current)/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
                 realtime <= realtime + init_parameters.timestep;
                 boost_model := calculate_boost(self => boost_model, parameters => init_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+            end if;
+
+            if boost_model_is_ready(boost_model_interface) then
+                request_boost_calculation(boost_model_interface);
             end if;
         end if; --rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
 
     u_boost_model : entity work.boost_model
-    generic map(boost_model_parameters => init_parameters)
+    generic map(boost_model_parameters => cl_parameters, initial_voltage => initial_voltage)
     port map(
         clock => simulator_clock ,
+        bus_to_boost_model => bus_from_stimulus,
+        bus_from_boost_model => bus_from_boost_model,
 
-        boost_model_bus => boost_model_bus,
-        processor_requested => true,
-        write_duty => false,
-        dutyin => 1,
-
-        rtl_current => rtl_current ,
-        rtl_voltage => rtl_voltage ,
-
-        program_ready        => processor_ready);
+        boost_in  => boost_model_interface.input,
+        boost_out => boost_model_interface.output);
+  ----------------------------------------------------------------------
 ------------------------------------------------------------------------
 end vunit_simulation;

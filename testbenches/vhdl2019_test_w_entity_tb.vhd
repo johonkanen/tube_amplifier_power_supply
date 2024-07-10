@@ -4,34 +4,6 @@ LIBRARY ieee  ;
 
     use work.test_interface_pkg.all;
 
-entity test_entity is
-    port (
-        clk : in std_logic;
-        test_interface : view comm_bus_cview
-    );
-end entity test_entity;
-
-architecture rtl of test_entity is
-
-begin
-    testi : process(clk)
-    begin
-        if rising_edge(clk) then
-            init_rx(test_interface);
-            loopback_interface(test_interface);
-        end if; --rising_edge
-    end process ;	
-
-end rtl;
-
-------------------------------------------------
-------------------------------------------------
-LIBRARY ieee  ; 
-    USE ieee.std_logic_1164.all  ; 
-    use ieee.numeric_std.all;
-
-    use work.test_interface_pkg.all;
-
 library vunit_lib;
 context vunit_lib.vunit_context;
 
@@ -80,41 +52,33 @@ begin
             return to_integer(unsigned(input));
         end to_integer;
 
-        procedure test
-        (
-            signal self : view comm_bus_view
-        ) is
-        begin
+    begin
+        if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
-            init_tx(self);
+            init_tx(test_interface);
             CASE simulation_counter is
                 WHEN 10 =>
-                    write_data(self, 10);
+                    write_data(test_interface, 10);
                 WHEN 11 =>
-                    write_data(self, 11);
+                    write_data(test_interface, 11);
                 WHEN 12 =>
-                    write_data(self, 12);
+                    write_data(test_interface, 12);
                 WHEN others =>
             end CASE; --simulation_counter
-            if bus_feedback_is_ready(self) then
+            if bus_feedback_is_ready(test_interface) then
                 tests_were_actually_run <= true;
                 result_counter <= result_counter + 1;
             end if;
 
-            if bus_feedback_is_ready(self) then
+            if bus_feedback_is_ready(test_interface) then
                 tests_were_actually_run <= true;
                 CASE result_counter is
-                    WHEN 0 => check(to_integer(self.data_from_entity) = 10, "first test, resolution probably failed");
-                    WHEN 1 => check(to_integer(self.data_from_entity) = 11, "second test, resolution probably failed");
-                    WHEN 2 => check(to_integer(self.data_from_entity) = 12, "third test, resolution probably failed");
+                    WHEN 0 => check(to_integer(test_interface.data_from_entity) = 10, "first test, resolution probably failed");
+                    WHEN 1 => check(to_integer(test_interface.data_from_entity) = 11, "second test, resolution probably failed");
+                    WHEN 2 => check(to_integer(test_interface.data_from_entity) = 12, "third test, resolution probably failed");
                     when others => --do nothing
                 end CASE;
             end if;
-            
-        end test;
-    begin
-        if rising_edge(simulator_clock) then
-            test(test_interface);
         end if; -- rising_edge
     end process stimulus;	
 

@@ -73,19 +73,6 @@ begin
 ------------------------------------------------------------------------
         process(core_clock) is
 
-            procedure loopback
-            (
-                signal self : view comm_bus_view
-            ) is
-            begin
-                init_tx(self);
-                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
-                    write_data(self, get_data(bus_from_communications));
-                end if;
-                if bus_feedback_is_ready(self) then
-                    data_from_test_interface <= self.data_from_entity;
-                end if;
-            end loopback;
 
         begin
             if rising_edge(core_clock) then
@@ -100,9 +87,15 @@ begin
                     end if;
                 end if;
 
-                loopback(test_interface);
-                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
+                init_tx(test_interface);
+                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
+                    write_data(test_interface, get_data(bus_from_communications));
+                end if;
+                if bus_feedback_is_ready(test_interface) then
+                    data_from_test_interface <= get_data_from_entity(test_interface);
+                end if;
 
+                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
 
                 bus_to_communications <= bus_out              and
                                          bus_from_boost_model and
@@ -168,6 +161,7 @@ begin
         bus_from_boost_model    ,
         boost_model_interface.input,
         boost_model_interface.output
+        /* boost_model_interface */
     );
 ------------------------------------------------------------------------
     u_test_entity : entity work.test_entity

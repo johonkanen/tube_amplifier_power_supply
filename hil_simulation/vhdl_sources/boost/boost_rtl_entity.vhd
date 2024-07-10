@@ -73,7 +73,6 @@ package body boost_model_interface_pkg is
         
     end create_boost_model_interface;
 
-
     procedure request_boost_calculation
     (
         signal self : view boost_model_interface_cview
