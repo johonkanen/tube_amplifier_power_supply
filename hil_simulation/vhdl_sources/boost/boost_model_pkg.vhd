@@ -113,10 +113,12 @@ package body boost_model_pkg is
     return boost_model_record
     is
         variable retval : boost_model_record := self;
+        variable boost_voltage : real := 0.0;
         constant l : real := parameters.timestep/parameters.inductance;
         constant c : real := parameters.timestep/parameters.capacitance;
     begin
-        retval.inductor_current := retval.inductor_current + (input_voltage - retval.dc_link_voltage*duty - parameters.rl * retval.inductor_current)*l;
+        boost_voltage := input_voltage - retval.dc_link_voltage*duty;
+        retval.inductor_current := retval.inductor_current + (boost_voltage - parameters.rl * retval.inductor_current)*l;
         retval.dc_link_voltage  := retval.dc_link_voltage + (retval.inductor_current*duty + load_current)*c;
 
         return retval;

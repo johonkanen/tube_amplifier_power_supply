@@ -9,7 +9,7 @@ import os
 path_to_this_file = os.path.dirname(os.path.realpath(__file__))
 
 #change directory to the lc filter directory
-pqs.chdir(path_to_this_file + '/../../hil_simulation/qspice_ref_models/boost_simulation')
+pqs.chdir(path_to_this_file + '/../../../hil_simulation/qspice_ref_models/boost_simulation')
 
 run = pqs('boost_closed_loop.qsch')
 
