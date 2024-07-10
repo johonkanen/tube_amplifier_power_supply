@@ -9,11 +9,11 @@ context vunit_lib.vunit_context;
 
     use work.write_pkg.all;
 
-entity diode_model_tb is
+entity diode_model_rtl_tb is
   generic (runner_cfg : string);
 end;
 
-architecture vunit_simulation of diode_model_tb is
+architecture vunit_simulation of diode_model_rtl_tb is
 
     constant clock_period      : time    := 1 ns;
     constant simtime_in_clocks : integer := 5000;
@@ -43,7 +43,7 @@ begin
 
     stimulus : process(simulator_clock)
 
-        file file_handler : text open write_mode is "diode_model_tb.dat";
+        file file_handler : text open write_mode is "diode_model_rtl_tb.dat";
 
         variable input_voltage         : real := 0.0;
         variable capacitor_voltage     : real := 0.0;

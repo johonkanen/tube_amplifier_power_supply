@@ -69,6 +69,7 @@ mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_closed_l
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_voltage_closed_loop_tb.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_tb.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_rtl_tb.vhd")
 
 # mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_entity_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_rtl_closed_loop_tb.vhd")
