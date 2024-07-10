@@ -37,8 +37,13 @@ package test_interface_pkg is
     procedure loopback_interface (
         signal self : view comm_bus_view);
 
-    function bus_feedback_is_ready ( self : comm_bus_record)
-        return boolean;
+    impure function bus_feedback_is_ready (
+        signal self : view comm_bus_view
+    )
+    return boolean;
+
+    impure function get_data_from_entity ( signal self : view comm_bus_view)
+        return std_logic_vector;
 
 
 end package test_interface_pkg;
@@ -95,15 +100,26 @@ package body test_interface_pkg is
         
     end loopback_interface;
 
-    function bus_feedback_is_ready
+    impure function bus_feedback_is_ready
     (
-        self : comm_bus_record
+        signal self : view comm_bus_view
     )
     return boolean
     is
     begin
         return self.write_data_from_entity_with_1 = '1';
     end bus_feedback_is_ready;
+
+    impure function get_data_from_entity
+    (
+        signal self : view comm_bus_view
+    )
+    return std_logic_vector
+    is
+    begin
+        return self.data_from_entity;
+        
+    end get_data_from_entity;
 
 end package body test_interface_pkg;
 ------------------------------------------------
