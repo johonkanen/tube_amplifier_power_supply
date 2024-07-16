@@ -294,7 +294,7 @@ begin
                 WHEN a_more_than_b_and_c_positive =>
 
                     if to_float(get_ram_data(ram_read_data_out)) > to_float(get_ram_data(ram_read_2_data_out))
-                        or to_float(get_ram_data(ram_read_2_data_out)) > to_float(0.0) then
+                        or to_float(get_ram_data(ram_read_3_data_out)) > to_float(0.0) then
 
                         self.instruction_pipeline(3)(0) <= '1';
                     else

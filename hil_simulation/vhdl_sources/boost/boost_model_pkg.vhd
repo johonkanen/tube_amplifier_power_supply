@@ -74,12 +74,16 @@ package boost_model_pkg is
     alias duty             is variables(8);
     alias ic               is variables(9);
     alias iload            is variables(10);
+    alias d_x_udc            is variables(11);
+    alias comparison            is variables(12);
 
     constant boost_program : program_array :=(
         pipelined_block(
             program_array'(
             write_instruction(neg_mpy_add , d_x_udc_m_uin , 
                 duty , udc , input_voltage_addr),
+            write_instruction(mpy , d_x_udc , 
+                duty , udc),
             write_instruction(mpy_add , ic ,
                 duty , current_addr, iload)
             )
@@ -88,13 +92,20 @@ package boost_model_pkg is
             program_array'(
             write_instruction(neg_mpy_add , uL , 
                 current_addr , r_addr, d_x_udc_m_uin),
+            write_instruction(neg_mpy , uL , 
+                r_addr , current_addr),
+            write_instruction(a_more_than_b_and_c_positive, comparison,
+                input_voltage_addr, d_x_udc, current_addr),
             write_instruction(mpy_add , udc ,
                 ic , c_addr, udc)
             )
         ) &
         pipelined_block(
+            program_array'(
+            write_instruction(nop),
             write_instruction(mpy_add , current_addr , 
                 uL , l_addr, current_addr)
+            )
         ) &
         write_instruction(program_end));
 
