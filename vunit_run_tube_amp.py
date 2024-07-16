@@ -10,18 +10,18 @@ VU = VUnit.from_argv(compile_builtins=True, vhdl_standard="2019")
 #floating point testbenches
 
 mcu = VU.add_library("mcu")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_type_definitions/float_word_length_24_bit_pkg.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_type_definitions/float_type_definitions_pkg.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_arithmetic_operations/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_1_stage_pipe_pkg.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_1_stage_pipe_pkg.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/normalizer/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/denormalizer/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_to_real_conversions" / "*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_adder/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_multiplier/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_alu/*.vhd")
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_floating_point/float_to_integer_converter/float_to_integer_converter_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_type_definitions/float_word_length_24_bit_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_type_definitions/float_type_definitions_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_arithmetic_operations/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/normalizer/normalizer_configuration/normalizer_with_1_stage_pipe_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/denormalizer/denormalizer_configuration/denormalizer_with_1_stage_pipe_pkg.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/normalizer/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/denormalizer/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_to_real_conversions" / "*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_adder/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_multiplier/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_alu/*.vhd")
+mcu.add_source_files(ROOT / "source/hVHDL_floating_point/float_to_integer_converter/float_to_integer_converter_pkg.vhd")
 
 mcu.add_source_files(ROOT / "source/hVHDL_fixed_point/real_to_fixed/real_to_fixed_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_fixed_point/multiplier/configuration/multiply_with_1_input_and_output_registers_pkg.vhd")
@@ -41,7 +41,6 @@ mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_me
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_memory_library/multi_port_ram/ram_read_x4_write_x1.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/source/hVHDL_memory_library/multi_port_ram/arch_sim_read_x4_write_x1.vhd")
 
-mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/processor_configuration/processor_configuration_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/vhdl_assembler/microinstruction_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/vhdl_assembler/float_assembler_pkg.vhd")
 mcu.add_source_files(ROOT / "source/hVHDL_microprogram_processor/simple_processor/test_programs_pkg.vhd")
@@ -58,6 +57,7 @@ mcu.add_source_files(ROOT / "source/fpga_communication/hVHDL_fpga_interconnect/f
 
 mcu.add_source_files(ROOT / "source/hVHDL_dynamic_model_verification_library/simulator_utilities/write_pkg.vhd")
 
+mcu.add_source_files(ROOT / "hil_simulation/processor_configuration/tube_amp_processor_configuration_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd")
 

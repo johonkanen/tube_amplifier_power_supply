@@ -159,6 +159,7 @@ LIBRARY ieee  ;
     use work.float_alu_pkg.all;
     use work.float_type_definitions_pkg.all;
     use work.float_to_real_conversions_pkg.all;
+    use work.float_arithmetic_operations_pkg.all;
 
     use work.memory_processing_pkg.all;
     use work.float_assembler_pkg.all;
@@ -171,7 +172,6 @@ LIBRARY ieee  ;
 
     use work.float_to_integer_converter_pkg.all;
     use work.float_multiplier_pkg.all;
-    use work.float_arithmetic_operations_pkg.all;
 
 entity boost_model is
     generic(boost_model_parameters : boost_model_parameters_record;
@@ -262,6 +262,15 @@ begin
             init_ram_read(ram_read_3_data_in);
             create_float_alu(float_alu);
 
+            CASE decode(used_instruction) is
+                WHEN neg_mpy | a_more_than_b_and_c_positive =>
+                    request_data_from_ram(ram_read_data_in   , get_arg1(used_instruction));
+                    request_data_from_ram(ram_read_2_data_in , get_arg2(used_instruction));
+                    request_data_from_ram(ram_read_3_data_in , get_arg3(used_instruction));
+                
+                WHEN others => --do nothing
+            end CASE; --decode(used_instruction)
+
             create_memory_process_pipeline(
             self                     ,
             float_alu                ,
@@ -274,6 +283,26 @@ begin
             ram_read_3_data_in       ,
             ram_read_3_data_out      ,
             ram_write_port          );
+
+            used_instruction := self.instruction_pipeline(2);
+            CASE decode(used_instruction) is
+                WHEN neg_mpy =>
+                    madd(float_alu                                  ,
+                        -to_float(get_ram_data(ram_read_data_out))  ,
+                        to_float(get_ram_data(ram_read_2_data_out)) ,
+                        to_float(0.0));
+                WHEN a_more_than_b_and_c_positive =>
+
+                    if to_float(get_ram_data(ram_read_data_out)) > to_float(get_ram_data(ram_read_2_data_out))
+                        or to_float(get_ram_data(ram_read_2_data_out)) > to_float(0.0) then
+
+                        self.instruction_pipeline(3)(0) <= '1';
+                    else
+                        self.instruction_pipeline(3)(0) <= '0';
+                    end if;
+                
+                WHEN others => --do nothing
+            end CASE; --decode(used_instruction)
 
             create_float_to_integer_converter(float_to_integer_converter);
             create_float_multiplier(float_multiplier);
