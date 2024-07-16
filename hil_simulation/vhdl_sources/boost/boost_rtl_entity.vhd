@@ -304,6 +304,22 @@ begin
                 WHEN others => --do nothing
             end CASE; --decode(used_instruction)
 
+            used_instruction := self.instruction_pipeline(3 + alu_timing.madd_pipeline_depth-1);
+            CASE decode(used_instruction) is
+                WHEN neg_mpy =>
+                    write_data_to_ram(ram_write_port, get_dest(used_instruction), to_std_logic_vector(get_add_result(float_alu)));
+                WHEN others => -- do nothing
+            end CASE;
+
+            used_instruction := self.instruction_pipeline(3 + alu_timing.madd_pipeline_depth-2);
+            CASE decode(used_instruction) is
+                WHEN a_more_than_b_and_c_positive =>
+                    if used_instruction(0) = '1' then
+                        write_data_to_ram(ram_write_port, get_dest(used_instruction), to_std_logic_vector(get_add_result(float_alu)));
+                    end if;
+                WHEN others => -- do nothing
+            end CASE;
+
             create_float_to_integer_converter(float_to_integer_converter);
             create_float_multiplier(float_multiplier);
 
