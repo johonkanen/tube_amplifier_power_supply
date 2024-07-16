@@ -51,7 +51,6 @@ add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHD
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_memory_library/multi_port_ram/ram_read_x4_write_x1.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/source/hVHDL_memory_library/multi_port_ram/arch_sim_read_x4_write_x1.vhd
 
-add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/processor_configuration/processor_configuration_pkg.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/vhdl_assembler/microinstruction_pkg.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/vhdl_assembler/float_assembler_pkg.vhd
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_processor/test_programs_pkg.vhd
@@ -66,6 +65,7 @@ add_vhdl_file_to_project $source_folder/fpga_communication/hVHDL_fpga_interconne
 add_vhdl_file_to_project $source_folder/fpga_communication/hVHDL_fpga_interconnect/fpga_interconnect_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/pfc_model_pkg.vhd
+add_vhdl_file_to_project $source_folder/../hil_simulation/processor_configuration/tube_amp_processor_configuration_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/supply_model/boost_model_pkg.vhd
 
