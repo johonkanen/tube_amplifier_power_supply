@@ -63,6 +63,7 @@ add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_proc
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/memory_processor/memory_processing_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/hVHDL_microprogram_processor/simple_processor/float_example_program_pkg.vhd
+add_vhdl_file_to_project $source_folder/../hil_simulation/processor_configuration/tube_amp_processor_configuration_pkg.vhd
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd
 
