@@ -233,9 +233,9 @@ architecture rtl of boost_model is
 
 begin
     boost_out.program_ready_when_1 <= ready_pipeline(ready_pipeline'left);
+    boost_out.rtl_input_voltage    <= std_logic_vector(to_signed(voltage_from_bus,16));
     boost_out.rtl_current          <= std_logic_vector(to_signed(measured_current,16));
     boost_out.rtl_voltage          <= std_logic_vector(to_signed(measured_voltage,16));
-    boost_out.rtl_input_voltage    <= std_logic_vector(to_signed(voltage_from_bus,16));
 
     stimulus : process(clock)
         variable used_instruction : t_instruction;
@@ -262,15 +262,6 @@ begin
             init_ram_read(ram_read_3_data_in);
             create_float_alu(float_alu);
 
-            CASE decode(used_instruction) is
-                WHEN neg_mpy | a_more_than_b_and_c_positive =>
-                    request_data_from_ram(ram_read_data_in   , get_arg1(used_instruction));
-                    request_data_from_ram(ram_read_2_data_in , get_arg2(used_instruction));
-                    request_data_from_ram(ram_read_3_data_in , get_arg3(used_instruction));
-                
-                WHEN others => --do nothing
-            end CASE; --decode(used_instruction)
-
             create_memory_process_pipeline(
             self                     ,
             float_alu                ,
@@ -283,6 +274,15 @@ begin
             ram_read_3_data_in       ,
             ram_read_3_data_out      ,
             ram_write_port          );
+
+            CASE decode(used_instruction) is
+                WHEN neg_mpy | a_more_than_b_and_c_positive =>
+                    request_data_from_ram(ram_read_data_in   , get_arg1(used_instruction));
+                    request_data_from_ram(ram_read_2_data_in , get_arg2(used_instruction));
+                    request_data_from_ram(ram_read_3_data_in , get_arg3(used_instruction));
+                
+                WHEN others => --do nothing
+            end CASE; --decode(used_instruction)
 
             used_instruction := self.instruction_pipeline(2);
             CASE decode(used_instruction) is

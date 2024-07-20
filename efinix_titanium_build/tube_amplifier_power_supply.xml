@@ -1,4 +1,4 @@
-<efx:project xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="tube_amplifier_power_supply" description="" last_change="1721117215" sw_version="2024.1.163" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="sync" design_ood="sync" place_ood="sync" route_ood="sync" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
+<efx:project xmlns:efx="http://www.efinixinc.com/enf_proj" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="tube_amplifier_power_supply" description="" last_change="1721455990" sw_version="2024.1.163.1.8" last_run_state="pass" last_run_flow="bitstream" config_result_in_sync="sync" design_ood="sync" place_ood="sync" route_ood="sync" xsi:schemaLocation="http://www.efinixinc.com/enf_proj enf_proj.xsd">
     <efx:device_info>
         <efx:family name="Titanium" />
         <efx:device name="Ti60F225" />
@@ -9,7 +9,7 @@
         <efx:design_file name="../source/hVHDL_fixed_point/multiplier/multiplier_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/hVHDL_fixed_point/sincos/sincos_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/hVHDL_fixed_point/first_order_filter/first_order_filter_pkg.vhd" version="default" library="default" />
-        <efx:design_file name="../source/hVHDL_fixed_point/multiplier/multiplier_base_types_20bit_pkg.vhd" version="default" library="default" />
+        <efx:design_file name="../source/hVHDL_fixed_point/multiplier/multiplier_base_types_22bit_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/hVHDL_fixed_point/real_to_fixed/real_to_fixed_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/hVHDL_fixed_point/multiplier/configuration/multiply_with_1_input_and_output_registers_pkg.vhd" version="default" library="default" />
         <efx:design_file name="../source/hVHDL_fixed_point/division/division_pkg.vhd" version="default" library="default" />
