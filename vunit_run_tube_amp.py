@@ -5,7 +5,7 @@ from vunit import VUnit
 
 # ROOT
 ROOT = Path(__file__).resolve().parent
-VU = VUnit.from_argv(compile_builtins=True, vhdl_standard="2019")
+VU = VUnit.from_argv(compile_builtins=True, vhdl_standard="2008")
 
 #floating point testbenches
 
@@ -59,7 +59,7 @@ mcu.add_source_files(ROOT / "source/hVHDL_dynamic_model_verification_library/sim
 
 mcu.add_source_files(ROOT / "hil_simulation/processor_configuration/tube_amp_processor_configuration_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd")
+# mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd")
@@ -72,7 +72,7 @@ mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_rtl_tb.vhd")
 
 # mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_entity_tb.vhd")
-mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_rtl_closed_loop_tb.vhd")
+# mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_rtl_closed_loop_tb.vhd")
 
 dhb = VU.add_library("dhb")
 dhb.add_source_files(ROOT / "source/top/system_control/component_interconnect/power_supply_control/dhb_control/phase_modulator/phase_modulator_pkg.vhd")
@@ -83,21 +83,25 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/phase_modulator_tb.vhd")
 
 dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 
-vhdl2019 = VU.add_library("vhdl2019")
-vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_pkg.vhd")
-vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_tb.vhd")
-vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
+# vhdl2019 = VU.add_library("vhdl2019")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_pkg.vhd")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_tb.vhd")
+# vhdl2019.add_source_files(ROOT / "testbenches/vhdl2019_test_w_entity_tb.vhd")
 
-vhdl2019_unresolved = VU.add_library("vhdl2019_unresolved")
-vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
+# vhdl2019_unresolved = VU.add_library("vhdl2019_unresolved")
+# vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
 
-main_state_machine = VU.add_library("main_state_machine")
-main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer_pkg.vhd")
-main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer.vhd")
-main_state_machine.add_source_files(ROOT / "source/main_state_machine/main_state_machine_pkg.vhd")
-main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/mock_component_interconnect_pkg.vhd")
-main_state_machine.add_source_files(ROOT / "source/top/system_control/component_interconnect/component_interconnect_pkg_body.vhd")
-main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/main_state_machine_tb.vhd")
+vhdl2008 = VU.add_library("vhdl2008")
+vhdl2008.add_source_files(ROOT / "testbenches/gen_package_tb.vhd")
+
+
+# main_state_machine = VU.add_library("main_state_machine")
+# main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer_pkg.vhd")
+# main_state_machine.add_source_files(ROOT / "source/common/timing/delay_timer.vhd")
+# main_state_machine.add_source_files(ROOT / "source/main_state_machine/main_state_machine_pkg.vhd")
+# main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/mock_component_interconnect_pkg.vhd")
+# main_state_machine.add_source_files(ROOT / "source/top/system_control/component_interconnect/component_interconnect_pkg_body.vhd")
+# main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/main_state_machine_tb.vhd")
 
 
 # VU.set_sim_option("nvc.sim_flags", ["-w"])

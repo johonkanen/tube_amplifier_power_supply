@@ -25,7 +25,24 @@ package boost_control_interface_pkg is
 end package boost_control_interface_pkg;
 
 ------------------------------------------------------------
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+
+package test_generic_pkg is
+    generic(type g_countertype;
+           g_initval : g_countertype;
+           function "+" ( left : g_countertype; right : integer) return g_countertype is <>;
+           function "<" ( left : g_countertype; right : integer) return boolean is <>);
+     
+
+    subtype countertype is g_countertype;
+    constant init_countertype : countertype := g_initval;
+
+end package test_generic_pkg;
 ------------------------------------------------------------
+
+
 library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
@@ -45,17 +62,19 @@ library ieee;
     use work.tubepsu_addresses_pkg;
 
 entity boost_control is
+    generic(package testi_pkg is new work.test_generic_pkg generic map(<>));
     port (
-        core_clock            : in std_logic;
-        boost_control_bus_in  : in fpga_interconnect_record;
-        boost_control_bus_out : out fpga_interconnect_record;
-
+        core_clock : in std_logic;
+        boost_control_bus_in    : in fpga_interconnect_record;
+        boost_control_bus_out   : out fpga_interconnect_record;
         boost_control_interface : view boost_control_interface_view
     );
 end entity boost_control;
 
 
 architecture rtl of boost_control is
+    use testi_pkg.all;
+
     alias inductor_current      is boost_control_interface.inductor_current    ;
     alias input_voltage         is boost_control_interface.input_voltage       ;
     alias dc_link_voltage       is boost_control_interface.dc_link_voltage     ;
@@ -67,7 +86,7 @@ architecture rtl of boost_control is
     signal vkp : integer := to_fixed(0.25     , 15);
     signal vki : integer := to_fixed(0.016125 , 15);
 
-    signal control_counter       : natural range 0 to 2**15-1      := 0;
+    signal control_counter       : countertype := init_countertype;
     signal reference_voltage     : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
     
     signal multiplier         : multiplier_record := init_multiplier;
@@ -105,7 +124,7 @@ begin
             if control_counter < 128e6/120e3 then
                 control_counter <= control_counter + 1;
             else
-                control_counter <= 0;
+                control_counter <= init_countertype;
                 request_current_control(current_control, self.current_ref, inductor_current*2**4);
                 request_voltage_control(self, reference_voltage , dc_link_voltage*2);
             end if;

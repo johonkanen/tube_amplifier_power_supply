@@ -160,7 +160,7 @@ package body boost_model_pkg is
 
     function diode_voltage
     (
-        u_in : real; u_dc : real; i_ind : real;
+        u_in : real; u_dc : real; i_ind : real
     )
     return real
     is

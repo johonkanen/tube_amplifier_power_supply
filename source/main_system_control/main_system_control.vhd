@@ -41,6 +41,7 @@ entity main_system_control is
 end entity main_system_control;
 
 architecture rtl of main_system_control is
+    package dingelidong_pkg is new work.test_generic_pkg generic map(g_countertype => natural range 0 to 2**15-1, g_initval => 0);
 
     signal main_state_machine : main_state_machine_record := init_main_state_machine;
     signal component_interconnect_data_in : component_interconnect_data_input_group;
@@ -68,7 +69,8 @@ begin
         if rising_edge(core_clock) then
             init_bus(bus_from_main);
             connect_data_to_address(bus_to_main_system_control , bus_from_main , tubepsu_addresses_pkg.system_control_dc_link_address , dc_link_voltage);
-            connect_read_only_data_to_address(bus_to_main_system_control , bus_from_main , tubepsu_addresses_pkg.system_control_test_address    , t_system_states'pos(main_state_machine.st_main_states));
+            connect_read_only_data_to_address(bus_to_main_system_control , bus_from_main , tubepsu_addresses_pkg.system_control_test_address , t_system_states'pos(main_state_machine.st_main_states));
+
             create_system_control(
                 main_state_machine             ,
                 '1'                            ,
@@ -85,11 +87,11 @@ begin
     end process main;	
 
     u_boost_control : entity work.boost_control
+    generic map(dingelidong_pkg)
     port map (
         core_clock => core_clock,
-
-        boost_control_bus_in    => bus_to_main_system_control   ,
-        boost_control_bus_out   => bus_from_boost_control ,
+        boost_control_bus_in    => bus_to_main_system_control ,
+        boost_control_bus_out   => bus_from_boost_control     ,
         boost_control_interface => main_system_control_interface.boost_control_interface
     );
 
