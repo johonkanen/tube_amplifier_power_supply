@@ -92,7 +92,12 @@ dhb.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 # vhdl2019_unresolved.add_source_files(ROOT / "testbenches/vhdl2019_test_unresolved_tb.vhd")
 
 vhdl2008 = VU.add_library("vhdl2008")
-vhdl2008.add_source_files(ROOT / "testbenches/gen_package_tb.vhd")
+vhdl2008.add_source_files(ROOT / "testbenches/vhdl2008/test_generic_pkg.vhd")
+vhdl2008.add_source_files(ROOT / "testbenches/vhdl2008/gentest_nopackage_generic_tb.vhd")
+
+vhdl2008_pkg_generic = VU.add_library("vhdl2008_pkg_generic")
+vhdl2008_pkg_generic.add_source_files(ROOT / "testbenches/vhdl2008/test_generic_pkg.vhd")
+vhdl2008_pkg_generic.add_source_files(ROOT / "testbenches/vhdl2008/gentest_w_package_generic_tb.vhd")
 
 
 # main_state_machine = VU.add_library("main_state_machine")
