@@ -15,7 +15,6 @@ LIBRARY ieee  ;
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
 
-
 entity gentest is
     generic(package test_pkg is new work.test_generic_pkg generic map(<>));
     port (
@@ -55,7 +54,7 @@ end;
 
 architecture vunit_simulation of gen_package_tb is
 
-    package test_pkg is new work.test_generic_pkg generic map(g_countertype => integer, g_initval => to_integer(to_signed(-6, 16)), "+" => "+");
+    package test_pkg is new work.test_generic_pkg generic map(g_countertype => signed(15 downto 0), g_initval => to_signed(-6, 16), "+" => "+");
     use test_pkg.all;
 
     constant clock_period      : time    := 1 ns;

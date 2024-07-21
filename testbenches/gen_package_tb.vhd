@@ -1,8 +1,8 @@
 --------------------------------------------------
 package test_generic_pkg is
-    generic(type                 g_countertype ;
-           g_initval :           g_countertype ;
-           function add ( left : g_countertype ; right : integer) return g_countertype is <>);
+    generic(type              g_countertype ;
+            g_initval :       g_countertype ;
+            function "+" (l : g_countertype ; r : integer) return g_countertype );
 
     subtype countertype is g_countertype;
     constant init_counter : g_countertype := g_initval;
@@ -30,7 +30,7 @@ begin
     process(clk)
     begin
         if rising_edge(clk) then
-            counter <= add(counter,1);
+            counter <= counter + 1;
         end if;
     end process;
 
@@ -39,30 +39,15 @@ end test;
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
-    use ieee.math_real.all;
-
-library vunit_lib;
-context vunit_lib.vunit_context;
 
 entity gen_package_tb is
-  generic (runner_cfg : string);
 end;
 
 architecture vunit_simulation of gen_package_tb is
 
     subtype sig is signed(15 downto 0);
-    function add
-    (
-        left : sig; right : integer
-    )
-    return sig
-    is
-    begin
-        return left + right;
-    end add;
-
-    package plimplom_pkg is new work.test_generic_pkg generic map(g_countertype => sig, g_initval => to_signed(-6, 16), add => add);
-    use plimplom_pkg.all;
+    package test_pkg is new work.test_generic_pkg generic map(g_countertype => sig, g_initval => to_signed(-6, 16), "+" => "+");
+    use test_pkg.all;
 
     constant clock_period      : time    := 1 ns;
     constant simtime_in_clocks : integer := 50;
@@ -78,10 +63,8 @@ begin
 ------------------------------------------------------------------------
     simtime : process
     begin
-        test_runner_setup(runner, runner_cfg);
         wait for simtime_in_clocks*clock_period;
-        test_runner_cleanup(runner); -- Simulation ends here
-        wait;
+        assert false report "Simulation Finished" severity failure;
     end process simtime;	
 
     simulator_clock <= not simulator_clock after clock_period/2.0;
@@ -92,16 +75,14 @@ begin
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
-            if simulation_counter = 0 then
-                /* check(counter = to_signed(-6,16)); */
-            end if;
-            counter <= add(counter,1);
+            counter <= counter + 1;
+            assert counter = init_counter + simulation_counter report "generic package did not work correctly" severity failure;
 
         end if; -- rising_edge
     end process stimulus;	
 ------------------------------------------------------------------------
 u_gentest : entity work.gentest
-generic map(plimplom_pkg)
+generic map(test_pkg)
 port map(simulator_clock);
 
 end vunit_simulation;
