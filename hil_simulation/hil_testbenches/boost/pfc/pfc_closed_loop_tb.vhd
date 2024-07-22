@@ -27,7 +27,7 @@ end;
 architecture vunit_simulation of pfc_closed_loop_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 100.0e-3;
+    constant stoptime         : real    := 220.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -36,19 +36,6 @@ architecture vunit_simulation of pfc_closed_loop_tb is
     ------------------------------------------------------------------------
 
     signal realtime : real := 0.0;
-
-    signal bus_from_stimulus    : fpga_interconnect_record := init_fpga_interconnect;
-    signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
-
-    signal processor_ready : boolean := false;
-
-    signal duty_0_to_1            : natural range 0 to 2**16-1 := to_fixed(0.5   , number_of_fractional_bits => 15);
-    signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := to_fixed(100.0 , number_of_fractional_bits => 7);
-
-    signal rtl_current : integer range -2**15 to 2**15-1 := 0;
-    signal rtl_voltage : integer range -2**15 to 2**15-1 := 0;
-    signal ref_current : real := 0.0;
-    signal ref_voltage : real := 0.0;
 
     constant cl_parameters : boost_model_parameters_record := (
         inductance  => 500.0e-6 ,
@@ -62,20 +49,18 @@ architecture vunit_simulation of pfc_closed_loop_tb is
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
     constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
-    signal iref       : int := to_fixed(4.0, number_of_fractional_bits => 11);
-    signal check_duty : real := 0.0;
-
     signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
 
     signal multiplier         : multiplier_record := init_multiplier;
     signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
-    signal vkp : integer := to_fixed(0.25     , 15);
-    signal vki : integer := to_fixed(0.016125 , 15);
+    signal vkp : integer := to_fixed(0.04         , 15);
+    signal vki : integer := to_fixed(0.016125/10.0 , 15);
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
     signal self : voltage_control_record := init_voltage_control;
+    signal voltage_control_counter : natural := 10;
 
 ------------------------------------------------------------------------
 begin
@@ -94,37 +79,32 @@ begin
 
     stimulus : process(simulator_clock)
 
-        constant load_10A     : std_logic_vector(15 downto 0) := to_fixed(number => 10.0  , bit_width => 16 , number_of_fractional_bits => 11);
-        constant voltage_120V : std_logic_vector(15 downto 0) := to_fixed(number => 120.0 , bit_width => 16 , number_of_fractional_bits => 15-7);
         file file_handler     : text open write_mode is "pfc_closed_loop_tb.dat";
 
         variable ref_input_voltage : real := 100.0;
-        variable ref_load_current  : real := 0.0;
+        variable ref_load_current  : real := -1.0;
         variable ref_duty          : real := 0.5;
 
-        constant initial_voltage : real := 150.0;
+        constant initial_voltage : real := 355.0;
 
         variable inductor_current  : real := 0.0;
         variable dc_link_voltage   : real := initial_voltage;
         variable boost_model       : boost_model_record := (0.0, initial_voltage);
-        variable voltage_reference : real := 200.0;
+        variable voltage_reference : real := 400.0;
+        variable current_reference : real := 0.0;
+        variable mains_voltage : real := 0.0;
 
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
-                init_simfile(file_handler, ("time", "vref", "iref"));
+                init_simfile(file_handler, ("time", "vref", "iref", "cref"));
             end if;
 
-            init_bus(bus_from_stimulus);
-            if realtime > 2.0e-3 then
-                write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
-            end if;
+            mains_voltage := sin(realtime*2.0*math_pi*50.0);
+            ref_input_voltage := 325.0 * abs(mains_voltage);
 
-            ref_input_voltage := 75.0 + 50.0 * abs(sin(realtime*2.0*math_pi*50.0));
-
-
-            if realtime > 20.0e-3 then ref_load_current  := -1.0;  end if;
+            /* if realtime > 20.0e-3 then ref_load_current  := -1.0;  end if; */
             /* if realtime > 30.0e-3 then voltage_reference := 120.0; end if; */
             /* if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if; */
             /* if realtime > 50.0e-3 then voltage_reference := 180.0; end if; */
@@ -151,7 +131,14 @@ begin
             if realtime >= interrupt_time then
                 interrupt_time <= realtime + calculation_interval;
                 request_current_control(current_control, radix_multiply(self.current_ref , to_fixed(ref_input_voltage/325.0,15),int_word_length,15), to_fixed(boost_model.inductor_current, number_of_fractional_bits => 11));
-                request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
+                current_reference := to_real(radix_multiply(self.current_ref , to_fixed(ref_input_voltage/325.0,15),int_word_length,15),11);
+                if voltage_control_counter >= 10 then
+                    request_voltage_control(self, to_fixed(voltage_reference , 7) , to_fixed(boost_model.dc_link_voltage , number_of_fractional_bits => 7));
+                    voltage_control_counter <= 0;
+                else
+                    voltage_control_counter <= voltage_control_counter + 1;
+                end if;
+
             end if;
 
             if current_control_is_ready(current_control) then
@@ -160,7 +147,7 @@ begin
 
             CASE current_control.counter2 is
                 WHEN 6 =>
-                    write_to(file_handler,(realtime, boost_model.dc_link_voltage, boost_model.inductor_current));
+                    write_to(file_handler,(realtime, boost_model.dc_link_voltage, sign(mains_voltage) * boost_model.inductor_current, current_reference));
                     boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                     realtime <= realtime + cl_parameters.timestep;
                 WHEN others =>

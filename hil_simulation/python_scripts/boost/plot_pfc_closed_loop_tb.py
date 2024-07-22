@@ -14,6 +14,7 @@ vhdl_data = pd.read_csv('./pfc_closed_loop_tb.dat', delim_whitespace=True)
 vhdl_data.plot(ax=axT, x="time", y="vref", label="vhdl voltage")
 # vhdl_data.plot(ax=axT, x="time", y="rvin", label="input voltage")
 vhdl_data.plot(ax=axB, x="time", y="iref", label="vhdl current")
+# vhdl_data.plot(ax=axB, x="time", y="cref", label="vhdl control current")
 # vhdl_data.plot(ax=axB, x="time", y="iref", label="vhdl reference current")
 
 plt.show()
