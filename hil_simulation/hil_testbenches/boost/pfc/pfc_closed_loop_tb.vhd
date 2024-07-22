@@ -27,7 +27,7 @@ end;
 architecture vunit_simulation of pfc_closed_loop_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 220.0e-3;
+    constant stoptime         : real    := 1000.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -82,17 +82,18 @@ begin
         file file_handler     : text open write_mode is "pfc_closed_loop_tb.dat";
 
         variable ref_input_voltage : real := 100.0;
-        variable ref_load_current  : real := -1.0;
+        variable ref_load_current  : real := -0.2;
         variable ref_duty          : real := 0.5;
 
         constant initial_voltage : real := 355.0;
 
-        variable inductor_current  : real := 0.0;
-        variable dc_link_voltage   : real := initial_voltage;
-        variable boost_model       : boost_model_record := (0.0, initial_voltage);
-        variable voltage_reference : real := 400.0;
-        variable current_reference : real := 0.0;
-        variable mains_voltage : real := 0.0;
+        variable inductor_current        : real := 0.0;
+        variable voltage_reference       : real := 400.0;
+        variable current_reference       : real := 0.0;
+        variable mains_voltage           : real := 0.0;
+        variable mains_voltage_amplitude : real := 325.0;
+        variable dc_link_voltage         : real := initial_voltage;
+        variable boost_model : boost_model_record := (0.0, initial_voltage);
 
     begin
         if rising_edge(simulator_clock) then
@@ -102,15 +103,13 @@ begin
             end if;
 
             mains_voltage := sin(realtime*2.0*math_pi*50.0);
-            ref_input_voltage := 325.0 * abs(mains_voltage);
 
-            /* if realtime > 20.0e-3 then ref_load_current  := -1.0;  end if; */
-            /* if realtime > 30.0e-3 then voltage_reference := 120.0; end if; */
-            /* if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if; */
-            /* if realtime > 50.0e-3 then voltage_reference := 180.0; end if; */
-            /* if realtime > 65.0e-3 then ref_load_current  := 0.0;  end if; */
-            /* if realtime > 70.0e-3 then ref_load_current  := -2.0; end if; */
-            /* if realtime > 80.0e-3 then ref_load_current  := 0.0;   end if; */
+            if realtime > 150.0e-3 then ref_load_current  := -1.0;   end if;
+            if realtime > 350.0e-3 then ref_load_current  := -0.31;   end if;
+            if realtime > 460.0e-3 then ref_load_current  := -4.0;   end if;
+            if realtime > 700.0e-3 then ref_load_current  := -1.0;   end if;
+
+            ref_input_voltage := mains_voltage_amplitude * abs(mains_voltage);
 
             ---------------------
             
@@ -148,7 +147,15 @@ begin
             CASE current_control.counter2 is
                 WHEN 6 =>
                     write_to(file_handler,(realtime, boost_model.dc_link_voltage, sign(mains_voltage) * boost_model.inductor_current, current_reference));
-                    boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
+
+                    boost_model := 
+                        calculate_boost(
+                            self          => boost_model,
+                            parameters    => cl_parameters,
+                            duty          => ref_duty,
+                            load_current  => ref_load_current,
+                            input_voltage => ref_input_voltage);
+
                     realtime <= realtime + cl_parameters.timestep;
                 WHEN others =>
             end CASE;

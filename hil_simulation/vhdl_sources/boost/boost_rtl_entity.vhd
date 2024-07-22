@@ -10,6 +10,8 @@ package boost_model_interface_pkg is
 
     type input_record is record
         processor_requested_when_1 : std_logic;
+        write_input_voltage_when_1 : std_logic;
+        boost_input_voltage        : std_logic_vector(15 downto 0);
         write_duty_when_1          : std_logic;
         dutyin                     : std_logic_vector(15 downto 0);
     end record;
@@ -69,6 +71,7 @@ package body boost_model_interface_pkg is
     ) is
     begin
         self.input.processor_requested_when_1 <= '0';
+        self.input.write_input_voltage_when_1 <= '0';
         self.input.write_duty_when_1 <= '0';
         
     end create_boost_model_interface;
@@ -90,6 +93,15 @@ package body boost_model_interface_pkg is
         self.input.write_duty_when_1 <= '1';
         self.input.dutyin     <= std_logic_vector(to_unsigned(duty,16));
     end set_duty;
+
+    procedure set_input_voltage
+    (
+        signal self : view boost_model_interface_cview;
+        input_voltage : in natural range 0 to 2**16-1
+    ) is
+    begin
+        self.input.boost_input_voltage <= std_logic_vector(to_unsigned(input_voltage,16));
+    end set_input_voltage;
 
     impure function get_current
     (
