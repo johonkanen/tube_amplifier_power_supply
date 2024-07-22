@@ -113,7 +113,7 @@ begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
-                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
+                init_simfile(file_handler, ("time", "vref", "iref"));
             end if;
 
             init_bus(bus_from_stimulus);
@@ -121,16 +121,16 @@ begin
                 write_data_to_address(bus_from_stimulus, 3, to_fixed(ref_duty, number_of_fractional_bits => 15));
             end if;
 
-            ref_input_voltage := 325.0 * abs(sin(realtime*2.0*math_pi*50.0));
+            ref_input_voltage := 75.0 + 50.0 * abs(sin(realtime*2.0*math_pi*50.0));
 
 
-            if realtime > 20.0e-3 then ref_load_current  := -2.0;  end if;
-            if realtime > 30.0e-3 then voltage_reference := 120.0; end if;
+            if realtime > 20.0e-3 then ref_load_current  := -1.0;  end if;
+            /* if realtime > 30.0e-3 then voltage_reference := 120.0; end if; */
             /* if realtime > 40.0e-3 then ref_input_voltage := 130.0; end if; */
-            if realtime > 50.0e-3 then voltage_reference := 180.0; end if;
-            if realtime > 65.0e-3 then ref_load_current  := 10.0;  end if;
-            if realtime > 70.0e-3 then ref_load_current  := -10.0; end if;
-            if realtime > 80.0e-3 then ref_load_current  := 0.0;   end if;
+            /* if realtime > 50.0e-3 then voltage_reference := 180.0; end if; */
+            /* if realtime > 65.0e-3 then ref_load_current  := 0.0;  end if; */
+            /* if realtime > 70.0e-3 then ref_load_current  := -2.0; end if; */
+            /* if realtime > 80.0e-3 then ref_load_current  := 0.0;   end if; */
 
             ---------------------
             
@@ -160,7 +160,7 @@ begin
 
             CASE current_control.counter2 is
                 WHEN 6 =>
-                    write_to(file_handler,(realtime, to_real(rtl_voltage, number_of_fractional_bits => 6), to_real(rtl_current, number_of_fractional_bits => 7), boost_model.dc_link_voltage, boost_model.inductor_current));
+                    write_to(file_handler,(realtime, boost_model.dc_link_voltage, boost_model.inductor_current));
                     boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                     realtime <= realtime + cl_parameters.timestep;
                 WHEN others =>
