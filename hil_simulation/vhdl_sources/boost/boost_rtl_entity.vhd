@@ -47,6 +47,10 @@ package boost_model_interface_pkg is
         signal self : view boost_model_interface_cview;
         duty : in natural range 0 to 2**16-1);
 
+    procedure set_input_voltage (
+        signal self : view boost_model_interface_cview;
+        input_voltage : in natural range 0 to 2**16-1);
+
     impure function get_current ( signal self : boost_model_interface_record)
         return integer;
 
@@ -100,6 +104,7 @@ package body boost_model_interface_pkg is
         input_voltage : in natural range 0 to 2**16-1
     ) is
     begin
+        self.input.write_input_voltage_when_1 <= '1';
         self.input.boost_input_voltage <= std_logic_vector(to_unsigned(input_voltage,16));
     end set_input_voltage;
 
@@ -259,6 +264,9 @@ begin
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , input_voltage_address , voltage_from_bus);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , boost_current_address , measured_current);
             connect_data_to_address(bus_to_boost_model , bus_from_boost_model , boost_voltage_address , measured_voltage);
+            if boost_in.write_input_voltage_when_1 = '1' then
+                voltage_from_bus <= to_integer(unsigned(boost_in.boost_input_voltage));
+            end if;
 
             --------------------
             create_simple_processor (

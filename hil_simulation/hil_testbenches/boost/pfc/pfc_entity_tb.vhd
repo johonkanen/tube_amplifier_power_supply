@@ -27,7 +27,7 @@ end;
 architecture vunit_simulation of pfc_entity_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 60.0e-3;
+    constant stoptime         : real    := 100.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -61,7 +61,7 @@ architecture vunit_simulation of pfc_entity_tb is
     signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
-    signal vkp : integer := to_fixed(0.04          , 15);
+    signal vkp : integer := to_fixed(0.05          , 15);
     signal vki : integer := to_fixed(0.016125/10.0 , 15);
     signal voltage_multiplier : multiplier_record := init_multiplier;
 
@@ -72,13 +72,15 @@ architecture vunit_simulation of pfc_entity_tb is
     constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
     constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
-    constant initial_voltage : real := 150.0;
+    constant initial_voltage : real := 330.0;
     signal sequence_counter : natural := 0;
     signal do_a_thing : boolean := true;
 
     signal boost_model_interface : boost_model_interface_record;
     alias rtl_current is boost_model_interface.output.rtl_current;
     alias rtl_voltage is boost_model_interface.output.rtl_voltage;
+
+    signal pfc_ref_counter : natural := 9;
 
 ------------------------------------------------------------------------
 begin
@@ -107,14 +109,16 @@ begin
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
         variable boost_model : boost_model_record := (0.0, initial_voltage);
-        variable voltage_reference : real := 200.0;
+        variable voltage_reference : real := 400.0;
+
+        variable mains_voltage           : real := 0.0;
+        variable mains_voltage_amplitude : real := 325.0;
 
     begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
                 init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
-                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
             end if;
 
             create_boost_model_interface(boost_model_interface);
@@ -142,47 +146,52 @@ begin
 
             end if;
 
+            mains_voltage     := sin(realtime*2.0*math_pi*50.0);
+            ref_input_voltage := mains_voltage_amplitude * abs(mains_voltage);
+            set_input_voltage(boost_model_interface, to_fixed(ref_input_voltage, 7));
+
             if do_a_thing then
                 do_a_thing <= false;
                 CASE sequence_counter is 
                     WHEN 0 =>
-                        if realtime > 20.0e-3 then -- if (t > 20.0e-3) iload = -2.0;
-                            ref_load_current := -2.0;
+                        if realtime > 00.0e-3 then -- if (t > 20.0e-3) iload = -2.0;
+                            ref_load_current := -1.0;
                             write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 1 =>
                         if realtime > 30.0e-3 then -- if (t > 30.0e-3) vref = 120.0;
-                            voltage_reference := 120.0;
+                            /* voltage_reference := 120.0; */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 2 =>
                         if realtime > 40.0e-3 then -- if (t > 40.0e-3) vin = 130.0;
-                            ref_input_voltage := 130.0;
-                            write_data_to_address(bus_from_stimulus, 2, std_logic_vector(to_signed(to_fixed(ref_input_voltage, 7), 16)));
+                            /* ref_input_voltage := 130.0; */
+                            /* /1* write_data_to_address(bus_from_stimulus, 2, std_logic_vector(to_signed(to_fixed(ref_input_voltage, 7), 16))); *1/ */
+                            /* set_input_voltage(boost_model_interface, to_fixed(ref_input_voltage, 7)); */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 3 =>
                         if realtime > 50.0e-3 then -- if (t > 50.0e-3) vref = 180.0;
-                            voltage_reference := 180.0;
+                            /* voltage_reference := 180.0; */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 4 =>
                         if realtime > 65.0e-3 then -- if (t > 65.0e-3) iload = 10.0;
-                            ref_load_current := -10.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
+                            /* ref_load_current := -10.0; */
+                            /* write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16))); */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 5 =>
                         if realtime > 70.0e-3 then -- if (t > 70.0e-3) iload = -10.0;
-                            ref_load_current := 10.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
+                            /* ref_load_current := 10.0; */
+                            /* write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16))); */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 6 =>
                         if realtime > 80.0e-3 then -- if (t > 80.0e-3) iload = 0.0;
-                            ref_load_current := 0.0;
-                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16)));
+                            /* ref_load_current := 0.0; */
+                            /* write_data_to_address(bus_from_stimulus, 1, std_logic_vector(to_signed(to_fixed(ref_load_current, 11), 16))); */
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN others =>
@@ -191,16 +200,26 @@ begin
 
             if boost_model_is_ready(boost_model_interface) then
                 write_to(file_handler,(realtime, real(to_integer(signed(rtl_voltage)))/2.0**6, real(to_integer(signed(rtl_current)))/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
-                boost_model := calculate_boost(self => boost_model, parameters => cl_parameters, duty => ref_duty, load_current => ref_load_current, input_voltage => ref_input_voltage);
                 realtime <= realtime + cl_parameters.timestep;
+                request_boost_calculation(boost_model_interface);
 
                 if realtime >= interrupt_time then
                     interrupt_time <= realtime + calculation_interval;
-                    request_current_control(current_control, self.current_ref, to_integer(signed(rtl_current))*2**4);
-                    request_voltage_control(self, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
+
+                    request_current_control(current_control, 
+                            radix_multiply(self.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), 
+                            to_integer(signed(rtl_current)*2**4));
+
+                    if pfc_ref_counter < 9 then
+                        pfc_ref_counter <= pfc_ref_counter + 1;
+                    else
+                        pfc_ref_counter <= 0;
+                        request_voltage_control(self, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
+                    end if;
+
                 end if;
             end if;
-            if boost_model_is_ready(boost_model_interface) or simulation_counter = 0 then
+            if simulation_counter = 0 then
                 request_boost_calculation(boost_model_interface);
             end if;
 
