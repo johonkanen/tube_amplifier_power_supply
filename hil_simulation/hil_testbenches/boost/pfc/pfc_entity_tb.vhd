@@ -90,12 +90,10 @@ begin
 
         variable ref_input_voltage : real := 100.0;
         variable ref_load_current  : real := 0.0;
-        variable ref_duty          : real := 0.5;
 
 
         variable inductor_current : real := 0.0;
         variable dc_link_voltage  : real := initial_voltage;
-        variable boost_model : boost_model_record := (0.0, initial_voltage);
         variable voltage_reference : real := 400.0;
 
         variable mains_voltage           : real := 0.0;
@@ -105,7 +103,7 @@ begin
         if rising_edge(simulator_clock) then
             simulation_counter <= simulation_counter + 1;
             if simulation_counter = 0 then
-                init_simfile(file_handler, ("time", "volt", "curr", "vref", "iref"));
+                init_simfile(file_handler, ("time", "volt", "curr"));
             end if;
 
             create_boost_model_interface(boost_model_interface);
@@ -120,11 +118,9 @@ begin
                 vki);
 
             do_a_thing <= false;
-            if current_control_is_ready(self.current_control) then
-                ref_duty := to_real(to_integer(get_multiplier_result(self.multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
+            if current_control_is_ready(self) then
                 do_a_thing <= true;
-
-                set_duty(boost_model_interface, get_int_multiplier_result(self.multiplier, 7, 20, target_radix => 15));
+                set_duty(boost_model_interface, get_duty(self));
 
             end if;
 
@@ -183,7 +179,7 @@ begin
             end if;
 
             if boost_model_is_ready(boost_model_interface) then
-                write_to(file_handler,(realtime, real(to_integer(signed(rtl_voltage)))/2.0**6, real(to_integer(signed(rtl_current)))/2.0**7, boost_model.dc_link_voltage, boost_model.inductor_current));
+                write_to(file_handler,(realtime, real(to_integer(signed(rtl_voltage)))/2.0**6, real(to_integer(signed(rtl_current)))/2.0**7));
                 realtime <= realtime + cl_parameters.timestep;
                 request_boost_calculation(boost_model_interface);
 
