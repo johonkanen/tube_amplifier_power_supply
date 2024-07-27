@@ -18,6 +18,8 @@ package pfc_control_pkg is
         voltage_multiplier : multiplier_record;
         divider            : division_record  ;
         divider_multiplier : multiplier_record;
+        pfc_ref_counter : natural range 0 to 15;
+
     end record;
 
     constant init_pfc_control : pfc_control_record := (
@@ -26,7 +28,8 @@ package pfc_control_pkg is
         voltage_control    => init_voltage_control      ,
         voltage_multiplier => init_multiplier           ,
         divider            => init_division             ,
-        divider_multiplier => init_multiplier);
+        divider_multiplier => init_multiplier           ,
+        pfc_ref_counter    => 9);
 
     procedure create_pfc_control (
         signal self : inout pfc_control_record;

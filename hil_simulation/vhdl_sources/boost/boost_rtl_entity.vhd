@@ -193,6 +193,8 @@ LIBRARY ieee  ;
 entity boost_model is
     generic(boost_model_parameters : boost_model_parameters_record;
             initial_voltage        : real    := 100.0 ;
+            inductor_current_radix : natural := 7;
+            dc_link_voltage_radix  : natural := 6;
             load_current_address   : natural := 1     ;
             input_voltage_address  : natural := 2     ;
             boost_current_address  : natural := 4     ;
@@ -344,12 +346,12 @@ begin
             create_float_multiplier(float_multiplier);
 
             if ram_write_port.write_requested = '1' and ram_write_port.address = udc then
-                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 6);
+                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), dc_link_voltage_radix);
                 float_to_int_counter <= 0;
             end if;
 
             if ram_write_port.write_requested = '1' and ram_write_port.address = current_addr then
-                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), 7);
+                convert_float_to_integer(float_to_integer_converter, to_float(ram_write_port.data), inductor_current_radix);
             end if;
 
             case float_to_int_counter is
