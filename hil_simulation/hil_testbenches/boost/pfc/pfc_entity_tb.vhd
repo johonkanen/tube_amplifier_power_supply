@@ -1,3 +1,4 @@
+--------------------------
 LIBRARY ieee  ; 
     USE ieee.NUMERIC_STD.all  ; 
     USE ieee.std_logic_1164.all  ; 
@@ -7,18 +8,18 @@ LIBRARY ieee  ;
 library vunit_lib;
 context vunit_lib.vunit_context;
 
+    use work.write_pkg.all;
+    use work.boost_model_pkg.all;
+
     use work.fpga_interconnect_pkg.all;
     use work.boost_model_interface_pkg.all;
 
     use work.real_to_fixed_pkg.all;
-    use work.write_pkg.all;
-    use work.boost_model_pkg.all;
-
     use work.multiplier_pkg.all;
     use work.division_pkg.all;
-
     use work.voltage_control_pkg.all;
     use work.half_bridge_current_control_pkg.all;
+    use work.pfc_control_pkg.all;
 
 entity pfc_entity_tb is
   generic (runner_cfg : string);
@@ -27,7 +28,7 @@ end;
 architecture vunit_simulation of pfc_entity_tb is
 
     constant clock_period     : time    := 1 ns;
-    constant stoptime         : real    := 100.0e-3;
+    constant stoptime         : real    := 200.0e-3;
     signal simulation_counter : natural := 0;
     
     signal simulator_clock     : std_logic := '0';
@@ -40,14 +41,6 @@ architecture vunit_simulation of pfc_entity_tb is
     signal bus_from_stimulus : fpga_interconnect_record := init_fpga_interconnect;
     signal bus_from_boost_model : fpga_interconnect_record := init_fpga_interconnect;
 
-    signal processor_ready : boolean := false;
-
-    signal duty_0_to_1            : natural range 0 to 2**16-1 := integer(0.5 * 2.0**15);
-    signal input_voltage_0_to_512 : natural range 0 to 2**16-1 := integer(100.0 * 2.0**7);
-
-    signal ref_current : real := 0.0;
-    signal ref_voltage : real := 0.0;
-
     signal calculation_interval : real := 1.0/30.0e3;
     signal interrupt_time       : real := 0.0;
 
@@ -55,32 +48,26 @@ architecture vunit_simulation of pfc_entity_tb is
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
         rl          => 100.0e-3 ,
-        timestep    => 1.5e-6);
-
-    signal multiplier         : multiplier_record := init_multiplier;
-    signal divider            : division_record   := init_division;
-    signal divider_multiplier : multiplier_record := init_multiplier;
+        timestep    => 2.5e-6);
 
     signal vkp : integer := to_fixed(0.05          , 15);
     signal vki : integer := to_fixed(0.016125/10.0 , 15);
-    signal voltage_multiplier : multiplier_record := init_multiplier;
 
-
-    signal current_control : current_control_record := init_current_control(16.0, 10.0, number_of_fractional_bits => 7);
-    signal self : voltage_control_record := init_voltage_control;
-    
-    constant dutymax : integer  := to_fixed(0.90, number_of_fractional_bits => 15);
-    constant dutymin  : integer := to_fixed(0.10, number_of_fractional_bits => 15);
+    constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
+    constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
 
     constant initial_voltage : real := 330.0;
-    signal sequence_counter : natural := 0;
-    signal do_a_thing : boolean := true;
 
     signal boost_model_interface : boost_model_interface_record;
     alias rtl_current is boost_model_interface.output.rtl_current;
     alias rtl_voltage is boost_model_interface.output.rtl_voltage;
 
     signal pfc_ref_counter : natural := 9;
+
+    signal self : pfc_control_record := init_pfc_control;
+
+    signal sequence_counter : natural := 0;
+    signal do_a_thing : boolean := true;
 
 ------------------------------------------------------------------------
 begin
@@ -124,25 +111,20 @@ begin
             create_boost_model_interface(boost_model_interface);
             init_bus(bus_from_stimulus);
 
-            create_divider_and_multiplier(divider,divider_multiplier);
-            create_multiplier(multiplier);
-            create_current_control(current_control,multiplier, divider, divider_multiplier,
-                                    to_integer(signed(rtl_voltage)),
-                                    to_fixed(ref_input_voltage           , number_of_fractional_bits => 7) ,
-                                    dutymax                              ,
-                                    dutymin);
-
-            create_multiplier(voltage_multiplier);
-            create_voltage_control(self, voltage_multiplier,
-            proportional_gain => vkp,
-            integral_gain     => vki);
+            create_pfc_control(self             ,
+                to_integer(signed(rtl_voltage)) ,
+                to_fixed(ref_input_voltage      , number_of_fractional_bits => 7) ,
+                dutymax ,
+                dutymin ,
+                vkp     ,
+                vki);
 
             do_a_thing <= false;
-            if current_control_is_ready(current_control) then
-                ref_duty := to_real(to_integer(get_multiplier_result(multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
+            if current_control_is_ready(self.current_control) then
+                ref_duty := to_real(to_integer(get_multiplier_result(self.multiplier, 7, 20, target_radix => 15)), number_of_fractional_bits => 15);
                 do_a_thing <= true;
 
-                set_duty(boost_model_interface, get_int_multiplier_result(multiplier, 7, 20, target_radix => 15));
+                set_duty(boost_model_interface, get_int_multiplier_result(self.multiplier, 7, 20, target_radix => 15));
 
             end if;
 
@@ -155,7 +137,7 @@ begin
                 CASE sequence_counter is 
                     WHEN 0 =>
                         if realtime > 00.0e-3 then -- if (t > 20.0e-3) iload = -2.0;
-                            ref_load_current := -1.0;
+                            ref_load_current := -0.3;
                             write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
@@ -165,7 +147,9 @@ begin
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 2 =>
-                        if realtime > 40.0e-3 then -- if (t > 40.0e-3) vin = 130.0;
+                        if realtime > 100.0e-3 then -- if (t > 40.0e-3) vin = 130.0;
+                            ref_load_current := -2.0;
+                            write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
                             /* ref_input_voltage := 130.0; */
                             /* /1* write_data_to_address(bus_from_stimulus, 2, std_logic_vector(to_signed(to_fixed(ref_input_voltage, 7), 16))); *1/ */
                             /* set_input_voltage(boost_model_interface, to_fixed(ref_input_voltage, 7)); */
@@ -206,15 +190,15 @@ begin
                 if realtime >= interrupt_time then
                     interrupt_time <= realtime + calculation_interval;
 
-                    request_current_control(current_control, 
-                            radix_multiply(self.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), 
+                    request_current_control(self.current_control, 
+                            radix_multiply(self.voltage_control.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), 
                             to_integer(signed(rtl_current)*2**4));
 
                     if pfc_ref_counter < 9 then
                         pfc_ref_counter <= pfc_ref_counter + 1;
                     else
                         pfc_ref_counter <= 0;
-                        request_voltage_control(self, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
+                        request_voltage_control(self.voltage_control, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
                     end if;
 
                 end if;
@@ -231,7 +215,8 @@ begin
     generic map(boost_model_parameters => cl_parameters, initial_voltage => initial_voltage)
     port map(
         clock => simulator_clock ,
-        bus_to_boost_model => bus_from_stimulus,
+
+        bus_to_boost_model   => bus_from_stimulus,
         bus_from_boost_model => bus_from_boost_model,
 
         boost_in  => boost_model_interface.input,

@@ -63,6 +63,7 @@ mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.
 
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/voltage_control/voltage_control_pkg.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/pfc_control_pkg.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_rtl_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/boost_closed_loop_tb.vhd")
