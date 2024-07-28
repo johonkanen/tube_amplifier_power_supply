@@ -88,8 +88,10 @@ package body pfc_control_pkg is
                 multiply(self.multiplier, uin , to_fixed(1.0/325.0,15));
                 self.pfc_sequence <= self.pfc_sequence + 1;
             WHEN 1 => 
-                multiply(self.multiplier, self.voltage_control.current_ref , get_multiplier_result(self.multiplier,15));
-                self.pfc_sequence <= self.pfc_sequence + 1;
+                if multiplier_is_ready(self.multiplier) then
+                    multiply(self.multiplier, self.voltage_control.current_ref , get_int_multiplier_result(self.multiplier,15,7, target_radix => 15));
+                    self.pfc_sequence <= self.pfc_sequence + 1;
+                end if;
             WHEN 2 => 
                 if multiplier_is_ready(self.multiplier) then
                     request_current_control(self.current_control, 

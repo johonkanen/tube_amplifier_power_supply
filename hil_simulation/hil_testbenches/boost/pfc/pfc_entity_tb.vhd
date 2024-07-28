@@ -102,9 +102,11 @@ begin
             current_measurement : in integer
         ) is
         begin
-            request_current_control(self.current_control, 
-                    radix_multiply(self.voltage_control.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), 
-                    current_measurement);
+            self.pfc_sequence <= 0;
+            self.current_measurement <= current_measurement;
+            /* request_current_control(self.current_control, */ 
+            /*         radix_multiply(self.voltage_control.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), */ 
+            /*         current_measurement); */
 
             if self.pfc_ref_counter < 9 then
                 self.pfc_ref_counter <= self.pfc_ref_counter + 1;
