@@ -12,6 +12,8 @@ library ieee;
     use work.tubepsu_addresses_pkg;
     use work.boost_control_interface_pkg.all;
     use work.test_interface_pkg.all;
+    use work.sincos_pkg.all;
+    use work.multiplier_pkg.all;
     
 entity efinix_top is
     port (
@@ -53,6 +55,10 @@ architecture rtl of efinix_top is
 
     signal test_interface : comm_bus_record;
     signal data_from_test_interface : std_logic_vector(15 downto 0);
+    signal sincos_multiplier : multiplier_record := init_multiplier;
+    signal sincos : sincos_record := init_sincos;
+    signal sincos_counter : natural range 0 to 2**16-1 := 0;
+    signal angle_rad16 : unsigned(15 downto 0) := (others => '0');
 
 ------------------------------------------------------------------------
 begin
@@ -70,40 +76,6 @@ begin
             bus_from_communications => bus_from_communications
         );
 
-------------------------------------------------------------------------
-        process(core_clock) is
-
-
-        begin
-            if rising_edge(core_clock) then
-                init_bus(bus_out);
-                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.interconnect_test_address, 44252);
-
-                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.boost_control_enable) then
-                    if get_data(bus_from_communications) = 0 then
-                        boost_control_is_enabled <= false;
-                    else
-                        boost_control_is_enabled <= true;
-                    end if;
-                end if;
-
-                init_tx(test_interface);
-                if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
-                    write_data(test_interface, get_data(bus_from_communications));
-                end if;
-                if bus_feedback_is_ready(test_interface) then
-                    data_from_test_interface <= get_data_from_entity(test_interface);
-                end if;
-
-                connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
-
-                bus_to_communications <= bus_out              and
-                                         bus_from_boost_model and
-                                         bus_from_main_system_control;
-            end if;
-        end process;
-
-        
 ------------------------------------------------------------------------
         u_main_system_control : entity work.main_system_control
         port map (
@@ -127,6 +99,31 @@ begin
     begin
         if rising_edge(core_clock) then
 
+            init_bus(bus_out);
+            connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.interconnect_test_address, 44252);
+            connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.sincos_address, abs(get_sine(sincos)));
+
+            if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.boost_control_enable) then
+                if get_data(bus_from_communications) = 0 then
+                    boost_control_is_enabled <= false;
+                else
+                    boost_control_is_enabled <= true;
+                end if;
+            end if;
+
+            init_tx(test_interface);
+            if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
+                write_data(test_interface, get_data(bus_from_communications));
+            end if;
+            if bus_feedback_is_ready(test_interface) then
+                data_from_test_interface <= get_data_from_entity(test_interface);
+            end if;
+
+            connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
+
+            bus_to_communications <= bus_out              and
+                                     bus_from_boost_model and
+                                     bus_from_main_system_control;
 
             create_boost_model_interface(boost_model_interface);
             if boost_control_is_enabled then
@@ -134,7 +131,7 @@ begin
                     set_duty(boost_model_interface, duty_ratio);
                 end if;
             else
-                set_duty(boost_model_interface, to_fixed(0.7, 15));
+                set_duty(boost_model_interface, to_fixed(0.999, 15));
             end if;
 
             if model_trigger_counter < integer(cl_parameters.timestep*128.0e6) then -- counter for 1us calculation time
@@ -143,6 +140,18 @@ begin
                 model_trigger_counter <= 0;
                 request_boost_calculation(boost_model_interface);
             end if;
+
+            create_multiplier(sincos_multiplier);
+            create_sincos(sincos_multiplier, sincos);
+
+            sincos_counter <= sincos_counter + 1;
+            if sincos_counter > 511 then
+                sincos_counter <= 0;
+                angle_rad16 <= angle_rad16 + 13;
+                request_sincos(sincos, angle_rad16);
+            end if;
+
+
 
         end if; --rising_edge
     end process boost_model_control;	

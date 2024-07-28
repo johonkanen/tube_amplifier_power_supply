@@ -11,6 +11,7 @@ LIBRARY ieee  ;
 
 package pfc_control_pkg is
 
+-------------------------------------
     type pfc_control_record is record
         current_control    : current_control_record;
         multiplier         : multiplier_record;
@@ -19,18 +20,23 @@ package pfc_control_pkg is
         divider            : division_record  ;
         divider_multiplier : multiplier_record;
         pfc_ref_counter : natural range 0 to 15;
+        pfc_sequence : natural range 0 to 15;
+        current_measurement : int;
 
     end record;
 
     constant init_pfc_control : pfc_control_record := (
-        current_control    => init_current_control(16.0 , 10.0 , number_of_fractional_bits => 7) ,
-        multiplier         => init_multiplier           ,
-        voltage_control    => init_voltage_control      ,
-        voltage_multiplier => init_multiplier           ,
-        divider            => init_division             ,
-        divider_multiplier => init_multiplier           ,
-        pfc_ref_counter    => 9);
+        current_control     => init_current_control(16.0 , 10.0 , number_of_fractional_bits => 7) ,
+        multiplier          => init_multiplier           ,
+        voltage_control     => init_voltage_control      ,
+        voltage_multiplier  => init_multiplier           ,
+        divider             => init_division             ,
+        divider_multiplier  => init_multiplier           ,
+        pfc_ref_counter     => 9,
+        pfc_sequence        => 9,
+        current_measurement => 0);
 
+-------------------------------------
     procedure create_pfc_control (
         signal self : inout pfc_control_record;
         udc         : in integer;
@@ -40,9 +46,11 @@ package pfc_control_pkg is
         vkp : in integer;
         vki : in integer);
 
+-------------------------------------
     function current_control_is_ready ( self : pfc_control_record)
         return boolean;
 
+-------------------------------------
     function get_duty ( self : pfc_control_record)
         return integer;
 
@@ -50,6 +58,7 @@ end package pfc_control_pkg;
 
 package body pfc_control_pkg is
 
+-------------------------------------
     procedure create_pfc_control
     (
         signal self : inout pfc_control_record;
@@ -73,9 +82,27 @@ package body pfc_control_pkg is
         create_voltage_control(self.voltage_control, self.voltage_multiplier,
         proportional_gain => vkp,
         integral_gain     => vki);
+
+        CASE self.pfc_sequence is
+            WHEN 0 => 
+                multiply(self.multiplier, uin , to_fixed(1.0/325.0,15));
+                self.pfc_sequence <= self.pfc_sequence + 1;
+            WHEN 1 => 
+                multiply(self.multiplier, self.voltage_control.current_ref , get_multiplier_result(self.multiplier,15));
+                self.pfc_sequence <= self.pfc_sequence + 1;
+            WHEN 2 => 
+                if multiplier_is_ready(self.multiplier) then
+                    request_current_control(self.current_control, 
+                            get_multiplier_result(self.multiplier, 15),
+                            self.current_measurement);
+                    self.pfc_sequence <= self.pfc_sequence + 1;
+                end if;
+            WHEN others => --do nothing
+        end CASE;
         
     end create_pfc_control;
 
+-------------------------------------
     function current_control_is_ready
     (
         self : pfc_control_record
@@ -86,6 +113,7 @@ package body pfc_control_pkg is
         return current_control_is_ready(self.current_control);
     end current_control_is_ready;
 
+-------------------------------------
     function get_duty
     (
         self : pfc_control_record
@@ -96,5 +124,5 @@ package body pfc_control_pkg is
         return get_int_multiplier_result(self.multiplier, 7, 20, target_radix => 15);
     end get_duty;
 
-
+-------------------------------------
 end package body pfc_control_pkg;

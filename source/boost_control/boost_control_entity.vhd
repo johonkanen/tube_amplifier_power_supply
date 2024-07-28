@@ -60,6 +60,7 @@ library ieee;
     use work.half_bridge_current_control_pkg.all;
     use work.voltage_control_pkg.all;
     use work.tubepsu_addresses_pkg;
+    use work.pfc_control_pkg.all;
 
 entity boost_control is
     generic(package testi_pkg is new work.test_generic_pkg generic map(<>));
@@ -94,6 +95,8 @@ architecture rtl of boost_control is
     signal divider            : division_record   := init_division;
     signal divider_multiplier : multiplier_record := init_multiplier;
 
+    signal pfc_control : pfc_control_record := init_pfc_control;
+
 begin
     duty_ratio          <= get_int_multiplier_result(multiplier, 7, 20, target_radix => 15);
     boost_control_ready <= current_control_is_ready(current_control);
@@ -101,8 +104,8 @@ begin
     control_procedure : process(core_clock)
         constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
         constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
-        constant vkp     : integer := to_fixed(0.5     , 15);
-        constant vki     : integer := to_fixed(0.016125/4.0 , 15);
+        constant vkp : integer := to_fixed(0.05          , 15);
+        constant vki : integer := to_fixed(0.016125/10.0 , 15);
     begin
         if rising_edge(core_clock) then
             init_bus(boost_control_bus_out);

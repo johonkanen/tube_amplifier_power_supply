@@ -48,7 +48,7 @@ architecture vunit_simulation of pfc_entity_tb is
         inductance  => 500.0e-6 ,
         capacitance => 320.0e-6 ,
         rl          => 100.0e-3 ,
-        timestep    => 2.5e-6);
+        timestep    => 4.0e-6);
 
     signal vkp : integer := to_fixed(0.05          , 15);
     signal vki : integer := to_fixed(0.016125/10.0 , 15);
@@ -95,7 +95,7 @@ begin
 
         variable mains_voltage           : real := 0.0;
         variable mains_voltage_amplitude : real := 325.0;
-
+    -------------------------------------
         procedure request_pfc_control
         (
             signal self : inout pfc_control_record;
@@ -113,6 +113,7 @@ begin
                 request_voltage_control(self.voltage_control, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
             end if;
         end request_pfc_control;
+    -------------------------------------
 
     begin
         if rising_edge(simulator_clock) then
@@ -169,9 +170,7 @@ begin
 
                 if realtime >= interrupt_time then
                     interrupt_time <= realtime + calculation_interval;
-
                     request_pfc_control(self, to_integer(signed(rtl_current)));
-
                 end if;
             end if;
             if simulation_counter = 0 then
