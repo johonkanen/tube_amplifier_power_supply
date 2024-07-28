@@ -99,20 +99,18 @@ begin
         procedure request_pfc_control
         (
             signal self : inout pfc_control_record;
-            current_measurement : in integer
+            current_measurement : in integer;
+            voltage_measurement : in integer
         ) is
         begin
             self.pfc_sequence <= 0;
             self.current_measurement <= current_measurement;
-            /* request_current_control(self.current_control, */ 
-            /*         radix_multiply(self.voltage_control.current_ref , to_fixed(ref_input_voltage/325.0,15), int_word_length,15), */ 
-            /*         current_measurement); */
 
             if self.pfc_ref_counter < 9 then
                 self.pfc_ref_counter <= self.pfc_ref_counter + 1;
             else
                 self.pfc_ref_counter <= 0;
-                request_voltage_control(self.voltage_control, to_fixed(voltage_reference , 7) , to_integer(signed(rtl_voltage))*2);
+                request_voltage_control(self.voltage_control, to_fixed(400.0 , 7) , voltage_measurement);
             end if;
         end request_pfc_control;
     -------------------------------------
@@ -172,7 +170,7 @@ begin
 
                 if realtime >= interrupt_time then
                     interrupt_time <= realtime + calculation_interval;
-                    request_pfc_control(self, to_integer(signed(rtl_current)));
+                    request_pfc_control(self, to_integer(signed(rtl_current)), to_integer(signed(rtl_voltage))*2);
                 end if;
             end if;
             if simulation_counter = 0 then

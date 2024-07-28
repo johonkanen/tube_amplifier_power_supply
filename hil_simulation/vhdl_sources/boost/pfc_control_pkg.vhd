@@ -47,6 +47,12 @@ package pfc_control_pkg is
         vki : in integer);
 
 -------------------------------------
+    procedure request_pfc_control (
+        signal self : inout pfc_control_record;
+        current_measurement : in integer;
+        voltage_measurement : in integer);
+
+-------------------------------------
     function current_control_is_ready ( self : pfc_control_record)
         return boolean;
 
@@ -103,6 +109,25 @@ package body pfc_control_pkg is
         end CASE;
         
     end create_pfc_control;
+
+-------------------------------------
+    procedure request_pfc_control
+    (
+        signal self : inout pfc_control_record;
+        current_measurement : in integer;
+        voltage_measurement : in integer
+    ) is
+    begin
+        self.pfc_sequence <= 0;
+        self.current_measurement <= current_measurement;
+
+        if self.pfc_ref_counter < 9 then
+            self.pfc_ref_counter <= self.pfc_ref_counter + 1;
+        else
+            self.pfc_ref_counter <= 0;
+            request_voltage_control(self.voltage_control, to_fixed(400.0 , 7) , voltage_measurement);
+        end if;
+    end request_pfc_control;
 
 -------------------------------------
     function current_control_is_ready
