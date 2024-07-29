@@ -49,16 +49,10 @@ library ieee;
 
     use work.boost_control_interface_pkg.all;
 
-    use work.boost_model_pkg.all;
-
     use work.fpga_interconnect_pkg.all;
     use work.boost_model_interface_pkg.all;
 
     use work.real_to_fixed_pkg.all;
-    use work.multiplier_pkg.all;
-    use work.division_pkg.all;
-    use work.half_bridge_current_control_pkg.all;
-    use work.voltage_control_pkg.all;
     use work.tubepsu_addresses_pkg;
     use work.pfc_control_pkg.all;
 
@@ -76,34 +70,20 @@ end entity boost_control;
 architecture rtl of boost_control is
     use testi_pkg.all;
 
-    alias inductor_current      is boost_control_interface.inductor_current    ;
-    alias input_voltage         is boost_control_interface.input_voltage       ;
-    alias dc_link_voltage       is boost_control_interface.dc_link_voltage     ;
-    alias boost_control_ready   is boost_control_interface.boost_control_ready ;
-    alias duty_ratio            is boost_control_interface.duty_ratio          ;
-
-    signal current_control : current_control_record := init_current_control(16.0, 8.0/4, number_of_fractional_bits => 7);
-    signal self : voltage_control_record := init_voltage_control;
-    signal vkp : integer := to_fixed(0.25     , 15);
-    signal vki : integer := to_fixed(0.016125 , 15);
-
     signal control_counter       : countertype := init_countertype;
     signal reference_voltage     : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
     
-    signal multiplier         : multiplier_record := init_multiplier;
-    signal voltage_multiplier : multiplier_record := init_multiplier;
-    signal divider            : division_record   := init_division;
-    signal divider_multiplier : multiplier_record := init_multiplier;
-
     signal pfc_control : pfc_control_record := init_pfc_control;
+    alias self is pfc_control;
 
 begin
-    duty_ratio          <= get_int_multiplier_result(multiplier, 7, 20, target_radix => 15);
-    boost_control_ready <= current_control_is_ready(current_control);
+
+    boost_control_interface.duty_ratio          <= get_duty(pfc_control);
+    boost_control_interface.boost_control_ready <= current_control_is_ready(pfc_control);
 
     control_procedure : process(core_clock)
-        constant dutymax : integer := to_fixed(0.90, number_of_fractional_bits => 15);
-        constant dutymin : integer := to_fixed(0.10, number_of_fractional_bits => 15);
+        constant duty_max : integer := to_fixed(0.90, number_of_fractional_bits => 15);
+        constant duty_min : integer := to_fixed(0.10, number_of_fractional_bits => 15);
         constant vkp : integer := to_fixed(0.05          , 15);
         constant vki : integer := to_fixed(0.016125/10.0 , 15);
     begin
@@ -111,25 +91,13 @@ begin
             init_bus(boost_control_bus_out);
             connect_data_to_address(boost_control_bus_in, boost_control_bus_out, tubepsu_addresses_pkg.reference_voltage_address, reference_voltage);
 
-            create_multiplier(voltage_multiplier);
-            create_voltage_control(self, voltage_multiplier,
-            proportional_gain => vkp,
-            integral_gain     => vki);
+            create_pfc_control(pfc_control, boost_control_interface.dc_link_voltage, boost_control_interface.input_voltage, duty_max, duty_min, vkp, vki);
 
-            create_divider_and_multiplier(divider,divider_multiplier);
-            create_multiplier(multiplier);
-            create_current_control(current_control  , multiplier , divider , divider_multiplier ,
-                                    dc_link_voltage ,
-                                    input_voltage   ,
-                                    dutymax         ,
-                                    dutymin);
-
-            if control_counter < 128e6/120e3 then
+            if control_counter < 128e6/30e3 then
                 control_counter <= control_counter + 1;
             else
                 control_counter <= init_countertype;
-                request_current_control(current_control, self.current_ref, inductor_current*2**4);
-                request_voltage_control(self, reference_voltage , dc_link_voltage*2);
+                request_pfc_control(pfc_control, boost_control_interface.inductor_current*2**4, boost_control_interface.dc_link_voltage*2, reference_voltage);
             end if;
 
         end if; --rising_edge

@@ -50,7 +50,8 @@ package pfc_control_pkg is
     procedure request_pfc_control (
         signal self : inout pfc_control_record;
         current_measurement : in integer;
-        voltage_measurement : in integer);
+        voltage_measurement : in integer;
+        dc_link_reference : in integer);
 
 -------------------------------------
     function current_control_is_ready ( self : pfc_control_record)
@@ -115,7 +116,8 @@ package body pfc_control_pkg is
     (
         signal self : inout pfc_control_record;
         current_measurement : in integer;
-        voltage_measurement : in integer
+        voltage_measurement : in integer;
+        dc_link_reference   : in integer
     ) is
     begin
         self.pfc_sequence <= 0;
@@ -125,7 +127,7 @@ package body pfc_control_pkg is
             self.pfc_ref_counter <= self.pfc_ref_counter + 1;
         else
             self.pfc_ref_counter <= 0;
-            request_voltage_control(self.voltage_control, to_fixed(400.0 , 7) , voltage_measurement);
+            request_voltage_control(self.voltage_control, dc_link_reference , voltage_measurement);
         end if;
     end request_pfc_control;
 

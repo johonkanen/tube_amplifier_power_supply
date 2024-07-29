@@ -96,24 +96,6 @@ begin
         variable mains_voltage           : real := 0.0;
         variable mains_voltage_amplitude : real := 325.0;
     -------------------------------------
-        procedure request_pfc_control
-        (
-            signal self : inout pfc_control_record;
-            current_measurement : in integer;
-            voltage_measurement : in integer
-        ) is
-        begin
-            self.pfc_sequence <= 0;
-            self.current_measurement <= current_measurement;
-
-            if self.pfc_ref_counter < 9 then
-                self.pfc_ref_counter <= self.pfc_ref_counter + 1;
-            else
-                self.pfc_ref_counter <= 0;
-                request_voltage_control(self.voltage_control, to_fixed(400.0 , 7) , voltage_measurement);
-            end if;
-        end request_pfc_control;
-    -------------------------------------
 
     begin
         if rising_edge(simulator_clock) then
@@ -148,13 +130,13 @@ begin
                 do_a_thing <= false;
                 CASE sequence_counter is 
                     WHEN 0 =>
-                        if realtime > 00.0e-3 then -- if (t > 20.0e-3) iload = -2.0;
+                        if realtime > 00.0e-3 then
                             ref_load_current := -0.3;
                             write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
                         end if;
                     WHEN 1 =>
-                        if realtime > 100.0e-3 then -- if (t > 40.0e-3) vin = 130.0;
+                        if realtime > 100.0e-3 then
                             ref_load_current := -2.0;
                             write_data_to_address(bus_from_stimulus, 1, std_logic_vector(-to_signed(to_fixed(ref_load_current, 11), 16)));
                             sequence_counter <= sequence_counter + 1;
@@ -170,7 +152,7 @@ begin
 
                 if realtime >= interrupt_time then
                     interrupt_time <= realtime + calculation_interval;
-                    request_pfc_control(self, to_integer(signed(rtl_current)), to_integer(signed(rtl_voltage))*2);
+                    request_pfc_control(self, to_integer(signed(rtl_current)), to_integer(signed(rtl_voltage))*2, to_fixed(400.0 , 7));
                 end if;
             end if;
             if simulation_counter = 0 then
