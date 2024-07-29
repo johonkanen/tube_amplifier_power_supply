@@ -151,8 +151,6 @@ begin
                 request_sincos(sincos, angle_rad16);
             end if;
 
-
-
         end if; --rising_edge
     end process boost_model_control;	
 
@@ -165,10 +163,10 @@ begin
                 boost_current_address  => tubepsu_addresses_pkg.boost_current_address ,
                 boost_voltage_address  => tubepsu_addresses_pkg.boost_voltage_address)
     port map(
-        core_clock              ,
-        bus_from_communications ,
-        bus_from_boost_model    ,
-        boost_model_interface.input,
+        core_clock                  ,
+        bus_from_communications     ,
+        bus_from_boost_model        ,
+        boost_model_interface.input ,
         boost_model_interface.output
         /* boost_model_interface */
     );

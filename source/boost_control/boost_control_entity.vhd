@@ -10,8 +10,9 @@ package boost_control_interface_pkg is
         dc_link_voltage    : integer range -2**15 to 2**15-1;
         control_is_enabled : boolean;
 
-        boost_control_ready   : boolean;
-        duty_ratio            : natural range 0 to 2**16-1;
+        boost_control_ready : boolean;
+        duty_ratio          : natural range 0 to 2**16-1;
+        pfc_at_reference    : boolean;
     end record;
 
     view boost_control_interface_view of boost_control_interface_record is
@@ -21,8 +22,9 @@ package boost_control_interface_pkg is
 
         control_is_enabled : in;
 
-        boost_control_ready   : out;
-        duty_ratio            : out;
+        boost_control_ready : out;
+        duty_ratio          : out;
+        pfc_at_reference    : out;
     end view boost_control_interface_view;
 
 end package boost_control_interface_pkg;

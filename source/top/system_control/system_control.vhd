@@ -56,7 +56,7 @@ begin
                     led1_color <= led_color_pink; 
                     led2_color <= led_color_pink;
                     led3_color <= led_color_pink;
-                WHEN start_power_supplies =>
+                WHEN start_pfc =>
 
                     led1_color <= led_color_purple;
                     led2_color <= led_color_purple;
