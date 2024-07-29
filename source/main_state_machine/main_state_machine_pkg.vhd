@@ -11,7 +11,7 @@ package main_state_machine_pkg is
                     init                       ,
                     wait_for_dc_link_to_charge ,
                     bypass_relay               ,
-                    start_power_supplies       ,
+                    start_pfc       ,
                     start_llc                  ,
                     start_dhb                  ,
                     system_running             ,
@@ -79,17 +79,17 @@ package body main_state_machine_pkg is
 
                     self.st_main_states <= bypass_relay; 
                     if timer_is_ready(delay_timer_out) then
-                        self.st_main_states <= start_power_supplies;
+                        self.st_main_states <= start_pfc;
                     end if;
 
-                WHEN start_power_supplies =>
+                WHEN start_pfc =>
 
                     self.bypass_relay_with_1 <= '1';
                     enable_power_supplies(component_interconnect_in);
 
                     -- TODO, add signal for indicating PFC running
                     request_delay(delay_timer_in,delay_timer_out,800);
-                    self.st_main_states <= start_power_supplies; 
+                    self.st_main_states <= start_pfc; 
                     if timer_is_ready(delay_timer_out) then -- OR zero_cross_event = '1' then
                         self.st_main_states <= start_llc;
                         init_timer(delay_timer_in);
@@ -121,7 +121,7 @@ package body main_state_machine_pkg is
 
                     self.st_main_states <= system_running; 
                     if timer_is_ready(delay_timer_out) then
-                        -- self.st_main_states := start_power_supplies; 
+                        -- self.st_main_states := start_pfc; 
                     end if;
 
                 WHEN wait_for_fault_acknowledge =>

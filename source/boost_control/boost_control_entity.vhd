@@ -5,18 +5,21 @@ library ieee;
 package boost_control_interface_pkg is
 
     type boost_control_interface_record is record
-        inductor_current      : integer range -2**15 to 2**15-1;
-        input_voltage         : integer range -2**15 to 2**15-1;
-        dc_link_voltage       : integer range -2**15 to 2**15-1;
+        inductor_current   : integer range -2**15 to 2**15-1;
+        input_voltage      : integer range -2**15 to 2**15-1;
+        dc_link_voltage    : integer range -2**15 to 2**15-1;
+        control_is_enabled : boolean;
 
         boost_control_ready   : boolean;
         duty_ratio            : natural range 0 to 2**16-1;
     end record;
 
     view boost_control_interface_view of boost_control_interface_record is
-        inductor_current      : in;
-        input_voltage         : in;
-        dc_link_voltage       : in;
+        inductor_current   : in;
+        input_voltage      : in;
+        dc_link_voltage    : in;
+
+        control_is_enabled : in;
 
         boost_control_ready   : out;
         duty_ratio            : out;
@@ -74,7 +77,6 @@ architecture rtl of boost_control is
     signal reference_voltage     : integer range -2**15 to 2**15-1 := to_fixed(205.0,7);
     
     signal pfc_control : pfc_control_record := init_pfc_control;
-    alias self is pfc_control;
 
 begin
 
