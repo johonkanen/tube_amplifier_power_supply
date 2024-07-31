@@ -55,7 +55,7 @@ library ieee;
     use work.boost_control_interface_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
-    use work.boost_model_interface_pkg.all;
+    use work.boost_rtl_entity_interface_pkg.all;
 
     use work.real_to_fixed_pkg.all;
     use work.tubepsu_addresses_pkg;

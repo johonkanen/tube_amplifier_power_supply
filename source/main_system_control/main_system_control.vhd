@@ -23,7 +23,7 @@ library ieee;
 
     use work.tubepsu_addresses_pkg;
 
-    use work.boost_model_interface_pkg.all;
+    use work.boost_rtl_entity_interface_pkg.all;
     use work.fpga_interconnect_pkg.all;
     use work.main_system_control_pkg.all;
     use work.main_state_machine_pkg.all;

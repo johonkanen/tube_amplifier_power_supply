@@ -8,7 +8,7 @@ library vunit_lib;
 context vunit_lib.vunit_context;
 
     use work.fpga_interconnect_pkg.all;
-    use work.boost_model_interface_pkg.all;
+    use work.boost_rtl_entity_interface_pkg.all;
 
     use work.real_to_fixed_pkg.all;
     use work.write_pkg.all;

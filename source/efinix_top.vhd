@@ -5,7 +5,7 @@ library ieee;
     use work.boost_model_pkg.all;
 
     use work.fpga_interconnect_pkg.all;
-    use work.boost_model_interface_pkg.all;
+    use work.boost_rtl_entity_interface_pkg.all;
     use work.main_system_control_pkg.all;
 
     use work.real_to_fixed_pkg.all;
@@ -51,7 +51,7 @@ architecture rtl of efinix_top is
     signal boost_control_ready : boolean := false;
     signal duty_ratio : natural range 0 to 2**16-1;
     signal main_system_control_interface : main_system_control_record;
-    signal boost_control_is_enabled : boolean := true;
+    signal boost_control_is_enabled : boolean := false;
 
     signal test_interface : comm_bus_record;
     signal data_from_test_interface : std_logic_vector(15 downto 0);
@@ -59,6 +59,7 @@ architecture rtl of efinix_top is
     signal sincos : sincos_record := init_sincos;
     signal sincos_counter : natural range 0 to 2**16-1 := 0;
     signal angle_rad16 : unsigned(15 downto 0) := (others => '0');
+    signal read_voltage : boolean := false;
 
 ------------------------------------------------------------------------
 begin
@@ -69,7 +70,7 @@ begin
 ------------------------------------------------------------------------
     u_communications : entity work.fpga_communications
         port map(
-            clock                   => core_clock            ,
+            clock => core_clock                              ,
             uart_rx                 => uart_rx               ,
             uart_tx                 => uart_tx               ,
             bus_to_communications   => bus_to_communications ,
@@ -82,8 +83,7 @@ begin
             core_clock => core_clock,
             bus_to_main_system_control    => bus_from_communications,
             bus_from_main_system_control  => bus_from_main_system_control,
-            main_system_control_interface => main_system_control_interface
-        );
+            main_system_control_interface => main_system_control_interface);
 -----
         main_system_control_interface.boost_control_interface.inductor_current <= get_measurement(boost_model_interface , inductor_current) ;
         main_system_control_interface.boost_control_interface.input_voltage    <= get_measurement(boost_model_interface , inductor_current) ;
@@ -149,6 +149,16 @@ begin
                 sincos_counter <= 0;
                 angle_rad16 <= angle_rad16 + 13;
                 request_sincos(sincos, angle_rad16);
+            end if;
+
+            if sincos_is_ready(sincos) then
+                multiply(sincos_multiplier, abs(get_sine(sincos)), to_fixed(100.0, 7));
+                read_voltage <= true;
+            end if;
+
+            if read_voltage and multiplier_is_ready(sincos_multiplier) then
+                read_voltage <= false;
+                set_input_voltage(boost_model_interface, get_int_multiplier_result(sincos_multiplier, 15, 7, target_radix => 6));
             end if;
 
         end if; --rising_edge

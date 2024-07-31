@@ -11,7 +11,7 @@ As of writing AMD Vivado, Efinix Efinity and Lattice Radiant with Synplify Pro (
 
 
 ```vhdl
-package boost_model_interface_pkg is
+package boost_rtl_entity_interface_pkg is
 
     type boost_model_interface_record is record
         bus_to_boost_model   : fpga_interconnect_record;
@@ -23,7 +23,7 @@ package boost_model_interface_pkg is
         bus_from_boost_model : out;
     end view boost_model_interface_view;
 
-end package boost_model_interface_pkg;
+end package boost_rtl_entity_interface_pkg;
 ```
 
 This allows us to use only one signal of a record type with a view to connect to an entity

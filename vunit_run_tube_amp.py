@@ -75,6 +75,10 @@ mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/pfc/pfc_closed
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/diode_model_rtl_tb.vhd")
 
+mcu.add_source_files(ROOT / "source/boost_control/boost_control_entity.vhd")
+mcu.add_source_files(ROOT / "tubepsu_addresses_pkg.vhd")
+mcu.add_source_files(ROOT / "testbenches/pfc_control/pfc_control_tb.vhd")
+
 # mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_entity_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/entity/boost_rtl_closed_loop_tb.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/hil_testbenches/boost/pfc/pfc_entity_tb.vhd")
@@ -114,5 +118,5 @@ main_state_machine.add_source_files(ROOT / "source/top/system_control/component_
 main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/main_state_machine_tb.vhd")
 
 
-# VU.set_sim_option("nvc.sim_flags", ["-w"])
+VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()
