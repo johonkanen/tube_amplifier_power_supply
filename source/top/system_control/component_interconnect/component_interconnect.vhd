@@ -136,6 +136,7 @@ begin
         );
 ------------------------------------------------------------------------
     u_communications : entity work.fpga_communications
+    generic map(fpga_interconnect_pkg => work.fpga_interconnect_pkg)
         port map(
             clock                   => system_clocks.core_clock                          ,
             uart_rx                 => component_interconnect_FPGA_in.pi_uart_rx_serial  ,

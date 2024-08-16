@@ -61,6 +61,7 @@ mcu.add_source_files(ROOT / "source/hVHDL_dynamic_model_verification_library/sim
 
 mcu.add_source_files(ROOT / "hil_simulation/processor_configuration/tube_amp_processor_configuration_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd")
+mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity_interface_pkg.vhd")
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd")
 
 mcu.add_source_files(ROOT / "hil_simulation/vhdl_sources/boost/current_control/current_control_pkg.vhd")

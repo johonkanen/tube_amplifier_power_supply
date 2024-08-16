@@ -67,6 +67,7 @@ add_vhdl_file_to_project $source_folder/../hil_simulation/processor_configuratio
 
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_model_pkg.vhd
 
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity_interface_pkg.vhd
 add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity.vhd
 
 add_vhdl_file_to_project $source_folder/../testbenches/vhdl2019_test_pkg.vhd
