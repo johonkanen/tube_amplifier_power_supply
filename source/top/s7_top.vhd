@@ -23,8 +23,8 @@ entity top is
 
 
         -- dhb io
-        dhb_primary_high : out std_logic;
-        dhb_primary_low  : out std_logic;
+        dhb_primary_high   : out std_logic;
+        dhb_primary_low    : out std_logic;
         dhb_secondary_high : out std_logic;
         dhb_secondary_low  : out std_logic;
 
@@ -75,57 +75,44 @@ begin
 	system_clocks.adc_pll_lock <= system_clocks.pll_lock;
 
 ------------------------------------------------------------------------
-    u_system_control : entity work.system_control
-        port map(
-            system_clocks ,
-            system_control_FPGA_in.component_interconnect_FPGA_in.measurement_interface_FPGA_in.onboard_ad_control_FPGA_in.ada_data => ada_data    ,
-            system_control_FPGA_in.component_interconnect_FPGA_in.measurement_interface_FPGA_in.onboard_ad_control_FPGA_in.adb_data => adb_data    ,
-            system_control_FPGA_in.component_interconnect_FPGA_in.measurement_interface_FPGA_in.dhb_ad_data                         => dhb_ad_data ,
-            system_control_FPGA_in.component_interconnect_FPGA_in.measurement_interface_FPGA_in.llc_ad_data                         => llc_ad_data ,
+    u_efinix_top : entity work.efinix_top
+	port map (
+        core_clock => system_clocks.core_clock,
+        uart_rx    => pi_uart_rx_serial,
+        uart_tx    => po_uart_tx_serial,
 
-            system_control_FPGA_in.component_interconnect_FPGA_in.pi_uart_rx_serial   => pi_uart_rx_serial ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po_uart_tx_serial => po_uart_tx_serial ,
+        rgb_led1   => rgb_led1, 
+        rgb_led2   => rgb_led2
+    );
+------------------------------------------------------------------------
+     /* ada_data           <= '0'; */
+     ada_clock          <= '0';
+     ada_cs             <= '0';
+     ada_mux            <= (others => '0');
 
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.ada_clock => ada_clock ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.ada_cs    => ada_cs    ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.ada_mux   => ada_mux   ,
+     /* adb_data           <= '0'; */
+     adb_clock          <= '0';
+     adb_cs             <= '0';
+     adb_mux            <= (others => '0');
 
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.adb_clock => adb_clock ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.adb_cs    => adb_cs    ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.onboard_ad_control_FPGA_out.adb_mux   => adb_mux   ,
+     dhb_ad_cs          <= '0';
+     dhb_ad_clock       <= '0';
+     /* dhb_ad_data        <= '0'; */
+     dhb_primary_high   <= '0';
+     dhb_primary_low    <= '0';
+     dhb_secondary_high <= '0';
+     dhb_secondary_low  <= '0';
 
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.dhb_control_FPGA_out.phase_modulator_FPGA_out.primary.high_gate => dhb_primary_high     ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.dhb_control_FPGA_out.phase_modulator_FPGA_out.primary.low_gate  => dhb_primary_low      ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.dhb_control_FPGA_out.phase_modulator_FPGA_out.secondary.high_gate => dhb_secondary_high ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.dhb_control_FPGA_out.phase_modulator_FPGA_out.secondary.low_gate  => dhb_secondary_low  ,
+     llc_ad_cs          <= '0';
+     llc_ad_clock       <= '0';
+     /* llc_ad_data        <= '0'; */
+     pri_high           <= '0';
+     pri_low            <= '0';
+     sync1              <= '0';
+     sync2              <= '0';
 
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.dhb_ad_clock => dhb_ad_clock ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.dhb_ad_cs    => dhb_ad_cs    ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.llc_control_FPGA_out.llc_modulator_FPGA_out.llc_gates.pri_high => pri_high,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.llc_control_FPGA_out.llc_modulator_FPGA_out.llc_gates.pri_low  => pri_low ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.llc_control_FPGA_out.llc_modulator_FPGA_out.llc_gates.sync1    => sync1   ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.llc_control_FPGA_out.llc_modulator_FPGA_out.llc_gates.sync2    => sync2   ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.llc_ad_clock => llc_ad_clock ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.measurement_interface_FPGA_out.llc_ad_cs    => llc_ad_cs    ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.pfc_control_FPGA_out.pfc_modulator_FPGA_out.ac1_switch  => ac1_switch ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.power_supply_control_FPGA_out.pfc_control_FPGA_out.pfc_modulator_FPGA_out.ac2_switch  => ac2_switch ,
-
-            system_control_FPGA_out.bypass_relay => bypass_relay ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.red   => rgb_led1(2) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.green => rgb_led1(1) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led1.blue  => rgb_led1(0) ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.red   => rgb_led2(2) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.green => rgb_led2(1) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led2.blue  => rgb_led2(0) ,
-
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.red   => rgb_led3(2) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.green => rgb_led3(1) ,
-            system_control_FPGA_out.component_interconnect_FPGA_out.po3_led3.blue  => rgb_led3(0)
-        );
+     ac1_switch         <= '0';
+     ac2_switch         <= '0';
+     bypass_relay       <= '0';
 ------------------------------------------------------------------------
 end behavioral;
