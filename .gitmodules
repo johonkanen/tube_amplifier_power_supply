@@ -13,3 +13,6 @@
 [submodule "source/hVHDL_floating_point"]
 	path = source/hVHDL_floating_point
 	url = https://github.com/hVHDL/hVHDL_floating_point.git
+[submodule "source/vhdl_serial"]
+	path = source/vhdl_serial
+	url = https://github.com/johonkanen/vhdl_serial.git

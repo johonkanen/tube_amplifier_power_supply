@@ -85,15 +85,15 @@ begin
         rgb_led2   => rgb_led2
     );
 ------------------------------------------------------------------------
-     /* ada_data           <= '0'; */
-     ada_clock          <= '0';
-     ada_cs             <= '0';
-     ada_mux            <= (others => '0');
+     /* ada_data  <= '0'; */
+     ada_clock <= '0';
+     ada_cs    <= '0';
+     ada_mux   <= (others => '0');
 
-     /* adb_data           <= '0'; */
-     adb_clock          <= '0';
-     adb_cs             <= '0';
-     adb_mux            <= (others => '0');
+     /* adb_data  <= '0'; */
+     adb_clock <= '0';
+     adb_cs    <= '0';
+     adb_mux   <= (others => '0');
 
      dhb_ad_cs          <= '0';
      dhb_ad_clock       <= '0';
@@ -103,16 +103,16 @@ begin
      dhb_secondary_high <= '0';
      dhb_secondary_low  <= '0';
 
-     llc_ad_cs          <= '0';
-     llc_ad_clock       <= '0';
-     /* llc_ad_data        <= '0'; */
-     pri_high           <= '0';
-     pri_low            <= '0';
-     sync1              <= '0';
-     sync2              <= '0';
+     llc_ad_cs    <= '0';
+     llc_ad_clock <= '0';
+     /* llc_ad_data  <= '0'; */
+     pri_high     <= '0';
+     pri_low      <= '0';
+     sync1        <= '0';
+     sync2        <= '0';
 
-     ac1_switch         <= '0';
-     ac2_switch         <= '0';
-     bypass_relay       <= '0';
+     ac1_switch   <= '0';
+     ac2_switch   <= '0';
+     bypass_relay <= '0';
 ------------------------------------------------------------------------
 end behavioral;
