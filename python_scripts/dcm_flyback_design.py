@@ -13,12 +13,13 @@ Eff = 0.8  # estimated efficiency (unitless)
 Fs = 72e3  # Hz, switching frequency
 
 # Output voltages (V)
-Vout1 = 14.7
-Vout2 = 14.7
-Vout3 = 6.0
-Vout4 = 6.0
-Vout5 = 80
-Vout6 = 6.0
+Vout =[
+14.7 ,
+14.7 ,
+6.0  ,
+6.0  ,
+80   ,
+6.0] 
 
 # Core parameters
 Ae = 32.1e-6  # m^2, core cross-sectional area
@@ -27,6 +28,13 @@ Bsat = 300.1e-3  # T, saturation flux density
 
 Krf = 2.35  # ripple factor, DCM => Krf > 1
 
+def calculate_N_values(Vout, Vdiode, N1):
+    Vout1 = Vout[0]
+    N_values = []
+    for Vout_i in Vout[1:]:
+        N_i = (Vout_i + Vdiode) / (Vout1 + Vdiode) * N1
+        N_values.append(N_i)
+    return N_values
 
 def engineering_format(value, unit):
     prefixes = {
@@ -78,18 +86,12 @@ Vdc_ccm = (1 / math.sqrt(2 * Lm * Fs * Pin) - 1 / Vro) ** -1
 Iover = Ids * 1.1  # current limit, allow for extra 10% current peak
 Np_min = Lm * Iover / (Bsat * Ae)
 
+Vout1 = Vout[0]
 # Windings (needs iteration)
 Vdiode = 0.9  # V, diode drop
 n = Vro / (Vout1 + Vdiode)  # turns ratio
 Np = round(Np_min + 1)
 N1 = Np / (Vro / (Vout1 + Vdiode))
-
-# Secondary turns
-N2 = (Vout2 + Vdiode) / (Vout1 + Vdiode) * N1
-N3 = (Vout3 + Vdiode) / (Vout1 + Vdiode) * N1
-N4 = (Vout4 + Vdiode) / (Vout1 + Vdiode) * N1
-N5 = (Vout5 + Vdiode) / (Vout1 + Vdiode) * N1
-N6 = (Vout6 + Vdiode) / (Vout1 + Vdiode) * N1
 
 Al_nh = Lm / Np ** 2
 
@@ -99,7 +101,7 @@ elif 0.5 * Lm * Iover ** 2 * Fs <= Po:
     print('Warning, Lm too high')
 else:
     print('Primary turns:', Np)
-    print('Secondary turns:', [N1, N2, N3, N4, N5, N6])
+    print('Secondary turns:', calculate_N_values(Vout, Vdiode, N1))
     print('Transistor peak current:', Ids)
     print('Transistor RMS current:', Idrms)
     print('Transistor peak voltage:', Vds)
