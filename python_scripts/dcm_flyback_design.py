@@ -27,6 +27,29 @@ Bsat = 300.1e-3  # T, saturation flux density
 
 Krf = 2.35  # ripple factor, DCM => Krf > 1
 
+
+def engineering_format(value, unit):
+    prefixes = {
+        -9: 'n',  # nano
+        -6: 'µ',  # micro
+        -3: 'm',  # milli
+        0: '',    # no prefix
+        3: 'k',   # kilo
+        6: 'M',   # mega
+        9: 'G'    # giga
+    }
+
+    if value == 0:
+        return "0"
+    
+    exponent = int(math.floor(math.log10(abs(value))))
+    exponent = exponent - (exponent % 3)
+    
+    mantissa = value / (10 ** exponent)
+    prefix = prefixes.get(exponent, f'e{exponent}')
+    
+    return f'{mantissa:.3f} {prefix+unit}'
+
 # Input power
 Pin = Po / Eff
 
@@ -86,11 +109,10 @@ else:
     print('Airgap length (m), iterate until close to manufacturer value:')
     print('Gap:', gap)
     
-    print('Al value (nH/turn^2):')
+    print('Al value :', engineering_format(Al_nh, 'H/turn^2'))
     print('Iterate until close to manufacturer value')
     print('See datasheet for factory airgaps:')
     print('https://en.tdk.eu/inf/80/db/fer/e_20_10_6.pdf')
-    print('Al_nh:', Al_nh)
-    print('Magnetization inductance:', Lm)
+    print('Magnetization inductance:', engineering_format(Lm, 'H'))
 
 
