@@ -70,6 +70,9 @@ end top;
 
 architecture behavioral of top is
 
+    package max11115_pkg is new work.max11115_generic_pkg;
+        use max11115_pkg.all;
+
     signal system_clocks : system_clock_group;
 
     signal bus_to_communications   : fpga_interconnect_record := init_fpga_interconnect;
@@ -87,6 +90,10 @@ architecture behavioral of top is
     signal test_interface : comm_bus_record;
     signal data_from_test_interface : std_logic_vector(15 downto 0);
     alias core_clock is system_clocks.core_clock;
+    signal ada : max11115_record := init_max11115;
+    signal adb : max11115_record := init_max11115;
+
+    signal sample_counter : natural range 0 to 4095 := 0;
 
 ------------------------------------------------------------------------
 begin
@@ -111,10 +118,21 @@ begin
             end if;
 
             connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.vhdl2019_interface_test_address, data_from_test_interface);
+            connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.ada_address, get_converted_measurement(ada));
+            connect_read_only_data_to_address(bus_from_communications, bus_out, tubepsu_addresses_pkg.adb_address, get_converted_measurement(adb));
 
             bus_to_communications <= bus_from_hil_simulation      and
                                      bus_from_main_system_control and
                                      bus_out;
+
+            create_max11115(ada , ada_data , ada_cs , ada_clock);
+            create_max11115(adb , adb_data , adb_cs , adb_clock);
+            sample_counter <= sample_counter + 1;
+            if sample_counter = 3000 then
+                sample_counter <= 0;
+                request_conversion(ada);
+                request_conversion(adb);
+            end if;
 
         end if; --rising_edge
     end process combine_buses;	
@@ -162,14 +180,7 @@ begin
 	system_clocks.adc_pll_lock <= system_clocks.pll_lock;
 
 ------------------------------------------------------------------------
-     /* ada_data  <= '0'; */
-     ada_clock <= '0';
-     ada_cs    <= '0';
      ada_mux   <= (others => '0');
-
-     /* adb_data  <= '0'; */
-     adb_clock <= '0';
-     adb_cs    <= '0';
      adb_mux   <= (others => '0');
 
      dhb_ad_cs          <= '0';

@@ -68,4 +68,7 @@ add_vhdl_file_to_project $source_folder/fpga_communication/communication_protoco
 add_vhdl_file_to_project $source_folder/fpga_communication/uart_protocol_pkg.vhd                                                              
 add_vhdl_file_to_project $source_folder/hil_simulator/hil_simulation.vhd                                                                      
 
+add_vhdl_file_to_project $source_folder/vhdl_serial/source/clock_divider/clock_divider_generic_pkg.vhd
+add_vhdl_file_to_project $source_folder/vhdl_serial/source/max11115/max11115_generic_pkg.vhd
+
 add_vhdl_file_to_project $source_folder/efinix_top.vhd                                                                                        

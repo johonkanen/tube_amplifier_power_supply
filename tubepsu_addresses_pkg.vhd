@@ -18,5 +18,7 @@ package tubepsu_addresses_pkg is
     constant model_input_voltage_memory_address : natural := 26;
 
     constant vhdl2019_interface_test_address     : natural := 5513;
+    constant ada_address     : natural := 27;
+    constant adb_address     : natural := 28;
 
 end package tubepsu_addresses_pkg;
