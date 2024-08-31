@@ -17,3 +17,4 @@ proc set_3v3_io {pin_name_from_port package_pin_location} {
 }
 
 source $tcl_path/program_functions.tcl
+source $tcl_path/source_all_scripts_in_folder.tcl

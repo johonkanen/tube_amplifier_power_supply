@@ -17,8 +17,7 @@ add_vhdl_file_to_project $source_folder/float_configuration/artix7_float_configu
 source $source_folder/../list_of_sources.tcl
 source $source_folder/../fpga_communication_sources.tcl
 
-source $tcl_path/ip_generation/ipgen_main_pll.tcl
-source $tcl_path/ip_generation/ipgen_mult_18x18.tcl
+run_tcl_scripts $tcl_path/ip_generation
 
 add_vhdl_file_to_project $source_folder/top/s7_top.vhd
 set_property top top [current_fileset]
