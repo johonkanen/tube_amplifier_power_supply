@@ -95,8 +95,25 @@ architecture behavioral of top is
 
     signal sample_counter : natural range 0 to 4095 := 0;
 
+    signal data_out_from_device : std_logic_vector(3 downto 0) := (others => '0');
+
 ------------------------------------------------------------------------
 begin
+
+------------------------------------------------------------------------
+    core_clocks : work.pll_1x256mhz
+    port map(system_clocks.core_clock, system_clocks.modulator_clock, system_clocks.pll_lock, xclk);
+
+    dingdongpingpongplimplom : entity work.test_output_serdes
+    port map 
+    ( 
+        data_out_from_device => data_out_from_device,
+        data_out_to_pins(0)  => ac1_switch,
+        clk_in               => system_clocks.modulator_clock,
+        clk_div_in           => core_clock,
+        io_reset             => '0'
+    );
+------------------------------------------------------------------------
 
     rgb_led1 <= data_from_test_interface(2 downto 0);
     rgb_led2 <= data_from_test_interface(5 downto 3);
@@ -133,6 +150,11 @@ begin
                 request_conversion(ada);
                 request_conversion(adb);
             end if;
+            if sample_counter > 3000/2 then
+                data_out_from_device <= (others => '0');
+            else
+                data_out_from_device <= (others => '1');
+            end if;
 
         end if; --rising_edge
     end process combine_buses;	
@@ -168,18 +190,6 @@ begin
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
-    clocks : entity work.pll_wrapper
-	port map (
-		xclk           => xclk,
-        core_clk       => system_clocks.core_clock,
-        modulator_clk  => system_clocks.modulator_clock,
-        modulator_clk2 => system_clocks.adc_clock,
-        pll_lock       => system_clocks.pll_lock
-	);
-
-	system_clocks.adc_pll_lock <= system_clocks.pll_lock;
-
-------------------------------------------------------------------------
      ada_mux   <= (others => '0');
      adb_mux   <= (others => '0');
 
@@ -199,7 +209,7 @@ begin
      sync1        <= '0';
      sync2        <= '0';
 
-     ac1_switch   <= '0';
+     /* ac1_switch   <= '0'; */
      ac2_switch   <= '0';
      bypass_relay <= '0';
 ------------------------------------------------------------------------
