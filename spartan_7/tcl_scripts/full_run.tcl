@@ -10,7 +10,6 @@ set_property part $target_device [current_project]
 add_vhdl_file_to_project $tcl_path/../s7_source/s7_adc_wrapper.vhd
 add_vhdl_file_to_project $tcl_path/../s7_source/s7_specifics.vhd
 add_vhdl_file_to_project $tcl_path/../s7_source/s7_multiplier_wrapper.vhd
-add_vhdl_file_to_project $tcl_path/../s7_source/s7_pll_wrapper.vhd
 
 add_vhdl_file_to_project $source_folder/float_configuration/artix7_float_configuration_pkg.vhd
 
