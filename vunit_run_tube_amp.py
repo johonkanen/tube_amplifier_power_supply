@@ -118,6 +118,9 @@ main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/mock_
 main_state_machine.add_source_files(ROOT / "source/top/system_control/component_interconnect/component_interconnect_pkg_body.vhd")
 main_state_machine.add_source_files(ROOT / "testbenches/main_state_machine/main_state_machine_tb.vhd")
 
+tube_amp_modulators = VU.add_library("tube_amp_modulators")
+tube_amp_modulators.add_source_files(ROOT / "testbenches/llc_modulator/llc_modulator_tb.vhd")
+tube_amp_modulators.add_source_files(ROOT / "testbenches/dhb_modulator/dhb_modulator_tb.vhd")
 
 VU.set_sim_option("nvc.sim_flags", ["-w"])
 VU.main()

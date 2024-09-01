@@ -149,19 +149,17 @@ begin
             create_max11115(adb , adb_data , adb_cs , adb_clock);
 
             sample_counter <= sample_counter + 1;
-            if sample_counter = 3000 then
+            if sample_counter = 948 then
                 sample_counter <= 0;
                 request_conversion(ada);
                 request_conversion(adb);
             end if;
 
-            if sample_counter > 3000/2 then
+            if sample_counter > 948/2 then
                 data_out_from_device <= (others => '0');
-                /* ac1_switch <= '1'; */
                 ac2_switch <= '0';
             else
                 data_out_from_device <= (others => '1');
-                /* ac1_switch <= '0'; */
                 ac2_switch <= '1';
             end if;
 
