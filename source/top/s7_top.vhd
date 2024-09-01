@@ -2,7 +2,6 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 
-    use work.system_clocks_pkg.all;
     use work.main_system_control_pkg.all;
     use work.boost_model_pkg.all;
 
@@ -73,8 +72,6 @@ architecture behavioral of top is
     package max11115_pkg is new work.max11115_generic_pkg;
         use max11115_pkg.all;
 
-    signal system_clocks : system_clock_group;
-
     signal bus_to_communications   : fpga_interconnect_record := init_fpga_interconnect;
     signal bus_from_hil_simulation : fpga_interconnect_record := init_fpga_interconnect;
 
@@ -89,27 +86,30 @@ architecture behavioral of top is
 
     signal test_interface : comm_bus_record;
     signal data_from_test_interface : std_logic_vector(15 downto 0);
-    alias core_clock is system_clocks.core_clock;
     signal ada : max11115_record := init_max11115;
     signal adb : max11115_record := init_max11115;
 
     signal sample_counter : natural range 0 to 4095 := 0;
 
-    signal data_out_from_device : std_logic_vector(3 downto 0) := (others => '0');
+    signal data_out_from_device : std_logic_vector(7 downto 0) := (others => '0');
+
+    signal core_clock      : std_logic;
+    signal modulator_clock : std_logic;
+    signal pll_lock        : std_logic;
 
 ------------------------------------------------------------------------
 begin
 
 ------------------------------------------------------------------------
-    core_clocks : work.pll_1x256mhz
-    port map(system_clocks.core_clock, system_clocks.modulator_clock, system_clocks.pll_lock, xclk);
+    core_clocks : work.main_clock_8x_serdes
+    port map(core_clock, modulator_clock, pll_lock, xclk);
 
-    dingdongpingpongplimplom : entity work.test_output_serdes
+    dingdongpingpongplimplom : entity work.output_serdes_8x
     port map 
     ( 
         data_out_from_device => data_out_from_device,
         data_out_to_pins(0)  => ac1_switch,
-        clk_in               => system_clocks.modulator_clock,
+        clk_in               => modulator_clock,
         clk_div_in           => core_clock,
         io_reset             => '0'
     );
@@ -117,6 +117,7 @@ begin
 
     rgb_led1 <= data_from_test_interface(2 downto 0);
     rgb_led2 <= data_from_test_interface(5 downto 3);
+    rgb_led3 <= data_from_test_interface(8 downto 6);
 
 ------------------------------------------------------------------------
     u_test_entity : entity work.test_entity
@@ -127,9 +128,11 @@ begin
         if rising_edge(core_clock) then
             init_bus(bus_out);
             init_tx(test_interface);
+
             if write_to_address_is_requested(bus_from_communications, tubepsu_addresses_pkg.vhdl2019_interface_test_address) then
                 write_data(test_interface, get_data(bus_from_communications));
             end if;
+
             if bus_feedback_is_ready(test_interface) then
                 data_from_test_interface <= get_data_from_entity(test_interface);
             end if;
@@ -144,16 +147,22 @@ begin
 
             create_max11115(ada , ada_data , ada_cs , ada_clock);
             create_max11115(adb , adb_data , adb_cs , adb_clock);
+
             sample_counter <= sample_counter + 1;
             if sample_counter = 3000 then
                 sample_counter <= 0;
                 request_conversion(ada);
                 request_conversion(adb);
             end if;
+
             if sample_counter > 3000/2 then
                 data_out_from_device <= (others => '0');
+                /* ac1_switch <= '1'; */
+                ac2_switch <= '0';
             else
                 data_out_from_device <= (others => '1');
+                /* ac1_switch <= '0'; */
+                ac2_switch <= '1';
             end if;
 
         end if; --rising_edge
@@ -210,7 +219,7 @@ begin
      sync2        <= '0';
 
      /* ac1_switch   <= '0'; */
-     ac2_switch   <= '0';
+     /* ac2_switch   <= '0'; */
      bypass_relay <= '0';
 ------------------------------------------------------------------------
 end behavioral;
