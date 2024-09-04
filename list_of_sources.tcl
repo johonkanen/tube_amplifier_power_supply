@@ -53,19 +53,20 @@ add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/vol
 
 add_vhdl_file_to_project $source_folder/boost_control/boost_control_entity.vhd                                                                
 add_vhdl_file_to_project $source_folder/main_system_control/main_system_control.vhd                                                           
-add_vhdl_file_to_project $source_folder/../testbenches/vhdl2019_test_pkg.vhd                                                                            
 add_vhdl_file_to_project $source_folder/main_state_machine/main_state_machine_pkg.vhd                                                         
-add_vhdl_file_to_project $source_folder/../testbenches/main_state_machine/mock_component_interconnect_pkg.vhd                                           
 add_vhdl_file_to_project $source_folder/common/timing/delay_timer_pkg.vhd                                                                     
 add_vhdl_file_to_project $source_folder/common/timing/delay_timer.vhd                                                                         
-add_vhdl_file_to_project $source_folder/top/system_control/component_interconnect/component_interconnect_pkg_body.vhd                         
-add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/pfc_control_pkg.vhd                                                        
-add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity_interface_pkg.vhd                                         
 add_vhdl_file_to_project $source_folder/fpga_communication/hVHDL_fpga_interconnect/fpga_interconnect_generic_pkg.vhd                          
 add_vhdl_file_to_project $source_folder/fpga_interconnect_pkg.vhd                                                                             
 add_vhdl_file_to_project $source_folder/fpga_communication/communication_protocol_generic_pkg.vhd                                             
 add_vhdl_file_to_project $source_folder/fpga_communication/uart_protocol_pkg.vhd                                                              
+
 add_vhdl_file_to_project $source_folder/hil_simulator/hil_simulation.vhd                                                                      
+
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/pfc_control_pkg.vhd                                                        
+add_vhdl_file_to_project $source_folder/../hil_simulation/vhdl_sources/boost/boost_rtl_entity_interface_pkg.vhd                                         
+add_vhdl_file_to_project $source_folder/../testbenches/vhdl2019_test_pkg.vhd                                                                            
+add_vhdl_file_to_project $source_folder/../testbenches/main_state_machine/mock_component_interconnect_pkg.vhd                                           
 
 add_vhdl_file_to_project $source_folder/vhdl_serial/source/clock_divider/clock_divider_generic_pkg.vhd
 add_vhdl_file_to_project $source_folder/vhdl_serial/source/max11115/max11115_generic_pkg.vhd
