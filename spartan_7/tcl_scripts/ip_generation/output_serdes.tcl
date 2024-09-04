@@ -14,9 +14,5 @@ set_property -dict [list \
   CONFIG.SYSTEM_DATA_WIDTH {1} \
   CONFIG.USE_SERIALIZATION {true} \
 ] [get_ips test_output_serdes]
-generate_target {instantiation_template} [get_files .srcs/sources_1/ip/test_output_serdes/test_output_serdes.xci]
-set_property generate_synth_checkpoint false [get_files  .srcs/sources_1/ip/test_output_serdes/test_output_serdes.xci]
-generate_target all [get_files  .srcs/sources_1/ip/test_output_serdes/test_output_serdes.xci]
-export_ip_user_files -of_objects [get_files .srcs/sources_1/ip/test_output_serdes/test_output_serdes.xci] -no_script -sync -force -quiet
-export_simulation -of_objects [get_files .srcs/sources_1/ip/test_output_serdes/test_output_serdes.xci] -directory .ip_user_files/sim_scripts -ip_user_files_dir .ip_user_files -ipstatic_source_dir .ip_user_files/ipstatic -lib_map_path [list {modelsim=./.cache/compile_simlib/modelsim} {questa=./.cache/compile_simlib/questa} {riviera=./.cache/compile_simlib/riviera} {activehdl=./.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
 
+generate_ip_module test_output_serdes

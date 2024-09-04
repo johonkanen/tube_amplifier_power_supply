@@ -13,9 +13,12 @@ set_property -dict [list \
   CONFIG.USE_SERIALIZATION {true} \
 ] [get_ips output_serdes_8x]
 
-generate_target {instantiation_template} [get_files .srcs/sources_1/ip/output_serdes_8x/output_serdes_8x.xci]
-set_property generate_synth_checkpoint false [get_files  .srcs/sources_1/ip/output_serdes_8x/output_serdes_8x.xci]
-generate_target all [get_files  .srcs/sources_1/ip/output_serdes_8x/output_serdes_8x.xci]
-export_ip_user_files -of_objects [get_files .srcs/sources_1/ip/output_serdes_8x/output_serdes_8x.xci] -no_script -sync -force -quiet
-export_simulation -of_objects [get_files .srcs/sources_1/ip/output_serdes_8x/output_serdes_8x.xci] -directory .ip_user_files/sim_scripts -ip_user_files_dir .ip_user_files -ipstatic_source_dir .ip_user_files/ipstatic -lib_map_path [list {modelsim=./.cache/compile_simlib/modelsim} {questa=./.cache/compile_simlib/questa} {riviera=./.cache/compile_simlib/riviera} {activehdl=./.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+proc generate_ip_module {ip_module} {
+    generate_target {instantiation_template} [get_files .srcs/sources_1/ip/$ip_module/$ip_module.xci]
+    set_property generate_synth_checkpoint false [get_files  .srcs/sources_1/ip/$ip_module/$ip_module.xci]
+    generate_target all [get_files  .srcs/sources_1/ip/$ip_module/$ip_module.xci]
+    export_ip_user_files -of_objects [get_files .srcs/sources_1/ip/$ip_module/$ip_module.xci] -no_script -sync -force -quiet
+    export_simulation -of_objects [get_files .srcs/sources_1/ip/$ip_module/$ip_module.xci] -directory .ip_user_files/sim_scripts -ip_user_files_dir .ip_user_files -ipstatic_source_dir .ip_user_files/ipstatic -lib_map_path [list {modelsim=./.cache/compile_simlib/modelsim} {questa=./.cache/compile_simlib/questa} {riviera=./.cache/compile_simlib/riviera} {activehdl=./.cache/compile_simlib/activehdl}] -use_ip_compiled_libs -force -quiet
+}
 
+generate_ip_module output_serdes_8x

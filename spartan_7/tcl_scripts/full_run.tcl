@@ -47,3 +47,5 @@ route_design -directive Explore
 write_checkpoint -force $outputDir/post_route.dcp
 
 write_bit_and_flash_images tube_power
+
+save_project_as tube_power tube_power -force
