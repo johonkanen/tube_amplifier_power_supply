@@ -11,7 +11,7 @@ package main_state_machine_pkg is
                     init                       ,
                     wait_for_dc_link_to_charge ,
                     bypass_relay               ,
-                    start_pfc       ,
+                    start_pfc                  ,
                     start_llc                  ,
                     start_dhb                  ,
                     system_running             ,

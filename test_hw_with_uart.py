@@ -60,7 +60,7 @@ def simulate_cl_data(uart, address_to_stream, number_of_points):
     return streamed_data
 
 simulated_current = simulate_cl_data(uart , 4 , 60000);
-simulated_voltage = simulate_cl_data(uart , 5 , 60000);
+simulated_voltage = simulate_cl_data(uart , 5 , 60000
 
 
 (fig, ax) = pyplot.subplots(2, 1)
